@@ -1,0 +1,13 @@
+node_modules
+.next
+.env
+.env.local
+dist
+build
+.DS_Store
+*.log
+
+# Common local / build artifacts (keep repo lean)
+*.zip
+test-results/
+*.tsbuildinfo

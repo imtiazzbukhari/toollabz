@@ -1,0 +1,45 @@
+{
+  "name": "orbital-tools",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "dev:turbo": "next dev --turbopack",
+    "clean": "rm -rf .next",
+    "build": "next build && node scripts/copy-standalone-assets.mjs",
+    "start": "next start",
+    "start:standalone": "node .next/standalone/server.js",
+    "lint": "eslint app components lib scripts tests utils --ext .js,.jsx,.ts,.tsx --max-warnings=0",
+    "preflight": "node scripts/preflight.mjs",
+    "preflight:ci": "node scripts/preflight.mjs --strict --build",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install chromium",
+    "images:png-to-webp": "node scripts/convert-png-to-webp.mjs"
+  },
+  "dependencies": {
+    "@tailwindcss/oxide-linux-x64-gnu": "^4.2.2",
+    "lucide-react": "^0.511.0",
+    "next": "^15.2.4",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^4.10.38",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.0",
+    "@tailwindcss/postcss": "^4.0.14",
+    "@types/node": "^22.13.10",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "eslint": "^9.22.0",
+    "eslint-config-next": "^15.2.4",
+    "tailwindcss": "^4.0.14",
+    "typescript": "^5.8.2",
+    "vitest": "^2.1.8",
+    "@playwright/test": "^1.52.0"
+  }
+}

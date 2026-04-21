@@ -1,0 +1,72 @@
+/* Tailwind CSS v4: this import loads base, components, and utilities (equivalent to legacy @tailwind directives). */
+@import "tailwindcss";
+
+/* Explicit scan roots so production builds never drop utility classes used outside ./app. */
+@source "./**/*.{js,ts,jsx,tsx,mdx}";
+@source "../components/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../lib/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../utils/**/*.{js,ts,jsx,tsx,mdx}";
+
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --color-orbital-purple: #7c3aed;
+  --color-orbital-blue: #3b82f6;
+  --color-orbital-muted: #64748b;
+  --shadow-glass: 0 8px 32px rgba(124, 58, 237, 0.08), 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-card: 0 4px 24px rgba(15, 23, 42, 0.06);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-white text-slate-900 antialiased font-sans;
+    touch-action: manipulation;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-violet-600 to-blue-500 bg-clip-text text-transparent;
+  }
+  .glass {
+    @apply border border-white/50 bg-white/75 backdrop-blur-xl;
+  }
+  .glass-strong {
+    @apply border border-white/55 bg-white/80 backdrop-blur-2xl;
+  }
+  .section-fade {
+    animation: fade-up 0.7s ease-out both;
+  }
+  .float-soft {
+    animation: float-soft 6s ease-in-out infinite;
+  }
+  .glow-ring:focus-visible {
+    @apply ring-4 ring-violet-200 ring-offset-2 ring-offset-white;
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
