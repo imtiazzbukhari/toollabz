@@ -1,11 +1,14 @@
 import type { MetadataRoute } from "next";
 import { blogPostSlugs } from "@/lib/blog/registry";
 import { categories, tools } from "@/lib/tools/data";
-import { siteUrl } from "@/lib/seo";
 import { PROGRAMMATIC_LOAN_PRINCIPALS, PROGRAMMATIC_SALARY_GROSS } from "@/lib/programmatic-seo/amount-routes";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+
+  // 🔥 HARD FIX — no dependency on env mistakes
+  const siteUrl = "https://toollabz.com";
+
   const staticPages = [
     "",
     "/tools",
@@ -75,12 +78,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const salaryAfterTaxProgrammatic = ["usa", "uk", "california", "texas", "new-york", "florida"]
-    .flatMap((country) => [30000, 50000, 70000, 85000, 100000, 120000, 150000, 200000].map((amount) => ({
-      url: `${siteUrl}/salary-after-tax-calculator/${country}/${amount}-salary-after-tax-${country}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.72,
-    })));
+    .flatMap((country) =>
+      [30000, 50000, 70000, 85000, 100000, 120000, 150000, 200000].map((amount) => ({
+        url: `${siteUrl}/salary-after-tax-calculator/${country}/${amount}-salary-after-tax-${country}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.72,
+      }))
+    );
 
   const loanPrincipalProgrammatic = PROGRAMMATIC_LOAN_PRINCIPALS.map((amount) => ({
     url: `${siteUrl}/loan-calculator/p/${amount}`,
