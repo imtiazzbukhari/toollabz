@@ -84,23 +84,6 @@ export function absoluteUrl(path = "/") {
   return `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-const categoryMap: Record<string, string> = {
-  converters: "UtilitiesApplication",
-  calculators: "UtilitiesApplication",
-  finance: "FinanceApplication",
-  business: "BusinessApplication",
-  "real-estate": "FinanceApplication",
-  marketing: "BusinessApplication",
-  generators: "UtilitiesApplication",
-  utility: "UtilitiesApplication",
-  legal: "BusinessApplication",
-  creator: "UtilitiesApplication",
-  image: "UtilitiesApplication",
-  ai: "UtilitiesApplication",
-  developer: "DeveloperApplication",
-  pdf: "BusinessApplication",
-};
-
 /** SERP-friendly meta description: unique per tool, capped ~155 chars. */
 export function buildToolMetaDescription(tool: ToolDefinition): string {
   const maxLen = 155;
@@ -184,25 +167,16 @@ export function toolMetadata(tool: ToolDefinition) {
   };
 }
 
+/** Minimal SoftwareApplication JSON-LD (stable fields for indexing). */
 export function toolSchema(tool: ToolDefinition, pagePath?: string) {
   const path = pagePath ?? `/tools/${tool.slug}`;
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: tool.name,
-    applicationCategory: categoryMap[tool.category] ?? "UtilitiesApplication",
-    operatingSystem: "Any",
-    browserRequirements: "Modern desktop or mobile web browser with JavaScript enabled for the interactive tool UI.",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     description: tool.description,
     url: absoluteUrl(path),
-    dateModified: SITE_LAST_UPDATED_DATE_TIME,
-    isAccessibleForFree: true,
-    publisher: {
-      "@type": "Organization",
-      name: "Toollabz",
-      url: siteUrl,
-    },
+    applicationCategory: "UtilityApplication",
   };
 }
 

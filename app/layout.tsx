@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Geist } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,16 +7,7 @@ import SkipToMainLink from "@/components/SkipToMainLink";
 import DeferredClientObservers from "@/components/DeferredClientObservers";
 import { GA_TRACKING_ID } from "@/lib/analytics/gtag";
 import { ADSENSE_CLIENT_ID } from "@/lib/analytics/env";
-import { organizationSchema, siteUrl, websiteSearchActionSchema } from "@/lib/seo";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
-  adjustFontFallback: true,
-  preload: true,
-});
+import { organizationSchema, websiteSearchActionSchema } from "@/lib/seo";
 
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
 
@@ -32,11 +22,14 @@ export const metadata: Metadata = {
     default: "Toollabz - Smart Tools. Limitless Possibilities.",
     template: "%s | Toollabz",
   },
+  alternates: {
+    canonical: "/",
+  },
   description:
     "Fast, reliable, and beautifully crafted free online tools  -  converters, calculators, PDF utilities, generators, and more.",
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL("https://toollabz.com"),
   applicationName: "Toollabz",
-  authors: [{ name: "Toollabz", url: siteUrl }],
+  authors: [{ name: "Toollabz", url: "https://toollabz.com" }],
   creator: "Toollabz",
   publisher: "Toollabz",
   formatDetection: {
@@ -63,7 +56,7 @@ export const metadata: Metadata = {
     title: "Toollabz",
     description: "100% free online tools with no limits.",
     type: "website",
-    url: siteUrl,
+    url: "https://toollabz.com",
     siteName: "Toollabz",
   },
   twitter: {
@@ -87,7 +80,7 @@ export default function RootLayout({
   const orgJsonLd = JSON.stringify(organizationSchema());
 
   return (
-    <html lang="en" className={geistSans.variable}>
+    <html lang="en">
       <body className="flex min-h-screen flex-col overflow-x-hidden">
         {GA_TRACKING_ID ? (
           <>

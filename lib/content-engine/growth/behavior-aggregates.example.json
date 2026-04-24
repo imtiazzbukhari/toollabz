@@ -1,0 +1,15 @@
+{
+  "updatedAt": "2026-04-24",
+  "source": "Merged from POST /api/behavior/collect or CI job; point CONTENT_ENGINE_BEHAVIOR_JSON here.",
+  "byPath": {
+    "/tools/loan-calculator": {
+      "path": "/tools/loan-calculator",
+      "sampleCount": 240,
+      "avgMaxScroll": 0.52,
+      "avgActiveMs": 28000,
+      "scrollHistogram": { "q0_25": 40, "q25_50": 80, "q50_75": 70, "q75_1": 50 },
+      "exitBySection": { "calculator": 90, "faq": 30, "examples": 45, "_unknown": 75 },
+      "updatedAt": "2026-04-24"
+    }
+  }
+}

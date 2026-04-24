@@ -8,7 +8,7 @@
 @source "../utils/**/*.{js,ts,jsx,tsx,mdx}";
 
 @theme {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --color-orbital-purple: #7c3aed;
   --color-orbital-blue: #3b82f6;
   --color-orbital-muted: #64748b;

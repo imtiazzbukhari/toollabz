@@ -28,7 +28,7 @@ describe("site SEO plumbing (sitemap, robots, metadata)", () => {
       expect(u.startsWith("http://") || u.startsWith("https://")).toBe(true);
     }
 
-    expect(urls).toContain(siteUrl);
+    expect(urls).toContain(absoluteUrl("/"));
     expect(urls).toContain(absoluteUrl("/tools"));
     expect(urls).toContain(absoluteUrl("/blog"));
     expect(urls).toContain(absoluteUrl("/tools/loan-calculator"));

@@ -1,0 +1,43 @@
+# Safe automated blog pipeline: cron → production APIs → quality gate → branch + PR (never push to main).
+name: Content Engine — Blog PR
+
+on:
+  schedule:
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: content-engine-blog-pr
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  propose-blog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Run blog PR pipeline
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+          CONTENT_ENGINE_SECRET: ${{ secrets.CONTENT_ENGINE_SECRET }}
+        run: node scripts/content-engine/create-blog-pr.mjs

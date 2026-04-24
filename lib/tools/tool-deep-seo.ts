@@ -1,5 +1,6 @@
 import type { ToolDefinition } from "./types";
 import { getToolFormula } from "./content";
+import { PRIORITY_EXAMPLE_BULLETS } from "./priority-example-bullets";
 import { pickBySlug, slugContentVariant } from "./content-variation";
 
 function catLabel(category: string): string {
@@ -12,6 +13,8 @@ const OPENERS = [
   "Toollabz keeps the interface lightweight on purpose so you can focus on inputs, outputs, and the story the numbers tell.",
   "Whether you are planning, estimating, or sanity-checking a figure someone sent you, the goal is the same: fast, repeatable math you can trust.",
   "Use this page as both a calculator and a mini-guide: the sections below explain intent, limits, and practical follow-ups.",
+  "Some visitors only need a single output; others want the surrounding context so they can defend a number in a meeting - both paths are supported here.",
+  "Instead of hunting through forum threads, you get labeled fields, readable outputs, and FAQs written for the same vocabulary people type into search.",
 ] as const;
 
 const MID_CONNECTORS = [
@@ -79,6 +82,10 @@ export function getToolDeepGuideParagraphs(tool: ToolDefinition): string[] {
 }
 
 export function getToolRealWorldExampleBullets(tool: ToolDefinition): string[] {
+  const priority = PRIORITY_EXAMPLE_BULLETS[tool.slug];
+  if (priority?.length) {
+    return [...priority];
+  }
   const k = tool.keywords[0] ?? tool.name.toLowerCase();
   const n = tool.name;
   const a = slugContentVariant(tool.slug + "ex", 5);

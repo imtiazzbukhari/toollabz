@@ -11,10 +11,18 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
-  async rewrites() {
+  async redirects() {
     return [
-      { source: "/loan-calculator-:amount(\\d+)", destination: "/loan-calculator/p/:amount" },
-      { source: "/salary-after-tax-:amount(\\d+)", destination: "/salary-after-tax/p/:amount" },
+      {
+        source: "/loan-calculator-:amount(\\d+)",
+        destination: "/loan-calculator/p/:amount",
+        permanent: true,
+      },
+      {
+        source: "/salary-after-tax-:amount(\\d+)",
+        destination: "/salary-after-tax/p/:amount",
+        permanent: true,
+      },
     ];
   },
   async headers() {

@@ -7,7 +7,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/login", "/signup"],
+        disallow: [
+          "/seo-growth-console",
+          "/seo-growth-console/",
+          "/api/seo-console/",
+          "/api/outreach/",
+        ],
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,

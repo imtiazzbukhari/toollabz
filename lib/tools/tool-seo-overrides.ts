@@ -43,4 +43,39 @@ export const TOOL_SEO_OVERRIDES: Record<string, { title: string; description: st
     description:
       "PSLF-style check vs long IDR horizon from employer type and payment years. Not Federal Student Aid—free orientation tool.",
   },
+  "loan-calculator": {
+    title: "Loan Calculator — Monthly Payment & Total Interest (Free) | Toollabz",
+    description:
+      "Model principal, APR, and term in one place. See monthly payment and total interest before you sign—free, HTTPS, no account.",
+  },
+  "salary-after-tax-calculator": {
+    title: "Salary After Tax Calculator — Net Pay From Gross (Free) | Toollabz",
+    description:
+      "Turn gross salary into estimated take-home using your own effective rate. Great for offer comparisons—free, private, fast.",
+  },
+  "emi-calculator": {
+    title: "EMI Calculator — Home, Auto & Personal Loan EMI (Free) | Toollabz",
+    description:
+      "Same EMI math lenders quote: principal, rate, tenure → installment + total outflow. Compare tenures without spreadsheet fatigue.",
+  },
+  "compound-interest-calculator": {
+    title: "Compound Interest Calculator — Future Value, Your Rules (Free) | Toollabz",
+    description:
+      "See how compounding frequency changes outcomes. Plug principal, rate, years—ideal for savings and “what if I wait?” scenarios.",
+  },
+  "paycheck-calculator-usa": {
+    title: "Paycheck Calculator USA — Biweekly & Weekly Net Pay (Free) | Toollabz",
+    description:
+      "Calculate gross-to-net paycheck estimate using annual salary, pay frequency, and tax assumptions. Per-paycheck net—free, HTTPS, no signup.",
+  },
+  "rent-vs-buy-calculator-usa": {
+    title: "Rent vs Buy Calculator USA — 7-Year Cash-Outflow View (Free) | Toollabz",
+    description:
+      "Estimate long-term housing cost difference between renting and buying for USA scenarios. Model rent growth vs buy cash—free, no signup.",
+  },
+  "roi-calculator": {
+    title: "ROI Calculator — Gain, Cost & True Return % (Free) | Toollabz",
+    description:
+      "Simple ROI for campaigns, gear, or side projects: net gain ÷ cost, in plain English. Pair with margin tools for fuller picture.",
+  },
 };

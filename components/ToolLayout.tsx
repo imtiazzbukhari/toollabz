@@ -14,6 +14,8 @@ import {
 import { getCategoryIcon } from "@/utils/icons";
 import { toolGlassCard, toolGlassPanel } from "@/lib/tool-ui";
 import { toolIllustrationSrc } from "@/lib/tools/tool-illustration";
+import { slugContentVariant } from "@/lib/tools/content-variation";
+import { getGuideLinksForTool } from "@/lib/blog/guides-for-tool";
 import BookmarkToolButtonDeferred from "./BookmarkToolButtonDeferred";
 import PageLastUpdated from "./PageLastUpdated";
 import PopularCalculationsBlock from "./PopularCalculationsBlock";
@@ -34,13 +36,27 @@ const heroBadges = [
 
 export default function ToolLayout({ tool, children }: { tool: ToolDefinition; children: React.ReactNode }) {
   const related = getRelatedToolsForLayout(tool, tools);
+  const relatedWithFallback = (() => {
+    const out = [...related];
+    if (out.length >= 3) return out;
+    const existing = new Set<string>([tool.slug, ...out.map((t) => t.slug)]);
+    for (const t of tools) {
+      if (existing.has(t.slug)) continue;
+      out.push(t);
+      existing.add(t.slug);
+      if (out.length >= 3) break;
+    }
+    return out;
+  })();
   const hub = getMarketingHubForTool(tool);
   const seoParagraphs = getToolSeoContent(tool);
   const deepParagraphs = getToolDeepGuideParagraphs(tool);
   const exampleBullets = getToolRealWorldExampleBullets(tool);
   const logicParagraph = getToolLogicExplanationParagraph(tool);
   const faqs = getToolFaqs(tool);
+  const guideLinks = getGuideLinksForTool(tool.slug, 4);
   const CategoryIcon = getCategoryIcon(tool.category);
+  const useCaseVariant = slugContentVariant(`${tool.slug}-usecases`, 3);
   const featurePoints = [
     {
       title: "Instant response",
@@ -66,7 +82,7 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-8 pb-0 sm:px-6 sm:pt-10 sm:pb-1 lg:px-8">
-      <header className={`mb-4 overflow-hidden p-6 sm:p-8 lg:mb-8 ${toolGlassPanel}`}>
+      <header className={`mb-6 overflow-hidden p-6 sm:mb-8 sm:p-8 ${toolGlassPanel}`} data-content-section="hero">
         <nav className="mb-4 flex flex-wrap items-center gap-1 text-sm text-slate-500" aria-label="Breadcrumb">
           <Link href="/" className="transition hover:text-violet-600">
             Home
@@ -79,63 +95,41 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
           <span className="font-medium text-slate-700">{tool.name}</span>
         </nav>
         <PageLastUpdated className="mb-4" />
-        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-8">
-          <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-300/50 bg-gradient-to-r from-violet-600/10 to-blue-500/10 px-3 py-1 text-xs font-semibold text-violet-800 backdrop-blur-sm">
-            <CategoryIcon className="h-3.5 w-3.5" aria-hidden />
-            {categoryLabel(tool.category)}
-            </span>
-            <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 text-balance sm:text-5xl">
-              {tool.name}
-            </h1>
-            <div className="hidden lg:block">
-              <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">
-                {tool.description}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {heroBadges.map(({ label, Icon }) => (
-                  <span
-                    key={label}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-violet-200/70 bg-white/75 px-3 py-1 text-xs font-medium text-slate-700"
-                  >
-                    <Icon className="h-3.5 w-3.5 text-violet-600" aria-hidden />
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="relative mx-auto hidden w-full max-w-lg lg:mx-0 lg:ml-auto lg:block lg:-mr-8 lg:pr-0">
-            <Image
-              src={toolIllustrationSrc()}
-              alt={`${tool.name} - ${categoryLabel(tool.category)} free online tool illustration`}
-              width={719}
-              height={547}
-              sizes="(max-width: 1024px) 100vw, 448px"
-              className="h-auto w-full max-h-[min(22rem,52vh)] object-contain object-center drop-shadow-[0_12px_28px_rgba(76,29,149,0.12)] lg:object-right"
-            />
-          </div>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-300/50 bg-gradient-to-r from-violet-600/10 to-blue-500/10 px-3 py-1 text-xs font-semibold text-violet-800 backdrop-blur-sm">
+          <CategoryIcon className="h-3.5 w-3.5" aria-hidden />
+          {categoryLabel(tool.category)}
+        </span>
+        <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 text-balance sm:text-5xl">
+          {tool.name}
+        </h1>
+        <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">{tool.description}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-medium text-slate-600">
+          <Link
+            href="#what-this-tool-does"
+            className="rounded-full border border-violet-200 bg-white/75 px-3 py-1 hover:text-violet-700"
+          >
+            What this tool does
+          </Link>
+          <Link href="#tool-guides" className="rounded-full border border-violet-200 bg-white/75 px-3 py-1 hover:text-violet-700">
+            Guides
+          </Link>
+          <Link href="#how-to-use" className="rounded-full border border-violet-200 bg-white/75 px-3 py-1 hover:text-violet-700">
+            How to use
+          </Link>
+          <Link href="#example-usage" className="rounded-full border border-violet-200 bg-white/75 px-3 py-1 hover:text-violet-700">
+            Example usage
+          </Link>
+          <Link href="#tool-faqs" className="rounded-full border border-violet-200 bg-white/75 px-3 py-1 hover:text-violet-700">
+            FAQs
+          </Link>
+          <Link href="#related-tools" className="rounded-full border border-violet-200 bg-white/75 px-3 py-1 hover:text-violet-700">
+            Related tools
+          </Link>
         </div>
-      </header>
-
-      <div>{children}</div>
-
-      <div className="mt-6 space-y-4 lg:hidden">
-        <div className="relative mx-auto max-w-lg">
-          <Image
-            src={toolIllustrationSrc()}
-            alt={`${tool.name} - ${categoryLabel(tool.category)} free online tool illustration`}
-            width={719}
-            height={547}
-            className="h-auto w-full max-h-[min(18rem,45vh)] object-contain object-center"
-            sizes="(max-width: 1024px) 100vw, 448px"
-          />
-        </div>
-        <p className="max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">{tool.description}</p>
-        <div className="flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap gap-2">
           {heroBadges.map(({ label, Icon }) => (
             <span
-              key={`below-fold-${label}`}
+              key={label}
               className="inline-flex items-center gap-1.5 rounded-full border border-violet-200/70 bg-white/75 px-3 py-1 text-xs font-medium text-slate-700"
             >
               <Icon className="h-3.5 w-3.5 text-violet-600" aria-hidden />
@@ -143,10 +137,36 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
             </span>
           ))}
         </div>
+      </header>
+
+      <div className="min-w-0" data-content-section="calculator">
+        {children}
       </div>
 
-      <section className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}>
-        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">About {tool.name}</h2>
+      <section
+        className="mt-10 border-t border-violet-200/40 pt-10"
+        aria-label={`${tool.name} illustration`}
+      >
+        <div className="relative mx-auto max-w-md sm:max-w-lg">
+          <Image
+            src={toolIllustrationSrc()}
+            alt=""
+            width={719}
+            height={547}
+            loading="lazy"
+            decoding="async"
+            sizes="(max-width: 640px) 100vw, 28rem"
+            className="h-auto w-full max-h-[min(16rem,40vh)] object-contain object-center opacity-95 sm:max-h-[min(18rem,42vh)]"
+          />
+        </div>
+      </section>
+
+      <section
+        id="what-this-tool-does"
+        className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}
+        data-content-section="explainer"
+      >
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">What this tool does</h2>
         {seoParagraphs.map((paragraph, idx) => (
           <p key={`seo-${idx}`} className="leading-7 text-slate-700">
             {paragraph}
@@ -154,7 +174,45 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         ))}
       </section>
 
-      <section className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}>
+      <section id="tool-guides" className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`} data-content-section="guides">
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Guides and explainers</h2>
+        <p className="text-sm leading-relaxed text-slate-600 sm:text-base">
+          Long-form walkthroughs that pair well with this calculator. When you need narrative context beyond the live fields,
+          start here and return to the tool to plug in your own numbers.
+        </p>
+        {guideLinks.length > 0 ? (
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            {guideLinks.map((g) => (
+              <li key={g.slug}>
+                <Link
+                  href={`/blog/${g.slug}`}
+                  className={`block h-full rounded-xl border border-violet-200/55 bg-white/80 p-4 transition hover:border-violet-300/70 hover:shadow-sm`}
+                >
+                  <p className="font-semibold text-slate-900">{g.title}</p>
+                  <p className="mt-1 line-clamp-2 text-sm text-slate-600">{g.description}</p>
+                  <span className="mt-2 inline-block text-xs font-medium text-violet-700">Read guide →</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-3 text-sm leading-relaxed text-slate-700">
+            Browse the{" "}
+            <Link href="/blog" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+              Toollabz blog
+            </Link>{" "}
+            for finance, business, and productivity guides. New articles are added regularly and often reference the same
+            workflows as the tool directory.
+          </p>
+        )}
+        <p className="text-sm text-slate-600">
+          <Link href="/blog" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+            View all posts
+          </Link>
+        </p>
+      </section>
+
+      <section className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`} data-content-section="deep_guide">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Detailed guide</h2>
         {deepParagraphs.map((paragraph, idx) => (
           <p key={`deep-${idx}`} className="leading-7 text-slate-700">
@@ -179,13 +237,13 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         </p>
       </section>
 
-      <section className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}>
+      <section className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`} data-content-section="logic">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">How the calculation works</h2>
         <p className="leading-7 text-slate-700">{logicParagraph}</p>
       </section>
 
-      <section className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}>
-        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Real-world examples</h2>
+      <section id="example-usage" className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`} data-content-section="examples">
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Example usage</h2>
         <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
           {exampleBullets.map((line, idx) => (
             <li key={`ex-${tool.slug}-${idx}`}>{line}</li>
@@ -193,24 +251,44 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         </ul>
       </section>
 
-      <section className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}>
+      <section className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`} data-content-section="use_cases">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Common use cases</h2>
         <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
-          <li>
-            Run a quick {tool.name.toLowerCase()} check before you paste numbers into email, a deck, or a spreadsheet
-            workflow.
-          </li>
-          <li>Compare two realistic inputs side by side when you are deciding between options, rates, or time horizons.</li>
-          <li>Share the HTTPS Toollabz URL with collaborators so everyone reviews the same assumptions and outputs.</li>
+          {useCaseVariant === 0 ? (
+            <>
+              <li>
+                Run a quick {tool.name.toLowerCase()} pass before you paste figures into email, a slide deck, or a
+                spreadsheet workflow.
+              </li>
+              <li>Line up two realistic inputs when you are weighing options, rates, or different time horizons.</li>
+            </>
+          ) : useCaseVariant === 1 ? (
+            <>
+              <li>
+                Use {tool.name} as a checkpoint after someone sends you a screenshot so you can reproduce their math
+                independently.
+              </li>
+              <li>Capture outputs during a live call so everyone agrees on the baseline before commitments move forward.</li>
+            </>
+          ) : (
+            <>
+              <li>
+                Drop {tool.name.toLowerCase()} into a weekly review ritual when the same metric shows up across multiple
+                documents.
+              </li>
+              <li>Pair this page with the related utilities below when one number is never the whole story.</li>
+            </>
+          )}
+          <li>Share the canonical Toollabz HTTPS URL so collaborators inherit the same field labels and assumptions.</li>
           {tool.keywords.slice(0, 2).map((kw) => (
             <li key={kw}>
-              Explore intent around &quot;{kw}&quot; using this page together with the related tools listed below.
+              Explore searches around &quot;{kw}&quot; using this page together with the related tools listed below.
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="mt-12 space-y-4">
+      <section className="mt-12 space-y-4" data-content-section="features">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Features</h2>
         <div className={`p-6 sm:p-8 ${toolGlassCard}`}>
           <ul className="grid gap-4 sm:grid-cols-2">
@@ -232,7 +310,7 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         </div>
       </section>
 
-      <section className="mt-12 space-y-4">
+      <section id="how-to-use" className="mt-12 space-y-4" data-content-section="howto">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">How to use</h2>
         <div className={`p-6 sm:p-8 ${toolGlassCard}`}>
           <ol className="grid gap-3 sm:gap-4">
@@ -251,7 +329,7 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
       {tool.slug === "loan-calculator" ? <PopularCalculationsBlock variant="loan" /> : null}
       {tool.slug === "salary-after-tax-calculator" ? <PopularCalculationsBlock variant="salary" /> : null}
 
-      <section className="mt-12 space-y-4">
+      <section id="tool-faqs" className="mt-12 space-y-4" data-content-section="faq">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">FAQs</h2>
         <div className="space-y-3">
           {faqs.map((faq) => (
@@ -268,10 +346,10 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         </div>
       </section>
 
-      <section className="mt-12">
+      <section id="related-tools" className="mt-12" data-content-section="related">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Related tools</h2>
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          {related.map((item) => {
+          {relatedWithFallback.map((item) => {
             const RelatedIcon = getCategoryIcon(item.category);
             return (
               <Link
@@ -282,8 +360,8 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 text-violet-700">
                   <RelatedIcon className="h-4 w-4" aria-hidden />
                 </span>
-              <p className="font-semibold text-slate-900 group-hover:text-violet-800">{item.name}</p>
-              <p className="mt-1 text-sm text-slate-600">{item.shortDescription}</p>
+                <p className="font-semibold text-slate-900 group-hover:text-violet-800">{item.name}</p>
+                <p className="mt-1 text-sm text-slate-600">{item.shortDescription}</p>
               </Link>
             );
           })}

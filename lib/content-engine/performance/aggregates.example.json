@@ -1,0 +1,46 @@
+{
+  "updatedAt": "2026-04-24",
+  "source": "Copy to aggregates.json (or set CONTENT_ENGINE_PERFORMANCE_JSON) after importing GSC Pages export. Optional pagesPrevious: prior-period same paths for declining-clicks refresh signals.",
+  "pages": [
+    {
+      "path": "/blog/how-to-estimate-take-home-pay-from-gross-salary",
+      "clicks": 42,
+      "impressions": 3200,
+      "position": 9.1
+    },
+    {
+      "path": "/tools/loan-calculator",
+      "clicks": 120,
+      "impressions": 15000,
+      "position": 6.2
+    }
+  ],
+  "pagesPrevious": [
+    {
+      "path": "/blog/how-to-estimate-take-home-pay-from-gross-salary",
+      "clicks": 55,
+      "impressions": 3000,
+      "position": 8.9
+    },
+    {
+      "path": "/tools/loan-calculator",
+      "clicks": 125,
+      "impressions": 14800,
+      "position": 6.0
+    }
+  ],
+  "pageRevenue": [
+    {
+      "path": "/tools/loan-calculator",
+      "rpm": 18.5,
+      "earnings": 240,
+      "monetizedImpressions": 12000
+    },
+    {
+      "path": "/blog/how-to-estimate-take-home-pay-from-gross-salary",
+      "rpm": 6.2,
+      "earnings": 42,
+      "monetizedImpressions": 2100
+    }
+  ]
+}

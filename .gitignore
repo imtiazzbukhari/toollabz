@@ -11,3 +11,13 @@ build
 *.zip
 test-results/
 *.tsbuildinfo
+
+# First-party behavior rollups (optional local / server persistence)
+lib/content-engine/growth/behavior-aggregates.json
+
+# Local outreach queue (recipients + bodies)
+lib/content-engine/outreach/outreach-queue.json
+
+# Local execution memory stores
+lib/content-engine/dashboard/sprint-execution.json
+lib/content-engine/dashboard/revenue-memory.json

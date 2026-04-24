@@ -1,0 +1,50 @@
+# Manual: open a PR with tool spec + checklist only (no live tool registration).
+name: Content Engine — Tool proposal PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      tool_slug:
+        description: "URL slug (lowercase, hyphens)"
+        required: true
+        type: string
+      tool_name:
+        description: "Human-readable tool name"
+        required: true
+        type: string
+      tool_category:
+        description: "Category slug (e.g. finance, utility)"
+        required: true
+        type: string
+        default: "finance"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  tool-proposal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Create tool proposal PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          TOOL_SLUG: ${{ inputs.tool_slug }}
+          TOOL_NAME: ${{ inputs.tool_name }}
+          TOOL_CATEGORY: ${{ inputs.tool_category }}
+        run: node scripts/content-engine/create-tool-proposal-pr.mjs

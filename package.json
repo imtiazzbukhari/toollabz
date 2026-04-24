@@ -6,6 +6,19 @@
     "node": ">=18"
   },
   "scripts": {
+    "blog:manifest": "node scripts/generate-blog-manifest.mjs",
+    "content-engine:blog-pr": "node scripts/content-engine/create-blog-pr.mjs",
+    "content-engine:growth-pr": "node scripts/content-engine/create-growth-actions-pr.mjs",
+    "content-engine:programmatic-pr": "node scripts/content-engine/create-programmatic-blog-pr.mjs",
+    "content-engine:scaling-pr": "node scripts/content-engine/create-scaling-blog-pr.mjs",
+    "content-engine:tool-proposal-pr": "node scripts/content-engine/create-tool-proposal-pr.mjs",
+    "content-engine:autofix-pr": "node scripts/content-engine/create-auto-fix-pr.mjs",
+    "content-engine:monetization-sprint-md": "node scripts/content-engine/generate-monetization-sprint-md.mjs",
+    "adsense:merge-csv": "tsx scripts/adsense/merge-adsense-csv.ts",
+    "search-console:import-pages": "node scripts/search-console/import-gsc-pages.mjs",
+    "predev": "npm run blog:manifest",
+    "prebuild": "npm run blog:manifest",
+    "pretest": "npm run blog:manifest",
     "dev": "next dev",
     "dev:turbo": "next dev --turbopack",
     "clean": "rm -rf .next",
@@ -22,24 +35,30 @@
   },
   "dependencies": {
     "@tailwindcss/oxide-linux-x64-gnu": "^4.2.2",
+    "framer-motion": "^12.38.0",
     "lucide-react": "^0.511.0",
     "next": "^15.2.4",
+    "nodemailer": "^6.10.0",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^4.10.38",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "recharts": "^3.8.1",
+    "swr": "^2.4.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
+    "@playwright/test": "^1.52.0",
     "@tailwindcss/postcss": "^4.0.14",
     "@types/node": "^22.13.10",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "eslint": "^9.22.0",
     "eslint-config-next": "^15.2.4",
     "tailwindcss": "^4.0.14",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.2",
-    "vitest": "^2.1.8",
-    "@playwright/test": "^1.52.0"
+    "vitest": "^2.1.8"
   }
 }

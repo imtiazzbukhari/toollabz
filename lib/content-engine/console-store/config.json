@@ -1,0 +1,14 @@
+{
+  "aiEnabled": true,
+  "highIntentMode": true,
+  "businessMode": false,
+  "paused": false,
+  "overrideDecisions": true,
+  "activeCluster": "finance",
+  "activeClusters": [
+    "finance",
+    "seo",
+    "mortgage"
+  ],
+  "updatedAt": "2026-04-24T15:49:26.359Z"
+}

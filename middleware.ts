@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { getSeoConsoleSecret, isSeoConsoleAuthenticated } from "@/lib/content-engine/seo-console-auth";
 
 function canonicalApexHostname(): string {
   const fromEnv = process.env.NEXT_PUBLIC_CANONICAL_HOST?.trim();
@@ -62,12 +63,39 @@ export function middleware(request: NextRequest) {
     return withHsts(res, apex, apex);
   }
 
+  const pathname = request.nextUrl.pathname;
+  if (pathname.startsWith("/seo-growth-console")) {
+    if (pathname.startsWith("/seo-growth-console/login")) {
+      const res = NextResponse.next();
+      return withHsts(res, hostNoPort, apex);
+    }
+    const secret = getSeoConsoleSecret();
+    if (!secret) {
+      const u = request.nextUrl.clone();
+      u.pathname = "/seo-growth-console/login";
+      u.searchParams.set("error", "not_configured");
+      const res = NextResponse.redirect(u);
+      return withHsts(res, hostNoPort, apex);
+    }
+    if (isLocalHost(hostNoPort)) {
+      const res = NextResponse.next();
+      return withHsts(res, hostNoPort, apex);
+    }
+    if (!isSeoConsoleAuthenticated(request)) {
+      const u = request.nextUrl.clone();
+      u.pathname = "/seo-growth-console/login";
+      u.searchParams.set("next", pathname);
+      const res = NextResponse.redirect(u);
+      return withHsts(res, hostNoPort, apex);
+    }
+    const res = NextResponse.next();
+    return withHsts(res, hostNoPort, apex);
+  }
+
   const res = NextResponse.next();
   return withHsts(res, hostNoPort, apex);
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|json|woff2)$).*)",
-  ],
+  matcher: "/:path*",
 };

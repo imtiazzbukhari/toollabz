@@ -5,6 +5,7 @@ import { Suspense } from "react";
 
 const WebVitalsReporter = dynamic(() => import("@/components/WebVitalsReporter"), { ssr: false });
 const GaRouteTracker = dynamic(() => import("@/components/GaRouteTracker"), { ssr: false });
+const BehaviorTracker = dynamic(() => import("@/components/BehaviorTracker"), { ssr: false });
 
 /**
  * Loads analytics observers after hydration so the server HTML stays lean
@@ -17,6 +18,7 @@ export default function DeferredClientObservers() {
       <Suspense fallback={null}>
         <GaRouteTracker />
       </Suspense>
+      <BehaviorTracker />
     </>
   );
 }

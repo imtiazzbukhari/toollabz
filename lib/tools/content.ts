@@ -1,7 +1,7 @@
 import { ToolDefinition, ToolFAQ } from "./types";
 import { phase1Profiles } from "./phase1-seo";
 import { TOOL_SEO_CONTENT_LEAD } from "./tool-seo-content-lead";
-import { slugContentVariant } from "./content-variation";
+import { pickBySlug, slugContentVariant } from "./content-variation";
 
 function dedupeToolFaqs(items: ToolFAQ[]): ToolFAQ[] {
   const seen = new Set<string>();
@@ -257,6 +257,7 @@ export function getToolFaqs(tool: ToolDefinition): ToolFAQ[] {
   const formula = getToolFormula(tool.slug);
   const profileFaq = phase1Profiles[tool.slug]?.faq ?? [];
   const vi = slugContentVariant(tool.slug, 5);
+  const fq = slugContentVariant(`${tool.slug}-faqtone`, 4);
   const lineage = [
     `Outputs should be stable for the same ${keyword} inputs unless Toollabz documents a formula change; bookmark the page to notice release notes in the site changelog when they exist.`,
     `If results look surprising, re-check units and percentage bases - many ${keyword} discrepancies come from basis mistakes rather than the calculator itself.`,
@@ -265,18 +266,37 @@ export function getToolFaqs(tool: ToolDefinition): ToolFAQ[] {
     `In governed environments, treat this page as a planning scratchpad and move finalized figures into controlled systems after human review.`,
   ];
 
+  const accuracyQuestions = [
+    `How accurate is this ${tool.name.toLowerCase()}?`,
+    `Should I trust ${tool.name} for a first-pass ${keyword} estimate?`,
+    `How precise is ${tool.name} compared with a spreadsheet?`,
+    `What does “accurate” mean for ${tool.name.toLowerCase()} here?`,
+  ] as const;
+  const formatQuestions = [
+    `What input format should I use for ${keyword}?`,
+    `How should I type ${keyword} values so ${tool.name} parses them correctly?`,
+    `Which separators and units work for ${keyword} in this tool?`,
+    `Do I need commas, symbols, or plain numbers for ${keyword}?`,
+  ] as const;
+  const mobileQuestions = [
+    `Can I use this ${tool.name.toLowerCase()} on mobile devices?`,
+    `Does ${tool.name} work on phones and tablets?`,
+    `Is ${tool.name} usable on a small screen?`,
+    `Will ${tool.name.toLowerCase()} behave the same on iOS and Android browsers?`,
+  ] as const;
+
   const extra: ToolFAQ[] = [
     {
-      question: `How accurate is this ${tool.name.toLowerCase()}?`,
+      question: accuracyQuestions[fq % accuracyQuestions.length]!,
       answer: `This ${tool.name.toLowerCase()} uses a deterministic formula (${formula}) and validates invalid or out-of-range input before calculation.`,
     },
     {
-      question: `What input format should I use for ${keyword}?`,
+      question: formatQuestions[fq % formatQuestions.length]!,
       answer:
         "Enter plain numeric values without commas for amounts and percentages. Use decimal points where required for precise output.",
     },
     {
-      question: `Can I use this ${tool.name.toLowerCase()} on mobile devices?`,
+      question: mobileQuestions[fq % mobileQuestions.length]!,
       answer:
         "Yes. The calculator is responsive and optimized for mobile, tablet, and desktop with consistent output and UI behavior.",
     },
@@ -285,11 +305,19 @@ export function getToolFaqs(tool: ToolDefinition): ToolFAQ[] {
       answer: lineage[vi] ?? lineage[0]!,
     },
     {
-      question: `What if ${tool.name} disagrees with another app for ${keyword}?`,
+      question: pickBySlug(`${tool.slug}-mismatch`, [
+        `What if ${tool.name} disagrees with another app for ${keyword}?`,
+        `Why might ${tool.name} show a different ${keyword} result than another calculator?`,
+        `Another site gave a different ${keyword} number - what should I check here?`,
+      ] as const),
       answer: `Compare rounding, compounding, date boundaries, and tax basis. Toollabz documents behavior relative to: ${formula}`,
     },
     {
-      question: `How should I share ${tool.name} for a ${keyword} review?`,
+      question: pickBySlug(`${tool.slug}-share`, [
+        `How should I share ${tool.name} for a ${keyword} review?`,
+        `What is the cleanest way to pass ${tool.name} results to a teammate?`,
+        `Can I send ${tool.name.toLowerCase()} output without losing context?`,
+      ] as const),
       answer:
         "Share the canonical HTTPS tool page link so reviewers inherit the same field labels and assumptions, not only a screenshot.",
     },
@@ -335,10 +363,36 @@ export function getToolSeoContent(tool: ToolDefinition): string[] {
     ]);
   }
 
-  return mergeSeoLead(tool, [
+  const pack = slugContentVariant(`${tool.slug}-seopack`, 4);
+  const introByPack = [
     `${tool.name} is built for people who want fast, reliable results without opening a spreadsheet or installing desktop software. The page centers on practical use around ${keyword}: personal planning, business analysis, development work, or everyday tasks. The flow is simple: enter values, run the tool, and read the output with enough context to act. Logic is deterministic and inputs are validated so you can trust a first-pass answer before you dig deeper.`,
+    `If your search intent is ${keyword}, this page is meant to be a calm workspace: ${tool.name} focuses on the fields that matter, explains what each output means in plain language, and avoids burying the interactive area under marketing fluff. You still bring the real-world assumptions; the tool keeps the arithmetic and formatting consistent so you can iterate quickly.`,
+    `${tool.name} exists so you can answer ${keyword} questions in one sitting - whether you are comparing two scenarios, validating a figure someone sent you, or teaching someone else the relationship between inputs and results. Everything runs in the browser with deterministic logic, so the same typed values yield the same outputs every time you return.`,
+    `Toollabz frames ${tool.name} around ${keyword} because that is how people actually work: they need a credible baseline before they invest time in a heavier model. The intro you are reading is unique to this URL; scroll to the live tool, run a conservative case first, then widen the range once the outputs match your expectations.`,
+  ];
+  const logicByPack = [
     `The logic for ${tool.name.toLowerCase()} follows a clear formula: ${formula}. Inputs are validated before processing so empty, malformed, or out-of-range values do not turn into misleading numbers. That matters when you compare scenarios or share results with a team. Numeric tools keep units and percentages consistent; text and developer tools spell out parsing and formatting so errors are easy to spot and fix. Beginners get guardrails; experienced users get predictable behavior.`,
+    `Under the hood, ${tool.name.toLowerCase()} maps your fields into ${formula}, then surfaces intermediate checks where helpful so you can see why a number moved. Validation is strict on obvious mistakes because silent failures are worse than a clear error message when you are working with ${keyword} under time pressure.`,
+    `This implementation is intentionally boring in a good way: ${formula} is applied the same way on every run, with the same rounding rules documented implicitly through the output formatting. That consistency is what makes ${tool.name} useful when two people need to reconcile a ${keyword} disagreement without debating hidden spreadsheet macros.`,
+    `Formula reference for reviewers: ${formula}. The UI is a thin layer on top of that relationship - it does not “guess” missing tax tables or jurisdiction rules; you supply the rates and boundaries you want modeled so the output reflects your intent rather than a hidden default.`,
+  ];
+  const navByPack = [
     `Most people looking for ${keyword} want speed, accuracy, and a straight explanation. The \"How to use\" section gives a quick path in; the FAQs cover edge cases and common misunderstandings. When one tool is not enough, related tools point to converters, calculators, or validators that often sit in the same workflow so you can finish the job without starting over elsewhere.`,
+    `Navigation on this page is structured for scanning: jump links in the hero move you to explanations, examples, and FAQs without losing your place. Related tools are not random promos - they are clustered for ${keyword} follow-ups such as unit checks, tax sketches, or formatting helpers that frequently appear in the same session.`,
+    `If you are new to ${keyword}, read the short sections first, then return to the calculator with one concrete scenario. If you are experienced, you can skip straight to inputs; the deep guide still documents edge cases that trip people up when they export numbers into slides or tickets.`,
+    `Beyond ${tool.name.toLowerCase()}, Toollabz links outward to category hubs and blog guides so you can move from a single number to a narrative your stakeholders will accept. That internal linking also signals topical depth to search systems evaluating whether this URL is a thin utility page.`,
+  ];
+  const benchByPack = [
     `If you are benchmarking, run several inputs and compare outputs side by side. That helps with planning, estimation, and what-if checks. Always confirm assumptions (tax rate, interest, baselines, time horizon) against your country, employer, or business rules before you finalize a decision. This ${tool.name.toLowerCase()} stays free and responsive on desktop and mobile. Bookmark it if ${keyword} shows up often in your week, and use related tools when the next step is a different calculation or format.`,
+    `When stakes are moderate, treat ${tool.name} as a triage step: capture min, mid, and max cases for ${keyword}, note the deltas, then escalate to licensed advice or audited systems if required. The page stays fast on mobile so you can rerun scenarios during a commute or between meetings without losing your train of thought.`,
+    `For documentation habits, paste the canonical URL next to exported figures so future-you knows which version of ${tool.name.toLowerCase()} produced them. Pair that habit with the Guides section when you need prose context that a calculator field cannot carry alone.`,
+    `Finally, remember that ${keyword} searches vary by region and product rules; this tool does not read your contracts or tax returns. Use it to structure thinking, then validate externally when regulations apply. The combination of clear formulas, FAQs, and related tools is what keeps the experience substantive rather than repetitive across Toollabz URLs.`,
+  ];
+
+  return mergeSeoLead(tool, [
+    introByPack[pack] ?? introByPack[0]!,
+    logicByPack[pack] ?? logicByPack[0]!,
+    navByPack[pack] ?? navByPack[0]!,
+    benchByPack[pack] ?? benchByPack[0]!,
   ]);
 }

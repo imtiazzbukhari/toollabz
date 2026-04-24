@@ -1,0 +1,11 @@
+{
+  "dimensions": {
+    "uniqueness": 0.2,
+    "readability": 0.14,
+    "depth": 0.22,
+    "seo": 0.16,
+    "usefulness": 0.14,
+    "humanization": 0.14
+  },
+  "notes": "Copy to weights.json after running suggestDimensionWeightsFromOutcomes + human review. Values are renormalized to sum to 1 at load time."
+}
