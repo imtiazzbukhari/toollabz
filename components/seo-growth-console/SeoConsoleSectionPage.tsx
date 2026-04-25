@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import ActionCard from "./controls/ActionCard";
 import ControlToggle from "./controls/ControlToggle";
@@ -33,10 +33,25 @@ function num(v: unknown) {
   return typeof v === "number" && Number.isFinite(v) ? v : 0;
 }
 
+const actionBtnClass =
+  "rounded-lg border border-violet-300/50 bg-white/70 px-2 py-1 text-xs text-slate-800 transition-all duration-200 hover:scale-[1.03] hover:border-violet-400 hover:bg-gradient-to-r hover:from-violet-500/20 hover:to-fuchsia-500/20 hover:shadow-[0_0_16px_rgba(139,92,246,0.35)] disabled:cursor-not-allowed disabled:opacity-50 dark:border-violet-700/60 dark:bg-slate-900/70 dark:text-slate-100";
+
+function LoadingDot() {
+  return <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-r-transparent" />;
+}
+
+type KeywordDetailState = {
+  keyword: string;
+  blogResultText: string;
+  toolSpecText: string;
+};
+
 export default function SeoConsoleSectionPage({ section }: { section: keyof typeof sectionMap }) {
   const info = sectionMap[section];
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<{ type: "ok" | "error"; text: string } | null>(null);
+  const [selectedKeyword, setSelectedKeyword] = useState<KeywordDetailState | null>(null);
+  const [keywordModalLoading, setKeywordModalLoading] = useState(false);
   const { data, error, isLoading, mutate } = useSWR("/api/seo-console/data", fetcher, { refreshInterval: 45000 });
   const { data: configData, mutate: mutateConfig } = useSWR("/api/seo-console/control", fetcher, { refreshInterval: 30000 });
   const { data: outreachData, mutate: mutateOutreach } = useSWR(section === "backlinks" ? "/api/seo-console/outreach" : null, fetcher, {
@@ -49,6 +64,79 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
     () => (Array.isArray(outreachData?.messages) ? (outreachData.messages as Array<Record<string, unknown>>) : []),
     [outreachData],
   );
+
+  useEffect(() => {
+    if (!feedback) return;
+    const t = setTimeout(() => setFeedback(null), 2600);
+    return () => clearTimeout(t);
+  }, [feedback]);
+
+  async function openKeywordDetail(keyword: string) {
+    setKeywordModalLoading(true);
+    try {
+      const res = await fetch(`/api/seo-console/keyword-detail?keyword=${encodeURIComponent(keyword)}`);
+      const json = (await res.json()) as Record<string, unknown>;
+      if (!res.ok || json.ok === false) throw new Error(typeof json.error === "string" ? json.error : "Failed to load detail.");
+      const artifact = (json.artifact ?? {}) as Record<string, unknown>;
+      const blog = (artifact.blog ?? {}) as Record<string, unknown>;
+      const tool = (artifact.tool ?? {}) as Record<string, unknown>;
+      const blogResult = (blog.result ?? {}) as Record<string, unknown>;
+      const toolSpec = (tool.spec ?? {}) as Record<string, unknown>;
+      setSelectedKeyword({
+        keyword,
+        blogResultText: Object.keys(blogResult).length ? JSON.stringify(blogResult, null, 2) : "",
+        toolSpecText: Object.keys(toolSpec).length ? JSON.stringify(toolSpec, null, 2) : "",
+      });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Failed to load keyword detail";
+      setFeedback({ type: "error", text: msg });
+    } finally {
+      setKeywordModalLoading(false);
+    }
+  }
+
+  async function keywordDetailAction(action: "save" | "regenerate_blog" | "regenerate_tool" | "regenerate_all") {
+    if (!selectedKeyword) return;
+    setKeywordModalLoading(true);
+    try {
+      const payload: Record<string, unknown> = {
+        action,
+        keyword: selectedKeyword.keyword,
+      };
+      if (action === "save") {
+        if (selectedKeyword.blogResultText.trim()) payload.blogResult = JSON.parse(selectedKeyword.blogResultText);
+        if (selectedKeyword.toolSpecText.trim()) payload.toolSpec = JSON.parse(selectedKeyword.toolSpecText);
+      }
+      const res = await fetch("/api/seo-console/keyword-detail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = (await res.json()) as Record<string, unknown>;
+      if (!res.ok || json.ok === false) throw new Error(typeof json.error === "string" ? json.error : "Keyword action failed");
+      const artifact = (json.artifact ?? {}) as Record<string, unknown>;
+      const blog = (artifact.blog ?? {}) as Record<string, unknown>;
+      const tool = (artifact.tool ?? {}) as Record<string, unknown>;
+      const blogResult = (blog.result ?? {}) as Record<string, unknown>;
+      const toolSpec = (tool.spec ?? {}) as Record<string, unknown>;
+      setSelectedKeyword((prev) =>
+        prev
+          ? {
+              ...prev,
+              blogResultText: Object.keys(blogResult).length ? JSON.stringify(blogResult, null, 2) : prev.blogResultText,
+              toolSpecText: Object.keys(toolSpec).length ? JSON.stringify(toolSpec, null, 2) : prev.toolSpecText,
+            }
+          : prev,
+      );
+      setFeedback({ type: "ok", text: `${action.replace("_", " ")} completed.` });
+      await mutate();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Keyword action failed";
+      setFeedback({ type: "error", text: msg });
+    } finally {
+      setKeywordModalLoading(false);
+    }
+  }
 
   async function runAction(label: string, url: string, body: Record<string, unknown>) {
     setLoadingAction(label);
@@ -92,13 +180,49 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
             )
               .slice(0, 12)
               .map((r) => [
-                String(r.keyword),
+                <button
+                  key={`${r.keyword}-detail`}
+                  type="button"
+                  disabled={keywordModalLoading}
+                  onClick={() => void openKeywordDetail(String(r.keyword))}
+                  className={`${actionBtnClass} px-3 py-1.5 text-left font-semibold`}
+                >
+                  {String(r.keyword)}
+                </button>,
                 String(r.searchIntent ?? r.funnelIntent),
                 num(r.cpcScore).toFixed(0),
-                num(r.monetizationPotential).toFixed(0),
+                String(num(r.priority ?? r.monetizationPotential).toFixed(0)),
                 <div key={`${r.keyword}-actions`} className="flex gap-2">
-                  <button onClick={() => void runAction("generate_blog", "/api/seo-console/action", { action: "generate_blog", topic: r.keyword })} className="rounded-lg border px-2 py-1 text-xs">Generate blog</button>
-                  <button onClick={() => void runAction("create_tool", "/api/seo-console/action", { action: "run_pr_script", script: "tool" })} className="rounded-lg border px-2 py-1 text-xs">Create tool</button>
+                  <button
+                    type="button"
+                    disabled={loadingAction === `generate_blog:${String(r.keyword)}`}
+                    onClick={() =>
+                      void runAction(`generate_blog:${String(r.keyword)}`, "/api/seo-console/action", {
+                        action: "generate_blog",
+                        topic: r.keyword,
+                        primaryKeyword: r.keyword,
+                      })
+                    }
+                    className={actionBtnClass}
+                  >
+                    {loadingAction === `generate_blog:${String(r.keyword)}` ? <LoadingDot /> : "Generate Blog"}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loadingAction === `create_tool:${String(r.keyword)}`}
+                    onClick={() =>
+                      void runAction(`create_tool:${String(r.keyword)}`, "/api/seo-console/action", {
+                        action: "run_pr_script",
+                        script: "tool",
+                        keyword: String(r.keyword),
+                        toolSlug: String(r.keyword),
+                        toolName: `Tool for ${String(r.keyword)}`,
+                      })
+                    }
+                    className={actionBtnClass}
+                  >
+                    {loadingAction === `create_tool:${String(r.keyword)}` ? <LoadingDot /> : "Create Tool"}
+                  </button>
                 </div>,
               ])}
           />
@@ -117,9 +241,9 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
               String(b.title),
               <StatusBadge key={`${b.title}-status`} status="draft" />,
               <div key={`${b.title}-actions`} className="flex gap-2">
-                <button onClick={() => void runAction("approve", "/api/seo-console/action", { action: "run_pr_script", script: "blog" })} className="rounded-lg border px-2 py-1 text-xs">Approve</button>
-                <button onClick={() => void runAction("edit", "/api/seo-console/action", { action: "run_audit" })} className="rounded-lg border px-2 py-1 text-xs">Edit</button>
-                <button onClick={() => void runAction("regenerate", "/api/seo-console/action", { action: "generate_blog", topic: b.keyword })} className="rounded-lg border px-2 py-1 text-xs">Regenerate</button>
+                <button type="button" disabled={loadingAction === "approve"} onClick={() => void runAction("approve", "/api/seo-console/action", { action: "run_pr_script", script: "blog" })} className={actionBtnClass}>{loadingAction === "approve" ? <LoadingDot /> : "Approve"}</button>
+                <button type="button" disabled={loadingAction === "edit"} onClick={() => void runAction("edit", "/api/seo-console/action", { action: "run_audit" })} className={actionBtnClass}>{loadingAction === "edit" ? <LoadingDot /> : "Edit"}</button>
+                <button type="button" disabled={loadingAction === `regenerate:${String(b.keyword)}`} onClick={() => void runAction(`regenerate:${String(b.keyword)}`, "/api/seo-console/action", { action: "generate_blog", topic: b.keyword, primaryKeyword: b.keyword })} className={actionBtnClass}>{loadingAction === `regenerate:${String(b.keyword)}` ? <LoadingDot /> : "Regenerate"}</button>
               </div>,
             ])}
         />
@@ -137,9 +261,25 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
               String(t.title),
               String(num(t.priority)),
               <div key={`${t.title}-actions`} className="flex gap-2">
-                <button onClick={() => void runAction("approve_tool", "/api/seo-console/action", { action: "run_pr_script", script: "tool" })} className="rounded-lg border px-2 py-1 text-xs">Approve</button>
-                <button onClick={() => void runAction("edit_logic", "/api/seo-console/action", { action: "run_audit" })} className="rounded-lg border px-2 py-1 text-xs">Edit logic</button>
-                <button onClick={() => void runAction("disable_tool", "/api/seo-console/action", { action: "override_decisions", enabled: true })} className="rounded-lg border px-2 py-1 text-xs">Disable</button>
+                <button
+                  type="button"
+                  disabled={loadingAction === `approve_tool:${String(t.slugHint)}`}
+                  onClick={() =>
+                    void runAction(`approve_tool:${String(t.slugHint)}`, "/api/seo-console/action", {
+                      action: "run_pr_script",
+                      script: "tool",
+                      keyword: String(t.slugHint).replace(/-/g, " "),
+                      toolSlug: String(t.slugHint),
+                      toolName: String(t.title),
+                      toolCategory: "finance",
+                    })
+                  }
+                  className={actionBtnClass}
+                >
+                  {loadingAction === `approve_tool:${String(t.slugHint)}` ? <LoadingDot /> : "Approve"}
+                </button>
+                <button type="button" disabled={loadingAction === "edit_logic"} onClick={() => void runAction("edit_logic", "/api/seo-console/action", { action: "run_audit" })} className={actionBtnClass}>{loadingAction === "edit_logic" ? <LoadingDot /> : "Edit logic"}</button>
+                <button type="button" disabled={loadingAction === "disable_tool"} onClick={() => void runAction("disable_tool", "/api/seo-console/action", { action: "override_decisions", enabled: true })} className={actionBtnClass}>{loadingAction === "disable_tool" ? <LoadingDot /> : "Disable"}</button>
               </div>,
             ])}
           emptyMessage="No tool proposals yet. Run AI to generate."
@@ -345,7 +485,65 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
         </div>
       ) : null}
 
-      {feedback ? <div className={`rounded-xl p-3 text-sm ${feedback.type === "ok" ? "bg-emerald-500/10 text-emerald-600" : "bg-rose-500/10 text-rose-600"}`}>{feedback.text}</div> : null}
+      {selectedKeyword ? (
+        <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="max-h-[90vh] w-full max-w-5xl overflow-auto rounded-2xl border border-slate-700 bg-slate-950 p-4 shadow-2xl">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white">Keyword Detail: {selectedKeyword.keyword}</h2>
+              <button type="button" className={actionBtnClass} onClick={() => setSelectedKeyword(null)}>
+                Close
+              </button>
+            </div>
+            <p className="mb-3 text-xs text-slate-300">
+              Edit generated blog payload JSON and tool spec JSON, then save or regenerate with Gemini/Groq.
+            </p>
+            <div className="grid gap-4 lg:grid-cols-2">
+              <label className="text-xs text-slate-300">
+                Generated Blog Content (JSON payload)
+                <textarea
+                  className="mt-1 h-72 w-full rounded-lg border border-slate-700 bg-slate-900 p-2 font-mono text-xs text-white"
+                  value={selectedKeyword.blogResultText}
+                  onChange={(e) => setSelectedKeyword((prev) => (prev ? { ...prev, blogResultText: e.target.value } : prev))}
+                />
+              </label>
+              <label className="text-xs text-slate-300">
+                Tool Spec / Code (JSON)
+                <textarea
+                  className="mt-1 h-72 w-full rounded-lg border border-slate-700 bg-slate-900 p-2 font-mono text-xs text-white"
+                  value={selectedKeyword.toolSpecText}
+                  onChange={(e) => setSelectedKeyword((prev) => (prev ? { ...prev, toolSpecText: e.target.value } : prev))}
+                />
+              </label>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button type="button" disabled={keywordModalLoading} className={actionBtnClass} onClick={() => void keywordDetailAction("save")}>
+                {keywordModalLoading ? <LoadingDot /> : "Save changes"}
+              </button>
+              <button type="button" disabled={keywordModalLoading} className={actionBtnClass} onClick={() => void keywordDetailAction("regenerate_blog")}>
+                {keywordModalLoading ? <LoadingDot /> : "Regenerate blog"}
+              </button>
+              <button type="button" disabled={keywordModalLoading} className={actionBtnClass} onClick={() => void keywordDetailAction("regenerate_tool")}>
+                {keywordModalLoading ? <LoadingDot /> : "Regenerate tool"}
+              </button>
+              <button type="button" disabled={keywordModalLoading} className={actionBtnClass} onClick={() => void keywordDetailAction("regenerate_all")}>
+                {keywordModalLoading ? <LoadingDot /> : "Regenerate all"}
+              </button>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {feedback ? (
+        <div
+          className={`fixed right-4 top-4 z-[60] rounded-xl border px-4 py-3 text-sm shadow-2xl ${
+            feedback.type === "ok"
+              ? "border-emerald-400/40 bg-emerald-500/15 text-emerald-100"
+              : "border-rose-400/40 bg-rose-500/15 text-rose-100"
+          }`}
+        >
+          {feedback.text}
+        </div>
+      ) : null}
     </main>
   );
 }

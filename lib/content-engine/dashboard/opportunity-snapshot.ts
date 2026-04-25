@@ -6,6 +6,7 @@ export type KeywordIntelRow = {
   keyword: string;
   funnelIntent: "awareness" | "comparison" | "decision";
   searchIntent: PrioritizedOpportunity["intent"];
+  priority: number;
   cpcScore: number;
   monetizationPotential: number;
   clusterId?: string;
@@ -30,6 +31,7 @@ export function buildKeywordIntel(rows: readonly PrioritizedOpportunity[], limit
     keyword: r.keyword,
     funnelIntent: detectIntentStage(r.keyword, r.suggestedBlogTitle),
     searchIntent: r.intent,
+    priority: r.priority,
     cpcScore: r.cpcScore ?? 0,
     monetizationPotential: r.monetizationPotential ?? 0,
     clusterId: r.clusterId,

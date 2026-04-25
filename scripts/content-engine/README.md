@@ -17,6 +17,8 @@ These scripts automate **pull requests only**. Nothing is pushed to `main` witho
 | `SITE_URL` | Production origin, e.g. `https://toollabz.com` (no trailing slash) |
 | `CONTENT_ENGINE_SECRET` | Same value as server `CONTENT_ENGINE_SECRET` / `CRON_SECRET` |
 
+The production app must have **`GEMINI_API_KEY`** set so `POST /api/generate-blog` can run the Gemini-backed pipeline.
+
 Workflow: `.github/workflows/content-engine-blog-pr.yml` (daily + manual).
 
 ### Optional env
@@ -41,9 +43,11 @@ npm run content-engine:blog-pr
 Workflow: `.github/workflows/content-engine-post-merge-ping.yml`  
 On push to `main` when blog articles, manifest, or `lib/tools/data.ts` change, calls `POST /api/content-engine/ping-sitemap` on `SITE_URL`.
 
-## Tool proposal PR (`create-tool-proposal-pr.mjs`)
+## Tool proposal PR (`create-tool-proposal-pr.ts`)
 
 Creates `lib/content-engine/tool-proposals/{slug}/` with `SPEC.json` + `README.md` only — **no** `data.ts` or live routes.
+
+When `GROQ_API_KEY` is set, `SPEC.json` is enriched with a fast Groq JSON pass (optional).
 
 Workflow: `.github/workflows/content-engine-tool-proposal.yml` (manual).
 
@@ -53,6 +57,15 @@ export GITHUB_REPOSITORY=owner/repo
 export TOOL_SLUG=my-new-tool
 export TOOL_NAME="My New Tool"
 export TOOL_CATEGORY=finance
+npm run content-engine:tool-proposal-pr
+```
+
+Dry run (writes files locally, no git or GitHub; **no** `GITHUB_TOKEN` required):
+
+```bash
+export TOOL_SLUG=my-new-tool
+export TOOL_NAME="My New Tool"
+export CONTENT_ENGINE_DRY_RUN=1
 npm run content-engine:tool-proposal-pr
 ```
 

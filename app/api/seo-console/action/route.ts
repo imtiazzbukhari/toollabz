@@ -5,6 +5,7 @@ import { buildDashboardSnapshot } from "@/lib/content-engine/dashboard/build-das
 import { updateSprintExecution } from "@/lib/content-engine/dashboard/sprint-execution-tracker";
 import { appendConsoleLog, getConsoleAdminConfig, updateConsoleAdminConfig } from "@/lib/content-engine/console-admin-store";
 import { isSeoConsoleAuthenticated } from "@/lib/content-engine/seo-console-auth";
+import { keywordToSlug, saveKeywordBlogArtifact } from "@/lib/content-engine/keyword-artifact-store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,8 +14,29 @@ function unauthorized() {
   return Response.json({ ok: false, error: "Unauthorized." }, { status: 401 });
 }
 
-function runScript(command: string): string {
-  return execSync(command, { cwd: process.cwd(), timeout: 120000, encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] });
+function sanitizeToolProposalSlug(raw: string): string {
+  return raw
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 80);
+}
+
+function deriveToolName(keyword: string): string {
+  const cleaned = keyword.trim();
+  if (!cleaned) return "Generated Tool";
+  return `${cleaned
+    .split(/\s+/)
+    .slice(0, 10)
+    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+    .join(" ")} Tool`;
+}
+
+function runScript(command: string, extraEnv?: Record<string, string>): string {
+  const env = { ...process.env, ...extraEnv };
+  return execSync(command, { cwd: process.cwd(), timeout: 120000, encoding: "utf8", stdio: ["pipe", "pipe", "pipe"], env });
 }
 
 export async function POST(req: NextRequest) {
@@ -33,6 +55,7 @@ export async function POST(req: NextRequest) {
       const topic = typeof rec.topic === "string" ? rec.topic : "Revenue optimization playbook for SEO calculators";
       const primaryKeyword = typeof rec.primaryKeyword === "string" ? rec.primaryKeyword : "revenue optimization seo";
       const result = await runBlogGenerationPipeline({ topic, primaryKeyword, mode: "safe" });
+      saveKeywordBlogArtifact(primaryKeyword, result);
       appendConsoleLog({ type: "blog_generated", level: "info", message: `Blog draft generated: ${topic}` });
       return Response.json({ ok: true, result });
     }
@@ -65,7 +88,23 @@ export async function POST(req: NextRequest) {
       };
       const cmd = allowed[script];
       if (!cmd) return Response.json({ ok: false, error: "Invalid script." }, { status: 400 });
-      const output = runScript(cmd);
+
+      let extraEnv: Record<string, string> | undefined;
+      if (script === "tool") {
+        const keywordSeed = typeof rec.keyword === "string" ? rec.keyword.trim() : "";
+        const rawSlug = typeof rec.toolSlug === "string" ? rec.toolSlug : keywordSeed;
+        const toolSlug = sanitizeToolProposalSlug(rawSlug || keywordToSlug(keywordSeed));
+        const toolName =
+          typeof rec.toolName === "string" && rec.toolName.trim() ? rec.toolName.trim() : deriveToolName(keywordSeed || toolSlug);
+        const toolCategory =
+          typeof rec.toolCategory === "string" && rec.toolCategory.trim() ? rec.toolCategory.trim() : "finance";
+        if (!toolSlug) {
+          return Response.json({ ok: false, error: "Unable to derive toolSlug. Provide keyword or toolSlug." }, { status: 400 });
+        }
+        extraEnv = { TOOL_SLUG: toolSlug, TOOL_NAME: toolName, TOOL_CATEGORY: toolCategory };
+      }
+
+      const output = runScript(cmd, extraEnv);
       appendConsoleLog({ type: "pr_created", level: "info", message: `PR script executed: ${script}` });
       return Response.json({ ok: true, output });
     }

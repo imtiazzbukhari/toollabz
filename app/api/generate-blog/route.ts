@@ -20,11 +20,11 @@ export async function POST(req: NextRequest) {
   const denied = assertContentEngineAuthorized(req);
   if (denied) return denied;
 
-  if (!process.env.OPENAI_API_KEY?.trim()) {
+  if (!process.env.GEMINI_API_KEY?.trim()) {
     return Response.json(
       {
         ok: false,
-        error: "OPENAI_API_KEY is not configured. Blog generation is disabled to fail safe.",
+        error: "GEMINI_API_KEY is not configured. Blog generation is disabled to fail safe.",
       },
       { status: 503 },
     );

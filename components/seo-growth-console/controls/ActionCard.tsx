@@ -20,7 +20,7 @@ export default function ActionCard({
             type="button"
             disabled={a.disabled || a.loading}
             onClick={a.onClick}
-            className="rounded-xl border border-slate-300 px-3 py-2 text-xs font-semibold disabled:opacity-60 dark:border-slate-700"
+            className="rounded-xl border border-slate-300 bg-white/80 px-3 py-2 text-xs font-semibold transition-all duration-200 hover:scale-[1.03] hover:border-violet-400 hover:shadow-[0_0_16px_rgba(139,92,246,0.35)] disabled:opacity-60 dark:border-slate-700 dark:bg-slate-900/80"
           >
             {a.loading ? <><Loader2 className="mr-1 inline h-3 w-3 animate-spin" />{a.label}</> : a.label}
           </button>

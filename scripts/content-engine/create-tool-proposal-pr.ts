@@ -1,13 +1,16 @@
-#!/usr/bin/env node
+#!/usr/bin/env npx tsx
 /**
  * Opens a PR with a tool implementation proposal (spec + checklist only).
  * Does NOT modify lib/tools/data.ts or app routes — human moves code after review.
+ *
+ * Local validation (no GitHub): CONTENT_ENGINE_DRY_RUN=1 TOOL_SLUG=my-tool TOOL_NAME="My Tool" npm run content-engine:tool-proposal-pr
  */
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { pipelineLog } from "./lib/log.mjs";
 import { sanitizeSlug } from "./lib/slug.mjs";
+import { enrichToolProposalSpecWithGroq, type ToolProposalSpec } from "../../lib/content-engine/llm-groq";
 
 const root = process.cwd();
 
@@ -20,7 +23,7 @@ function parseRepo() {
   return { owner, repo };
 }
 
-async function createPullRequest(owner, repo, token, { title, head, base, body }) {
+async function createPullRequest(owner: string, repo: string, token: string, payload: { title: string; head: string; base: string; body: string }) {
   const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls`, {
     method: "POST",
     headers: {
@@ -29,46 +32,62 @@ async function createPullRequest(owner, repo, token, { title, head, base, body }
       "X-GitHub-Api-Version": "2022-11-28",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title, head, base, body }),
+    body: JSON.stringify(payload),
   });
   const text = await res.text();
   if (!res.ok) {
     throw new Error(`GitHub PR create failed ${res.status}: ${text.slice(0, 800)}`);
   }
-  return JSON.parse(text);
+  return JSON.parse(text) as { number: number; html_url: string };
 }
 
-function runGit(args, env = process.env) {
+function runGit(args: string[], env = process.env) {
   execFileSync("git", args, { cwd: root, stdio: "inherit", env: { ...env, GIT_TERMINAL_PROMPT: "0" } });
 }
 
 async function main() {
-  const token = process.env.GITHUB_TOKEN;
+  const token = process.env.GITHUB_TOKEN?.trim();
   const baseBranch = process.env.CONTENT_ENGINE_BASE_BRANCH || "main";
   const dryRun = process.env.CONTENT_ENGINE_DRY_RUN === "1";
 
-  const rawSlug = process.env.TOOL_SLUG || process.argv[2];
-  const name = process.env.TOOL_NAME || process.argv[3] || "";
+  const keyword = process.env.TOOL_KEYWORD || process.argv[5] || "";
+  const rawSlug = process.env.TOOL_SLUG || process.argv[2] || sanitizeSlug(keyword);
+  const name =
+    process.env.TOOL_NAME ||
+    process.argv[3] ||
+    (keyword
+      ? `${keyword
+          .split(/\s+/)
+          .filter(Boolean)
+          .slice(0, 10)
+          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+          .join(" ")} Tool`
+      : "");
   const category = process.env.TOOL_CATEGORY || process.argv[4] || "finance";
 
-  if (!token) {
-    pipelineLog({ step: "abort", reason: "missing_GITHUB_TOKEN" });
-    process.exit(1);
-  }
   if (!rawSlug || !name) {
     pipelineLog({ step: "abort", reason: "missing_TOOL_SLUG_or_TOOL_NAME" });
     process.exit(1);
   }
 
+  if (!dryRun && !token) {
+    pipelineLog({ step: "abort", reason: "missing_GITHUB_TOKEN" });
+    process.exit(1);
+  }
+
+  if (!dryRun && !process.env.GITHUB_REPOSITORY?.trim()) {
+    pipelineLog({ step: "abort", reason: "missing_GITHUB_REPOSITORY" });
+    process.exit(1);
+  }
+
   const slug = sanitizeSlug(rawSlug);
-  const { owner, repo } = parseRepo();
   const dir = path.join(root, "lib", "content-engine", "tool-proposals", slug);
   if (existsSync(dir)) {
     pipelineLog({ step: "skip_pr", reason: "proposal_dir_exists", slug });
     process.exit(0);
   }
 
-  const spec = {
+  let spec: ToolProposalSpec = {
     slug,
     name,
     category,
@@ -80,6 +99,8 @@ async function main() {
     computeKey: "REPLACE_WITH_ENGINE_KEY",
     validationNotes: ["Add validation rules", "Add pure compute function + vitest"],
   };
+
+  spec = await enrichToolProposalSpecWithGroq(spec);
 
   mkdirSync(dir, { recursive: true });
   writeFileSync(path.join(dir, "SPEC.json"), `${JSON.stringify(spec, null, 2)}\n`, "utf8");
@@ -112,6 +133,7 @@ async function main() {
     process.exit(0);
   }
 
+  const { owner, repo } = parseRepo();
   const authRemote = `https://x-access-token:${token}@github.com/${owner}/${repo}.git`;
   runGit(["fetch", "origin", baseBranch]);
   runGit(["checkout", baseBranch]);
@@ -124,7 +146,7 @@ async function main() {
   runGit(["remote", "set-url", "origin", authRemote]);
   runGit(["push", "-u", "origin", branch]);
 
-  const pr = await createPullRequest(owner, repo, token, {
+  const pr = await createPullRequest(owner, repo, token!, {
     title: `Tool proposal: ${name} (${slug})`,
     head: branch,
     base: baseBranch,

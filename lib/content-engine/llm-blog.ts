@@ -1,10 +1,8 @@
-import { openAiModel } from "./config";
+import { geminiModel } from "./config";
 import type { BlogDraftPayload } from "./types";
 import type { VariationProfile } from "./variation";
 import { variationPromptFragment } from "./variation";
 import { highValueCommercialIntentAddendum } from "./monetization/content-intent-prompt";
-
-type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
 function extractJsonObject(text: string): unknown {
   const start = text.indexOf("{");
@@ -33,18 +31,29 @@ function asFaq(v: unknown): BlogDraftPayload["faqSchema"] {
   return out.length ? out : undefined;
 }
 
+function geminiPartsText(data: unknown): string {
+  const root = data as {
+    candidates?: Array<{
+      content?: { parts?: Array<{ text?: string }> };
+    }>;
+  };
+  const parts = root.candidates?.[0]?.content?.parts;
+  if (!parts?.length) return "";
+  return parts.map((p) => p.text ?? "").join("");
+}
+
 /**
- * Calls OpenAI Chat Completions. Requires OPENAI_API_KEY in the runtime environment.
+ * Blog draft via Google Gemini (generateContent). Requires GEMINI_API_KEY.
  */
-export async function generateBlogDraftWithOpenAI(
+export async function generateBlogDraft(
   topic: string,
   primaryKeyword: string,
   variation?: VariationProfile,
   /** Intent / conversion / engagement instructions (optional). */
   funnelAugment?: string,
 ): Promise<BlogDraftPayload> {
-  const key = process.env.OPENAI_API_KEY?.trim();
-  if (!key) throw new Error("OPENAI_API_KEY is not configured.");
+  const key = process.env.GEMINI_API_KEY?.trim();
+  if (!key) throw new Error("GEMINI_API_KEY is not configured.");
 
   const variationBlock = variation ? variationPromptFragment(variation) : "";
 
@@ -71,36 +80,36 @@ export async function generateBlogDraftWithOpenAI(
   }
   const user = userParts.join("\n");
 
-  const messages: ChatMessage[] = [
-    { role: "system", content: system },
-    { role: "user", content: user },
-  ];
+  const model = geminiModel().replace(/^models\//, "");
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
 
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+  const res = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
+      "x-goog-api-key": key,
     },
     body: JSON.stringify({
-      model: openAiModel(),
-      temperature: 0.65,
-      response_format: { type: "json_object" },
-      messages,
+      systemInstruction: { parts: [{ text: system }] },
+      contents: [{ role: "user", parts: [{ text: user }] }],
+      generationConfig: {
+        temperature: 0.65,
+        responseMimeType: "application/json",
+      },
     }),
   });
 
   if (!res.ok) {
     const t = await res.text().catch(() => "");
-    throw new Error(`OpenAI error HTTP ${res.status}: ${t.slice(0, 500)}`);
+    throw new Error(`Gemini error HTTP ${res.status}: ${t.slice(0, 500)}`);
   }
 
-  const json = (await res.json()) as { choices?: Array<{ message?: { content?: string } }> };
-  const content = json.choices?.[0]?.message?.content;
-  if (!content) throw new Error("OpenAI returned an empty message.");
+  const body = await res.json();
+  const text = geminiPartsText(body);
+  if (!text.trim()) throw new Error("Gemini returned an empty message.");
 
-  const parsed = extractJsonObject(content);
-  if (!isRecord(parsed)) throw new Error("OpenAI JSON was not an object.");
+  const parsed = extractJsonObject(text);
+  if (!isRecord(parsed)) throw new Error("Gemini JSON was not an object.");
 
   const seoTitle = asString(parsed.seoTitle)?.trim();
   const metaDescription = asString(parsed.metaDescription)?.trim();
@@ -109,7 +118,7 @@ export async function generateBlogDraftWithOpenAI(
   const faqSchema = asFaq(parsed.faqSchema);
 
   if (!seoTitle || !metaDescription || !slugSuggestion || !bodyMarkdown) {
-    throw new Error("OpenAI JSON missing required string fields.");
+    throw new Error("Gemini JSON missing required string fields.");
   }
 
   return { seoTitle, metaDescription, slugSuggestion, bodyMarkdown, faqSchema };

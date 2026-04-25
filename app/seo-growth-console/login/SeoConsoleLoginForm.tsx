@@ -39,20 +39,20 @@ export default function SeoConsoleLoginForm() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-16">
-      <h1 className="text-2xl font-bold text-slate-900">SEO growth console</h1>
-      <p className="mt-2 text-sm text-slate-600">Admin sign-in (cookie, 12h). Use the same value as TOOLLABZ_SEO_CONSOLE_SECRET.</p>
+      <h1 className="text-2xl font-bold text-white">SEO growth console</h1>
+      <p className="mt-2 text-sm text-slate-300">Admin sign-in (cookie, 12h). Use the same value as TOOLLABZ_SEO_CONSOLE_SECRET.</p>
       {cfgErr === "not_configured" ? (
         <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
           Console secret is not set on this deployment. Set TOOLLABZ_SEO_CONSOLE_SECRET before using this route in production.
         </p>
       ) : null}
       <form className="mt-8 space-y-4" onSubmit={onSubmit}>
-        <label className="block text-sm font-medium text-slate-700">
+        <label className="block text-sm font-medium text-slate-200">
           Secret
           <input
             type="password"
             autoComplete="off"
-            className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
+            className="mt-1 w-full rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-white shadow-sm focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
             value={secret}
             onChange={(e) => setSecret(e.target.value)}
           />
@@ -61,7 +61,7 @@ export default function SeoConsoleLoginForm() {
         <button
           type="submit"
           disabled={loading || !secret.trim()}
-          className="w-full rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-violet-700 disabled:opacity-50"
+          className="w-full rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white shadow transition-all duration-200 hover:scale-[1.02] hover:bg-violet-700 hover:shadow-[0_0_18px_rgba(124,58,237,0.5)] disabled:opacity-50"
         >
           {loading ? "Signing in…" : "Sign in"}
         </button>

@@ -23,8 +23,19 @@ export function isCronEnabled(): boolean {
   return process.env.CONTENT_ENGINE_CRON_ENABLED === "1" || process.env.CONTENT_ENGINE_CRON_ENABLED === "true";
 }
 
-export function openAiModel(): string {
-  return process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
+export function highPriorityAutoGenerateEnabled(): boolean {
+  const v = process.env.CONTENT_ENGINE_AUTO_GENERATE_HIGH_PRIORITY?.trim().toLowerCase();
+  return v === "1" || v === "true";
+}
+
+/** Gemini model id for `generateContent` (e.g. gemini-2.0-flash). */
+export function geminiModel(): string {
+  return process.env.GEMINI_MODEL?.trim() || "gemini-2.0-flash";
+}
+
+/** Groq chat model for fast structured completions (tool specs, etc.). */
+export function groqModel(): string {
+  return process.env.GROQ_MODEL?.trim() || "llama-3.1-8b-instant";
 }
 
 /** Enables fast approval metadata for high-confidence PR candidates. */

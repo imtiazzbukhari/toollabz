@@ -1,6 +1,6 @@
 import { autoPublishThreshold } from "./config";
 import type { BlogDraftPayload, BlogPipelineResult, PublishMode } from "./types";
-import { generateBlogDraftWithOpenAI } from "./llm-blog";
+import { generateBlogDraft } from "./llm-blog";
 import { pickVariationProfile } from "./variation";
 import { scoreBlogDraft } from "./quality-score";
 import { contentEngineLog } from "./logging";
@@ -81,7 +81,7 @@ export async function runBlogGenerationPipeline(input: {
     .filter(Boolean)
     .join(" ");
 
-  const draft = await generateBlogDraftWithOpenAI(topic, primaryKeyword, variation, funnelAugment);
+  const draft = await generateBlogDraft(topic, primaryKeyword, variation, funnelAugment);
   const quality = scoreBlogDraft(draft, primaryKeyword);
   const cluster = findClusterForKeyword(primaryKeyword);
   const internalLinks = suggestAuthorityAugmentedLinks(
