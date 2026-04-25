@@ -85,6 +85,17 @@ function severityFor(category: ErrorCategory, source: string): "low" | "medium" 
   return "low";
 }
 
+function isErrorCategory(value: string): value is ErrorCategory {
+  return (
+    value === "github" ||
+    value === "network" ||
+    value === "invalid_data" ||
+    value === "missing_env" ||
+    value === "rate_limit" ||
+    value === "unknown"
+  );
+}
+
 function resolveToolName(slug: string): string {
   const row = getToolQueueData().find((t) => t.toolSlug === slug);
   return row?.toolName?.trim() || slug;
@@ -323,7 +334,11 @@ async function scanOnce(): Promise<void> {
     }
 
     const fixCategory: ErrorCategory =
-      issue.source === "processed_tool" && issue.category === "unknown" ? "github" : issue.category;
+      issue.source === "processed_tool" && issue.category === "unknown"
+        ? "github"
+        : isErrorCategory(issue.category)
+          ? issue.category
+          : "unknown";
 
     if (fixCategory === "unknown" && !issue.toolSlug) {
       unresolved.push(`${issue.id}: unknown_no_context`);

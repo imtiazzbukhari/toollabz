@@ -76,6 +76,10 @@ function normalizePriority(v: unknown): "high" | "normal" | "low" {
   return "normal";
 }
 
+function normalizeProcessedStatus(value: unknown): "success" | "failed" {
+  return value === "failed" ? "failed" : "success";
+}
+
 function fromGeneratedKeywords(): ToolCandidate[] {
   const filePath = path.join(root, "lib", "content-engine", "generated", "keywords.json");
   const parsed = safeReadJson<{
@@ -158,10 +162,10 @@ export function readProcessedTools(): ProcessedToolsStore {
   const processed = Array.isArray(raw.processed) ? raw.processed : [];
   return {
     processed: processed
-      .map((item) => ({
+      .map<ProcessedToolEntry>((item) => ({
         slug: String(item.slug ?? ""),
         hash: String(item.hash ?? ""),
-        status: item.status === "failed" ? "failed" : "success",
+        status: normalizeProcessedStatus(item.status),
         retryCount: Number.isFinite(item.retryCount) ? Number(item.retryCount) : 0,
         lastAttempt: typeof item.lastAttempt === "string" ? item.lastAttempt : new Date(0).toISOString(),
         processedAt: typeof item.processedAt === "string" ? item.processedAt : new Date().toISOString(),
@@ -298,7 +302,7 @@ export async function getPrStatusRows(): Promise<Array<{ slug: string; status: "
         body.match(/Slug:\s*`([^`]+)`/i)?.[1] ??
         head.match(/tool-proposal-([a-z0-9-]+)-/i)?.[1];
       if (!slugMatch) return null;
-      const status =
+      const status: "open" | "merged" | "closed" =
         pr.state === "open"
           ? "open"
           : pr.merged_at
@@ -308,7 +312,7 @@ export async function getPrStatusRows(): Promise<Array<{ slug: string; status: "
               : "closed";
       return { slug: slugify(slugMatch), status, createdAt: pr.created_at ?? new Date().toISOString(), url: pr.html_url };
     })
-    .filter((x): x is { slug: string; status: "open" | "merged" | "closed"; createdAt: string; url?: string } => Boolean(x));
+    .filter((x): x is NonNullable<typeof x> => x !== null);
   const bySlug = new Map<string, { slug: string; status: "open" | "merged" | "closed" | "failed"; createdAt: string; url?: string }>();
   for (const row of [...rows, ...failedRows]) {
     const prev = bySlug.get(row.slug);
