@@ -130,7 +130,13 @@ export async function generateToolSpecWithGroq(input: {
     computeKey: "REPLACE_WITH_ENGINE_KEY",
     validationNotes: ["Add validation rules", "Add pure compute function + vitest"],
   };
-  const enriched = await enrichToolProposalSpecWithGroq(base);
+  const safeBase: ToolProposalSpec = {
+    ...base,
+    validationNotes: Array.isArray(base.validationNotes)
+      ? base.validationNotes
+      : [],
+  };
+  const enriched = await enrichToolProposalSpecWithGroq(safeBase);
   return {
     ...base,
     ...enriched,

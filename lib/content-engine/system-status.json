@@ -3,7 +3,7 @@
     {
       "name": "content-engine",
       "status": "idle",
-      "lastRun": "2026-04-25T09:42:52.428Z",
+      "lastRun": "2026-04-25T09:47:52.461Z",
       "errors": []
     },
     {
@@ -21,7 +21,7 @@
     {
       "name": "runner",
       "status": "idle",
-      "lastRun": "2026-04-25T09:42:52.428Z",
+      "lastRun": "2026-04-25T09:47:52.461Z",
       "errors": []
     }
   ]
