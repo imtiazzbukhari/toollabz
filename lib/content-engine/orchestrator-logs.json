@@ -1,0 +1,266 @@
+[
+  {
+    "ts": "2026-04-25T09:42:33.585Z",
+    "step": "analyze",
+    "system": "behavior-engine",
+    "status": "ok",
+    "message": "behavior_views=0 clicks=0"
+  },
+  {
+    "ts": "2026-04-25T09:42:33.581Z",
+    "step": "optimize",
+    "system": "backlink-engine",
+    "status": "ok",
+    "message": "outreach_sent=0"
+  },
+  {
+    "ts": "2026-04-25T09:42:33.581Z",
+    "step": "optimize",
+    "system": "distribution-engine",
+    "status": "ok",
+    "message": "distribution_drafts=0 posted=0 safe_mode=true"
+  },
+  {
+    "ts": "2026-04-25T09:42:31.396Z",
+    "step": "analyze",
+    "system": "backlink-engine",
+    "status": "ok",
+    "message": "backlink_opportunities=0"
+  },
+  {
+    "ts": "2026-04-25T09:42:31.395Z",
+    "step": "analyze",
+    "system": "traffic-engine",
+    "status": "ok",
+    "message": "traffic_opportunities=0"
+  },
+  {
+    "ts": "2026-04-25T09:42:31.390Z",
+    "step": "analyze",
+    "system": "seo-engine",
+    "status": "ok",
+    "message": "seo_scan rows=0"
+  },
+  {
+    "ts": "2026-04-25T09:42:31.390Z",
+    "step": "scan",
+    "message": "scan_complete issues=0"
+  },
+  {
+    "ts": "2026-04-25T09:29:24.606Z",
+    "step": "analyze",
+    "system": "behavior-engine",
+    "status": "ok",
+    "message": "behavior_views=0 clicks=0"
+  },
+  {
+    "ts": "2026-04-25T09:29:24.603Z",
+    "step": "optimize",
+    "system": "backlink-engine",
+    "status": "ok",
+    "message": "outreach_sent=0"
+  },
+  {
+    "ts": "2026-04-25T09:29:24.602Z",
+    "step": "optimize",
+    "system": "distribution-engine",
+    "status": "ok",
+    "message": "distribution_drafts=0 posted=0 safe_mode=true"
+  },
+  {
+    "ts": "2026-04-25T09:29:22.939Z",
+    "step": "analyze",
+    "system": "backlink-engine",
+    "status": "ok",
+    "message": "backlink_opportunities=0"
+  },
+  {
+    "ts": "2026-04-25T09:29:22.938Z",
+    "step": "analyze",
+    "system": "traffic-engine",
+    "status": "ok",
+    "message": "traffic_opportunities=0"
+  },
+  {
+    "ts": "2026-04-25T09:29:22.935Z",
+    "step": "analyze",
+    "system": "seo-engine",
+    "status": "ok",
+    "message": "seo_scan rows=0"
+  },
+  {
+    "ts": "2026-04-25T09:29:22.935Z",
+    "step": "scan",
+    "message": "scan_complete issues=0"
+  },
+  {
+    "ts": "2026-04-25T09:26:13.904Z",
+    "step": "analyze",
+    "system": "behavior-engine",
+    "status": "ok",
+    "message": "behavior_views=0 clicks=0"
+  },
+  {
+    "ts": "2026-04-25T09:26:13.903Z",
+    "step": "optimize",
+    "system": "backlink-engine",
+    "status": "ok",
+    "message": "outreach_sent=0"
+  },
+  {
+    "ts": "2026-04-25T09:26:13.902Z",
+    "step": "optimize",
+    "system": "distribution-engine",
+    "status": "ok",
+    "message": "distribution_drafts=0 posted=0 safe_mode=true"
+  },
+  {
+    "ts": "2026-04-25T09:26:13.902Z",
+    "step": "analyze",
+    "system": "backlink-engine",
+    "status": "ok",
+    "message": "backlink_opportunities=0"
+  },
+  {
+    "ts": "2026-04-25T09:26:13.901Z",
+    "step": "analyze",
+    "system": "traffic-engine",
+    "status": "ok",
+    "message": "traffic_opportunities=0"
+  },
+  {
+    "ts": "2026-04-25T09:26:13.899Z",
+    "step": "analyze",
+    "system": "seo-engine",
+    "status": "ok",
+    "message": "seo_scan rows=0"
+  },
+  {
+    "ts": "2026-04-25T09:26:13.898Z",
+    "step": "skip",
+    "system": "orchestrator",
+    "status": "skipped",
+    "message": "humanized_cycle_skip_non_critical"
+  },
+  {
+    "ts": "2026-04-25T09:26:13.897Z",
+    "step": "scan",
+    "message": "scan_complete issues=0"
+  },
+  {
+    "ts": "2026-04-25T09:21:30.224Z",
+    "step": "analyze",
+    "system": "behavior-engine",
+    "status": "ok",
+    "message": "behavior_views=0 clicks=0"
+  },
+  {
+    "ts": "2026-04-25T09:21:30.222Z",
+    "step": "optimize",
+    "system": "backlink-engine",
+    "status": "ok",
+    "message": "outreach_sent=0"
+  },
+  {
+    "ts": "2026-04-25T09:21:30.222Z",
+    "step": "optimize",
+    "system": "distribution-engine",
+    "status": "ok",
+    "message": "distribution_drafts=0 posted=0 safe_mode=true"
+  },
+  {
+    "ts": "2026-04-25T09:21:30.220Z",
+    "step": "analyze",
+    "system": "backlink-engine",
+    "status": "ok",
+    "message": "backlink_opportunities=0"
+  },
+  {
+    "ts": "2026-04-25T09:21:30.218Z",
+    "step": "analyze",
+    "system": "traffic-engine",
+    "status": "ok",
+    "message": "traffic_opportunities=0"
+  },
+  {
+    "ts": "2026-04-25T09:21:30.214Z",
+    "step": "analyze",
+    "system": "seo-engine",
+    "status": "ok",
+    "message": "seo_scan rows=0"
+  },
+  {
+    "ts": "2026-04-25T09:21:30.213Z",
+    "step": "scan",
+    "message": "scan_complete issues=0"
+  },
+  {
+    "ts": "2026-04-25T08:55:50.734Z",
+    "step": "analyze",
+    "system": "behavior-engine",
+    "status": "ok",
+    "message": "behavior_views=0 clicks=0"
+  },
+  {
+    "ts": "2026-04-25T08:55:50.733Z",
+    "step": "optimize",
+    "system": "distribution-engine",
+    "status": "ok",
+    "message": "distribution_drafts=0 safe_mode=true"
+  },
+  {
+    "ts": "2026-04-25T08:55:50.732Z",
+    "step": "analyze",
+    "system": "backlink-engine",
+    "status": "ok",
+    "message": "backlink_opportunities=0"
+  },
+  {
+    "ts": "2026-04-25T08:55:50.731Z",
+    "step": "analyze",
+    "system": "traffic-engine",
+    "status": "ok",
+    "message": "traffic_opportunities=0"
+  },
+  {
+    "ts": "2026-04-25T08:55:50.731Z",
+    "step": "analyze",
+    "system": "seo-engine",
+    "status": "ok",
+    "message": "seo_scan rows=0"
+  },
+  {
+    "ts": "2026-04-25T08:55:50.730Z",
+    "step": "scan",
+    "message": "scan_complete issues=0"
+  },
+  {
+    "ts": "2026-04-25T08:28:01.517Z",
+    "step": "analyze",
+    "system": "seo-engine",
+    "status": "ok",
+    "message": "seo_scan rows=0"
+  },
+  {
+    "ts": "2026-04-25T08:28:01.517Z",
+    "step": "scan",
+    "message": "scan_complete issues=0"
+  },
+  {
+    "ts": "2026-04-25T07:55:06.653Z",
+    "step": "analyze",
+    "system": "seo-engine",
+    "status": "ok",
+    "message": "seo_scan rows=0"
+  },
+  {
+    "ts": "2026-04-25T07:55:06.652Z",
+    "step": "scan",
+    "message": "scan_complete issues=0"
+  },
+  {
+    "ts": "2026-04-25T07:39:29.510Z",
+    "step": "scan",
+    "message": "scan_complete issues=0"
+  }
+]

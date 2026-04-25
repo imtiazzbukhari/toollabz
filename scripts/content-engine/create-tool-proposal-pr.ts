@@ -6,13 +6,98 @@
  * Local validation (no GitHub): CONTENT_ENGINE_DRY_RUN=1 TOOL_SLUG=my-tool TOOL_NAME="My Tool" npm run content-engine:tool-proposal-pr
  */
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { pipelineLog } from "./lib/log.mjs";
-import { sanitizeSlug } from "./lib/slug.mjs";
 import { enrichToolProposalSpecWithGroq, type ToolProposalSpec } from "../../lib/content-engine/llm-groq";
+import { setSystemStatus } from "../../lib/content-engine/system-status";
 
 const root = process.cwd();
+const DEFAULT_TOOL_NAME = "auto-generated-tool";
+
+type ResolveSource = "env" | "derived" | "fallback";
+
+type ResolvedToolIdentity = {
+  toolName: string;
+  toolSlug: string;
+  source: ResolveSource;
+};
+
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 80);
+}
+
+function readLatestToolNameFromGeneratedStore(): string | undefined {
+  const generatedPath = path.join(root, "lib", "content-engine", "generated", "keywords.json");
+  if (!existsSync(generatedPath)) return undefined;
+  try {
+    const parsed = JSON.parse(readFileSync(generatedPath, "utf8")) as {
+      items?: Array<{ tool?: { spec?: { name?: unknown } } }>;
+    };
+    const first = parsed.items?.[0]?.tool?.spec?.name;
+    return typeof first === "string" && first.trim() ? first.trim() : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function readLatestToolNameFromToolProposals(): string | undefined {
+  const base = path.join(root, "lib", "content-engine", "tool-proposals");
+  if (!existsSync(base)) return undefined;
+  const dirs = readdirSync(base, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => {
+      const specPath = path.join(base, d.name, "SPEC.json");
+      const mtimeMs = existsSync(specPath) ? statSync(specPath).mtimeMs : 0;
+      return { specPath, mtimeMs };
+    })
+    .filter((d) => d.mtimeMs > 0)
+    .sort((a, b) => b.mtimeMs - a.mtimeMs);
+  const latest = dirs[0];
+  if (!latest) return undefined;
+  try {
+    const parsed = JSON.parse(readFileSync(latest.specPath, "utf8")) as { name?: unknown };
+    return typeof parsed.name === "string" && parsed.name.trim() ? parsed.name.trim() : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function readLatestToolName(): string | undefined {
+  return readLatestToolNameFromGeneratedStore() ?? readLatestToolNameFromToolProposals();
+}
+
+function resolveToolIdentity(args: string[]): ResolvedToolIdentity {
+  const envName = process.env.TOOL_NAME?.trim();
+  const envSlug = process.env.TOOL_SLUG?.trim();
+  const argSlug = args[2]?.trim();
+  const argName = args[3]?.trim();
+  const keyword = process.env.TOOL_KEYWORD?.trim() || args[5]?.trim() || "";
+
+  const derivedName = readLatestToolName();
+  const toolName =
+    envName ||
+    argName ||
+    derivedName ||
+    (keyword
+      ? `${keyword
+          .split(/\s+/)
+          .filter(Boolean)
+          .slice(0, 10)
+          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+          .join(" ")} Tool`
+      : DEFAULT_TOOL_NAME);
+
+  const rawSlug = envSlug || argSlug || slugify(toolName) || DEFAULT_TOOL_NAME;
+  const toolSlug = slugify(rawSlug) || DEFAULT_TOOL_NAME;
+  const source: ResolveSource = envName || envSlug ? "env" : derivedName || keyword ? "derived" : "fallback";
+  return { toolName, toolSlug, source };
+}
 
 function parseRepo() {
   const r = process.env.GITHUB_REPOSITORY || "";
@@ -46,43 +131,30 @@ function runGit(args: string[], env = process.env) {
 }
 
 async function main() {
+  setSystemStatus({ name: "tool-pr-creator", status: "running" });
   const token = process.env.GITHUB_TOKEN?.trim();
   const baseBranch = process.env.CONTENT_ENGINE_BASE_BRANCH || "main";
   const dryRun = process.env.CONTENT_ENGINE_DRY_RUN === "1";
 
-  const keyword = process.env.TOOL_KEYWORD || process.argv[5] || "";
-  const rawSlug = process.env.TOOL_SLUG || process.argv[2] || sanitizeSlug(keyword);
-  const name =
-    process.env.TOOL_NAME ||
-    process.argv[3] ||
-    (keyword
-      ? `${keyword
-          .split(/\s+/)
-          .filter(Boolean)
-          .slice(0, 10)
-          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-          .join(" ")} Tool`
-      : "");
+  const { toolName: name, toolSlug: slug, source } = resolveToolIdentity(process.argv);
+  pipelineLog({ step: "tool_identity_resolved", toolName: name, toolSlug: slug, source });
   const category = process.env.TOOL_CATEGORY || process.argv[4] || "finance";
 
-  if (!rawSlug || !name) {
-    pipelineLog({ step: "abort", reason: "missing_TOOL_SLUG_or_TOOL_NAME" });
-    process.exit(1);
-  }
-
   if (!dryRun && !token) {
+    setSystemStatus({ name: "tool-pr-creator", status: "failed", error: "missing_GITHUB_TOKEN" });
     pipelineLog({ step: "abort", reason: "missing_GITHUB_TOKEN" });
     process.exit(1);
   }
 
   if (!dryRun && !process.env.GITHUB_REPOSITORY?.trim()) {
+    setSystemStatus({ name: "tool-pr-creator", status: "failed", error: "missing_GITHUB_REPOSITORY" });
     pipelineLog({ step: "abort", reason: "missing_GITHUB_REPOSITORY" });
     process.exit(1);
   }
 
-  const slug = sanitizeSlug(rawSlug);
   const dir = path.join(root, "lib", "content-engine", "tool-proposals", slug);
   if (existsSync(dir)) {
+    setSystemStatus({ name: "tool-pr-creator", status: "idle" });
     pipelineLog({ step: "skip_pr", reason: "proposal_dir_exists", slug });
     process.exit(0);
   }
@@ -129,6 +201,7 @@ async function main() {
   const branch = `content-engine/tool-proposal-${slug}-${Date.now().toString(36)}`;
 
   if (dryRun) {
+    setSystemStatus({ name: "tool-pr-creator", status: "idle" });
     pipelineLog({ step: "dry_run_ok", slug, branch });
     process.exit(0);
   }
@@ -160,9 +233,11 @@ async function main() {
   });
 
   pipelineLog({ step: "pr_created", pr: pr.number, url: pr.html_url, slug });
+  setSystemStatus({ name: "tool-pr-creator", status: "idle" });
 }
 
 main().catch((e) => {
+  setSystemStatus({ name: "tool-pr-creator", status: "failed", error: e instanceof Error ? e.message : String(e) });
   pipelineLog({ step: "fatal", error: e instanceof Error ? e.message : String(e) });
   process.exit(1);
 });

@@ -1,5 +1,6 @@
 import { siteUrl } from "@/lib/seo";
 import { contentEngineLog } from "./logging";
+import { setSystemStatus } from "./system-status";
 
 export function googlePingUrlForSitemap(sitemapUrl: string): string {
   const encoded = encodeURIComponent(sitemapUrl);
@@ -17,6 +18,7 @@ function sleep(ms: number): Promise<void> {
  * Best-effort sitemap ping (Google documents this endpoint; treat as a hint, not guaranteed indexing).
  */
 export async function pingGoogleSitemap(sitemapUrl = `${siteUrl}/sitemap.xml`): Promise<{ ok: boolean; status?: number; error?: string }> {
+  setSystemStatus({ name: "sitemap-generator", status: "running" });
   contentEngineLog({ type: "sitemap_ping_start", sitemapUrl });
   const url = googlePingUrlForSitemap(sitemapUrl);
   let lastStatus: number | undefined;
@@ -28,6 +30,7 @@ export async function pingGoogleSitemap(sitemapUrl = `${siteUrl}/sitemap.xml`): 
       lastStatus = res.status;
       if (res.ok) {
         contentEngineLog({ type: "sitemap_ping_ok", sitemapUrl, status: res.status, attempt });
+        setSystemStatus({ name: "sitemap-generator", status: "idle" });
         return { ok: true, status: res.status };
       }
       lastError = `HTTP ${res.status}`;
@@ -39,5 +42,6 @@ export async function pingGoogleSitemap(sitemapUrl = `${siteUrl}/sitemap.xml`): 
     if (attempt < MAX_ATTEMPTS) await sleep(BASE_MS * attempt);
   }
 
+  setSystemStatus({ name: "sitemap-generator", status: "failed", error: lastError ?? "sitemap_ping_failed" });
   return { ok: false, status: lastStatus, error: lastError };
 }

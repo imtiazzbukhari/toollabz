@@ -12,6 +12,8 @@
     "content-engine:programmatic-pr": "node scripts/content-engine/create-programmatic-blog-pr.mjs",
     "content-engine:scaling-pr": "node scripts/content-engine/create-scaling-blog-pr.mjs",
     "content-engine:tool-proposal-pr": "tsx scripts/content-engine/create-tool-proposal-pr.ts",
+    "content-engine:auto": "tsx scripts/content-engine/auto-runner.ts",
+    "content-engine:orchestrator": "tsx scripts/content-engine/ai-orchestrator.ts",
     "content-engine:autofix-pr": "node scripts/content-engine/create-auto-fix-pr.mjs",
     "content-engine:monetization-sprint-md": "node scripts/content-engine/generate-monetization-sprint-md.mjs",
     "adsense:merge-csv": "tsx scripts/adsense/merge-adsense-csv.ts",

@@ -1,0 +1,569 @@
+[
+  {
+    "ts": "2026-04-25T09:42:52.427Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:42:23.341Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:37:52.428Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:37:23.330Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:32:52.427Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:32:23.328Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:27:52.427Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:27:23.328Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:22:52.429Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:22:23.328Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:17:52.429Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:17:23.329Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:12:52.429Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:12:23.328Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:07:52.428Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:07:23.328Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:02:52.427Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T09:02:23.329Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:57:52.427Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:57:23.327Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:52:52.426Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:52:23.328Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:47:52.426Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:47:23.328Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:42:52.425Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:42:23.328Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:37:52.425Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:37:23.326Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:32:52.423Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:32:23.324Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:27:52.432Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:27:23.324Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:22:52.423Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:22:23.323Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:17:52.423Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:17:23.322Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:12:52.424Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:12:23.322Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:07:52.423Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:07:23.321Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:02:52.424Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T08:02:23.322Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:57:52.422Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:57:23.322Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:52:52.422Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:52:23.322Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:47:52.423Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:47:23.321Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:42:52.424Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:42:23.319Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:37:52.423Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:37:23.319Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:32:52.422Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:32:23.319Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:27:52.422Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:27:23.319Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:22:52.422Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:22:23.319Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:17:52.423Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:17:23.319Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:12:52.418Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:12:23.319Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  },
+  {
+    "ts": "2026-04-25T07:07:23.318Z",
+    "system": "runner",
+    "step": "scan",
+    "toolSlug": "",
+    "status": "ok",
+    "reason": "no_tool_found",
+    "source": "derived"
+  }
+]

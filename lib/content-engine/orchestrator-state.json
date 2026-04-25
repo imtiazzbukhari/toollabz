@@ -1,0 +1,76 @@
+{
+  "updatedAt": "2026-04-25T09:42:33.586Z",
+  "healthScore": 100,
+  "detectedIssues": [],
+  "autoFixed": [],
+  "unresolved": [],
+  "lastScanSummary": "detected=0 fixed=0 open=0",
+  "retryCooldown": {},
+  "seoOptimizationCooldown": {},
+  "monetizationCooldown": {},
+  "seoFeedbackBaseline": {},
+  "seoRanking": [],
+  "optimizationActions": [],
+  "optimizationImpact": [],
+  "monetization": [],
+  "revenueMetrics": {
+    "pageViews": 0,
+    "ctaClicks": 0,
+    "conversions": 0,
+    "conversionRate": 0,
+    "topPages": []
+  },
+  "trafficInsights": [],
+  "backlinks": [],
+  "distribution": [],
+  "behaviorMetrics": {
+    "avgScrollDepth": 0,
+    "avgTimeOnPage": 0,
+    "totalPageViews": 0,
+    "totalClicks": 0
+  },
+  "ctaPerformance": [],
+  "revenueLive": {
+    "totalRevenue": 0,
+    "totalAffiliateClicks": 0,
+    "totalConversions": 0,
+    "topEarningPages": []
+  },
+  "outreachStatus": {
+    "sent": 0,
+    "replied": 0,
+    "acquired": 0
+  },
+  "winnerPages": [],
+  "qualityScores": [],
+  "nicheFocus": {
+    "niche": "general",
+    "confidence": 0,
+    "effortShare": 0.7
+  },
+  "roiInsights": [],
+  "strategy": {
+    "mode": "balanced",
+    "maxPostsPerDay": 2,
+    "maxOutreachPerCycle": 1,
+    "seoOptimizationLimit": 2,
+    "monetizationLimit": 2,
+    "qualityThreshold": 62,
+    "randomnessFactor": 1,
+    "skipProbability": 0.12,
+    "behaviorSummary": "medium activity with balanced quality and ROI"
+  },
+  "decisionInsights": {
+    "focusReason": "Insufficient stable signals; hold broad focus.",
+    "focusedSlugs": [],
+    "ignoredSlugs": [],
+    "riskWarnings": [],
+    "nicheValidation": {
+      "niche": "general",
+      "growthValid": true,
+      "revenueValid": false,
+      "competitionValid": true,
+      "summary": "growth=true revenue=false competition=true"
+    }
+  }
+}

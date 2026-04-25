@@ -1,0 +1,28 @@
+{
+  "systems": [
+    {
+      "name": "content-engine",
+      "status": "idle",
+      "lastRun": "2026-04-25T09:42:52.428Z",
+      "errors": []
+    },
+    {
+      "name": "sitemap-generator",
+      "status": "idle",
+      "lastRun": "",
+      "errors": []
+    },
+    {
+      "name": "tool-pr-creator",
+      "status": "idle",
+      "lastRun": "",
+      "errors": []
+    },
+    {
+      "name": "runner",
+      "status": "idle",
+      "lastRun": "2026-04-25T09:42:52.428Z",
+      "errors": []
+    }
+  ]
+}
