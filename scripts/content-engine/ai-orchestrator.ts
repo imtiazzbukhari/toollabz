@@ -45,6 +45,8 @@ import { enforceHardCaps, getGrowthStrategyConfig } from "../../lib/content-engi
 import { applyContentPatch } from "../../lib/content-engine/content-patcher";
 import { buildInternalLinkPatchMarkdown, suggestInternalLinks } from "../../lib/content-engine/internal-linking-engine";
 import { getSystemStatuses } from "../../lib/content-engine/system-status";
+import { appendAutomationErrorLog, classifyAutomationError } from "../../lib/content-engine/error-log";
+import { readSafetyStatus, runMandatoryValidationWithRetry } from "../../lib/content-engine/safety-guardrails";
 import {
   getPrStatusRows,
   getToolQueueData,
@@ -63,6 +65,15 @@ const FEEDBACK_CHECK_CYCLES = 3;
 const MAX_DISTRIBUTION_DRAFTS_PER_CYCLE = 3;
 const MAX_DISTRIBUTION_POSTS_PER_CYCLE = 2;
 const MAX_OUTREACH_EMAILS_PER_CYCLE = 2;
+const SAFE_MODE = String(process.env.SYSTEM_SAFE_MODE ?? "").toLowerCase() === "true";
+const VALID_ERROR_CATEGORIES = [
+  "github",
+  "network",
+  "invalid_data",
+  "missing_env",
+  "rate_limit",
+  "unknown",
+] as const satisfies readonly ErrorCategory[];
 
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -86,14 +97,7 @@ function severityFor(category: ErrorCategory, source: string): "low" | "medium" 
 }
 
 function isErrorCategory(value: string): value is ErrorCategory {
-  return (
-    value === "github" ||
-    value === "network" ||
-    value === "invalid_data" ||
-    value === "missing_env" ||
-    value === "rate_limit" ||
-    value === "unknown"
-  );
+  return VALID_ERROR_CATEGORIES.some((category) => category === value);
 }
 
 function resolveToolName(slug: string): string {
@@ -112,6 +116,34 @@ function touchCooldown(map: Record<string, string>, key: string): Record<string,
 }
 
 async function scanOnce(): Promise<void> {
+  const validation = runMandatoryValidationWithRetry("ai-orchestrator");
+  if (!validation.ok || validation.buildStatus !== "success") {
+    const reason = validation.lastError ?? "preflight_validation_failed";
+    appendOrchestratorLog({
+      system: "orchestrator",
+      step: "alert",
+      status: "failed",
+      message: "preflight_validation_failed",
+      reason,
+      detail: validation.failingModules.join(","),
+    });
+    appendAutomationErrorLog({
+      source: "ai-orchestrator",
+      module: "preflight",
+      category: classifyAutomationError(reason, "build"),
+      message: "orchestrator blocked due to failed validation",
+      detail: `${reason}\nmodules=${validation.failingModules.join(",")}`,
+    });
+    writeOrchestratorState({
+      ...readOrchestratorState(),
+      updatedAt: new Date().toISOString(),
+      healthScore: 0,
+      unresolved: [`validation_failed: ${reason}`],
+      lastScanSummary: "blocked_by_preflight_validation",
+    });
+    return;
+  }
+
   const strategy = enforceHardCaps(getGrowthStrategyConfig());
   let effectiveSeoOptimizationLimit = Math.min(strategy.seoOptimizationLimit, MAX_SEO_OPTIMIZATIONS_PER_CYCLE);
   let effectiveMonetizationLimit = Math.min(strategy.monetizationLimit, MAX_MONETIZATION_UPDATES_PER_CYCLE);
@@ -119,6 +151,14 @@ async function scanOnce(): Promise<void> {
   let effectiveOutreachLimit = Math.min(strategy.maxOutreachPerCycle, MAX_OUTREACH_EMAILS_PER_CYCLE);
   let effectiveRoiMultiplier = strategy.roiBoostMultiplier;
   let effectiveMode = strategy.mode;
+  if (SAFE_MODE) {
+    effectiveSeoOptimizationLimit = Math.min(effectiveSeoOptimizationLimit, 1);
+    effectiveMonetizationLimit = Math.min(effectiveMonetizationLimit, 1);
+    effectivePostLimit = 0;
+    effectiveOutreachLimit = 0;
+    effectiveRoiMultiplier = Math.min(effectiveRoiMultiplier, 1);
+    effectiveMode = "conservative";
+  }
 
   const prev = readOrchestratorState();
   const detected: OrchestratorIssue[] = [];
@@ -357,7 +397,10 @@ async function scanOnce(): Promise<void> {
       prTouchedThisScan.add(issue.toolSlug);
     }
 
-    const result = await applyAutoFix(fixCategory, ctx);
+    let result = await applyAutoFix(fixCategory, ctx);
+    if (!result.applied) {
+      result = await applyAutoFix(fixCategory, ctx);
+    }
     if (result.applied) {
       autoFixed.push(`${issue.id}: ${result.action}`);
       appendOrchestratorLog({
@@ -376,6 +419,13 @@ async function scanOnce(): Promise<void> {
         meta: { issueId: issue.id },
       });
     } else {
+      appendAutomationErrorLog({
+        source: "ai-orchestrator",
+        module: issue.subsystem,
+        category: classifyAutomationError(result.reason, issue.subsystem),
+        message: `auto-fix failed after retry for issue ${issue.id}`,
+        detail: result.reason,
+      });
       if (result.critical) {
         broadcastAlert({
           level: "critical",
@@ -457,7 +507,7 @@ async function scanOnce(): Promise<void> {
   recordDistributionDrafts(distributionDrafts);
   let postedRows: Array<{ slug: string; platform: string; status: "posted" | "skipped"; reason?: string }> = [];
   let outreachExec: Array<{ slug: string; targetDomain: string; status: "sent" | "skipped"; reason?: string }> = [];
-  if (!skipNonCriticalCycle) {
+  if (!skipNonCriticalCycle && !SAFE_MODE) {
     await randomDelay(Math.round(500 * strategy.randomnessFactor), Math.round(1900 * strategy.randomnessFactor));
     postedRows = executeDistributionPosts(randomInt(1, Math.max(1, effectivePostLimit)));
     await randomDelay(Math.round(450 * strategy.randomnessFactor), Math.round(1600 * strategy.randomnessFactor));
@@ -512,6 +562,8 @@ async function scanOnce(): Promise<void> {
       effectiveRoiMultiplier = Math.max(effectiveRoiMultiplier, 1.2);
     }
   }
+  const safety = readSafetyStatus();
+  const canExecuteRiskyActions = !SAFE_MODE && safety.buildStatus === "success";
   const focusedSet = new Set(decisionInsights.focusedSlugs);
   const ignoredSet = new Set(decisionInsights.ignoredSlugs);
   for (const row of candidateRows) {
@@ -552,6 +604,17 @@ async function scanOnce(): Promise<void> {
     const internalLinkPatch = buildInternalLinkPatchMarkdown(linkSuggestions);
 
     const beforePosition = row.position;
+    if (!canExecuteRiskyActions) {
+      appendOrchestratorLog({
+        system: "seo-engine",
+        step: "skip",
+        status: "skipped",
+        slug: row.slug,
+        reason: "safe_mode_or_build_not_success",
+        message: "content_patch_blocked",
+      });
+      continue;
+    }
     const seoPatch = applyContentPatch(row.slug, {
       title: "SEO Optimization Update",
       markdown: suggestions.map((s) => `- ${s}`).join("\n"),
@@ -680,7 +743,7 @@ async function scanOnce(): Promise<void> {
       reason: applicable ? undefined : "intent_not_commercial",
     } as const;
     recordMonetizationSignal(signal);
-    if (applicable) {
+    if (applicable && canExecuteRiskyActions) {
       applyContentPatch(row.slug, {
         title: "Monetization Blocks",
         markdown: [...actions.map((x) => `- ${x}`), `- Active CTA Variant (${ctaVariant.id}): ${ctaVariant.text}`].join("\n"),
@@ -804,6 +867,7 @@ async function scanOnce(): Promise<void> {
   });
   for (const lowSlug of quality.lowQualitySlugs.slice(0, strategy.mode === "conservative" ? 1 : 2)) {
     if (skipNonCriticalCycle) break;
+    if (!canExecuteRiskyActions) break;
     applyContentPatch(lowSlug, {
       title: "Quality Re-Optimization",
       markdown:
@@ -821,6 +885,7 @@ async function scanOnce(): Promise<void> {
   const winnerNiche = decisionInsights.strategyOverride?.nicheFocus || nicheFocus.niche;
   const winnerCandidates = winnerPages.filter((w) => w.slug.startsWith(`${winnerNiche}-`) || focusedSet.has(w.slug));
   for (const winner of (winnerCandidates.length ? winnerCandidates : winnerPages).slice(0, Math.max(1, strategy.winnerBoostIntensity))) {
+    if (!canExecuteRiskyActions) break;
     applyContentPatch(winner.slug, {
       title: "Winner Page Expansion",
       markdown:
@@ -951,6 +1016,13 @@ async function main(): Promise<void> {
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       appendOrchestratorLog({ step: "alert", message: `scan_error ${msg}`, outcome: "failed" });
+      appendAutomationErrorLog({
+        source: "ai-orchestrator",
+        module: "scan-loop",
+        category: classifyAutomationError(msg),
+        message: "scan loop runtime failure",
+        detail: msg,
+      });
       broadcastAlert({
         level: "warn",
         source: "orchestrator",

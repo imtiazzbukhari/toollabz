@@ -136,6 +136,10 @@ export default function SeoGrowthConsoleDashboard() {
     () => ((snapshot.executionLearningSummary ?? {}) as Record<string, unknown>) ?? {},
     [snapshot],
   );
+  const systemHealth = useMemo(
+    () => ((snapshot.systemHealth ?? {}) as Record<string, unknown>) ?? {},
+    [snapshot],
+  );
 
   async function markImpactFromRow(executionId: string, refreshFromAggregates: boolean) {
     setExecLoading(`impact_${executionId}`);
@@ -251,6 +255,22 @@ export default function SeoGrowthConsoleDashboard() {
             <p className="mt-1 flex items-center gap-1 text-xs text-emerald-500"><TrendingUp className="h-3.5 w-3.5" />{metric.delta}</p>
           </article>
         ))}
+      </section>
+
+      <section className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+        <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">System Health</h3>
+        <DataTable
+          columns={["Build", "Typecheck", "Safe mode", "Last error", "Failing modules", "Failing systems"]}
+          rows={[[
+            <StatusBadge key="sh-build" status={String(systemHealth.buildStatus ?? "failed")} />,
+            <StatusBadge key="sh-tsc" status={String(systemHealth.typecheckStatus ?? "failed")} />,
+            <StatusBadge key="sh-safe" status={systemHealth.safeModeEnabled === true ? "on" : "off"} />,
+            String(systemHealth.lastError ?? "None").slice(0, 120),
+            Array.isArray(systemHealth.failingModules) ? (systemHealth.failingModules as unknown[]).map((x) => String(x)).slice(0, 3).join(", ") || "None" : "None",
+            Array.isArray(systemHealth.failingSystems) ? (systemHealth.failingSystems as unknown[]).map((x) => String(x)).join(", ") || "None" : "None",
+          ]]}
+          emptyMessage="System health unavailable."
+        />
       </section>
 
       <section className="rounded-2xl border border-violet-200/40 bg-gradient-to-br from-violet-50/90 to-white/80 p-5 shadow-2xl backdrop-blur dark:border-violet-900/40 dark:from-violet-950/40 dark:to-slate-900/80">

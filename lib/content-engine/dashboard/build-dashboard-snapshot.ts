@@ -78,6 +78,9 @@ import { enforceToolPageMonetization } from "../monetization/enforcement";
 import { appendAdsenseHistory } from "../adsense/adsense-history";
 import { buildAdsenseProgress } from "../adsense/adsense-progress";
 import { buildAdsenseActions } from "../adsense/adsense-actions";
+import { getSystemStatuses } from "../system-status";
+import { readSafetyStatus } from "../safety-guardrails";
+import { readAutomationErrorLogs } from "../error-log";
 
 function toolProposalSlugs(root = process.cwd()): string[] {
   const dir = path.join(root, "lib", "content-engine", "tool-proposals");
@@ -189,6 +192,14 @@ export type DashboardSnapshot = {
     updatedAt: string;
     kindMultiplierCount: number;
     pathMultiplierCount: number;
+  };
+  systemHealth: {
+    buildStatus: "success" | "failed";
+    typecheckStatus: "success" | "failed";
+    safeModeEnabled: boolean;
+    lastError: string | null;
+    failingModules: string[];
+    failingSystems: string[];
   };
   failSafe: { rules: string[] };
   logsNote: string;
@@ -343,6 +354,19 @@ export function buildDashboardSnapshot(): DashboardSnapshot {
     updatedAt: executionLearningState.updatedAt,
     kindMultiplierCount: Object.keys(executionLearningState.kindMultipliers).length,
     pathMultiplierCount: Object.keys(executionLearningState.pathMultipliers).length,
+  };
+  const safetyStatus = readSafetyStatus();
+  const failingSystems = getSystemStatuses()
+    .filter((s) => s.status === "failed")
+    .map((s) => s.name);
+  const lastErrorRow = readAutomationErrorLogs(1)[0];
+  const systemHealth = {
+    buildStatus: safetyStatus.buildStatus,
+    typecheckStatus: safetyStatus.typecheckStatus,
+    safeModeEnabled: safetyStatus.safeModeEnabled,
+    lastError: safetyStatus.lastError ?? lastErrorRow?.message ?? null,
+    failingModules: safetyStatus.failingModules,
+    failingSystems,
   };
   const impactComparison = buildImpactComparisonSnapshot(sprintExecutionLog);
   const sprintMarkdown = buildSprintMarkdown({
@@ -529,6 +553,7 @@ export function buildDashboardSnapshot(): DashboardSnapshot {
     executionPerformance,
     toolImpactTracking,
     executionLearningSummary,
+    systemHealth,
     failSafe: {
       rules: [
         "No production writes from API routes; artifacts land on git branches only.",
