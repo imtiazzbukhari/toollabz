@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import PremiumPageShell from "@/components/PremiumPageShell";
 import { toolGlassCard, toolGlassPanel } from "@/lib/tool-ui";
+import { capStaticParams } from "@/lib/build/static-generation";
 import { absoluteUrl, siteUrl } from "@/lib/seo";
 
 function parseSlug(slug: string) {
@@ -13,8 +14,11 @@ function parseSlug(slug: string) {
   return cm;
 }
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  return Array.from({ length: 1000 }, (_, i) => ({ slug: `${i + 1}-cm-to-feet` }));
+  const rows = Array.from({ length: 1000 }, (_, i) => ({ slug: `${i + 1}-cm-to-feet` }));
+  return capStaticParams(rows);
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {

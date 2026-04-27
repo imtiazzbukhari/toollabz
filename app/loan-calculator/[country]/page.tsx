@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import PremiumPageShell from "@/components/PremiumPageShell";
 import { toolGlassPanel } from "@/lib/tool-ui";
+import { capStaticParams } from "@/lib/build/static-generation";
 import { breadcrumbJsonLd, siteUrl, webPageSchema } from "@/lib/seo";
 import PageLastUpdated from "@/components/PageLastUpdated";
 import PopularCalculationsBlock from "@/components/PopularCalculationsBlock";
@@ -15,8 +16,10 @@ const rates: Record<string, number> = {
   pakistan: 18,
 };
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  return Object.keys(rates).map((country) => ({ country }));
+  return capStaticParams(Object.keys(rates).sort().map((country) => ({ country })));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ country: string }> }) {

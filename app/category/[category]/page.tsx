@@ -5,6 +5,7 @@ import { ChevronRight } from "lucide-react";
 import ToolCard from "@/components/ToolCard";
 import CategoryHubLongform from "@/components/CategoryHubLongform";
 import CategoryToolSpotlights from "@/components/CategoryToolSpotlights";
+import { capStaticParams } from "@/lib/build/static-generation";
 import { categories, tools } from "@/lib/tools/data";
 import { toolGlassPanel } from "@/lib/tool-ui";
 import { categoryLandingMetadata } from "@/lib/seo/category-landing-meta";
@@ -17,8 +18,11 @@ function humanizeCategory(slug: string) {
   return slug.split("-").map((w) => `${w.charAt(0).toUpperCase()}${w.slice(1)}`).join(" ");
 }
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  return categories.map((c) => ({ category: c.slug }));
+  const sorted = [...categories].sort((a, b) => a.slug.localeCompare(b.slug));
+  return capStaticParams(sorted.map((c) => ({ category: c.slug })));
 }
 
 export async function generateMetadata({

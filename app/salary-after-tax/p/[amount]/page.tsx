@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import PremiumPageShell from "@/components/PremiumPageShell";
 import { toolGlassPanel } from "@/lib/tool-ui";
 import { PROGRAMMATIC_SALARY_GROSS, isValidSalaryGross } from "@/lib/programmatic-seo/amount-routes";
+import { capStaticParams } from "@/lib/build/static-generation";
 import {
   salaryGrossCanonicalPath,
   salaryGrossFaqs,
@@ -14,8 +15,10 @@ import { breadcrumbJsonLd, faqPageSchemaFromPairs, webPageSchema } from "@/lib/s
 import PageLastUpdated from "@/components/PageLastUpdated";
 import PopularCalculationsBlock from "@/components/PopularCalculationsBlock";
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  return PROGRAMMATIC_SALARY_GROSS.map((amount) => ({ amount: String(amount) }));
+  return capStaticParams(PROGRAMMATIC_SALARY_GROSS.map((amount) => ({ amount: String(amount) })));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ amount: string }> }) {

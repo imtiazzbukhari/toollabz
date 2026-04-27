@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import PremiumPageShell from "@/components/PremiumPageShell";
 import { toolGlassPanel } from "@/lib/tool-ui";
+import { capStaticParams } from "@/lib/build/static-generation";
 import { siteUrl } from "@/lib/seo";
 
 const taxRates: Record<string, number> = {
@@ -13,8 +14,10 @@ const taxRates: Record<string, number> = {
   india: 15,
 };
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  return Object.keys(taxRates).map((country) => ({ country }));
+  return capStaticParams(Object.keys(taxRates).sort().map((country) => ({ country })));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ country: string }> }) {

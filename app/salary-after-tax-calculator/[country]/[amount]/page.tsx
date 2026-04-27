@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import ToolLayout from "@/components/ToolLayout";
+import { capStaticParams } from "@/lib/build/static-generation";
 import ToolWorkspaceShell from "@/components/ToolWorkspaceShell";
 import { toolMap } from "@/lib/tools/data";
 import { breadcrumbSchema, faqSchema, siteUrl, toolMetadata, toolSchema, webPageSchema } from "@/lib/seo";
@@ -24,13 +25,16 @@ const parseSalaryAmount = (amount: string) => {
   return value;
 };
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  return Object.keys(countryToolMap).flatMap((country) =>
+  const rows = Object.keys(countryToolMap).flatMap((country) =>
     salaryBuckets.map((amount) => ({
       country,
       amount: `${amount}-salary-after-tax-${country}`,
-    }))
+    })),
   );
+  return capStaticParams(rows);
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ country: string; amount: string }> }) {

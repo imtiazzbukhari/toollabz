@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
+import { capStaticParams } from "@/lib/build/static-generation";
 import { blogPostBySlug, blogPostSlugs, blogPosts } from "@/lib/blog/registry";
 import { getRelatedToolsForBlogPost } from "@/lib/blog/related-tools";
 import { absoluteUrl, breadcrumbJsonLd, siteUrl } from "@/lib/seo";
@@ -10,9 +11,11 @@ import BlogAuthorBio from "@/components/BlogAuthorBio";
 import BlogSocialShare from "@/components/BlogSocialShare";
 
 export const revalidate = 3600;
+export const dynamicParams = true;
 
 export function generateStaticParams() {
-  return blogPostSlugs.map((slug) => ({ slug }));
+  const slugs = [...blogPostSlugs].sort((a, b) => a.localeCompare(b));
+  return capStaticParams(slugs.map((slug) => ({ slug })));
 }
 
 type Props = { params: Promise<{ slug: string }> };

@@ -1,6 +1,12 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
 
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
+
 const nextConfig: NextConfig = {
+  /** Single-package root: stabilizes output file tracing when multiple lockfiles exist up-tree. */
+  outputFileTracingRoot: projectRoot,
   output: "standalone",
   reactStrictMode: true,
   compress: true,
@@ -15,8 +21,13 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  /** Allow slower static generation on constrained VPS without failing the build. */
+  staticPageGenerationTimeout: 180,
   experimental: {
     optimizePackageImports: ["lucide-react"],
+    cpus: 1,
+    workerThreads: false,
+    memoryBasedWorkersCount: false,
   },
   async redirects() {
     return [
