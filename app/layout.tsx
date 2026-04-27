@@ -10,23 +10,26 @@ import { ADSENSE_CLIENT_ID } from "@/lib/analytics/env";
 import { organizationSchema, websiteSearchActionSchema } from "@/lib/seo";
 
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
+const gscSiteVerification = process.env.NEXT_PUBLIC_GSC_VERIFICATION?.trim();
+const mergedGoogleSiteVerification = gscSiteVerification || googleSiteVerification;
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  maximumScale: 5,
   themeColor: "#7c3aed",
 };
 
 export const metadata: Metadata = {
   title: {
-    default: "Toollabz - Smart Tools. Limitless Possibilities.",
+    default: "Toollabz - Free Online Tools: Calculators, Converters & PDF Hub",
     template: "%s | Toollabz",
   },
   alternates: {
     canonical: "/",
   },
   description:
-    "Fast, reliable, and beautifully crafted free online tools  -  converters, calculators, PDF utilities, generators, and more.",
+    "Free calculators, converters, and PDF tools in one secure hub. Fast results, clear guides, and 238+ utilities on Toollabz — no signup.",
   metadataBase: new URL("https://toollabz.com"),
   applicationName: "Toollabz",
   authors: [{ name: "Toollabz", url: "https://toollabz.com" }],
@@ -45,24 +48,26 @@ export const metadata: Metadata = {
       follow: true,
     },
   },
-  ...(googleSiteVerification
+  ...(mergedGoogleSiteVerification
     ? {
         verification: {
-          google: googleSiteVerification,
+          google: mergedGoogleSiteVerification,
         },
       }
     : {}),
   openGraph: {
-    title: "Toollabz",
-    description: "100% free online tools with no limits.",
+    title: "Toollabz - Free Online Tools: Calculators, Converters & PDF Hub",
+    description:
+      "Free calculators, converters, and PDF utilities with SEO-friendly guides. Built for speed and privacy on Toollabz.",
     type: "website",
     url: "https://toollabz.com",
     siteName: "Toollabz",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Toollabz",
-    description: "100% free online tools with no limits.",
+    title: "Toollabz - Free Online Tools: Calculators, Converters & PDF Hub",
+    description:
+      "Free calculators, converters, and PDF utilities with clear FAQs and internal links on Toollabz.",
   },
   icons: {
     icon: [{ url: "/logo-toollabz.webp", type: "image/webp" }],
@@ -82,6 +87,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex min-h-screen flex-col overflow-x-hidden">
+        <link rel="dns-prefetch" href="https://api.frankfurter.app" />
+        <link rel="preconnect" href="https://api.frankfurter.app" crossOrigin="anonymous" />
         {GA_TRACKING_ID ? (
           <>
             <link rel="dns-prefetch" href="https://www.googletagmanager.com" />

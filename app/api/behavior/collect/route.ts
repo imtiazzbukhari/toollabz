@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { checkRateLimit, rateLimitKey } from "@/lib/api-rate-limit";
 import { mergeBehaviorBeacons, parseBehaviorBeaconsBody } from "@/lib/content-engine/growth/merge-behavior-rollups";
 import { loadBehaviorAggregates } from "@/lib/content-engine/growth/load-behavior-aggregates";
 import { persistBehaviorMergeFromRequestBody } from "@/lib/content-engine/growth/persist-behavior-aggregates";
@@ -16,6 +17,15 @@ function ingestKey(): string | undefined {
  * Optional: `CONTENT_ENGINE_BEHAVIOR_PERSIST=1` + `CONTENT_ENGINE_BEHAVIOR_JSON` to append rollups on disk (self-hosted / workers).
  */
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? req.headers.get("x-real-ip") ?? "local";
+  const rl = checkRateLimit(rateLimitKey("behavior-collect", ip), 10, 60_000);
+  if (!rl.ok) {
+    return Response.json(
+      { ok: false, error: "rate_limited" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter), "Cache-Control": "no-store" } },
+    );
+  }
+
   const expected = ingestKey();
   if (!expected) {
     return Response.json({ ok: false, error: "Behavior ingest is not configured." }, { status: 503 });

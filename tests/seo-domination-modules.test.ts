@@ -1,4 +1,12 @@
 import { describe, expect, it } from "vitest";
+import type { BehaviorAggregates } from "@/lib/content-engine/growth/behavior-types";
+import type { MonetizationScorecard } from "@/lib/content-engine/dashboard/monetization-scorecard";
+import type { PerformanceAggregates } from "@/lib/content-engine/performance/types";
+import type { PrioritizedOpportunity } from "@/lib/content-engine/types";
+
+const perfCast = (p: unknown) => p as PerformanceAggregates;
+const behaviorCast = (b: unknown) => b as BehaviorAggregates;
+const scorecardCast = (s: unknown) => s as MonetizationScorecard;
 import { parseAdSensePageRevenueCsv } from "@/lib/content-engine/adsense/parse-export";
 import { normalizeHeadingKey } from "@/lib/content-engine/competitor/extract-headings";
 import { buildClusterDominationRoadmaps } from "@/lib/content-engine/dashboard/cluster-roadmap";
@@ -65,10 +73,10 @@ describe("buildClusterDominationRoadmaps", () => {
 
 describe("applyActiveClusterMode", () => {
   it("filters to selected clusters", () => {
-    const rows = [
+    const rows: PrioritizedOpportunity[] = [
       { keyword: "a", intent: "mixed", priority: 80, linkToolSlugs: [], clusterId: "loan-core" },
       { keyword: "b", intent: "mixed", priority: 78, linkToolSlugs: [], clusterId: "salary-paycheck" },
-    ] as const;
+    ];
     const out = applyActiveClusterMode(rows, ["loan-core"]);
     expect(out.summary.enabled).toBe(true);
     expect(out.rows.length).toBe(1);
@@ -118,15 +126,19 @@ describe("cluster performance + pruning", () => {
           avgActiveMs: 7000,
           scrollHistogram: { q0_25: 8, q25_50: 2, q50_75: 1, q75_1: 1 },
           exitBySection: { intro: 5 },
+          entryKeywords: {},
+          toolClickCount: 0,
+          conversionEventCount: 0,
+          segmentCounts: { scanner: 0, researcher: 0, ready_to_act: 0 },
           updatedAt: "2026-04-24",
         },
       },
     } as const;
 
-    const clusters = buildClusterPerformanceSnapshot(perf);
+    const clusters = buildClusterPerformanceSnapshot(perf as unknown as PerformanceAggregates);
     expect(clusters.leaderboard.length).toBeGreaterThan(0);
 
-    const pruning = buildContentPruningQueue(perf, behavior, 10);
+    const pruning = buildContentPruningQueue(perf as unknown as PerformanceAggregates, behaviorCast(behavior), 10);
     expect(pruning.length).toBeGreaterThan(0);
     expect(pruning[0]?.path).toContain("/blog/rent-vs-buy");
   });
@@ -157,9 +169,9 @@ describe("adaptive conversion + revenue", () => {
       pages: [{ path: "/tools/loan-calculator", clicks: 40, impressions: 1200, position: 4.2 }],
       pageRevenue: [{ path: "/tools/loan-calculator", rpm: 16, earnings: 11 }],
     } as const;
-    const conv = buildConversionTrackingSnapshot(behavior, 10);
+    const conv = buildConversionTrackingSnapshot(behaviorCast(behavior), 10);
     expect(conv.highConvertingPages.length).toBeGreaterThan(0);
-    const rev = buildAdvancedRevenueOptimization(perf, behavior, 10);
+    const rev = buildAdvancedRevenueOptimization(perfCast(perf), behaviorCast(behavior), 10);
     expect(rev.topRevenuePages[0]?.trueRevenueScore).toBeGreaterThan(40);
   });
 });
@@ -189,9 +201,9 @@ describe("business funnel + money pages", () => {
       pages: [{ path: "/tools/loan-calculator", clicks: 40, impressions: 1200, position: 4.2 }],
       pageRevenue: [{ path: "/tools/loan-calculator", rpm: 16, earnings: 11 }],
     } as const;
-    const funnel = buildRevenueFunnelSnapshot(perf, behavior);
+    const funnel = buildRevenueFunnelSnapshot(perfCast(perf), behaviorCast(behavior));
     expect(funnel.stages.length).toBe(4);
-    const money = buildMoneyPagesSnapshot(perf, behavior);
+    const money = buildMoneyPagesSnapshot(perfCast(perf), behaviorCast(behavior));
     expect(money.topEarningPages.length).toBeGreaterThan(0);
   });
 });
@@ -221,9 +233,9 @@ describe("decision-driven revenue engine", () => {
       pages: [{ path: "/tools/loan-calculator", clicks: 40, impressions: 1200, position: 4.2 }],
       pageRevenue: [{ path: "/tools/loan-calculator", rpm: 16, earnings: 11 }],
     } as const;
-    const funnel = buildRevenueFunnelSnapshot(perf, behavior);
-    const money = buildMoneyPagesSnapshot(perf, behavior);
-    const clusters = buildClusterMoneyScores(perf, behavior);
+    const funnel = buildRevenueFunnelSnapshot(perfCast(perf), behaviorCast(behavior));
+    const money = buildMoneyPagesSnapshot(perfCast(perf), behaviorCast(behavior));
+    const clusters = buildClusterMoneyScores(perfCast(perf), behaviorCast(behavior));
     const weekly = buildWeeklyDecisionActions({
       funnel,
       moneyPages: money,
@@ -269,11 +281,11 @@ describe("monetization intelligence layer", () => {
         { path: "/tools/loan-calculator", rpm: 15, earnings: 8.5 },
       ],
     } as const;
-    const low = buildLowRpmDetection(perf, behavior, 10);
+    const low = buildLowRpmDetection(perfCast(perf), behaviorCast(behavior), 10);
     expect(low.length).toBeGreaterThan(0);
-    const types = buildPageTypeClassification(perf.pages.map((p) => p.path));
+    const types = buildPageTypeClassification(perfCast(perf).pages.map((p) => p.path));
     expect(types.find((t) => t.path === "/tools/loan-calculator")?.type).toBe("calculator");
-    const gaps = buildMonetizationGapEngine(perf, behavior, 10);
+    const gaps = buildMonetizationGapEngine(perfCast(perf), behaviorCast(behavior), 10);
     expect(gaps.length).toBeGreaterThan(0);
     const plans = buildAdPlacementEngine([{ path: "/tools/loan-calculator", pageType: "calculator" }], 10);
     expect(plans[0]?.placements.length).toBe(3);
@@ -311,7 +323,7 @@ describe("monetization scorecard engine", () => {
         { path: "/tools/loan-calculator", rpm: 15, earnings: 8.5 },
       ],
     } as const;
-    const card = buildMonetizationScorecard(perf, behavior, 10);
+    const card = buildMonetizationScorecard(perfCast(perf), behaviorCast(behavior), 10);
     expect(card.actions.length).toBeGreaterThan(0);
     expect(card.actions[0]?.rank).toBe(1);
     expect(card.actions[0]?.expectedRevenueImpactUsd).toBeGreaterThanOrEqual(0);
@@ -365,7 +377,7 @@ describe("monetization sprint engine", () => {
       ],
       totalOpportunityUsd: 37.1,
     } as const;
-    const sprint = buildMonetizationSprintPlan(scorecard);
+    const sprint = buildMonetizationSprintPlan(scorecardCast(scorecard));
     expect(sprint.topActions.length).toBe(3);
     expect(sprint.orderedSteps.length).toBe(3);
     expect(sprint.weeklyExecutionSummary.expectedRevenueGainUsd).toBeGreaterThan(0);
@@ -472,7 +484,7 @@ describe("memory + auto-scaling system", () => {
       ],
       pageRevenue: [],
     } as const;
-    const opportunities = buildAutoScalingOpportunities(patterns, perf, 10);
+    const opportunities = buildAutoScalingOpportunities(patterns, perfCast(perf), 10);
     expect(opportunities.length).toBeGreaterThan(0);
     expect(opportunities[0]?.recommendedFixType).toBe("cta");
 

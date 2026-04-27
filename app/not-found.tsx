@@ -8,9 +8,9 @@ import type { ToolDefinition } from "@/lib/tools/types";
 import { POPULAR_TOOL_SLUGS } from "@/lib/tools/popular-tools";
 
 export const metadata: Metadata = {
-  title: "404 - Page not found",
+  title: { absolute: "Page not found | Toollabz - Free Online Tools" },
   description:
-    "This link is off the map. Search Toollabz for free calculators, converters, PDF tools, and AI helpers - or jump to our most-loved tools.",
+    "404 on Toollabz: search free calculators, converters, PDF tools, and AI helpers, or jump to popular picks — HTTPS hub, no signup.",
   robots: { index: false, follow: true },
 };
 

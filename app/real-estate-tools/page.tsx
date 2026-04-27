@@ -11,6 +11,10 @@ import { toolsInDirectoryGroup } from "@/lib/tools/directory-groups";
 import { toolGlassPanel } from "@/lib/tool-ui";
 import { categoryLandingMetadata } from "@/lib/seo/category-landing-meta";
 import { breadcrumbJsonLd } from "@/lib/seo";
+import HubFeaturedGuides from "@/components/HubFeaturedGuides";
+import { hubCollectionLdForGroup, hubFeaturedPostsForGroup, hubPopularToolsForGroup } from "@/lib/hub-pages/hub-server-utils";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = categoryLandingMetadata({
   path: "/real-estate-tools",
@@ -21,6 +25,13 @@ export const metadata: Metadata = categoryLandingMetadata({
 
 export default function RealEstateToolsPage() {
   const filtered = toolsInDirectoryGroup(tools, "real-estate");
+  const featuredPosts = hubFeaturedPostsForGroup("real-estate");
+  const popularTools = hubPopularToolsForGroup("real-estate");
+  const collectionLd = hubCollectionLdForGroup("real-estate", {
+    name: "Real estate calculators",
+    description: "Mortgage, rent vs buy, yield, and property ROI tools on Toollabz.",
+    path: "/real-estate-tools",
+  });
   const breadcrumbLd = breadcrumbJsonLd([
     { name: "Home", path: "/" },
     { name: "All tools", path: "/tools" },
@@ -42,6 +53,17 @@ export default function RealEstateToolsPage() {
         <p className="mt-3 text-slate-600">Property-focused tools for affordability, ROI, rental yield, and housing comparisons.</p>
       </header>
       <CategoryHubLongform group="real-estate" />
+      <HubFeaturedGuides posts={featuredPosts} title="Featured real estate guides" />
+      <section className="mt-12" aria-labelledby="re-popular">
+        <h2 id="re-popular" className="text-xl font-bold text-slate-900 sm:text-2xl">
+          Popular real estate tools
+        </h2>
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {popularTools.map((tool) => (
+            <ToolCard key={`pop-${tool.slug}`} tool={tool} />
+          ))}
+        </div>
+      </section>
       <CategoryToolSpotlights tools={filtered} currentGroup="real-estate" />
       <div className="mb-10">
         <PopularCalculationsBlock variant="loan" compact />
@@ -50,6 +72,7 @@ export default function RealEstateToolsPage() {
         {filtered.map((tool) => <ToolCard key={tool.slug} tool={tool} />)}
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
     </div>
   );
 }

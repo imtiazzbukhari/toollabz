@@ -1,5 +1,15 @@
 import type { ReactNode } from "react";
 
+export type BlogAuthor = {
+  name: string;
+  jobTitle?: string;
+  bio: string;
+  /** Path on this site, e.g. /about */
+  profilePath?: string;
+  /** Public path under /public */
+  imageSrc?: string;
+};
+
 export type BlogPostDefinition = {
   slug: string;
   /** Shown in <title> / sharing */
@@ -16,5 +26,13 @@ export type BlogPostDefinition = {
   faqSchema?: Array<{ question: string; answer: string }>;
   /** Shown after the article for internal discovery + SEO depth */
   relatedToolSlugs?: string[];
+  /** Optional topic label for hub pages */
+  category?: string;
+  tags?: string[];
+  /** Rough reading time shown in the template */
+  readingTimeMinutes?: number;
+  /** In-page anchors for table of contents */
+  tableOfContents?: Array<{ id: string; label: string }>;
+  author?: BlogAuthor;
   Article: () => ReactNode;
 };

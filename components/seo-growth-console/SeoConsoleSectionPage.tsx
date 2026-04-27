@@ -7,9 +7,10 @@ import ControlToggle from "./controls/ControlToggle";
 import DataTable from "./controls/DataTable";
 import ProgressBar from "./controls/ProgressBar";
 import StatusBadge from "./controls/StatusBadge";
+import { useClientReady } from "./use-client-ready";
 
 const fetcher = async (url: string) => {
-  const res = await fetch(url);
+  const res = await fetch(url, { credentials: "include", cache: "no-store" });
   const data = (await res.json()) as Record<string, unknown>;
   if (!res.ok) throw new Error(typeof data.error === "string" ? data.error : `Failed: ${url}`);
   return data;
@@ -34,7 +35,7 @@ function num(v: unknown) {
 }
 
 const actionBtnClass =
-  "rounded-lg border border-violet-300/50 bg-white/70 px-2 py-1 text-xs text-slate-800 transition-all duration-200 hover:scale-[1.03] hover:border-violet-400 hover:bg-gradient-to-r hover:from-violet-500/20 hover:to-fuchsia-500/20 hover:shadow-[0_0_16px_rgba(139,92,246,0.35)] disabled:cursor-not-allowed disabled:opacity-50 dark:border-violet-700/60 dark:bg-slate-900/70 dark:text-slate-100";
+  "rounded-lg border border-violet-200 bg-white px-2 py-1 text-xs font-medium text-slate-800 shadow-sm transition-all duration-200 hover:border-violet-400 hover:bg-violet-50 hover:shadow disabled:cursor-not-allowed disabled:opacity-50";
 
 function LoadingDot() {
   return <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-r-transparent" />;
@@ -47,16 +48,21 @@ type KeywordDetailState = {
 };
 
 export default function SeoConsoleSectionPage({ section }: { section: keyof typeof sectionMap }) {
+  const clientReady = useClientReady();
   const info = sectionMap[section];
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<{ type: "ok" | "error"; text: string } | null>(null);
   const [selectedKeyword, setSelectedKeyword] = useState<KeywordDetailState | null>(null);
   const [keywordModalLoading, setKeywordModalLoading] = useState(false);
-  const { data, error, isLoading, mutate } = useSWR("/api/seo-console/data", fetcher, { refreshInterval: 45000 });
-  const { data: configData, mutate: mutateConfig } = useSWR("/api/seo-console/control", fetcher, { refreshInterval: 30000 });
-  const { data: outreachData, mutate: mutateOutreach } = useSWR(section === "backlinks" ? "/api/seo-console/outreach" : null, fetcher, {
-    refreshInterval: 30000,
-  });
+  const { data, error, isLoading, mutate } = useSWR(clientReady ? "/api/seo-console/data" : null, fetcher, { refreshInterval: 45000 });
+  const { data: configData, mutate: mutateConfig } = useSWR(clientReady ? "/api/seo-console/control" : null, fetcher, { refreshInterval: 30000 });
+  const { data: outreachData, mutate: mutateOutreach } = useSWR(
+    clientReady && section === "backlinks" ? "/api/seo-console/outreach" : null,
+    fetcher,
+    {
+      refreshInterval: 30000,
+    },
+  );
 
   const snapshot = useMemo(() => ((data?.snapshot ?? {}) as Record<string, unknown>), [data]);
   const config = useMemo(() => ((configData?.config ?? {}) as Record<string, unknown>), [configData]);
@@ -74,7 +80,10 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
   async function openKeywordDetail(keyword: string) {
     setKeywordModalLoading(true);
     try {
-      const res = await fetch(`/api/seo-console/keyword-detail?keyword=${encodeURIComponent(keyword)}`);
+      const res = await fetch(`/api/seo-console/keyword-detail?keyword=${encodeURIComponent(keyword)}`, {
+        credentials: "include",
+        cache: "no-store",
+      });
       const json = (await res.json()) as Record<string, unknown>;
       if (!res.ok || json.ok === false) throw new Error(typeof json.error === "string" ? json.error : "Failed to load detail.");
       const artifact = (json.artifact ?? {}) as Record<string, unknown>;
@@ -109,6 +118,7 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
       }
       const res = await fetch("/api/seo-console/keyword-detail", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
@@ -144,6 +154,7 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
     try {
       const res = await fetch(url, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
@@ -159,15 +170,24 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
     }
   }
 
-  if (isLoading) return <div className="rounded-2xl bg-slate-200/70 p-6 dark:bg-slate-800/60">Loading {info.title}...</div>;
-  if (error) return <div className="rounded-2xl border border-rose-300 bg-rose-50 p-6 text-rose-700">Failed to load {info.title}: {String(error.message)}</div>;
+  if (!clientReady || isLoading)
+    return (
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 text-sm font-medium text-slate-700 shadow-sm">Loading {info.title}…</div>
+    );
+  if (error)
+    return (
+      <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-rose-900 shadow-sm">
+        <p className="font-semibold">Failed to load {info.title}</p>
+        <p className="mt-1 text-sm text-rose-800">{String(error.message)}</p>
+      </div>
+    );
 
   return (
-    <main className="space-y-4">
-      <section className="rounded-2xl border border-white/10 bg-white/70 p-6 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/75">
-        <p className="text-xs uppercase tracking-[0.2em] text-violet-500">{info.title}</p>
-        <h1 className="mt-2 text-2xl font-semibold">{info.title} Control Panel</h1>
-        <p className="mt-1 text-sm text-slate-500">{info.description}</p>
+    <main className="space-y-4 text-slate-900">
+      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p className="text-xs font-medium uppercase tracking-[0.2em] text-violet-600">{info.title}</p>
+        <h1 className="mt-2 text-2xl font-semibold text-slate-900">{info.title} Control Panel</h1>
+        <p className="mt-1 text-sm text-slate-600">{info.description}</p>
       </section>
 
       {section === "opportunities" ? (
@@ -238,7 +258,9 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
           )
             .slice(0, 10)
             .map((b) => [
-              String(b.title),
+              <span key={`${b.title}-title`} className="font-medium text-slate-900 dark:text-slate-100">
+                {String(b.title)}
+              </span>,
               <StatusBadge key={`${b.title}-status`} status="draft" />,
               <div key={`${b.title}-actions`} className="flex gap-2">
                 <button type="button" disabled={loadingAction === "approve"} onClick={() => void runAction("approve", "/api/seo-console/action", { action: "run_pr_script", script: "blog" })} className={actionBtnClass}>{loadingAction === "approve" ? <LoadingDot /> : "Approve"}</button>
@@ -258,7 +280,9 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
           )
             .slice(0, 10)
             .map((t) => [
-              String(t.title),
+              <span key={`${t.title}-title`} className="font-medium text-slate-900 dark:text-slate-100">
+                {String(t.title)}
+              </span>,
               String(num(t.priority)),
               <div key={`${t.title}-actions`} className="flex gap-2">
                 <button
@@ -389,7 +413,7 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
 
       {section === "backlinks" ? (
         <div className="space-y-4">
-          <section className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Backlink discovery (templates)</h3>
             <p className="mb-3 text-xs text-slate-500">Query seeds from live opportunities — verify every domain manually before outreach.</p>
             <DataTable
@@ -405,7 +429,7 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
               emptyMessage="No discovery rows — add keyword opportunities in aggregates."
             />
           </section>
-          <section className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">Outreach Queue</h3>
             <DataTable
               columns={["Prospect", "Status", "Actions"]}
@@ -423,7 +447,7 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
                       if (!url || !url.trim().startsWith("http")) return;
                       void runAction("link_acquired", "/api/seo-console/outreach", { action: "link_acquired", id: m.id, url: url.trim() });
                     }}
-                    className="rounded-lg border border-emerald-400/60 px-2 py-1 text-xs text-emerald-800 dark:text-emerald-200"
+                    className="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-900"
                   >
                     Link acquired
                   </button>
@@ -441,7 +465,7 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
                 { label: "Save template", onClick: () => void runAction("save_template", "/api/seo-console/action", { action: "run_audit" }), loading: loadingAction === "save_template" },
               ]}
             />
-            <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+            <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <h4 className="font-medium">Daily Limit</h4>
               <p className="mt-1 text-sm text-slate-500">Outreach send usage today.</p>
               <div className="mt-3">
@@ -462,7 +486,7 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
               { label: "Force execution", onClick: () => void runAction("force_execution", "/api/seo-console/action", { action: "automation_bundle" }), loading: loadingAction === "force_execution" },
             ]}
           />
-          <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+          <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <h4 className="font-medium">AI Controls</h4>
             <div className="mt-3 grid gap-2">
               <ControlToggle label="AI Enabled" enabled={config.aiEnabled === true} disabled={loadingAction === "toggle_ai"} onToggle={(next) => void runAction("toggle_ai", "/api/seo-console/control", { aiEnabled: next, paused: !next })} />

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ChevronRight } from "lucide-react";
+import ToolCard from "@/components/ToolCard";
 import CategoryHubLongform from "@/components/CategoryHubLongform";
 import CategoryToolSpotlights from "@/components/CategoryToolSpotlights";
 import { tools } from "@/lib/tools/data";
@@ -9,6 +10,10 @@ import { toolGlassPanel } from "@/lib/tool-ui";
 import { categoryLandingMetadata } from "@/lib/seo/category-landing-meta";
 import PageLastUpdated from "@/components/PageLastUpdated";
 import { breadcrumbJsonLd } from "@/lib/seo";
+import HubFeaturedGuides from "@/components/HubFeaturedGuides";
+import { hubCollectionLdForGroup, hubFeaturedPostsForGroup, hubPopularToolsForGroup } from "@/lib/hub-pages/hub-server-utils";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = categoryLandingMetadata({
   path: "/utility-tools",
@@ -19,6 +24,13 @@ export const metadata: Metadata = categoryLandingMetadata({
 
 export default function UtilityToolsPage() {
   const filtered = toolsInDirectoryGroup(tools, "utility");
+  const featuredPosts = hubFeaturedPostsForGroup("utility");
+  const popularTools = hubPopularToolsForGroup("utility");
+  const collectionLd = hubCollectionLdForGroup("utility", {
+    name: "Utility & everyday tools",
+    description: "Converters, text helpers, dates, and productivity utilities on Toollabz.",
+    path: "/utility-tools",
+  });
   const breadcrumbLd = breadcrumbJsonLd([
     { name: "Home", path: "/" },
     { name: "All tools", path: "/tools" },
@@ -40,6 +52,17 @@ export default function UtilityToolsPage() {
         <p className="mt-3 text-slate-600">Everyday utility tools for writing, planning, conversions, and daily productivity tasks.</p>
       </header>
       <CategoryHubLongform group="utility" />
+      <HubFeaturedGuides posts={featuredPosts} title="Featured utility guides" />
+      <section className="mt-12" aria-labelledby="util-popular">
+        <h2 id="util-popular" className="text-xl font-bold text-slate-900 sm:text-2xl">
+          Popular utility tools
+        </h2>
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {popularTools.map((tool) => (
+            <ToolCard key={`pop-${tool.slug}`} tool={tool} />
+          ))}
+        </div>
+      </section>
       <CategoryToolSpotlights tools={filtered} currentGroup="utility" />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((tool) => (
@@ -61,6 +84,7 @@ export default function UtilityToolsPage() {
         ))}
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
     </div>
   );
 }

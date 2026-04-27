@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FileStack } from "lucide-react";
 import type { ToolComputationResult } from "@/lib/tools/computation-result";
 import { toolGlassPanel, toolInputClass } from "@/lib/tool-ui";
@@ -45,6 +45,7 @@ export default function PDFToolPanel({
   const [range, setRange] = useState("1-1");
   const [content, setContent] = useState("");
   const [busy, setBusy] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const run = async () => {
     try {
@@ -160,16 +161,31 @@ export default function PDFToolPanel({
           <p className="text-sm font-medium text-slate-700">Upload and process files</p>
         </div>
       </div>
-      <label className="block space-y-2">
+      <div className="block space-y-2">
         <span className="text-sm font-semibold text-slate-800">Upload PDF file{slug === "pdf-merge" ? "s" : ""}</span>
         <input
+          ref={fileInputRef}
           type="file"
           multiple={slug === "pdf-merge"}
           accept="application/pdf"
           onChange={(e) => setFiles(Array.from(e.target.files || []))}
-          className={`${toolInputClass} file:mr-3 file:rounded-lg file:border-0 file:bg-violet-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-violet-800`}
+          className="sr-only"
+          aria-label={`Choose PDF file${slug === "pdf-merge" ? "s" : ""} to upload`}
         />
-      </label>
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className={`flex min-h-[44px] w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-violet-300/80 bg-violet-50/40 px-4 py-4 text-center transition hover:border-violet-400 hover:bg-violet-50/80 sm:py-5`}
+        >
+          <span className="text-sm font-semibold text-violet-900">Tap to choose PDF{slug === "pdf-merge" ? "s" : ""}</span>
+          <span className="mt-1 text-xs text-slate-600">Works on mobile and desktop — opens your device file picker.</span>
+        </button>
+        {files.length > 0 ? (
+          <p className="text-xs text-slate-600" aria-live="polite">
+            Selected: {files.map((f) => f.name).join(", ")}
+          </p>
+        ) : null}
+      </div>
 
       {slug === "pdf-split" && (
         <label className="block space-y-2">

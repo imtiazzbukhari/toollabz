@@ -3,6 +3,99 @@ import { phase1Profiles } from "./phase1-seo";
 import { TOOL_SEO_CONTENT_LEAD } from "./tool-seo-content-lead";
 import { pickBySlug, slugContentVariant } from "./content-variation";
 
+/** Category-specific FAQs merged early so finance/PDF/AI pages hit common intent queries. */
+function categoryTemplateFaqs(tool: ToolDefinition): ToolFAQ[] {
+  const cat = tool.category;
+  if (cat === "finance") {
+    return [
+      {
+        question: "How accurate is this calculator?",
+        answer:
+          "Outputs follow the documented formula with deterministic rounding. Accuracy depends on the rates and assumptions you enter—always confirm tax, FX, and lending rules with a qualified professional for regulated decisions.",
+      },
+      {
+        question: "Does this include tax?",
+        answer:
+          "Only when the fields explicitly model tax, withholding, or VAT. Otherwise amounts are neutral numerics—label currency and tax treatment yourself.",
+      },
+      {
+        question: "What currency does this use?",
+        answer:
+          "Numbers are unitless unless the tool labels a currency. Keep one currency per run and convert externally when needed.",
+      },
+      {
+        question: "Can I use this for business planning?",
+        answer:
+          "Yes for orientation and what-if sketches. For filings, audits, or investor materials, reconcile with source systems and licensed advisors.",
+      },
+      {
+        question: "How often is the data updated?",
+        answer:
+          "Core formulas update when Toollabz ships a release; live FX (where offered) refreshes on a scheduled cadence noted near the control. Site-wide freshness is stamped on each page.",
+      },
+    ];
+  }
+  if (cat === "pdf") {
+    return [
+      {
+        question: "Is my file secure when I upload it?",
+        answer:
+          "PDF utilities run client-side in your browser for merge/split/compress flows—files are not uploaded to Toollabz servers for those paths. Avoid sensitive documents on shared devices.",
+      },
+      {
+        question: "What is the maximum file size?",
+        answer:
+          "Practical limits depend on your device RAM and browser. Very large PDFs may be slow; compress first when possible.",
+      },
+      {
+        question: "Will merging reduce quality?",
+        answer:
+          "Merge copies pages as-is; it does not re-rasterize unless you run a separate compression step.",
+      },
+      {
+        question: "Can I merge password-protected PDFs?",
+        answer:
+          "You generally need to unlock locally first—passworded inputs often fail in browser libraries until decrypted.",
+      },
+      {
+        question: "Do you store my files after processing?",
+        answer:
+          "Client-side PDF flows do not persist your files on our servers. Clear downloads from your device when finished.",
+      },
+    ];
+  }
+  if (cat === "generators" || tool.slug.startsWith("ai-")) {
+    return [
+      {
+        question: "Is the output copyright free?",
+        answer:
+          "You own how you use your inputs, but AI text can resemble public sources. Review, edit, and clear rights for commercial use as your counsel advises.",
+      },
+      {
+        question: "How do I get better results?",
+        answer:
+          "Add constraints: audience, tone, length, format, and facts to include. Iterate with smaller prompts before asking for long drafts.",
+      },
+      {
+        question: "Can I use this for commercial projects?",
+        answer:
+          "Toollabz does not provide legal clearance. Treat drafts as starting points and run compliance review before publishing or selling.",
+      },
+      {
+        question: "What AI model powers this tool?",
+        answer:
+          "Generators use templated and heuristic transforms in-browser unless otherwise noted; they are not a live subscription to a third-party chat API unless explicitly stated on the tool.",
+      },
+      {
+        question: "How many times can I use this for free?",
+        answer:
+          "There is no metered credit on Toollabz for these flows—stay reasonable so shared infrastructure stays fast for everyone.",
+      },
+    ];
+  }
+  return [];
+}
+
 function dedupeToolFaqs(items: ToolFAQ[]): ToolFAQ[] {
   const seen = new Set<string>();
   const out: ToolFAQ[] = [];
@@ -332,7 +425,7 @@ export function getToolFaqs(tool: ToolDefinition): ToolFAQ[] {
     },
   ];
 
-  const merged = dedupeToolFaqs([...base, ...profileFaq, ...extra]);
+  const merged = dedupeToolFaqs([...categoryTemplateFaqs(tool), ...base, ...profileFaq, ...extra]);
   const pad: ToolFAQ[] = [
     {
       question: `Can I cite ${tool.name} in documentation about ${keyword}?`,

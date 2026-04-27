@@ -4,16 +4,24 @@ import { blogPosts } from "@/lib/blog/registry";
 import { siteUrl } from "@/lib/seo";
 import { toolGlassCard } from "@/lib/tool-ui";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
-  title: "Blog",
+  title: { absolute: "Blog | Toollabz - Free Online Tools" },
   description:
-    "Practical guides on take-home pay, loans and EMI, rent vs buy, ROI, and hourly vs salary - written for people who actually use calculators.",
+    "Practical guides on take-home pay, loans & EMI, VAT, PDF workflows, and ROI — written for people who actually use Toollabz calculators.",
   alternates: { canonical: "/blog" },
   openGraph: {
-    title: "Blog | Toollabz",
-    description: "Guides that pair with our free tools - salary, EMI, housing, ROI, and more.",
+    title: "Blog | Toollabz - Free Online Tools",
+    description: "Guides that pair with our free tools: salary, EMI, VAT, PDF merge, housing, ROI, and more.",
     url: `${siteUrl}/blog`,
     type: "website",
+    siteName: "Toollabz",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog | Toollabz - Free Online Tools",
+    description: "Guides paired with free calculators and PDF utilities on Toollabz.",
   },
 };
 
@@ -28,6 +36,23 @@ export default function BlogPage() {
         {blogPosts.map((post) => (
           <article key={post.slug} className={`p-5 sm:p-6 ${toolGlassCard}`}>
             <p className="text-xs text-slate-500">{post.publishedAt}</p>
+            {(post.category || post.tags.length > 0) && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {post.category ? (
+                  <span className="rounded-full bg-violet-100 px-2.5 py-0.5 text-[11px] font-semibold text-violet-800">
+                    {post.category}
+                  </span>
+                ) : null}
+                {post.tags.map((tag) => (
+                  <span
+                    key={`${post.slug}-${tag}`}
+                    className="rounded-full border border-violet-200/70 bg-white/80 px-2.5 py-0.5 text-[11px] text-slate-600"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
             <h2 className="mt-1 text-xl font-bold text-slate-900">
               <Link href={`/blog/${post.slug}`} className="transition hover:text-violet-800">
                 {post.title}

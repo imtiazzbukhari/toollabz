@@ -2,6 +2,7 @@ import { toolMap, tools } from "@/lib/tools/data";
 import {
   breadcrumbSchema,
   faqSchema,
+  howToSchema,
   relatedToolsItemListSchema,
   toolSchema,
   webPageSchema,
@@ -37,6 +38,7 @@ export default async function ToolSlugLayout({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(toolSchema(tool, path)) }}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(tool)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema(tool, path)) }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(tool, path)) }}

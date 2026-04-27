@@ -5,6 +5,8 @@ import { toolMap, tools } from "@/lib/tools/data";
 import { toolMetadata } from "@/lib/seo";
 import { getToolInsight } from "@/lib/tools/tool-insights";
 
+export const revalidate = 86400;
+
 export async function generateStaticParams() {
   return tools.map((tool) => ({ slug: tool.slug }));
 }

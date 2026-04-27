@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import type { ToolDefinition } from "@/lib/tools/types";
 import type { ToolComputationResult } from "@/lib/tools/computation-result";
-import { trackCalculation, trackGenerate, trackToolUsed } from "@/lib/analytics/gtag";
+import { trackCalculation, trackGenerate, trackPdfToolUsed, trackToolUsed } from "@/lib/analytics/gtag";
 import ResultBox from "@/components/ResultBox";
 import { toolGlassPanel } from "@/lib/tool-ui";
 import type { ToolHistoryEntry } from "./tool-workspace-types";
@@ -83,13 +83,16 @@ export default function ToolWorkspaceClient({
   const onResult = useCallback(
     (next: ToolComputationResult) => {
       if (!next.error) {
-        trackToolUsed(tool.slug, tool.name);
+        trackToolUsed(tool.slug, tool.name, tool.category);
         const isGenerate =
           tool.category === "pdf" || tool.category === "generators" || tool.slug.startsWith("ai-");
+        if (tool.category === "pdf") {
+          trackPdfToolUsed(tool.slug);
+        }
         if (isGenerate) {
-          trackGenerate(tool.slug);
+          trackGenerate(tool.slug, tool.category);
         } else {
-          trackCalculation(tool.slug);
+          trackCalculation(tool.slug, tool.category);
         }
       }
       setResult(next);

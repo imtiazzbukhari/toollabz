@@ -5,6 +5,7 @@ import { Sparkles } from "lucide-react";
 import type { ToolDefinition } from "@/lib/tools/types";
 import type { ToolComputationResult } from "@/lib/tools/computation-result";
 import { toolGlassPanel, toolInputClass } from "@/lib/tool-ui";
+import LiveExchangeRateBar from "@/components/LiveExchangeRateBar";
 
 const loadEngine = () => import("@/lib/tools/engine");
 
@@ -80,6 +81,7 @@ function CalculatorForm({
           )}
         </label>
       ))}
+      {tool.slug === "currency-converter" ? <LiveExchangeRateBar form={form} setForm={setForm} /> : null}
       <button
         type="submit"
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 via-violet-600 to-blue-500 px-4 py-3 text-sm font-semibold text-white shadow-[0_10px_28px_rgba(91,33,182,0.35)] transition hover:brightness-110 active:translate-y-px"

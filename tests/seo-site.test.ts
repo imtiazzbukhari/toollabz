@@ -2,23 +2,22 @@ import { describe, expect, it } from "vitest";
 import { blogPostSlugs } from "../lib/blog/registry";
 import { tools } from "../lib/tools/data";
 import { absoluteUrl, siteUrl, toolMetadata } from "../lib/seo";
-import robots from "../app/robots";
-import sitemap from "../app/sitemap";
+import { GET as robotsGet } from "../app/robots.txt/route";
+import { buildSitemapEntries } from "../lib/content-engine/sitemap-data";
 
 describe("site SEO plumbing (sitemap, robots, metadata)", () => {
-   it("robots.txt rules expose sitemap and host aligned with siteUrl", () => {
-    const r = robots();
-    expect(r.sitemap).toBe(`${siteUrl}/sitemap.xml`);
-    expect(r.host).toBe(siteUrl);
-    const rules = r.rules == null ? [] : Array.isArray(r.rules) ? r.rules : [r.rules];
-    expect(rules.length).toBeGreaterThan(0);
-    const star = rules.find((rule) => rule.userAgent === "*");
-    expect(star?.allow).toContain("/");
+  it("robots.txt exposes sitemap URL aligned with siteUrl", async () => {
+    const res = await robotsGet();
+    const text = await res.text();
+    expect(text).toContain(`Sitemap: ${siteUrl}/sitemap.xml`);
+    expect(text).toContain("User-agent: *");
+    expect(text).toContain("Allow: /");
+    expect(text).toContain("Disallow: /api/");
   });
 
   it("sitemap contains homepage, tools index, sample tool, blog index, and every blog slug", () => {
-    const entries = sitemap();
-    const urls = entries.map((e) => e.url);
+    const entries = buildSitemapEntries(new Date());
+    const urls = entries.map((e) => e.loc);
 
     expect(urls.length).toBeGreaterThan(100);
     expect(new Set(urls).size).toBe(urls.length);
@@ -39,8 +38,8 @@ describe("site SEO plumbing (sitemap, robots, metadata)", () => {
   });
 
   it("every tool slug has a sitemap URL", () => {
-    const entries = sitemap();
-    const urls = new Set(entries.map((e) => e.url));
+    const entries = buildSitemapEntries(new Date());
+    const urls = new Set(entries.map((e) => e.loc));
     for (const tool of tools) {
       expect(urls.has(absoluteUrl(`/tools/${tool.slug}`))).toBe(true);
     }

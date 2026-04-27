@@ -1,9 +1,13 @@
 import { statSync } from "node:fs";
 import path from "node:path";
-import type { BlogPostDefinition } from "./types";
+import type { BlogAuthor, BlogPostDefinition } from "./types";
 import { BLOG_ARTICLE_MODULE_ENTRIES } from "./articles.manifest";
+import { DEFAULT_BLOG_AUTHOR } from "./default-author";
 
-export type BlogPostResolved = Omit<BlogPostDefinition, "seoTitle" | "description" | "excerpt" | "publishedAt" | "relatedToolSlugs"> & {
+export type BlogPostResolved = Omit<
+  BlogPostDefinition,
+  "seoTitle" | "description" | "excerpt" | "publishedAt" | "relatedToolSlugs" | "author" | "tags" | "readingTimeMinutes"
+> & {
   seoTitle: string;
   description: string;
   excerpt: string;
@@ -11,6 +15,9 @@ export type BlogPostResolved = Omit<BlogPostDefinition, "seoTitle" | "descriptio
   dateModified: string;
   relatedToolSlugs: string[];
   sourceFile: string;
+  author: BlogAuthor;
+  tags: string[];
+  readingTimeMinutes: number;
 };
 
 function toIsoDate(d: Date): string {
@@ -53,8 +60,13 @@ function normalizePost(raw: BlogPostDefinition, sourceFile: string): BlogPostRes
   const title = raw.title.trim();
   const description = (raw.description ?? raw.excerpt ?? `${title} on Toollabz.`).trim();
   const excerpt = (raw.excerpt ?? description).trim();
-  const seoTitle = (raw.seoTitle ?? `${title} | Toollabz`).trim();
+  const baseSeo = (raw.seoTitle ?? title).trim();
+  const seoTitle = baseSeo.includes("Toollabz") ? baseSeo : `${baseSeo} | Toollabz - Free Online Tools`;
   const publishedAt = (raw.publishedAt ?? filePublishedAt).trim();
+  const author = raw.author ?? DEFAULT_BLOG_AUTHOR;
+  const tags = [...(raw.tags ?? [])];
+  const readingTimeMinutes =
+    raw.readingTimeMinutes ?? Math.max(4, Math.min(25, Math.round((description.length + excerpt.length) / 700)));
   return {
     ...raw,
     title,
@@ -65,6 +77,9 @@ function normalizePost(raw: BlogPostDefinition, sourceFile: string): BlogPostRes
     dateModified,
     relatedToolSlugs: [...(raw.relatedToolSlugs ?? [])],
     sourceFile,
+    author,
+    tags,
+    readingTimeMinutes,
   };
 }
 

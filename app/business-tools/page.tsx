@@ -11,6 +11,10 @@ import { toolsInDirectoryGroup } from "@/lib/tools/directory-groups";
 import { toolGlassPanel } from "@/lib/tool-ui";
 import { categoryLandingMetadata } from "@/lib/seo/category-landing-meta";
 import { breadcrumbJsonLd } from "@/lib/seo";
+import HubFeaturedGuides from "@/components/HubFeaturedGuides";
+import { hubCollectionLdForGroup, hubFeaturedPostsForGroup, hubPopularToolsForGroup } from "@/lib/hub-pages/hub-server-utils";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = categoryLandingMetadata({
   path: "/business-tools",
@@ -21,6 +25,13 @@ export const metadata: Metadata = categoryLandingMetadata({
 
 export default function BusinessToolsPage() {
   const filtered = toolsInDirectoryGroup(tools, "business-saas");
+  const featuredPosts = hubFeaturedPostsForGroup("business-saas");
+  const popularTools = hubPopularToolsForGroup("business-saas");
+  const collectionLd = hubCollectionLdForGroup("business-saas", {
+    name: "Business & SaaS calculators",
+    description: "ROI, margins, CAC, LTV, break-even, and valuation helpers on Toollabz.",
+    path: "/business-tools",
+  });
   const breadcrumbLd = breadcrumbJsonLd([
     { name: "Home", path: "/" },
     { name: "All tools", path: "/tools" },
@@ -42,6 +53,17 @@ export default function BusinessToolsPage() {
         <p className="mt-3 text-slate-600">Business KPI calculators for margins, CAC/LTV, break-even, and growth analysis.</p>
       </header>
       <CategoryHubLongform group="business-saas" />
+      <HubFeaturedGuides posts={featuredPosts} title="Featured business guides" />
+      <section className="mt-12" aria-labelledby="biz-popular">
+        <h2 id="biz-popular" className="text-xl font-bold text-slate-900 sm:text-2xl">
+          Popular business tools
+        </h2>
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {popularTools.map((tool) => (
+            <ToolCard key={`pop-${tool.slug}`} tool={tool} />
+          ))}
+        </div>
+      </section>
       <CategoryToolSpotlights tools={filtered} currentGroup="business-saas" />
       <div className="mb-10">
         <PopularCalculationsBlock variant="salary" compact />
@@ -50,6 +72,7 @@ export default function BusinessToolsPage() {
         {filtered.map((tool) => <ToolCard key={tool.slug} tool={tool} />)}
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
     </div>
   );
 }

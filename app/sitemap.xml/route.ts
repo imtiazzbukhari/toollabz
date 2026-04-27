@@ -1,18 +1,31 @@
 import { buildSitemapEntries, renderSitemapXml } from "@/lib/content-engine/sitemap-data";
 import { setSystemStatus } from "@/lib/content-engine/system-status";
+import { cacheGet, cacheSet } from "@/lib/cache/unified-cache";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+const SITEMAP_CACHE_KEY = "sitemap:xml:v1";
+
 export async function GET() {
+  const cached = await cacheGet(SITEMAP_CACHE_KEY);
+  if (cached) {
+    return new Response(cached, {
+      headers: {
+        "Content-Type": "application/xml; charset=utf-8",
+        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      },
+    });
+  }
   setSystemStatus({ name: "sitemap-generator", status: "running" });
   try {
     const xml = renderSitemapXml(buildSitemapEntries(new Date()));
+    await cacheSet(SITEMAP_CACHE_KEY, xml, 3600);
     setSystemStatus({ name: "sitemap-generator", status: "idle" });
     return new Response(xml, {
       headers: {
         "Content-Type": "application/xml; charset=utf-8",
-        "Cache-Control": "public, max-age=300, s-maxage=300, stale-while-revalidate=600",
+        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
       },
     });
   } catch (error) {

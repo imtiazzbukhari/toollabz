@@ -21,3 +21,7 @@ lib/content-engine/outreach/outreach-queue.json
 # Local execution memory stores
 lib/content-engine/dashboard/sprint-execution.json
 lib/content-engine/dashboard/revenue-memory.json
+
+# Local backlinks outreach DB (SQLite)
+data/backlinks.db
+data/backlinks.db-*

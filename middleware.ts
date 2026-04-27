@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getSeoConsoleSecret, isSeoConsoleAuthenticated } from "@/lib/content-engine/seo-console-auth";
+import { checkRateLimit, rateLimitKey } from "@/lib/api-rate-limit";
 
 /** Valid IPv4 in Host header (no port). */
 const IPV4_HOST =
@@ -110,7 +111,22 @@ export function middleware(request: NextRequest) {
   }
 
   const pathname = request.nextUrl.pathname;
-  if (pathname.startsWith("/seo-growth-console")) {
+  if (pathname.startsWith("/api/")) {
+    const xf = request.headers.get("x-forwarded-for");
+    const ip = xf ? xf.split(",")[0]!.trim() : (request.headers.get("x-real-ip") ?? "local");
+    const rl = checkRateLimit(rateLimitKey("api", ip), 240, 60_000);
+    if (!rl.ok) {
+      return new NextResponse("Too Many Requests", {
+        status: 429,
+        headers: { "Retry-After": String(rl.retryAfter), "Content-Type": "text/plain; charset=utf-8" },
+      });
+    }
+  }
+
+  const isDashboard = pathname.startsWith("/dashboard");
+  const isSeoConsole = pathname.startsWith("/seo-growth-console");
+  if (isSeoConsole || isDashboard) {
+    const loginPath = "/seo-growth-console/login";
     if (pathname.startsWith("/seo-growth-console/login")) {
       const res = NextResponse.next();
       return withHsts(res, hostNoPort, apex);
@@ -118,14 +134,15 @@ export function middleware(request: NextRequest) {
     const secret = getSeoConsoleSecret();
     if (!secret) {
       const u = request.nextUrl.clone();
-      u.pathname = "/seo-growth-console/login";
+      u.pathname = loginPath;
       u.searchParams.set("error", "not_configured");
       const res = NextResponse.redirect(u);
       return withHsts(res, hostNoPort, apex);
     }
+    /* Auth: tlz_seo_console cookie or x-seo-console-secret (see seo-console-auth). */
     if (!isSeoConsoleAuthenticated(request)) {
       const u = request.nextUrl.clone();
-      u.pathname = "/seo-growth-console/login";
+      u.pathname = loginPath;
       u.searchParams.set("next", pathname);
       const res = NextResponse.redirect(u);
       return withHsts(res, hostNoPort, apex);

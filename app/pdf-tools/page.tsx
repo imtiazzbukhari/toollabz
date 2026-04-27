@@ -10,6 +10,10 @@ import { toolGlassPanel } from "@/lib/tool-ui";
 import { categoryLandingMetadata } from "@/lib/seo/category-landing-meta";
 import PageLastUpdated from "@/components/PageLastUpdated";
 import { breadcrumbJsonLd } from "@/lib/seo";
+import HubFeaturedGuides from "@/components/HubFeaturedGuides";
+import { hubCollectionLdForGroup, hubFeaturedPostsForGroup, hubPopularToolsForGroup } from "@/lib/hub-pages/hub-server-utils";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = categoryLandingMetadata({
   path: "/pdf-tools",
@@ -20,6 +24,13 @@ export const metadata: Metadata = categoryLandingMetadata({
 
 export default function PdfToolsPage() {
   const filtered = toolsInDirectoryGroup(tools, "pdf");
+  const featuredPosts = hubFeaturedPostsForGroup("pdf");
+  const popularTools = hubPopularToolsForGroup("pdf");
+  const collectionLd = hubCollectionLdForGroup("pdf", {
+    name: "PDF tools",
+    description: "Merge, split, compress, and convert PDFs in your browser on Toollabz.",
+    path: "/pdf-tools",
+  });
   const breadcrumbLd = breadcrumbJsonLd([
     { name: "Home", path: "/" },
     { name: "All tools", path: "/tools" },
@@ -47,6 +58,17 @@ export default function PdfToolsPage() {
         </p>
       </header>
       <CategoryHubLongform group="pdf" />
+      <HubFeaturedGuides posts={featuredPosts} title="Featured PDF guides" />
+      <section className="mt-12" aria-labelledby="pdf-popular">
+        <h2 id="pdf-popular" className="text-xl font-bold text-slate-900 sm:text-2xl">
+          Popular PDF tools
+        </h2>
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {popularTools.map((tool) => (
+            <ToolCard key={`pop-${tool.slug}`} tool={tool} />
+          ))}
+        </div>
+      </section>
       <CategoryToolSpotlights tools={filtered} currentGroup="pdf" />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((tool) => (
@@ -54,6 +76,7 @@ export default function PdfToolsPage() {
         ))}
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
     </div>
   );
 }

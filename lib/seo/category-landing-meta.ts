@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteUrl, TOOL_PAGE_TITLE_SUFFIX } from "@/lib/seo";
+
+function withBrandSuffix(title: string): string {
+  const t = title.trim();
+  return t.includes("Toollabz") ? t : `${t}${TOOL_PAGE_TITLE_SUFFIX}`;
+}
 
 export function categoryLandingMetadata(opts: {
   path: `/${string}`;
@@ -7,12 +12,13 @@ export function categoryLandingMetadata(opts: {
   description: string;
 }): Metadata {
   const { path, title, description } = opts;
+  const fullTitle = withBrandSuffix(title);
   return {
-    title: { absolute: title },
+    title: { absolute: fullTitle },
     description,
     alternates: { canonical: path },
     openGraph: {
-      title,
+      title: fullTitle,
       description,
       url: absoluteUrl(path),
       type: "website",
@@ -20,7 +26,7 @@ export function categoryLandingMetadata(opts: {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: fullTitle,
       description,
     },
   };

@@ -7,6 +7,11 @@ export async function GET() {
   const body = [
     "User-agent: *",
     "Allow: /",
+    "Disallow: /login",
+    "Disallow: /login/",
+    "Disallow: /signup",
+    "Disallow: /signup/",
+    "Disallow: /api/",
     "Disallow: /seo-growth-console",
     "Disallow: /seo-growth-console/",
     "Disallow: /api/seo-console/",

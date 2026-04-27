@@ -11,11 +11,10 @@ import {
   Search,
   Wrench,
   CheckCircle2,
-  Star,
   Mail,
 } from "lucide-react";
 import ToolCard from "@/components/ToolCard";
-import { categories, tools, trendingSlugs } from "@/lib/tools/data";
+import { tools, trendingSlugs } from "@/lib/tools/data";
 import { getCategoryIcon } from "@/utils/icons";
 import HomeSearchForm from "@/components/HomeSearchForm";
 import NewsletterFormDeferred from "@/components/NewsletterFormDeferred";
@@ -30,27 +29,27 @@ import PopularCalculationsBlock from "@/components/PopularCalculationsBlock";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Free Online Tools - Calculators, Converters & PDF Hub",
+    absolute: "Toollabz - Free Online Tools: Calculators, Converters & PDF Hub",
   },
   description:
-    "Free online tools hub: calculators and converters, PDF utilities, developer helpers, and AI drafting assistants on Toollabz. HTTPS pages, structured guides, FAQs, and deep internal links between related tools.",
+    `Browse ${tools.length}+ free calculators, converters & PDF tools on Toollabz — fast, HTTPS, with FAQs and hubs. No signup; canonical pages for every utility.`,
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Free Online Tools - Calculators, Converters & PDF Hub",
+    title: "Toollabz - Free Online Tools: Calculators, Converters & PDF Hub",
     description:
-      "Browse free calculators, converters, PDF utilities, developer tools, and AI assistants - all on HTTPS Toollabz with canonical URLs and a searchable directory.",
+      `Search ${tools.length}+ free calculators, converters, PDF utilities, and AI helpers on Toollabz — structured data, hubs, and internal links.`,
     url: siteUrl,
     type: "website",
     siteName: "Toollabz",
-    images: [{ url: absoluteUrl("/logo-toollabz.webp"), width: 469, height: 469, alt: "Toollabz" }],
+    images: [{ url: absoluteUrl("/logo-toollabz.webp"), width: 469, height: 469, alt: "Toollabz logo — free online tools hub" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free Online Tools - Calculators, Converters & PDF Hub",
+    title: "Toollabz - Free Online Tools: Calculators, Converters & PDF Hub",
     description:
-      "Browse free calculators, converters, PDF utilities, developer tools, and AI assistants on Toollabz over HTTPS.",
+      `Free calculators, converters & PDF hub: ${tools.length}+ tools on Toollabz with guides, FAQs, and category hubs.`,
     images: [absoluteUrl("/logo-toollabz.webp")],
   },
 };
@@ -101,10 +100,10 @@ export default function Home() {
   ];
 
   const stats = [
-    { value: String(categories.length), label: "Ways to browse", icon: Users },
-    { value: String(tools.length), label: "Powerful Tools", icon: Sparkles },
-    { value: "99.8%", label: "Uptime", icon: Zap },
-    { value: "100%", label: "Privacy First", icon: ShieldCheck },
+    { value: `${tools.length}+`, label: "Free tools", icon: Sparkles },
+    { value: "100%", label: "Free, no signup", icon: Users },
+    { value: "No storage", label: "We do not keep your inputs", icon: ShieldCheck },
+    { value: "Apr 2026", label: "Directory updated", icon: Zap },
   ];
   const trustItems = [
     { title: "Always Free", text: "All tools are 100% free to use. No hidden costs.", icon: Sparkles },
@@ -292,8 +291,10 @@ export default function Home() {
       <section className="section-fade bg-transparent">
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 md:py-4">
         <div className="mb-3 text-center md:text-left">
-          <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Trusted by Millions</h2>
-          <p className="mt-1 text-sm text-slate-600">Powerful tools, reliable uptime, and a privacy-first experience.</p>
+          <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Used by thousands</h2>
+          <p className="mt-1 text-sm text-slate-600">
+            {tools.length}+ free tools, reliable uptime, and a privacy-first experience on Toollabz.
+          </p>
         </div>
         <div className="grid gap-3 rounded-2xl border border-white/50 bg-white/40 p-4 shadow-[0_8px_20px_rgba(15,23,42,0.05)] backdrop-blur-md sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((s) => {
@@ -316,15 +317,27 @@ export default function Home() {
 
       <section className="section-fade bg-transparent">
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 md:py-4">
-          <div className="mb-3 text-center md:text-left">
-            <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">How It Works</h2>
-            <p className="mt-1 text-sm text-slate-600">Get results in just 3 simple steps.</p>
-          </div>
+        <div className="mb-3 text-center md:text-left">
+          <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">How it works</h2>
+          <p className="mt-1 text-sm text-slate-600">Search, run the tool, and copy results — illustrated with the same hub art you see on tool pages.</p>
+        </div>
           <div className="mt-4 grid items-start gap-4 md:grid-cols-3">
             {howItWorks.map((step, idx) => {
               const Icon = step.icon;
               return (
-                <div key={step.title} className={`relative ${softSectionCardTight}`}>
+                <div key={step.title} className={`relative overflow-hidden ${softSectionCardTight}`}>
+                  <div className="relative mb-3 aspect-[4/3] w-full overflow-hidden rounded-xl border border-violet-200/40 bg-gradient-to-br from-violet-50/90 to-blue-50/60">
+                    <Image
+                      src={TOOLLABZ_HERO_IMAGE}
+                      alt={`Toollabz how it works — step ${idx + 1}: ${step.title}`}
+                      width={480}
+                      height={360}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-contain object-center p-3 opacity-95"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
                   <div className="mb-2 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-blue-500 text-white">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </div>
@@ -366,44 +379,41 @@ export default function Home() {
       <section className="section-fade bg-transparent">
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 md:py-4">
         <div className="mb-3 text-center md:text-left">
-          <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Loved by Thousands</h2>
+          <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">Community feedback</h2>
+          <p className="mt-1 text-sm text-slate-600">
+            Honest reviews help us prioritize fixes and new tools. We do not display fabricated testimonials.
+          </p>
         </div>
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
-          {(
-            [
-              {
-                name: "Sarah Mitchell",
-                initials: "SM",
-                quote: "Toollabz saved me so much time!",
-              },
-              {
-                name: "James Okonkwo",
-                initials: "JO",
-                quote: "Great UX and super fast tools.",
-              },
-              {
-                name: "Priya Sharma",
-                initials: "PS",
-                quote: "Best free toolkit I use daily.",
-              },
-            ] as const
-          ).map((t) => (
-            <div key={t.name} className={softSectionCardTight}>
-              <div className="flex items-center gap-3">
-                <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-blue-500 text-sm font-semibold text-white">
-                  {t.initials}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-slate-900">{t.name}</p>
-                  <div className="mt-0.5 flex items-center gap-1 text-amber-400">
-                    {[...Array(5)].map((_, j) => <Star key={j} className="h-3.5 w-3.5 fill-current" aria-hidden="true" />)}
-                  </div>
-                </div>
-              </div>
-              <p className="mt-3 text-slate-700">“{t.quote}”</p>
-              <p className="mt-2 text-sm text-slate-500">Verified customer</p>
+        <div className="mt-4 grid gap-4 md:grid-cols-1">
+          <div className={`${softSectionCardTight} text-center md:text-left`}>
+            <p className="text-sm leading-relaxed text-slate-700">
+              We publish verifiable facts on this page (tool counts, update cadence) and do not fabricate review quotes. When
+              Trustpilot is connected, a micro-review widget will appear here using your{" "}
+              <code className="rounded bg-violet-100/80 px-1 text-xs">NEXT_PUBLIC_TRUSTPILOT_BUSINESS_ID</code> env.
+            </p>
+            <div className="mt-4 flex flex-wrap justify-center gap-3 md:justify-start">
+              <a
+                href="https://www.producthunt.com/products/toollabz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 min-w-[44px] items-center gap-2 rounded-full border border-violet-200 bg-white px-4 py-2.5 text-sm font-semibold text-violet-800 shadow-sm transition hover:border-violet-300 hover:bg-violet-50"
+              >
+                View on Product Hunt
+              </a>
+              <Link
+                href="/contact"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-violet-200 bg-white px-4 py-2.5 text-sm font-semibold text-violet-800 shadow-sm transition hover:border-violet-300 hover:bg-violet-50"
+              >
+                Share feedback
+              </Link>
+              <Link
+                href="/tools"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-gradient-to-r from-violet-600 to-blue-500 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:brightness-110"
+              >
+                Explore tools
+              </Link>
             </div>
-          ))}
+          </div>
         </div>
         </div>
       </section>
@@ -416,8 +426,10 @@ export default function Home() {
               <Mail className="h-6 w-6" aria-hidden="true" />
             </span>
             <div>
-            <h3 className="text-xl font-semibold sm:text-2xl">Stay in the Loop</h3>
-            <p className="mt-1 text-sm text-violet-100">Get updates about new tools and features.</p>
+            <h3 className="text-xl font-semibold sm:text-2xl">Stay in the loop</h3>
+            <p className="mt-1 text-sm text-violet-100">
+              Get notified when we add new tools — no spam, unsubscribe anytime.
+            </p>
             </div>
           </div>
           <div className="w-full min-w-0 md:max-w-md md:flex-shrink-0">

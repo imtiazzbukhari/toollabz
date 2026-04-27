@@ -1,5 +1,5 @@
-import SeoConsoleSectionPage from "@/components/seo-growth-console/SeoConsoleSectionPage";
+import BacklinksOverviewClient from "@/components/seo-growth-console/backlinks/BacklinksOverviewClient";
 
-export default function SeoConsoleBacklinksPage() {
-  return <SeoConsoleSectionPage section="backlinks" />;
+export default function BacklinksOverviewPage() {
+  return <BacklinksOverviewClient />;
 }

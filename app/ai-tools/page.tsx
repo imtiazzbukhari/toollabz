@@ -10,6 +10,10 @@ import { toolGlassPanel } from "@/lib/tool-ui";
 import { categoryLandingMetadata } from "@/lib/seo/category-landing-meta";
 import PageLastUpdated from "@/components/PageLastUpdated";
 import { breadcrumbJsonLd } from "@/lib/seo";
+import HubFeaturedGuides from "@/components/HubFeaturedGuides";
+import { hubCollectionLdForGroup, hubFeaturedPostsForGroup, hubPopularToolsForGroup } from "@/lib/hub-pages/hub-server-utils";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = categoryLandingMetadata({
   path: "/ai-tools",
@@ -20,6 +24,13 @@ export const metadata: Metadata = categoryLandingMetadata({
 
 export default function AIToolsPage() {
   const filtered = toolsInDirectoryGroup(tools, "ai");
+  const featuredPosts = hubFeaturedPostsForGroup("ai");
+  const popularTools = hubPopularToolsForGroup("ai");
+  const collectionLd = hubCollectionLdForGroup("ai", {
+    name: "AI writing & generator tools",
+    description: "AI-assisted copy, outreach, and naming tools on Toollabz.",
+    path: "/ai-tools",
+  });
   const breadcrumbLd = breadcrumbJsonLd([
     { name: "Home", path: "/" },
     { name: "All tools", path: "/tools" },
@@ -41,11 +52,23 @@ export default function AIToolsPage() {
         <p className="mt-3 text-slate-600">AI-assisted generators for copywriting, outreach, social content, and naming workflows.</p>
       </header>
       <CategoryHubLongform group="ai" />
+      <HubFeaturedGuides posts={featuredPosts} title="Featured AI & content guides" />
+      <section className="mt-12" aria-labelledby="ai-popular">
+        <h2 id="ai-popular" className="text-xl font-bold text-slate-900 sm:text-2xl">
+          Popular AI tools
+        </h2>
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {popularTools.map((tool) => (
+            <ToolCard key={`pop-${tool.slug}`} tool={tool} />
+          ))}
+        </div>
+      </section>
       <CategoryToolSpotlights tools={filtered} currentGroup="ai" />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((tool) => <ToolCard key={tool.slug} tool={tool} />)}
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
     </div>
   );
 }

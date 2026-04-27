@@ -2,7 +2,36 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { blogPosts } from "@/lib/blog/registry";
 import { categories, tools } from "@/lib/tools/data";
-import { siteUrl } from "@/lib/seo";
+import { siteUrl as configuredSiteUrl } from "@/lib/seo";
+
+/** Never emit raw IPs or non-public hosts in sitemap `<loc>` URLs. */
+function sitemapPublicOrigin(): string {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const tryUrl = (s: string) => {
+    const normalized = /^https?:\/\//i.test(s) ? s : `https://${s}`;
+    const u = new URL(normalized);
+    const host = u.hostname.toLowerCase();
+    if (/^\d{1,3}(\.\d{1,3}){3}$/.test(host)) return null;
+    if (host === "localhost" || host === "127.0.0.1" || host === "::1") return null;
+    if (host.startsWith("[") && host.includes("]")) return null;
+    u.protocol = "https:";
+    if (host.startsWith("www.")) u.hostname = host.slice(4);
+    return u.origin.replace(/\/$/, "");
+  };
+  if (raw) {
+    const o = tryUrl(raw);
+    if (o) return o;
+  }
+  try {
+    const o = tryUrl(configuredSiteUrl);
+    if (o) return o;
+  } catch {
+    /* ignore */
+  }
+  return "https://toollabz.com";
+}
+
+const siteUrl = sitemapPublicOrigin();
 import { SITEMAP_CM_TO_FEET_SLUGS, SITEMAP_LOAN_PRINCIPALS, SITEMAP_SALARY_GROSS } from "@/lib/sitemap-programmatic";
 
 export type SitemapEntry = {

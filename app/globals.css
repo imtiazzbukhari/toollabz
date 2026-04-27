@@ -24,7 +24,7 @@
     text-size-adjust: 100%;
   }
   body {
-    @apply bg-white text-slate-900 antialiased font-sans;
+    @apply overflow-x-hidden bg-white text-slate-900 antialiased font-sans;
     touch-action: manipulation;
   }
 }

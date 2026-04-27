@@ -33,11 +33,17 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:e2e:install": "playwright install chromium",
-    "images:png-to-webp": "node scripts/convert-png-to-webp.mjs"
+    "images:png-to-webp": "node scripts/convert-png-to-webp.mjs",
+    "images:webp": "node scripts/convert-to-webp.mjs",
+    "audit:links": "tsx scripts/audit-internal-links.ts",
+    "predeploy": "node scripts/pre-deploy-check.mjs"
   },
   "dependencies": {
     "@tailwindcss/oxide-linux-x64-gnu": "^4.2.2",
+    "better-sqlite3": "^12.9.0",
     "framer-motion": "^12.38.0",
+    "ioredis": "^5.10.1",
+    "lru-cache": "^11.3.5",
     "lucide-react": "^0.511.0",
     "next": "^15.2.4",
     "nodemailer": "^6.10.0",
@@ -46,12 +52,14 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^3.8.1",
+    "sharp": "^0.33.5",
     "swr": "^2.4.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
     "@playwright/test": "^1.52.0",
     "@tailwindcss/postcss": "^4.0.14",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^22.13.10",
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19.0.12",

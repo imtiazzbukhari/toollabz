@@ -4714,18 +4714,31 @@ export function computeTool(slug: string, form: Record<string, string>): ToolCom
       };
     }
     case "currency-converter": {
+      const from = String(form.fromCurrency ?? "USD")
+        .trim()
+        .toUpperCase();
+      const to = String(form.toCurrency ?? "EUR")
+        .trim()
+        .toUpperCase();
       const ae = requiredNumber(form.amount, "Amount to convert");
-      const re = requiredNumber(form.rate, "Exchange rate");
-      if (ae || re) return invalid((ae || re) as string);
+      if (ae) return invalid(ae);
       const amt = n(form.amount);
-      const rate = n(form.rate);
       if (amt < 0) return invalid("Amount cannot be negative.");
-      if (rate <= 0) return invalid("Exchange rate must be greater than zero.");
+      let rate: number;
+      if (from === to) {
+        rate = 1;
+      } else {
+        const re = requiredNumber(form.rate, "Exchange rate");
+        if (re) return invalid(re);
+        rate = n(form.rate);
+        if (rate <= 0) return invalid("Exchange rate must be greater than zero.");
+      }
       const out = amt * rate;
       return {
         title: "Converted amount",
         value: out.toLocaleString("en-US", { maximumFractionDigits: 6 }),
         extra: [
+          `${from} → ${to}`,
           `Source amount: ${amt.toLocaleString("en-US", { maximumFractionDigits: 6 })}`,
           `Rate applied: ${rate.toLocaleString("en-US", { maximumFractionDigits: 8 })} (target per 1 source)`,
           "Verify live rates with your bank or broker before sending money.",

@@ -27,7 +27,7 @@ export function getRelatedToolsMergedDeduped(
   return deduped;
 }
 
-/** Top related tools shown in ToolLayout (same rules, capped at 8, at least 5 when possible). */
+/** Top related tools shown in ToolLayout (same rules, 4–6 items for internal linking + UX). */
 export function getRelatedToolsForLayout(
   tool: ToolDefinition,
   catalog: readonly ToolDefinition[],
@@ -35,13 +35,13 @@ export function getRelatedToolsForLayout(
   const merged = [...getRelatedToolsMergedDeduped(tool, catalog)];
   const used = new Set(merged.map((t) => t.slug));
   used.add(tool.slug);
-  if (merged.length < 5) {
+  if (merged.length < 4) {
     for (const t of catalog) {
-      if (merged.length >= 5) break;
+      if (merged.length >= 6) break;
       if (used.has(t.slug)) continue;
       merged.push(t);
       used.add(t.slug);
     }
   }
-  return merged.slice(0, 8);
+  return merged.slice(0, 6);
 }

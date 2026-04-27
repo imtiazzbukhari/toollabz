@@ -1,9 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import useSWR from "swr";
 import { Loader2, Sparkles, TrendingDown, TrendingUp, WandSparkles } from "lucide-react";
+import { useClientReady } from "./use-client-ready";
 import type { ConsoleChartsData } from "./ConsoleCharts";
 import DataTable from "./controls/DataTable";
 import StatusBadge from "./controls/StatusBadge";
@@ -11,7 +13,7 @@ import ControlToggle from "./controls/ControlToggle";
 
 const ConsoleCharts = dynamic(() => import("./ConsoleCharts"), { ssr: false });
 const fetcher = async (url: string) => {
-  const res = await fetch(url);
+  const res = await fetch(url, { credentials: "include", cache: "no-store" });
   const data = (await res.json()) as Record<string, unknown>;
   if (!res.ok) throw new Error(typeof data.error === "string" ? data.error : `Failed: ${url}`);
   return data;
@@ -27,15 +29,19 @@ function pathFromSmartTitle(title: string): string {
 }
 
 export default function SeoGrowthConsoleDashboard() {
+  const clientReady = useClientReady();
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [execLoading, setExecLoading] = useState<string | null>(null);
   const [controlLoading, setControlLoading] = useState<string | null>(null);
   const [selectedActionIds, setSelectedActionIds] = useState<Set<string>>(() => new Set());
   const [expansionPreview, setExpansionPreview] = useState<Record<string, unknown> | null>(null);
   const [feedback, setFeedback] = useState<{ type: "ok" | "error"; text: string } | null>(null);
-  const { data: dataRes, error, isLoading, mutate } = useSWR("/api/seo-console/data", fetcher, { refreshInterval: 45000, revalidateOnFocus: true });
-  const { data: configRes, mutate: mutateConfig } = useSWR("/api/seo-console/control", fetcher, { refreshInterval: 60000 });
-  const { mutate: refreshLogs } = useSWR("/api/seo-console/logs", fetcher, { refreshInterval: 30000 });
+  const { data: dataRes, error, isLoading, mutate } = useSWR(clientReady ? "/api/seo-console/data" : null, fetcher, {
+    refreshInterval: 45000,
+    revalidateOnFocus: true,
+  });
+  const { data: configRes, mutate: mutateConfig } = useSWR(clientReady ? "/api/seo-console/control" : null, fetcher, { refreshInterval: 60000 });
+  const { mutate: refreshLogs } = useSWR(clientReady ? "/api/seo-console/logs" : null, fetcher, { refreshInterval: 30000 });
   const snapshot = useMemo(() => ((dataRes?.snapshot ?? {}) as Record<string, unknown>), [dataRes]);
   const config = useMemo(() => ((configRes?.config ?? {}) as Record<string, unknown>), [configRes]);
   const executionMode = config.dashboardMode === "execution";
@@ -147,6 +153,7 @@ export default function SeoGrowthConsoleDashboard() {
     try {
       const res = await fetch("/api/seo-console/mark-impact", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ executionId, refreshFromAggregates }),
       });
@@ -167,6 +174,7 @@ export default function SeoGrowthConsoleDashboard() {
     try {
       const res = await fetch("/api/seo-console/control", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(patch),
       });
@@ -187,6 +195,7 @@ export default function SeoGrowthConsoleDashboard() {
     try {
       const res = await fetch("/api/seo-console/execution", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
@@ -216,6 +225,7 @@ export default function SeoGrowthConsoleDashboard() {
     try {
       const res = await fetch("/api/seo-console/action", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
@@ -228,6 +238,7 @@ export default function SeoGrowthConsoleDashboard() {
       setFeedback({ type: "error", text });
       await fetch("/api/seo-console/logs", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type: "task_failed", level: "error", message: text }),
       });
@@ -236,28 +247,51 @@ export default function SeoGrowthConsoleDashboard() {
     }
   }
 
-  if (isLoading) return <div className="rounded-2xl bg-slate-200/70 p-6 dark:bg-slate-800/60">Loading live dashboard data...</div>;
-  if (error) return <div className="rounded-2xl border border-rose-300 bg-rose-50 p-6 text-rose-700">Failed to load dashboard data: {String(error.message)}</div>;
+  if (!clientReady || isLoading)
+    return (
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 text-sm font-medium text-slate-700 shadow-sm">Loading live dashboard data…</div>
+    );
+  if (error) {
+    const msg = String(error.message);
+    const isAuth = msg.includes("Unauthorized");
+    return (
+      <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-rose-900 shadow-sm">
+        <p className="font-semibold">Failed to load dashboard data</p>
+        <p className="mt-1 text-sm text-rose-800">{msg}</p>
+        {isAuth ? (
+          <p className="mt-4 text-sm text-slate-800">
+            <Link href="/seo-growth-console/login" className="font-medium text-violet-700 underline hover:text-violet-900">
+              Sign in to the SEO console
+            </Link>{" "}
+            (session cookie required).
+          </p>
+        ) : null}
+      </div>
+    );
+  }
 
   return (
-    <main className="space-y-4">
-      <section className="rounded-2xl border border-white/10 bg-white/70 p-6 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/75">
-        <p className="text-xs uppercase tracking-[0.2em] text-violet-500">Overview</p>
-        <h1 className="mt-2 text-2xl font-semibold">Enterprise AI Execution Control Center</h1>
-        <p className="mt-1 text-sm text-slate-500">Live snapshot generated: {String(snapshot.generatedAt ?? "-")}</p>
+    <main className="space-y-4 text-slate-900">
+      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p className="text-xs font-medium uppercase tracking-[0.2em] text-violet-600">Overview</p>
+        <h1 className="mt-2 text-2xl font-semibold text-slate-900">Enterprise AI Execution Control Center</h1>
+        <p className="mt-1 text-sm text-slate-600">Live snapshot generated: {String(snapshot.generatedAt ?? "-")}</p>
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
         {metrics.map((metric) => (
-          <article key={metric.label} className="rounded-2xl border border-white/10 bg-white/70 p-4 shadow-xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
-            <p className="text-xs uppercase tracking-wide text-slate-500">{metric.label}</p>
-            <p className="mt-2 text-2xl font-semibold">{metric.value}</p>
-            <p className="mt-1 flex items-center gap-1 text-xs text-emerald-500"><TrendingUp className="h-3.5 w-3.5" />{metric.delta}</p>
+          <article key={metric.label} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{metric.label}</p>
+            <p className="mt-2 text-2xl font-bold text-slate-900">{metric.value}</p>
+            <p className="mt-1 flex items-center gap-1 text-xs font-medium text-emerald-700">
+              <TrendingUp className="h-3.5 w-3.5" />
+              {metric.delta}
+            </p>
           </article>
         ))}
       </section>
 
-      <section className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">System Health</h3>
         <DataTable
           columns={["Build", "Typecheck", "Safe mode", "Last error", "Failing modules", "Failing systems"]}
@@ -273,10 +307,10 @@ export default function SeoGrowthConsoleDashboard() {
         />
       </section>
 
-      <section className="rounded-2xl border border-violet-200/40 bg-gradient-to-br from-violet-50/90 to-white/80 p-5 shadow-2xl backdrop-blur dark:border-violet-900/40 dark:from-violet-950/40 dark:to-slate-900/80">
-        <p className="text-xs uppercase tracking-[0.2em] text-violet-600 dark:text-violet-300">Execution engine</p>
-        <h2 className="mt-2 text-lg font-semibold">Growth execution and daily priorities</h2>
-        <p className="mt-1 text-xs text-slate-500">
+      <section className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white p-5 shadow-sm">
+        <p className="text-xs font-medium uppercase tracking-[0.2em] text-violet-700">Execution engine</p>
+        <h2 className="mt-2 text-lg font-semibold text-slate-900">Growth execution and daily priorities</h2>
+        <p className="mt-1 text-xs text-slate-600">
           {executionMode
             ? "Execution mode: one-click actions, batch queue, and PR scripts are enabled below."
             : "Analysis mode: review signals here; switch to Execution mode to run Fix / PR / sprint queue safely."}
@@ -344,6 +378,7 @@ export default function SeoGrowthConsoleDashboard() {
                           try {
                             const res = await fetch("/api/seo-console/execution", {
                               method: "POST",
+                              credentials: "include",
                               headers: { "Content-Type": "application/json" },
                               body: JSON.stringify({
                                 operation: "content_improve",
@@ -491,7 +526,7 @@ export default function SeoGrowthConsoleDashboard() {
       </section>
 
       <section className="grid gap-4 xl:grid-cols-2">
-        <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Page performance (GSC)</h3>
           <p className="mb-3 text-xs text-slate-500">Impressions, clicks, CTR, average position, and period deltas when prior import exists.</p>
           <DataTable
@@ -513,7 +548,7 @@ export default function SeoGrowthConsoleDashboard() {
             emptyMessage="No GSC page data yet. Import Search Console export into performance aggregates."
           />
         </article>
-        <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Site trends (7d / 30d)</h3>
           <p className="mb-3 text-xs text-slate-500">{String(gscSiteTrends.note ?? "")}</p>
           {trend7.length ? (
@@ -535,7 +570,7 @@ export default function SeoGrowthConsoleDashboard() {
       </section>
 
       <section className="grid gap-4 xl:grid-cols-2">
-        <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Tool performance</h3>
           <DataTable
             columns={["Tool", "Sessions", "Tool→action %", "RPM", "Revenue"]}
@@ -555,7 +590,7 @@ export default function SeoGrowthConsoleDashboard() {
             emptyMessage="No tool URL metrics in GSC export yet."
           />
         </article>
-        <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Weak tools (improve)</h3>
           <DataTable
             columns={["Tool", "Weak score", "Suggestion"]}
@@ -574,7 +609,7 @@ export default function SeoGrowthConsoleDashboard() {
       </section>
 
       <section className="grid gap-4 xl:grid-cols-2">
-        <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Revenue tracking</h3>
           <p className="mb-2 text-xs text-slate-500">{String(revenueTracking.source ?? "")}</p>
           <DataTable
@@ -587,7 +622,7 @@ export default function SeoGrowthConsoleDashboard() {
             emptyMessage="No AdSense merge yet. Run adsense merge into aggregates for per-page RPM and earnings."
           />
         </article>
-        <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Revenue by cluster</h3>
           <DataTable
             columns={["Cluster", "Earnings", "Avg RPM", "Pages"]}
@@ -600,7 +635,7 @@ export default function SeoGrowthConsoleDashboard() {
       </section>
 
       <section className="grid gap-4 xl:grid-cols-2">
-        <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Authority growth</h3>
           <p className="text-sm">Backlinks proxy: {num(authorityTracking.backlinksAcquiredProxy)} · DA proxy: {num(authorityTracking.domainAuthorityProxy)}</p>
           <p className="mt-1 text-xs text-slate-500">{String(authorityTracking.note ?? "")}</p>
@@ -619,7 +654,7 @@ export default function SeoGrowthConsoleDashboard() {
             </svg>
           </div>
         </article>
-        <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Smart decisions (GSC + revenue + behavior)</h3>
           <p className="mb-3 text-xs text-slate-500">
             Each row has a stable ID for the execution queue. Use checkboxes for batch sprint queue or batch fix recording.
@@ -742,7 +777,7 @@ export default function SeoGrowthConsoleDashboard() {
         </article>
       </section>
 
-      <section className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Tool ROI</h3>
         <p className="mb-3 text-xs text-slate-500">High-ROI tools can generate an expansion pack (slug variants + blog angles). Nothing is published automatically.</p>
         <DataTable
@@ -766,6 +801,7 @@ export default function SeoGrowthConsoleDashboard() {
                     try {
                       const res = await fetch("/api/seo-console/execution", {
                         method: "POST",
+                        credentials: "include",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ operation: "expansion_pack", slug }),
                       });
@@ -796,17 +832,17 @@ export default function SeoGrowthConsoleDashboard() {
       <ConsoleCharts data={chartsData} />
 
       <section className="grid gap-4 xl:grid-cols-2">
-        <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Next Best Revenue Actions</h3>
           {nextRevenueActions.map((a) => <p key={a} className="mt-2 text-sm">{a}</p>)}
         </article>
-        <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Top AdSense Fixes</h3>
           {nextAdsenseActions.map((a) => <p key={a} className="mt-2 text-sm">{a}</p>)}
         </article>
       </section>
 
-      <section className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">AdSense Readiness Control</h3>
         <div className="grid gap-4 lg:grid-cols-3">
           <div className="rounded-xl bg-slate-100/80 p-3 text-sm dark:bg-slate-800/70">
@@ -876,7 +912,7 @@ export default function SeoGrowthConsoleDashboard() {
 
 function ActionCard({ title, loading, onApprove }: { title: string; loading: boolean; onApprove: () => void }) {
   return (
-    <article className="rounded-2xl border border-white/10 bg-white/70 p-5 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+    <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <h4 className="font-medium">{title}</h4>
       <button
         type="button"

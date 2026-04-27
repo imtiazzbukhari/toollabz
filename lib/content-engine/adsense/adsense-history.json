@@ -1,5 +1,17 @@
 [
   {
+    "date": "2026-04-27",
+    "score": 79,
+    "approvalProbability": 73,
+    "issuesCount": 2
+  },
+  {
+    "date": "2026-04-26",
+    "score": 79,
+    "approvalProbability": 73,
+    "issuesCount": 2
+  },
+  {
     "date": "2026-04-24",
     "score": 79,
     "approvalProbability": 73,

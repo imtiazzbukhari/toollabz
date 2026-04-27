@@ -84,22 +84,30 @@ export function absoluteUrl(path = "/") {
   return `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-/** SERP-friendly meta description: unique per tool, capped ~155 chars. */
+/** SERP meta description: 150–160 chars with primary keyword, benefit, and Toollabz. */
 export function buildToolMetaDescription(tool: ToolDefinition): string {
-  const maxLen = 155;
-  const base = tool.description.trim() || `${tool.name}: free online tool on Toollabz`;
-  const suffix = "FAQs and related tools on Toollabz.";
-  const punctuation = /[.!?]$/.test(base) ? "" : ".";
-  const body = `${base}${punctuation}`;
-  const out = `${body} ${suffix}`;
-  if (out.length <= maxLen) return out;
-  const room = maxLen - suffix.length - 4;
-  const clip = base.slice(0, Math.max(32, room)).trim();
-  return `${clip}... ${suffix}`.slice(0, maxLen);
+  const minLen = 150;
+  const maxLen = 158;
+  const brand = "Toollabz";
+  const kw = (tool.keywords[0] ?? tool.name).trim();
+  const base = (tool.description.trim() || `${tool.name} — free online tool.`).replace(/\s+/g, " ");
+  const benefit = `Run ${kw} in your browser, free — no signup.`;
+  const close = ` ${brand}.`;
+  let body = `${base} ${benefit}${close}`.replace(/\s+/g, " ").trim();
+  if (body.length > maxLen) {
+    const reserve = benefit.length + close.length + 4;
+    const clipLen = Math.max(48, maxLen - reserve);
+    body = `${base.slice(0, clipLen).trim()}… ${benefit}${close}`.replace(/\s+/g, " ").trim();
+  }
+  if (body.length < minLen) {
+    body = `${body} FAQs and related calculators on ${brand}.`.slice(0, maxLen);
+  }
+  return body.slice(0, maxLen);
 }
 
-const SERP_TITLE_MAX = 60;
-const TITLE_SUFFIX = " | Toollabz";
+const SERP_TITLE_MAX = 62;
+/** Visible + SERP title suffix for all tool pages. */
+export const TOOL_PAGE_TITLE_SUFFIX = " | Toollabz - Free Online Tools";
 
 function clampSerpTitle(s: string, max = SERP_TITLE_MAX): string {
   const t = s.trim();
@@ -107,36 +115,33 @@ function clampSerpTitle(s: string, max = SERP_TITLE_MAX): string {
   return `${t.slice(0, Math.max(1, max - 1)).trim()}…`;
 }
 
-const CTR_TITLE_MAX = 72;
+const CTR_TITLE_MAX = 68;
 
 /**
- * SERP titles: CTR templates when present; else "{name} - Free Online Tool | Toollabz".
- * CTR strings always include `tool.name` as substring for integrity tests.
+ * SERP titles: `[primary line] | Toollabz - Free Online Tools`.
+ * CTR templates must still include `tool.name` as substring (integrity tests).
  */
 export function buildSerpToolTitle(tool: ToolDefinition): string {
   const ctr = CTR_TOOL_TITLES[tool.slug];
-  if (ctr) {
-    const full = `${ctr} | Toollabz`;
-    if (full.length <= CTR_TITLE_MAX) return full;
-    return clampSerpTitle(full, CTR_TITLE_MAX);
-  }
-  const suffix = TITLE_SUFFIX;
-  const candidates = [
-    `${tool.name} - Free Online Tool${suffix}`,
-    `${tool.name} - Free Tool${suffix}`,
-    `${tool.name} - Online Tool${suffix}`,
-    `${tool.name}${suffix}`,
-  ];
-  for (const c of candidates) {
-    if (c.length <= SERP_TITLE_MAX) return c;
-  }
-  return candidates[candidates.length - 1]!;
+  const primary = (ctr ?? tool.name).trim();
+  const full = `${primary}${TOOL_PAGE_TITLE_SUFFIX}`;
+  if (full.length <= CTR_TITLE_MAX) return full;
+  return clampSerpTitle(full, CTR_TITLE_MAX);
+}
+
+function ensureToolPageTitleFormat(raw: string): string {
+  const t = raw.trim();
+  if (t.endsWith(TOOL_PAGE_TITLE_SUFFIX)) return t;
+  const base = t.replace(/\s*\|\s*Toollabz\s*$/i, "").trim();
+  return `${base}${TOOL_PAGE_TITLE_SUFFIX}`;
 }
 
 export function toolMetadata(tool: ToolDefinition) {
   const path = `/tools/${tool.slug}`;
   const override = TOOL_SEO_OVERRIDES[tool.slug];
-  const title = override?.title ? clampSerpTitle(override.title, 68) : buildSerpToolTitle(tool);
+  const title = override?.title
+    ? clampSerpTitle(ensureToolPageTitleFormat(override.title), 72)
+    : buildSerpToolTitle(tool);
   const description = override?.description ?? buildToolMetaDescription(tool);
   const url = absoluteUrl(path);
   const ogImage = absoluteUrl("/logo-toollabz.webp");
@@ -194,6 +199,30 @@ export function faqPageSchemaFromPairs(faqs: readonly { question: string; answer
 
 export function faqSchema(tool: ToolDefinition) {
   return faqPageSchemaFromPairs(getToolFaqs(tool));
+}
+
+/** HowTo structured data built from on-page steps (extended for rich results). */
+export function howToSchema(tool: ToolDefinition, pagePath?: string) {
+  const path = pagePath ?? `/tools/${tool.slug}`;
+  const tail = [
+    "Run the primary action (Calculate, Convert, or Generate) after inputs validate.",
+    "Read the headline result and any supporting breakdown lines.",
+    "Copy or screenshot the output for your records; open a related tool from the page if the next step needs different math.",
+  ];
+  const steps = [...tool.howToUse, ...tail].slice(0, 10);
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: `How to use ${tool.name}`,
+    description: tool.shortDescription || tool.description,
+    step: steps.map((text, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: `Step ${i + 1}`,
+      text,
+    })),
+    url: absoluteUrl(path),
+  };
 }
 
 export function breadcrumbSchema(tool: ToolDefinition, pagePath?: string) {
@@ -299,6 +328,11 @@ export function websiteSearchActionSchema() {
 
 /** Site-wide Organization JSON-LD (Search / knowledge panel support). */
 export function organizationSchema() {
+  const sameAs = (process.env.NEXT_PUBLIC_ORG_SAME_AS ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -306,6 +340,46 @@ export function organizationSchema() {
     url: siteUrl,
     logo: absoluteUrl("/logo-toollabz.webp"),
     dateModified: SITE_LAST_UPDATED_DATE_TIME,
+    ...(contactEmail
+      ? {
+          contactPoint: [
+            {
+              "@type": "ContactPoint",
+              contactType: "customer support",
+              email: contactEmail,
+              url: absoluteUrl("/contact"),
+            },
+          ],
+        }
+      : {}),
+    ...(sameAs.length ? { sameAs } : {}),
+  };
+}
+
+/** Category / hub landing: CollectionPage + ItemList of tools. */
+export function hubCollectionPageSchema(opts: {
+  name: string;
+  description: string;
+  path: string;
+  items: readonly { name: string; slug: string; description: string }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: opts.name,
+    description: opts.description,
+    url: absoluteUrl(opts.path),
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: opts.items.length,
+      itemListElement: opts.items.map((t, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: t.name,
+        url: absoluteUrl(`/tools/${t.slug}`),
+        description: t.description,
+      })),
+    },
   };
 }
 

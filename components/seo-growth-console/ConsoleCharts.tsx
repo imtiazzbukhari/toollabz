@@ -22,18 +22,22 @@ export type ConsoleChartsData = {
   funnelData: Array<{ value: number; name: string; fill: string }>;
 };
 
+const axisStroke = "#64748b";
+const axisTick = { fill: "#64748b", fontSize: 11 };
+
 function Panel({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="rounded-2xl border border-white/20 bg-white/70 p-5 shadow-2xl shadow-slate-900/5 backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
       <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">{title}</h3>
-      <div className="h-72">{children}</div>
+      <div className="h-72 text-slate-600 dark:text-slate-400">{children}</div>
     </section>
   );
 }
 
 export default function ConsoleCharts({ data }: { data: ConsoleChartsData }) {
   return (
-    <div className="grid gap-4 xl:grid-cols-2">
+    <div className="min-w-0 overflow-x-auto">
+    <div className="grid min-w-[min(100%,640px)] gap-4 xl:min-w-0 xl:grid-cols-2">
       <Panel title="Revenue Over Time">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data.revenueData}>
@@ -43,9 +47,9 @@ export default function ConsoleCharts({ data }: { data: ConsoleChartsData }) {
                 <stop offset="95%" stopColor="#22d3ee" stopOpacity={0.1} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.15} />
-            <XAxis dataKey="name" />
-            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" stroke={axisStroke} strokeOpacity={0.25} />
+            <XAxis dataKey="name" stroke={axisStroke} tick={axisTick} />
+            <YAxis stroke={axisStroke} tick={axisTick} width={40} />
             <Tooltip />
             <Area type="monotone" dataKey="revenue" stroke="#0891b2" fill="url(#rev)" strokeWidth={2} />
           </AreaChart>
@@ -55,9 +59,9 @@ export default function ConsoleCharts({ data }: { data: ConsoleChartsData }) {
       <Panel title="Traffic Trend">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data.revenueData}>
-            <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.15} />
-            <XAxis dataKey="name" />
-            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" stroke={axisStroke} strokeOpacity={0.25} />
+            <XAxis dataKey="name" stroke={axisStroke} tick={axisTick} />
+            <YAxis stroke={axisStroke} tick={axisTick} width={40} />
             <Tooltip />
             <Line type="monotone" dataKey="traffic" stroke="#8b5cf6" strokeWidth={3} dot={false} />
           </LineChart>
@@ -67,11 +71,11 @@ export default function ConsoleCharts({ data }: { data: ConsoleChartsData }) {
       <Panel title="Cluster Performance">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data.clusterPerformance}>
-            <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.15} />
-            <XAxis dataKey="name" />
-            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" stroke={axisStroke} strokeOpacity={0.25} />
+            <XAxis dataKey="name" stroke={axisStroke} tick={axisTick} />
+            <YAxis stroke={axisStroke} tick={axisTick} width={40} />
             <Tooltip />
-            <Legend />
+            <Legend wrapperStyle={{ fontSize: 12 }} />
             <Line type="monotone" dataKey="score" stroke="#f97316" strokeWidth={2} />
             <Line type="monotone" dataKey="conversion" stroke="#10b981" strokeWidth={2} />
           </LineChart>
@@ -86,6 +90,7 @@ export default function ConsoleCharts({ data }: { data: ConsoleChartsData }) {
           </FunnelChart>
         </ResponsiveContainer>
       </Panel>
+    </div>
     </div>
   );
 }

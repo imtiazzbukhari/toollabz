@@ -116,8 +116,9 @@ type OrchestratorPayload = {
 };
 
 async function fetchJson<T>(url: string): Promise<T> {
-  const res = await fetch(url, { cache: "no-store" });
-  const json = (await res.json()) as T;
+  const res = await fetch(url, { cache: "no-store", credentials: "include" });
+  const json = (await res.json()) as T & { error?: string };
+  if (!res.ok) throw new Error(typeof json.error === "string" ? json.error : `Request failed (${res.status})`);
   return json;
 }
 
@@ -942,7 +943,7 @@ export default function ContentEngineDashboardPage() {
                   <td className="px-3 py-2">{row.createdAt}</td>
                   <td className="px-3 py-2">
                     {row.url ? (
-                      <a className="text-violet-600 underline" href={row.url} target="_blank" rel="noreferrer">
+                      <a className="text-violet-600 underline" href={row.url} target="_blank" rel="noopener noreferrer">
                         Open PR
                       </a>
                     ) : (

@@ -1,5 +1,26 @@
 [
   {
+    "id": "l_mohjacdc",
+    "createdAt": "2026-04-27T18:31:46.464Z",
+    "level": "error",
+    "type": "task_failed",
+    "message": "GEMINI_API_KEY is not configured."
+  },
+  {
+    "id": "l_mohjac1j",
+    "createdAt": "2026-04-27T18:31:46.039Z",
+    "level": "error",
+    "type": "task_failed",
+    "message": "GEMINI_API_KEY is not configured."
+  },
+  {
+    "id": "l_mohja92f",
+    "createdAt": "2026-04-27T18:31:42.183Z",
+    "level": "info",
+    "type": "ai_action",
+    "message": "Automation bundle refreshed."
+  },
+  {
     "id": "l_mod4v1pn",
     "createdAt": "2026-04-24T16:36:53.483Z",
     "level": "error",

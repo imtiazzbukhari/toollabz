@@ -10,7 +10,7 @@ import SignOutButton from "@/app/seo-growth-console/SignOutButton";
 import { seoConsoleNavItems } from "./nav";
 
 const fetcher = async (url: string) => {
-  const res = await fetch(url);
+  const res = await fetch(url, { credentials: "include", cache: "no-store" });
   const data = (await res.json()) as Record<string, unknown>;
   if (!res.ok) throw new Error(typeof data.error === "string" ? data.error : `Failed: ${url}`);
   return data;
@@ -26,6 +26,10 @@ export default function SeoGrowthConsoleLayoutShell({ children }: { children: Re
   const [darkMode, setDarkMode] = useState(true);
   const { data, mutate } = useSWR("/api/seo-console/control", fetcher, { refreshInterval: 30000 });
   const config = (data?.config ?? {}) as Record<string, unknown>;
+  const isConsole =
+    (Boolean(pathname?.startsWith("/seo-growth-console")) && !pathname?.startsWith("/seo-growth-console/login")) ||
+    Boolean(pathname?.startsWith("/dashboard/backlinks"));
+  const { data: blBadge } = useSWR(isConsole ? "/api/backlinks/badge" : null, fetcher, { refreshInterval: 45_000 });
 
   return (
     <div className={darkMode ? "dark bg-slate-950 text-slate-100" : "bg-gradient-to-b from-slate-100 via-slate-50 to-white text-slate-900"}>
@@ -39,7 +43,12 @@ export default function SeoGrowthConsoleLayoutShell({ children }: { children: Re
           </div>
           <nav className="space-y-1">
             {seoConsoleNavItems.map(({ href, label, icon: Icon }) => {
-              const active = pathname === href;
+              const active =
+                href === "/seo-growth-console"
+                  ? pathname === "/seo-growth-console"
+                  : pathname === href || Boolean(pathname?.startsWith(`${href}/`));
+              const outreachBadge =
+                href === "/seo-growth-console/backlinks" && (blBadge as { contentReady?: number } | undefined)?.contentReady;
               return (
                 <Link
                   key={href}
@@ -52,7 +61,16 @@ export default function SeoGrowthConsoleLayoutShell({ children }: { children: Re
                   )}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
-                  {!sidebarCollapsed ? <span>{label}</span> : null}
+                  {!sidebarCollapsed ? (
+                    <span className="flex min-w-0 flex-1 items-center justify-between gap-2">
+                      <span>{label}</span>
+                      {outreachBadge && outreachBadge > 0 ? (
+                        <span className="rounded-full bg-amber-400 px-1.5 py-0.5 text-[10px] font-bold leading-none text-slate-900">
+                          {outreachBadge}
+                        </span>
+                      ) : null}
+                    </span>
+                  ) : null}
                 </Link>
               );
             })}

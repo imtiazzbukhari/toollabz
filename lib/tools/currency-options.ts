@@ -1,0 +1,32 @@
+export const MAJOR_CURRENCY_CODES = [
+  "USD",
+  "EUR",
+  "GBP",
+  "JPY",
+  "CHF",
+  "CAD",
+  "AUD",
+  "NZD",
+  "INR",
+  "MXN",
+  "BRL",
+  "CNY",
+  "HKD",
+  "SGD",
+  "KRW",
+  "ZAR",
+  "SEK",
+  "NOK",
+  "DKK",
+  "PLN",
+  "CZK",
+  "HUF",
+  "TRY",
+  "ILS",
+  "AED",
+] as const;
+
+export const MAJOR_CURRENCY_OPTIONS = MAJOR_CURRENCY_CODES.map((code) => ({
+  value: code,
+  label: code,
+}));

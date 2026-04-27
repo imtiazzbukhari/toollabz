@@ -83,6 +83,10 @@ describe("growth-engine / engagement feedback", () => {
       avgActiveMs: 20_000,
       scrollHistogram: { q0_25: 15, q25_50: 3, q50_75: 1, q75_1: 1 },
       exitBySection: { hero: 12 },
+      entryKeywords: {},
+      toolClickCount: 0,
+      conversionEventCount: 0,
+      segmentCounts: { scanner: 0, researcher: 0, ready_to_act: 0 },
       updatedAt: "2026-04-24",
     });
     expect(hints.some((h) => h.category === "intro")).toBe(true);

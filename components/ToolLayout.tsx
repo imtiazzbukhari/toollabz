@@ -7,6 +7,12 @@ import { getRelatedToolsForLayout } from "@/lib/tools/related";
 import { getMarketingHubForTool } from "@/lib/tools/directory-groups";
 import { getToolFaqs, getToolSeoContent } from "@/lib/tools/content";
 import {
+  countWords,
+  getToolDepthFormulaSection,
+  getToolDepthHowToNarrative,
+  getToolDepthIntroParagraphs,
+} from "@/lib/tools/tool-page-depth";
+import {
   getToolDeepGuideParagraphs,
   getToolLogicExplanationParagraph,
   getToolRealWorldExampleBullets,
@@ -19,6 +25,8 @@ import { getGuideLinksForTool } from "@/lib/blog/guides-for-tool";
 import BookmarkToolButtonDeferred from "./BookmarkToolButtonDeferred";
 import PageLastUpdated from "./PageLastUpdated";
 import PopularCalculationsBlock from "./PopularCalculationsBlock";
+import ExpertDisclaimer from "./ExpertDisclaimer";
+import { toolIsFinanceCategory, toolNeedsEditorialReviewLine, toolNeedsExpertDisclaimer } from "@/lib/tools/ymyl";
 
 function categoryLabel(slug: string) {
   return slug
@@ -38,22 +46,49 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
   const related = getRelatedToolsForLayout(tool, tools);
   const relatedWithFallback = (() => {
     const out = [...related];
-    if (out.length >= 3) return out;
+    if (out.length >= 4) return out;
     const existing = new Set<string>([tool.slug, ...out.map((t) => t.slug)]);
     for (const t of tools) {
       if (existing.has(t.slug)) continue;
       out.push(t);
       existing.add(t.slug);
-      if (out.length >= 3) break;
+      if (out.length >= 6) break;
     }
     return out;
   })();
+  const youMightAlsoLike = (() => {
+    const sameCat = tools.filter((t) => t.slug !== tool.slug && t.category === tool.category);
+    const out: ToolDefinition[] = [];
+    const seen = new Set<string>([tool.slug]);
+    for (const t of sameCat) {
+      if (out.length >= 6) break;
+      if (seen.has(t.slug)) continue;
+      out.push(t);
+      seen.add(t.slug);
+    }
+    for (const t of relatedWithFallback) {
+      if (out.length >= 6) break;
+      if (seen.has(t.slug)) continue;
+      out.push(t);
+      seen.add(t.slug);
+    }
+    return out;
+  })();
+  const primaryKeyword = tool.keywords[0] ?? "free online tool";
+  const showFinanceDisclaimer = toolIsFinanceCategory(tool) || toolNeedsExpertDisclaimer(tool);
   const hub = getMarketingHubForTool(tool);
   const seoParagraphs = getToolSeoContent(tool);
   const deepParagraphs = getToolDeepGuideParagraphs(tool);
   const exampleBullets = getToolRealWorldExampleBullets(tool);
   const logicParagraph = getToolLogicExplanationParagraph(tool);
   const faqs = getToolFaqs(tool);
+  const depthIntro = getToolDepthIntroParagraphs(tool);
+  const depthHow = getToolDepthHowToNarrative(tool);
+  const depthFormula = getToolDepthFormulaSection(tool);
+  const editorialWordCount =
+    countWords([...depthIntro, ...seoParagraphs, ...deepParagraphs, ...depthHow, ...depthFormula, logicParagraph].join(" ")) +
+    countWords(exampleBullets.join(" ")) +
+    countWords(faqs.map((x) => `${x.question} ${x.answer}`).join(" "));
   const guideLinks = getGuideLinksForTool(tool.slug, 4);
   const CategoryIcon = getCategoryIcon(tool.category);
   const useCaseVariant = slugContentVariant(`${tool.slug}-usecases`, 3);
@@ -94,16 +129,43 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
           <ChevronRight className="h-3.5 w-3.5 shrink-0 opacity-40" aria-hidden />
           <span className="font-medium text-slate-700">{tool.name}</span>
         </nav>
-        <PageLastUpdated className="mb-4" />
+        <PageLastUpdated className="mb-4" variant={toolNeedsEditorialReviewLine(tool) ? "editorial" : "content"} />
+        {showFinanceDisclaimer ? <ExpertDisclaimer className="mb-4" /> : null}
         <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-300/50 bg-gradient-to-r from-violet-600/10 to-blue-500/10 px-3 py-1 text-xs font-semibold text-violet-800 backdrop-blur-sm">
           <CategoryIcon className="h-3.5 w-3.5" aria-hidden />
           {categoryLabel(tool.category)}
         </span>
         <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 text-balance sm:text-5xl">
           {tool.name}
+          <span className="mt-2 block text-lg font-bold leading-snug text-violet-900/90 sm:text-2xl">
+            {primaryKeyword.charAt(0).toUpperCase() + primaryKeyword.slice(1)}
+          </span>
         </h1>
         <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">{tool.description}</p>
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-medium text-slate-600">
+        <details className="mt-3 sm:hidden">
+          <summary className="cursor-pointer text-xs font-semibold text-violet-800">On this page (tap to expand)</summary>
+          <div className="mt-2 flex flex-col gap-1.5 text-xs font-medium text-slate-600">
+            <Link href="#what-this-tool-does" className="rounded-lg border border-violet-200 bg-white/75 px-3 py-2 hover:text-violet-700">
+              What this tool does
+            </Link>
+            <Link href="#tool-guides" className="rounded-lg border border-violet-200 bg-white/75 px-3 py-2 hover:text-violet-700">
+              Guides
+            </Link>
+            <Link href="#how-to-use" className="rounded-lg border border-violet-200 bg-white/75 px-3 py-2 hover:text-violet-700">
+              How to use
+            </Link>
+            <Link href="#example-usage" className="rounded-lg border border-violet-200 bg-white/75 px-3 py-2 hover:text-violet-700">
+              Example usage
+            </Link>
+            <Link href="#tool-faqs" className="rounded-lg border border-violet-200 bg-white/75 px-3 py-2 hover:text-violet-700">
+              FAQs
+            </Link>
+            <Link href="#related-tools" className="rounded-lg border border-violet-200 bg-white/75 px-3 py-2 hover:text-violet-700">
+              Related tools
+            </Link>
+          </div>
+        </details>
+        <div className="mt-3 hidden flex-wrap items-center gap-2 text-xs font-medium text-slate-600 sm:flex">
           <Link
             href="#what-this-tool-does"
             className="rounded-full border border-violet-200 bg-white/75 px-3 py-1 hover:text-violet-700"
@@ -126,6 +188,9 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
             Related tools
           </Link>
         </div>
+        <p className="mt-2 text-[11px] text-slate-500" aria-live="polite">
+          Editorial depth (excl. nav/footer): ~{editorialWordCount} words of explainer + FAQs on this URL.
+        </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {heroBadges.map(({ label, Icon }) => (
             <span
@@ -150,7 +215,7 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         <div className="relative mx-auto max-w-md sm:max-w-lg">
           <Image
             src={toolIllustrationSrc()}
-            alt=""
+            alt={`Illustration for ${tool.name} — Toollabz free online tool`}
             width={719}
             height={547}
             loading="lazy"
@@ -167,6 +232,11 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         data-content-section="explainer"
       >
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">What this tool does</h2>
+        {depthIntro.map((paragraph, idx) => (
+          <p key={`depth-intro-${idx}`} className="leading-7 text-slate-700">
+            {paragraph}
+          </p>
+        ))}
         {seoParagraphs.map((paragraph, idx) => (
           <p key={`seo-${idx}`} className="leading-7 text-slate-700">
             {paragraph}
@@ -239,6 +309,11 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
 
       <section className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`} data-content-section="logic">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">How the calculation works</h2>
+        {depthFormula.map((paragraph, idx) => (
+          <p key={`depth-formula-${idx}`} className="leading-7 text-slate-700">
+            {paragraph}
+          </p>
+        ))}
         <p className="leading-7 text-slate-700">{logicParagraph}</p>
       </section>
 
@@ -312,7 +387,12 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
 
       <section id="how-to-use" className="mt-12 space-y-4" data-content-section="howto">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">How to use</h2>
-        <div className={`p-6 sm:p-8 ${toolGlassCard}`}>
+        <div className={`space-y-3 p-6 sm:space-y-4 sm:p-8 ${toolGlassCard}`}>
+          {depthHow.map((paragraph, idx) => (
+            <p key={`depth-how-${idx}`} className="text-sm leading-7 text-slate-700 sm:text-base">
+              {paragraph}
+            </p>
+          ))}
           <ol className="grid gap-3 sm:gap-4">
             {tool.howToUse.map((step, idx) => (
               <li key={step} className="flex items-start gap-3 rounded-xl border border-violet-200/55 bg-white/75 p-4">
@@ -348,12 +428,41 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
 
       <section id="related-tools" className="mt-12" data-content-section="related">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Related tools</h2>
+        <p className="mt-1 text-sm text-slate-600">
+          Same-session utilities we surface for {primaryKeyword}; open a few tabs and compare outputs before you commit to a
+          number.
+        </p>
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           {relatedWithFallback.map((item) => {
             const RelatedIcon = getCategoryIcon(item.category);
             return (
               <Link
                 key={item.slug}
+                href={`/tools/${item.slug}`}
+                className={`group block p-5 transition duration-300 hover:-translate-y-0.5 ${toolGlassCard} hover:border-violet-300/60 hover:shadow-[0_12px_32px_rgba(99,102,241,0.12)]`}
+              >
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 text-violet-700">
+                  <RelatedIcon className="h-4 w-4" aria-hidden />
+                </span>
+                <p className="font-semibold text-slate-900 group-hover:text-violet-800">{item.name}</p>
+                <p className="mt-1 text-sm text-slate-600">{item.shortDescription}</p>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      <section id="you-might-also-like" className="mt-12" data-content-section="suggested">
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">You might also like</h2>
+        <p className="mt-1 text-sm text-slate-600">
+          Same-category picks first, then high-intent neighbors — lightweight internal linking for topic clusters on Toollabz.
+        </p>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          {youMightAlsoLike.map((item) => {
+            const RelatedIcon = getCategoryIcon(item.category);
+            return (
+              <Link
+                key={`you-${item.slug}`}
                 href={`/tools/${item.slug}`}
                 className={`group block p-5 transition duration-300 hover:-translate-y-0.5 ${toolGlassCard} hover:border-violet-300/60 hover:shadow-[0_12px_32px_rgba(99,102,241,0.12)]`}
               >
