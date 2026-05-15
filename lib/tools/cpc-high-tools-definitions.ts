@@ -111,7 +111,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "What is PITI?",
-      "answer": "Principal, interest, taxes, and insurance—the recurring housing payment bucket lenders stress-test."
+      "answer": "Principal, interest, taxes, and insurance-the recurring housing payment bucket lenders stress-test."
     },
     {
       "question": "How much down payment do I need?",
@@ -494,7 +494,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "Why is my premium higher than average?",
-      "answer": "Underwriting uses more variables than this page—youthful operators, territory, and prior claims matter."
+      "answer": "Underwriting uses more variables than this page-youthful operators, territory, and prior claims matter."
     },
     {
       "question": "Does credit score affect rates?",
@@ -510,7 +510,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "Can good driving lower premiums?",
-      "answer": "Telematics and clean renewals can help—carrier programs differ."
+      "answer": "Telematics and clean renewals can help-carrier programs differ."
     }
   ],
   "related": [
@@ -525,7 +525,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
   "slug": "life-insurance-coverage-calculator",
   "name": "Life Insurance Coverage Calculator",
   "shortDescription": "Needs-based coverage sketch (debts, income, education offsets).",
-  "description": "Combines debts, income replacement, education funding, then subtracts savings, existing coverage, and partial spouse income offset. Premium band is a crude term-life scale—not a quote.",
+  "description": "Combines debts, income replacement, education funding, then subtracts savings, existing coverage, and partial spouse income offset. Premium band is a crude term-life scale-not a quote.",
   "category": "finance",
   "fields": [
     {
@@ -625,7 +625,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "What is the DIME approach?",
-      "answer": "Debts, income replacement, mortgage-related needs, and education—common planning shorthand."
+      "answer": "Debts, income replacement, mortgage-related needs, and education-common planning shorthand."
     },
     {
       "question": "Does it model whole life?",
@@ -641,7 +641,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "Inflation?",
-      "answer": "Long horizons need higher face amounts—this tool does not auto-escalate."
+      "answer": "Long horizons need higher face amounts-this tool does not auto-escalate."
     }
   ],
   "related": [
@@ -1081,7 +1081,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "Silver benchmark?",
-      "answer": "Subsidies tie to the second-lowest-cost Silver plan in your area—here we use a state anchor only."
+      "answer": "Subsidies tie to the second-lowest-cost Silver plan in your area-here we use a state anchor only."
     },
     {
       "question": "Family glitch?",
@@ -1195,7 +1195,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "No closing cost loans?",
-      "answer": "Costs are often baked into rate—enter them as you see fit."
+      "answer": "Costs are often baked into rate-enter them as you see fit."
     }
   ],
   "related": [
@@ -1630,7 +1630,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "Credit score impact?",
-      "answer": "Utilization improves as balances drop—not quantified here."
+      "answer": "Utilization improves as balances drop-not quantified here."
     }
   ],
   "related": [
@@ -1921,7 +1921,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "Insurance surcharges?",
-      "answer": "Only crudely reflected in the state midpoint—not year-by-year."
+      "answer": "Only crudely reflected in the state midpoint-not year-by-year."
     },
     {
       "question": "SR-22?",
@@ -2192,7 +2192,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
   "faqs": [
     {
       "question": "Own-occupation vs any?",
-      "answer": "Definition changes price and claim odds—not modeled."
+      "answer": "Definition changes price and claim odds-not modeled."
     },
     {
       "question": "Elimination period?",
@@ -2300,7 +2300,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "Tax deductibility?",
-      "answer": "Depends on use of funds and current law—consult a tax pro."
+      "answer": "Depends on use of funds and current law-consult a tax pro."
     }
   ],
   "related": [
@@ -2397,7 +2397,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "2025 brackets?",
-      "answer": "Illustrative flat rates only—placeholder."
+      "answer": "Illustrative flat rates only-placeholder."
     }
   ],
   "related": [
@@ -2629,11 +2629,11 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "VA benefits?",
-      "answer": "Separate from tort recoveries—work with a VSO."
+      "answer": "Separate from tort recoveries-work with a VSO."
     },
     {
       "question": "SOL?",
-      "answer": "Deadlines bar claims—do not delay."
+      "answer": "Deadlines bar claims-do not delay."
     },
     {
       "question": "Bankrupt defendants?",
@@ -2898,7 +2898,7 @@ export const cpcHighToolDefinitions: ToolDefinition[] = [
     },
     {
       "question": "IDR plans?",
-      "answer": "SAVE, PAYE, IBR differ—this does not pick one."
+      "answer": "SAVE, PAYE, IBR differ-this does not pick one."
     },
     {
       "question": "Teacher forgiveness?",

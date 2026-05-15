@@ -8,7 +8,7 @@ import { tools } from "@/lib/tools/data";
 export const metadata: Metadata = {
   title: { absolute: `About Toollabz | Toollabz - Free Online Tools` },
   description:
-    "Meet the Toollabz team, our mission to ship accurate free calculators & PDF tools, founding story, and how to reach us — Toollabz editorial & engineering.",
+    "Meet the Toollabz team, our mission to ship accurate free calculators & PDF tools, founding story, and how to reach us - Toollabz editorial & engineering.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About Toollabz",
@@ -95,7 +95,7 @@ export default function AboutPage() {
           <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Founding story</h2>
           <p className="mt-4 leading-7 text-slate-700">
             Toollabz started from a simple frustration: most “free tool” sites either paywall mid-flow, ship dark-pattern ads, or
-            hide assumptions inside black-box JavaScript. We wanted the opposite—deterministic math, visible formulas where
+            hide assumptions inside black-box JavaScript. We wanted the opposite-deterministic math, visible formulas where
             possible, and pages that read well on a phone on a train.
           </p>
           <p className="mt-4 leading-7 text-slate-700">
@@ -128,7 +128,7 @@ export default function AboutPage() {
         <section className={`p-6 sm:p-8 ${toolGlassCard}`}>
           <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Contact</h2>
           <p className="mt-4 leading-7 text-slate-700">
-            For partnerships, corrections on a calculator, or DMCA-style PDF concerns, use the contact page — we read every
+            For partnerships, corrections on a calculator, or DMCA-style PDF concerns, use the contact page - we read every
             message, even if we cannot reply instantly.
           </p>
           <Link

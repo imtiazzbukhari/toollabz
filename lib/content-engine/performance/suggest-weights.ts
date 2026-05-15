@@ -4,7 +4,7 @@ import { DEFAULT_QUALITY_WEIGHTS } from "./weights-loader";
 
 /**
  * Heuristic suggestion when you periodically export outcomes (GSC + internal quality flags).
- * Does not write files — feed output into `weights.json` after human review.
+ * Does not write files - feed output into `weights.json` after human review.
  */
 export function suggestDimensionWeightsFromOutcomes(
   outcomes: readonly ContentOutcome[],

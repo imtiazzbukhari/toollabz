@@ -6,17 +6,38 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, Search, Sparkles, User, X } from "lucide-react";
 
-const nav = [
-  { label: "Tools", href: "/tools" },
-  { label: "Categories", href: "/#categories" },
-  { label: "Popular Tools", href: "/#popular-tools" },
-  { label: "Converters", href: "/utility-tools" },
-  { label: "Calculators", href: "/finance-tools" },
-  { label: "Blog", href: "/blog" },
+type NavLink = { kind: "link"; label: string; href: string };
+type NavFinancePair = {
+  kind: "finance-pair";
+  primary: { label: string; href: string };
+  secondary: { label: string; href: string };
+};
+
+const nav: (NavLink | NavFinancePair)[] = [
+  { kind: "link", label: "Tools", href: "/tools" },
+  { kind: "link", label: "Categories", href: "/#categories" },
+  { kind: "link", label: "Popular Tools", href: "/#popular-tools" },
+  { kind: "link", label: "Converters", href: "/utility-tools" },
+  {
+    kind: "finance-pair",
+    primary: { label: "Calculators", href: "/finance-tools" },
+    secondary: { label: "UK tax", href: "/uk-finance-tax" },
+  },
+  { kind: "link", label: "Blog", href: "/blog" },
 ];
 
+function linkActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  const base = href.split("?")[0] ?? href;
+  return pathname === base || pathname.startsWith(`${base}/`);
+}
+
+function financePairActive(pathname: string, primaryHref: string, secondaryHref: string): boolean {
+  return linkActive(pathname, primaryHref) || linkActive(pathname, secondaryHref);
+}
+
 export default function Header() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -55,25 +76,50 @@ export default function Header() {
             Toollabz
           </span>
         </Link>
-        <nav className="hidden items-center gap-5 text-sm text-slate-600 lg:flex xl:gap-6">
+        <nav className="hidden items-center gap-4 text-sm text-slate-600 lg:flex xl:gap-6" aria-label="Primary">
           {nav.map((item) => {
-            const active =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname === item.href ||
-                  pathname.startsWith(item.href.split("?")[0]);
+            if (item.kind === "link") {
+              const active = linkActive(pathname, item.href);
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className={`inline-flex items-center border-b-2 pb-1 transition duration-300 hover:text-violet-600 ${
+                    active ? "border-violet-500 text-violet-600" : "border-transparent text-slate-600"
+                  }`}
+                >
+                  <span>{item.label}</span>
+                </Link>
+              );
+            }
+            const pairActive = financePairActive(pathname, item.primary.href, item.secondary.href);
+            const primaryActive = linkActive(pathname, item.primary.href);
+            const secondaryActive = linkActive(pathname, item.secondary.href);
             return (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={`inline-flex items-center border-b-2 pb-1 transition duration-300 hover:text-violet-600 ${
-                  active
-                    ? "border-violet-500 text-violet-600"
-                    : "border-transparent text-slate-600"
+              <span
+                key="finance-pair"
+                className={`inline-flex items-center gap-2 border-b-2 pb-1 transition duration-300 ${
+                  pairActive ? "border-violet-500" : "border-transparent"
                 }`}
               >
-                <span>{item.label}</span>
-              </Link>
+                <Link
+                  href={item.primary.href}
+                  className={`transition duration-300 hover:text-violet-600 ${primaryActive ? "text-violet-600" : "text-slate-600"}`}
+                >
+                  {item.primary.label}
+                </Link>
+                <span className="select-none text-slate-300" aria-hidden>
+                  |
+                </span>
+                <Link
+                  href={item.secondary.href}
+                  className={`text-[13px] transition duration-300 hover:text-violet-600 xl:text-sm ${
+                    secondaryActive ? "font-medium text-violet-600" : "text-slate-500"
+                  }`}
+                >
+                  {item.secondary.label}
+                </Link>
+              </span>
             );
           })}
         </nav>
@@ -126,21 +172,43 @@ export default function Header() {
           <nav className="relative max-h-[min(72vh,32rem)] overflow-y-auto border-b border-slate-200/80 bg-white/95 px-4 py-4 shadow-lg backdrop-blur-xl">
             <ul className="flex flex-col gap-1">
               {nav.map((item) => {
-                const active =
-                  item.href === "/"
-                    ? pathname === "/"
-                    : pathname === item.href ||
-                      pathname.startsWith(item.href.split("?")[0]);
+                if (item.kind === "link") {
+                  const active = linkActive(pathname, item.href);
+                  return (
+                    <li key={item.label}>
+                      <Link
+                        href={item.href}
+                        className={`block rounded-xl px-3 py-3 text-base font-medium transition hover:bg-violet-50 ${
+                          active ? "text-violet-600" : "text-slate-800"
+                        }`}
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                }
+                const primaryActive = linkActive(pathname, item.primary.href);
+                const secondaryActive = linkActive(pathname, item.secondary.href);
                 return (
-                  <li key={item.label}>
+                  <li key="finance-pair-mobile" className="rounded-xl py-1">
                     <Link
-                      href={item.href}
-                      className={`block rounded-xl px-3 py-3 text-base font-medium transition hover:bg-violet-50 ${
-                        active ? "text-violet-600" : "text-slate-800"
+                      href={item.primary.href}
+                      className={`block px-3 py-2.5 text-base font-medium transition hover:bg-violet-50 ${
+                        primaryActive ? "text-violet-600" : "text-slate-800"
                       }`}
                       onClick={() => setMenuOpen(false)}
                     >
-                      {item.label}
+                      {item.primary.label}
+                    </Link>
+                    <Link
+                      href={item.secondary.href}
+                      className={`ml-3 block rounded-lg px-3 py-2 text-sm transition hover:bg-violet-50/80 ${
+                        secondaryActive ? "font-medium text-violet-600" : "text-slate-600"
+                      }`}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {item.secondary.label} hub
                     </Link>
                   </li>
                 );

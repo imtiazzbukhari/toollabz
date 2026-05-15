@@ -1,7 +1,7 @@
-/** Single hub hero for all tool pages (and cards that show art). */
-export const TOOLLABZ_HERO_IMAGE = "/hero-toollabz-hub.webp";
+/** Single hub hero asset (homepage and other marketing surfaces). */
+export const TOOLLABZ_HERO_IMAGE = "/images/seo/toollabz-free-calculators-hub.webp";
 
-/** Same hub illustration for every tool (e.g. `/tools/salary-after-tax-calculator`). */
+/** @deprecated Tool pages use `ToolHeroVisual` instead of a shared WebP. Kept for homepage hero. */
 export function toolIllustrationSrc(): string {
   return TOOLLABZ_HERO_IMAGE;
 }

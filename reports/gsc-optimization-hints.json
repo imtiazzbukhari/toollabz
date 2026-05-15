@@ -1,0 +1,602 @@
+{
+  "generatedAt": "2026-05-15T18:22:36.575Z",
+  "recommendedPriorityForManualIndexing": [
+    "/",
+    "/tools",
+    "/finance-tools",
+    "/uk-finance-tax",
+    "/business-tools",
+    "/marketing-tools",
+    "/real-estate-tools",
+    "/tools/loan-calculator",
+    "/tools/emi-calculator",
+    "/tools/compound-interest-calculator",
+    "/tools/salary-after-tax-calculator",
+    "/tools/stock-profit-calculator",
+    "/tools/pdf-merge",
+    "/tools/pdf-split",
+    "/tools/pdf-compress",
+    "/tools/pdf-to-word",
+    "/tools/word-to-pdf",
+    "/tools/rental-yield-calculator",
+    "/tools/property-roi-calculator",
+    "/tools/mortgage-affordability-calculator",
+    "/tools/rent-vs-buy-calculator",
+    "/tools/mortgage-affordability-calculator-usa",
+    "/tools/rent-vs-buy-calculator-usa",
+    "/tools/rental-yield-calculator-uk",
+    "/tools/gas-cost-calculator-road-trip",
+    "/tools/salary-after-tax-calculator-california",
+    "/tools/salary-after-tax-calculator-texas",
+    "/tools/salary-after-tax-calculator-new-york",
+    "/tools/salary-after-tax-calculator-florida",
+    "/tools/salary-after-tax-calculator-uk",
+    "/tools/roi-calculator-marketing",
+    "/tools/cac-calculator-saas",
+    "/tools/ltv-calculator-saas",
+    "/tools/break-even-calculator-business",
+    "/tools/profit-margin-calculator-business",
+    "/tools/ai-email-subject-line-generator",
+    "/tools/ai-cold-email-generator",
+    "/tools/ai-linkedin-post-generator",
+    "/tools/ai-resume-summary-generator",
+    "/tools/ai-product-description-generator",
+    "/tools/net-worth-calculator",
+    "/tools/debt-payoff-calculator-snowball",
+    "/tools/debt-payoff-calculator-avalanche",
+    "/tools/credit-card-interest-calculator",
+    "/tools/credit-utilization-calculator",
+    "/tools/early-loan-payoff-calculator",
+    "/tools/refinance-calculator-mortgage",
+    "/tools/emergency-fund-calculator",
+    "/tools/savings-interest-calculator-usa",
+    "/tools/paycheck-calculator-usa",
+    "/tools/hourly-to-salary-converter-usa",
+    "/tools/paycheck-calculator-california"
+  ],
+  "pagesForTitleCtrExperiments": [
+    {
+      "slug": "loan-calculator",
+      "title": "Loan Calculator - Monthly Payment & Total Interest (Free) | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "emi-calculator",
+      "title": "EMI Calculator - Home, Auto & Personal Loan EMI (Free) | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "compound-interest-calculator",
+      "title": "Compound Interest Calculator - Future Value, Your Rules (Free) | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "salary-after-tax-calculator",
+      "title": "Salary After Tax Calculator - Net Pay From Gross (Free) | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "stock-profit-calculator",
+      "title": "Stock Profit Calculator - Instant Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "pdf-merge",
+      "title": "PDF Merge - Combine PDF Files Online (Free) | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "pdf-split",
+      "title": "PDF Split - Free 2026 | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "pdf-compress",
+      "title": "PDF Compress - Shrink File Size Online (Free) | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "pdf-to-word",
+      "title": "PDF to Word - Instant Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "word-to-pdf",
+      "title": "Word to PDF - Instant Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "rental-yield-calculator",
+      "title": "Rental Yield Calculator - Online 2026 | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "property-roi-calculator",
+      "title": "Property ROI Calculator - Instant Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "mortgage-affordability-calculator",
+      "title": "Mortgage Affordability Calculator - Max Loan Estimate Fast (Free) | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "rent-vs-buy-calculator",
+      "title": "Rent vs Buy Calculator - Instant Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "mortgage-affordability-calculator-usa",
+      "title": "Mortgage Affordability Calculator USA - Online Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "rent-vs-buy-calculator-usa",
+      "title": "Rent vs Buy Calculator USA - 7-Year Cash-Outflow View (Free) | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "rental-yield-calculator-uk",
+      "title": "Rental Yield Calculator UK - Instant Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "gas-cost-calculator-road-trip",
+      "title": "Gas Cost Calculator Road Trip - Free 2026 | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "salary-after-tax-calculator-california",
+      "title": "Salary After Tax Calculator California - 2026 Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "salary-after-tax-calculator-texas",
+      "title": "Salary After Tax Calculator Texas - Instant Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "salary-after-tax-calculator-new-york",
+      "title": "Salary After Tax Calculator New York - Instant Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "salary-after-tax-calculator-florida",
+      "title": "Salary After Tax Calculator Florida - Instant Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "salary-after-tax-calculator-uk",
+      "title": "Salary After Tax Calculator UK - Instant Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "roi-calculator-marketing",
+      "title": "ROI Calculator Marketing - Online Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "cac-calculator-saas",
+      "title": "CAC Calculator SaaS - Free 2026 | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "ltv-calculator-saas",
+      "title": "LTV Calculator SaaS - Instant Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "break-even-calculator-business",
+      "title": "Break-even Calculator Business - Free Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "profit-margin-calculator-business",
+      "title": "Profit Margin Calculator Business - Instant Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "ai-email-subject-line-generator",
+      "title": "Email Subject Line Generator (templates) - Free 2026 | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "ai-cold-email-generator",
+      "title": "Cold Email Draft Generator (templates) - Free Tool | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "ai-linkedin-post-generator",
+      "title": "LinkedIn Post Draft Generator (templates) - Free Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "ai-resume-summary-generator",
+      "title": "Resume Summary Generator (templates) - 2026 Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "ai-product-description-generator",
+      "title": "Product Description Generator (templates) - 2026 Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "net-worth-calculator",
+      "title": "Net Worth Calculator - Assets vs Liabilities Fast (Free) | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "debt-payoff-calculator-snowball",
+      "title": "Debt Payoff Calculator Snowball - Instant Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "debt-payoff-calculator-avalanche",
+      "title": "Debt Payoff Calculator Avalanche - Instant Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "credit-card-interest-calculator",
+      "title": "Credit Card Interest Calculator - Free Tool | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "credit-utilization-calculator",
+      "title": "Credit Utilization Calculator - 2026 Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "early-loan-payoff-calculator",
+      "title": "Early Loan Payoff Calculator - Online 2026 | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "refinance-calculator-mortgage",
+      "title": "Refinance Calculator Mortgage - 2026 Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "emergency-fund-calculator",
+      "title": "Emergency Fund Calculator - Online Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "savings-interest-calculator-usa",
+      "title": "Savings Interest Calculator USA - Instant Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "paycheck-calculator-usa",
+      "title": "Paycheck Calculator USA - Biweekly & Weekly Net Pay (Free) | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "hourly-to-salary-converter-usa",
+      "title": "Hourly to Salary Converter USA - Free 2026 | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "paycheck-calculator-california",
+      "title": "Paycheck Calculator California - Free Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "paycheck-calculator-texas",
+      "title": "Paycheck Calculator Texas - Online 2026 | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "salary-to-hourly-converter-usa",
+      "title": "Salary to Hourly Converter USA - Free 2026 | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "overtime-pay-calculator-usa",
+      "title": "Overtime Pay Calculator USA - Free 2026 | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "car-loan-affordability-calculator",
+      "title": "Car Loan Affordability Calculator - Instant Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "roi-calculator",
+      "title": "ROI Calculator - Gain, Cost & True Return % (Free) | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "break-even-calculator",
+      "title": "Break-even Calculator - 2026 Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "profit-margin-calculator",
+      "title": "Profit Margin Calculator - Online Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "cac-calculator",
+      "title": "CAC Calculator - Free Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "ltv-calculator",
+      "title": "LTV Calculator - Instant Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "adsense-earnings-calculator",
+      "title": "AdSense Earnings Calculator - Online Free | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "youtube-earnings-calculator",
+      "title": "YouTube Earnings Calculator - Instant Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "conversion-rate-calculator",
+      "title": "Conversion Rate Calculator - Free Tool | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "cpc-calculator",
+      "title": "CPC Calculator - Online 2026 | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "affiliate-earnings-calculator",
+      "title": "Affiliate Earnings Calculator - Instant Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    },
+    {
+      "slug": "crypto-tax-calculator",
+      "title": "Crypto Tax Calculator - Instant Online | Toollabz",
+      "reason": "High-intent category; monitor CTR vs queries in GSC"
+    }
+  ],
+  "pagesLikelyClosestToRankingGains": [
+    {
+      "slug": "property-roi-calculator",
+      "name": "Property ROI Calculator",
+      "category": "real-estate",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "mortgage-affordability-calculator-usa",
+      "name": "Mortgage Affordability Calculator USA",
+      "category": "real-estate",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "rent-vs-buy-calculator-usa",
+      "name": "Rent vs Buy Calculator USA",
+      "category": "real-estate",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "rental-yield-calculator-uk",
+      "name": "Rental Yield Calculator UK",
+      "category": "real-estate",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "gas-cost-calculator-road-trip",
+      "name": "Gas Cost Calculator Road Trip",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "salary-after-tax-calculator-california",
+      "name": "Salary After Tax Calculator California",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "salary-after-tax-calculator-texas",
+      "name": "Salary After Tax Calculator Texas",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "salary-after-tax-calculator-new-york",
+      "name": "Salary After Tax Calculator New York",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "salary-after-tax-calculator-florida",
+      "name": "Salary After Tax Calculator Florida",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "salary-after-tax-calculator-uk",
+      "name": "Salary After Tax Calculator UK",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "roi-calculator-marketing",
+      "name": "ROI Calculator Marketing",
+      "category": "marketing",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "cac-calculator-saas",
+      "name": "CAC Calculator SaaS",
+      "category": "business",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "ltv-calculator-saas",
+      "name": "LTV Calculator SaaS",
+      "category": "business",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "break-even-calculator-business",
+      "name": "Break-even Calculator Business",
+      "category": "business",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "profit-margin-calculator-business",
+      "name": "Profit Margin Calculator Business",
+      "category": "business",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "ai-email-subject-line-generator",
+      "name": "Email Subject Line Generator (templates)",
+      "category": "generators",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "ai-cold-email-generator",
+      "name": "Cold Email Draft Generator (templates)",
+      "category": "generators",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "ai-linkedin-post-generator",
+      "name": "LinkedIn Post Draft Generator (templates)",
+      "category": "generators",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "ai-resume-summary-generator",
+      "name": "Resume Summary Generator (templates)",
+      "category": "generators",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "ai-product-description-generator",
+      "name": "Product Description Generator (templates)",
+      "category": "generators",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "net-worth-calculator",
+      "name": "Net Worth Calculator",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "debt-payoff-calculator-snowball",
+      "name": "Debt Payoff Calculator Snowball",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "debt-payoff-calculator-avalanche",
+      "name": "Debt Payoff Calculator Avalanche",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "credit-card-interest-calculator",
+      "name": "Credit Card Interest Calculator",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "credit-utilization-calculator",
+      "name": "Credit Utilization Calculator",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "early-loan-payoff-calculator",
+      "name": "Early Loan Payoff Calculator",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "refinance-calculator-mortgage",
+      "name": "Refinance Calculator Mortgage",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "emergency-fund-calculator",
+      "name": "Emergency Fund Calculator",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "savings-interest-calculator-usa",
+      "name": "Savings Interest Calculator USA",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "paycheck-calculator-usa",
+      "name": "Paycheck Calculator USA",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "hourly-to-salary-converter-usa",
+      "name": "Hourly to Salary Converter USA",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "paycheck-calculator-california",
+      "name": "Paycheck Calculator California",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "paycheck-calculator-texas",
+      "name": "Paycheck Calculator Texas",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "salary-to-hourly-converter-usa",
+      "name": "Salary to Hourly Converter USA",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "overtime-pay-calculator-usa",
+      "name": "Overtime Pay Calculator USA",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "car-loan-affordability-calculator",
+      "name": "Car Loan Affordability Calculator",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "unit-price-calculator",
+      "name": "Unit Price Calculator",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "discount-calculator",
+      "name": "Discount Calculator",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "moving-cost-calculator-usa",
+      "name": "Moving Cost Calculator USA",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    },
+    {
+      "slug": "electricity-cost-calculator-usa",
+      "name": "Electricity Cost Calculator USA",
+      "category": "finance",
+      "rationale": "Strong on-page depth signals (keywords + steps); good candidate for internal links from hubs"
+    }
+  ],
+  "reminder": "Export actual impressions, queries, and positions from Google Search Console-lists above are heuristics only."
+}

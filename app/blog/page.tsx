@@ -9,7 +9,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: { absolute: "Blog | Toollabz - Free Online Tools" },
   description:
-    "Practical guides on take-home pay, loans & EMI, VAT, PDF workflows, and ROI — written for people who actually use Toollabz calculators.",
+    "Practical guides on take-home pay, loans & EMI, VAT, PDF workflows, and ROI - written for people who actually use Toollabz calculators.",
   alternates: { canonical: "/blog" },
   openGraph: {
     title: "Blog | Toollabz - Free Online Tools",

@@ -21,7 +21,7 @@ function Article() {
       </p>
       <p className="mt-3 leading-7 text-slate-700">
         Check password protection: some tools cannot merge locked PDFs until you unlock with the correct password. Redact sensitive
-        tokens if you are sending externally—merge order is easier to fix than leaked data.
+        tokens if you are sending externally - merge order is easier to fix than leaked data.
       </p>
 
       <h2 id="browser-privacy" className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">
@@ -53,7 +53,7 @@ function Article() {
       </p>
       <p className="mt-3 leading-7 text-slate-700">
         Merged PDFs should be tested in the same viewer your recipient uses (Adobe Acrobat, Preview, Chrome) before you declare
-        victory—font embedding quirks still exist in the wild.
+        victory - font embedding quirks still exist in the wild.
       </p>
     </>
   );

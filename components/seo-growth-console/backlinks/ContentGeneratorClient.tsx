@@ -139,7 +139,7 @@ export default function ContentGeneratorClient() {
             <option value="">Select…</option>
             {prospects.map((p) => (
               <option key={p.id} value={p.id}>
-                {p.domain} — {p.page_type} ({p.quality_score})
+                {p.domain} - {p.page_type} ({p.quality_score})
               </option>
             ))}
           </select>

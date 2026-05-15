@@ -1,0 +1,672 @@
+{
+  "generatedAt": "2026-05-15T18:30:34.840Z",
+  "siteOrigin": "https://toollabz.com",
+  "sitemapUrlCount": 426,
+  "thinRelatedTools": [
+    {
+      "slug": "accident-compensation-calculator",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/accident-compensation-calculator"
+    },
+    {
+      "slug": "adsense-earnings-calculator",
+      "group": "marketing",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/adsense-earnings-calculator"
+    },
+    {
+      "slug": "affiliate-earnings-calculator",
+      "group": "marketing",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/affiliate-earnings-calculator"
+    },
+    {
+      "slug": "break-even-calculator",
+      "group": "business-saas",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/break-even-calculator"
+    },
+    {
+      "slug": "cac-calculator",
+      "group": "business-saas",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/cac-calculator"
+    },
+    {
+      "slug": "case-converter",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/case-converter"
+    },
+    {
+      "slug": "celsius-to-fahrenheit",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/celsius-to-fahrenheit"
+    },
+    {
+      "slug": "cm-to-feet",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/cm-to-feet"
+    },
+    {
+      "slug": "color-palette-generator",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/color-palette-generator"
+    },
+    {
+      "slug": "compound-interest-calculator",
+      "group": "finance",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/compound-interest-calculator"
+    },
+    {
+      "slug": "conversion-rate-calculator",
+      "group": "marketing",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/conversion-rate-calculator"
+    },
+    {
+      "slug": "cpc-calculator",
+      "group": "marketing",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/cpc-calculator"
+    },
+    {
+      "slug": "crypto-tax-calculator",
+      "group": "finance",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/crypto-tax-calculator"
+    },
+    {
+      "slug": "emi-calculator",
+      "group": "finance",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/emi-calculator"
+    },
+    {
+      "slug": "inflation-calculator",
+      "group": "finance",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/inflation-calculator"
+    },
+    {
+      "slug": "instagram-engagement-calculator",
+      "group": "marketing",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/instagram-engagement-calculator"
+    },
+    {
+      "slug": "investment-portfolio-calculator",
+      "group": "finance",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/investment-portfolio-calculator"
+    },
+    {
+      "slug": "kg-to-lbs",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/kg-to-lbs"
+    },
+    {
+      "slug": "km-to-miles",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/km-to-miles"
+    },
+    {
+      "slug": "legal-fee-estimator",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/legal-fee-estimator"
+    },
+    {
+      "slug": "loan-calculator",
+      "group": "finance",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/loan-calculator"
+    },
+    {
+      "slug": "ltv-calculator",
+      "group": "business-saas",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/ltv-calculator"
+    },
+    {
+      "slug": "mb-to-gb",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/mb-to-gb"
+    },
+    {
+      "slug": "mortgage-affordability-calculator",
+      "group": "real-estate",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/mortgage-affordability-calculator"
+    },
+    {
+      "slug": "password-generator",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/password-generator"
+    },
+    {
+      "slug": "pdf-compress",
+      "group": "pdf",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/pdf-compress"
+    },
+    {
+      "slug": "pdf-merge",
+      "group": "pdf",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/pdf-merge"
+    },
+    {
+      "slug": "pdf-split",
+      "group": "pdf",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/pdf-split"
+    },
+    {
+      "slug": "pdf-to-word",
+      "group": "pdf",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/pdf-to-word"
+    },
+    {
+      "slug": "profit-margin-calculator",
+      "group": "business-saas",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/profit-margin-calculator"
+    },
+    {
+      "slug": "rent-vs-buy-calculator",
+      "group": "real-estate",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/rent-vs-buy-calculator"
+    },
+    {
+      "slug": "rental-yield-calculator",
+      "group": "real-estate",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/rental-yield-calculator"
+    },
+    {
+      "slug": "retirement-calculator",
+      "group": "finance",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/retirement-calculator"
+    },
+    {
+      "slug": "roi-calculator",
+      "group": "business-saas",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/roi-calculator"
+    },
+    {
+      "slug": "salary-after-tax-calculator",
+      "group": "finance",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/salary-after-tax-calculator"
+    },
+    {
+      "slug": "settlement-calculator",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/settlement-calculator"
+    },
+    {
+      "slug": "stock-profit-calculator",
+      "group": "finance",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/stock-profit-calculator"
+    },
+    {
+      "slug": "tiktok-earnings-calculator",
+      "group": "marketing",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/tiktok-earnings-calculator"
+    },
+    {
+      "slug": "word-counter",
+      "group": "utility",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/word-counter"
+    },
+    {
+      "slug": "word-to-pdf",
+      "group": "pdf",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/word-to-pdf"
+    },
+    {
+      "slug": "youtube-earnings-calculator",
+      "group": "marketing",
+      "relatedCount": 2,
+      "url": "https://toollabz.com/tools/youtube-earnings-calculator"
+    }
+  ],
+  "thinBlogInterlinks": [
+    {
+      "slug": "age-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/age-calculator-guide"
+    },
+    {
+      "slug": "ai-content-humanizer-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/ai-content-humanizer-guide"
+    },
+    {
+      "slug": "ai-content-humanizer-natural-text-guide",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/ai-content-humanizer-natural-text-guide"
+    },
+    {
+      "slug": "ai-linkedin-post-generator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/ai-linkedin-post-generator-guide"
+    },
+    {
+      "slug": "ai-product-description-generator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/ai-product-description-generator-guide"
+    },
+    {
+      "slug": "ai-prompt-optimizer-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/ai-prompt-optimizer-guide"
+    },
+    {
+      "slug": "ai-resume-generator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/ai-resume-generator-guide"
+    },
+    {
+      "slug": "api-response-formatter-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/api-response-formatter-guide"
+    },
+    {
+      "slug": "base64-encoder-decoder-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/base64-encoder-decoder-guide"
+    },
+    {
+      "slug": "best-tools-for-paycheck-planning-usa",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/best-tools-for-paycheck-planning-usa"
+    },
+    {
+      "slug": "break-even-analysis-formula-examples-calculator",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/break-even-analysis-formula-examples-calculator"
+    },
+    {
+      "slug": "break-even-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/break-even-calculator-guide"
+    },
+    {
+      "slug": "business-loan-what-lenders-scan-first",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/business-loan-what-lenders-scan-first"
+    },
+    {
+      "slug": "cac-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/cac-calculator-guide"
+    },
+    {
+      "slug": "case-converter-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/case-converter-guide"
+    },
+    {
+      "slug": "compound-interest-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/compound-interest-calculator-guide"
+    },
+    {
+      "slug": "credit-card-payoff-avalanche-vs-snowball",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/credit-card-payoff-avalanche-vs-snowball"
+    },
+    {
+      "slug": "emergency-fund-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/emergency-fund-calculator-guide"
+    },
+    {
+      "slug": "emi-calculation-explained",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/emi-calculation-explained"
+    },
+    {
+      "slug": "home-equity-how-much-can-you-borrow-usa",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/home-equity-how-much-can-you-borrow-usa"
+    },
+    {
+      "slug": "hourly-vs-salary-comparison",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/hourly-vs-salary-comparison"
+    },
+    {
+      "slug": "how-to-calculate-emi-for-a-loan",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/how-to-calculate-emi-for-a-loan"
+    },
+    {
+      "slug": "how-to-calculate-emi-formula-examples-free-calculator",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/how-to-calculate-emi-formula-examples-free-calculator"
+    },
+    {
+      "slug": "how-to-calculate-mortgage-payment-with-taxes-and-insurance",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/how-to-calculate-mortgage-payment-with-taxes-and-insurance"
+    },
+    {
+      "slug": "how-to-calculate-roi",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/how-to-calculate-roi"
+    },
+    {
+      "slug": "how-to-calculate-roi-business",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/how-to-calculate-roi-business"
+    },
+    {
+      "slug": "how-to-calculate-salary-after-tax-usa",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/how-to-calculate-salary-after-tax-usa"
+    },
+    {
+      "slug": "how-to-calculate-take-home-salary-country-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/how-to-calculate-take-home-salary-country-guide"
+    },
+    {
+      "slug": "how-to-compare-rent-vs-buy-without-hype",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/how-to-compare-rent-vs-buy-without-hype"
+    },
+    {
+      "slug": "how-to-estimate-take-home-pay-from-gross-salary",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/how-to-estimate-take-home-pay-from-gross-salary"
+    },
+    {
+      "slug": "how-to-merge-pdf-files-for-free",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/how-to-merge-pdf-files-for-free"
+    },
+    {
+      "slug": "json-formatter-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/json-formatter-guide"
+    },
+    {
+      "slug": "loan-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/loan-calculator-guide"
+    },
+    {
+      "slug": "loan-calculator-how-banks-calculate-your-emi",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/loan-calculator-how-banks-calculate-your-emi"
+    },
+    {
+      "slug": "ltv-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/ltv-calculator-guide"
+    },
+    {
+      "slug": "medical-malpractice-settlement-basics-usa",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/medical-malpractice-settlement-basics-usa"
+    },
+    {
+      "slug": "merge-pdf-files-free-five-methods-compared",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/merge-pdf-files-free-five-methods-compared"
+    },
+    {
+      "slug": "mortgage-affordability-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/mortgage-affordability-calculator-guide"
+    },
+    {
+      "slug": "mortgage-payment-usa-piti-escrow-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/mortgage-payment-usa-piti-escrow-guide"
+    },
+    {
+      "slug": "net-worth-calculator-five-minute-guide",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/net-worth-calculator-five-minute-guide"
+    },
+    {
+      "slug": "net-worth-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/net-worth-calculator-guide"
+    },
+    {
+      "slug": "paycheck-calculator-usa-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/paycheck-calculator-usa-guide"
+    },
+    {
+      "slug": "pdf-compress-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/pdf-compress-guide"
+    },
+    {
+      "slug": "pdf-merge-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/pdf-merge-guide"
+    },
+    {
+      "slug": "pdf-to-word-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/pdf-to-word-guide"
+    },
+    {
+      "slug": "personal-injury-settlement-specials-and-limits",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/personal-injury-settlement-specials-and-limits"
+    },
+    {
+      "slug": "profit-margin-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/profit-margin-calculator-guide"
+    },
+    {
+      "slug": "property-roi-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/property-roi-calculator-guide"
+    },
+    {
+      "slug": "refinance-break-even-usa-when-it-pays",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/refinance-break-even-usa-when-it-pays"
+    },
+    {
+      "slug": "regex-tester-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/regex-tester-guide"
+    },
+    {
+      "slug": "rent-vs-buy-usa-guide",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/rent-vs-buy-usa-guide"
+    },
+    {
+      "slug": "rental-yield-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/rental-yield-calculator-guide"
+    },
+    {
+      "slug": "retirement-age-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/retirement-age-calculator-guide"
+    },
+    {
+      "slug": "roi-calculator-explained-for-marketing-campaigns",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/roi-calculator-explained-for-marketing-campaigns"
+    },
+    {
+      "slug": "roi-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/roi-calculator-guide"
+    },
+    {
+      "slug": "roi-calculator-marketing-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/roi-calculator-marketing-guide"
+    },
+    {
+      "slug": "roi-calculator-measure-return-on-investment",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/roi-calculator-measure-return-on-investment"
+    },
+    {
+      "slug": "saas-mrr-arr-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/saas-mrr-arr-calculator-guide"
+    },
+    {
+      "slug": "salary-after-tax-take-home-country-comparison-guide",
+      "relatedPosts": 0,
+      "relatedTools": 3,
+      "url": "https://toollabz.com/blog/salary-after-tax-take-home-country-comparison-guide"
+    },
+    {
+      "slug": "savings-interest-calculator-guide",
+      "relatedPosts": 0,
+      "relatedTools": 4,
+      "url": "https://toollabz.com/blog/savings-interest-calculator-guide"
+    }
+  ],
+  "hubFeaturedSlugsMissingInRegistry": [
+    "tool-seo-expansion"
+  ],
+  "clusterPreview": {
+    "finance": {
+      "toolCount": 69,
+      "samplePaths": [
+        "/tools/loan-calculator",
+        "/tools/emi-calculator",
+        "/tools/compound-interest-calculator",
+        "/tools/salary-after-tax-calculator",
+        "/tools/stock-profit-calculator"
+      ]
+    },
+    "developer": {
+      "toolCount": 31,
+      "samplePaths": [
+        "/tools/json-formatter",
+        "/tools/json-validator",
+        "/tools/base64-encoder-decoder",
+        "/tools/url-encoder-decoder",
+        "/tools/regex-tester"
+      ]
+    },
+    "business-saas": {
+      "toolCount": 25,
+      "samplePaths": [
+        "/tools/cac-calculator-saas",
+        "/tools/ltv-calculator-saas",
+        "/tools/break-even-calculator-business",
+        "/tools/profit-margin-calculator-business",
+        "/tools/roi-calculator"
+      ]
+    },
+    "utility": {
+      "toolCount": 108,
+      "samplePaths": [
+        "/tools/cm-to-feet",
+        "/tools/kg-to-lbs",
+        "/tools/km-to-miles",
+        "/tools/celsius-to-fahrenheit",
+        "/tools/mb-to-gb"
+      ]
+    }
+  },
+  "lowImpressionHeuristic": {
+    "note": "True low-impression URLs require GSC export or Postgres gsc_page_daily; this block lists programmatic and niche routes to spot-check manually.",
+    "programmaticSalaryPaths": 6,
+    "programmaticLoanPaths": 6,
+    "cmToFeetPaths": 7
+  },
+  "actions": [
+    "For each thinRelatedTools row: add one contextual inbound link from the matching hub or a sibling tool page.",
+    "For each thinBlogInterlinks row: add 2 related posts + 2 related tools using real topical adjacency.",
+    "Re-run npm run validate:blog-sitemap after blog manifest changes.",
+    "Use reports/manual-indexing-priority.json for URL Inspection queue after substantive edits."
+  ]
+}

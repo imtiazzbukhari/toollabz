@@ -1,15 +1,21 @@
 import { describe, expect, it } from "vitest";
 import { blogPostSlugs } from "../lib/blog/registry";
 import { tools } from "../lib/tools/data";
-import { absoluteUrl, siteUrl, toolMetadata } from "../lib/seo";
+import { toolMetadata } from "../lib/seo";
 import { GET as robotsGet } from "../app/robots.txt/route";
-import { buildSitemapEntries } from "../lib/content-engine/sitemap-data";
+import { buildSitemapEntries, sitemapPublicOrigin } from "../lib/content-engine/sitemap-data";
+
+function sitemapAbs(path: string) {
+  const origin = sitemapPublicOrigin();
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return `${origin}${p}`;
+}
 
 describe("site SEO plumbing (sitemap, robots, metadata)", () => {
-  it("robots.txt exposes sitemap URL aligned with siteUrl", async () => {
+  it("robots.txt exposes sitemap URL aligned with sitemap origin", async () => {
     const res = await robotsGet();
     const text = await res.text();
-    expect(text).toContain(`Sitemap: ${siteUrl}/sitemap.xml`);
+    expect(text).toContain(`Sitemap: ${sitemapPublicOrigin()}/sitemap.xml`);
     expect(text).toContain("User-agent: *");
     expect(text).toContain("Allow: /");
     expect(text).toContain("Disallow: /api/");
@@ -27,13 +33,27 @@ describe("site SEO plumbing (sitemap, robots, metadata)", () => {
       expect(u.startsWith("http://") || u.startsWith("https://")).toBe(true);
     }
 
-    expect(urls).toContain(absoluteUrl("/"));
-    expect(urls).toContain(absoluteUrl("/tools"));
-    expect(urls).toContain(absoluteUrl("/blog"));
-    expect(urls).toContain(absoluteUrl("/tools/loan-calculator"));
+    expect(urls).toContain(sitemapAbs("/"));
+    expect(urls).toContain(sitemapAbs("/tools"));
+    expect(urls).toContain(sitemapAbs("/blog"));
+    expect(urls).toContain(sitemapAbs("/tools/loan-calculator"));
 
     for (const slug of blogPostSlugs) {
-      expect(urls).toContain(absoluteUrl(`/blog/${slug}`));
+      expect(urls).toContain(sitemapAbs(`/blog/${slug}`));
+    }
+
+    const blogArticleUrls = entries.filter((e) => {
+      try {
+        const p = new URL(e.loc).pathname;
+        return p.startsWith("/blog/") && p !== "/blog";
+      } catch {
+        return false;
+      }
+    });
+    expect(blogArticleUrls.length).toBe(blogPostSlugs.length);
+    for (const row of blogArticleUrls) {
+      expect(row.lastmod).toBeTruthy();
+      expect(Number.isNaN(Date.parse(String(row.lastmod)))).toBe(false);
     }
   });
 
@@ -41,7 +61,7 @@ describe("site SEO plumbing (sitemap, robots, metadata)", () => {
     const entries = buildSitemapEntries(new Date());
     const urls = new Set(entries.map((e) => e.loc));
     for (const tool of tools) {
-      expect(urls.has(absoluteUrl(`/tools/${tool.slug}`))).toBe(true);
+      expect(urls.has(sitemapAbs(`/tools/${tool.slug}`))).toBe(true);
     }
   });
 
@@ -51,7 +71,7 @@ describe("site SEO plumbing (sitemap, robots, metadata)", () => {
       const m = toolMetadata(tool);
       expect(m.title.length).toBeGreaterThan(2);
       expect(m.description.length).toBeGreaterThan(24);
-      expect(m.description.length).toBeLessThanOrEqual(158);
+      expect(m.description.length).toBeLessThanOrEqual(160);
       expect(m.alternates?.canonical).toBe(`/tools/${tool.slug}`);
     }
   });

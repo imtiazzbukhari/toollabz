@@ -5,7 +5,7 @@ import { categories, tools } from "@/lib/tools/data";
 import { siteUrl as configuredSiteUrl } from "@/lib/seo";
 
 /** Never emit raw IPs or non-public hosts in sitemap `<loc>` URLs. */
-function sitemapPublicOrigin(): string {
+export function sitemapPublicOrigin(): string {
   const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
   const tryUrl = (s: string) => {
     const normalized = /^https?:\/\//i.test(s) ? s : `https://${s}`;
@@ -40,6 +40,22 @@ export type SitemapEntry = {
   changefreq?: "daily" | "weekly" | "monthly";
   priority?: number;
 };
+
+function escapeXml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+}
+
+/** Stable ISO-8601 lastmod for blog URLs (falls back to published date). */
+export function blogPostSitemapLastMod(post: { publishedAt: string; dateModified: string }): string {
+  const dm = post.dateModified?.trim();
+  if (dm && !Number.isNaN(Date.parse(dm))) return new Date(dm).toISOString();
+  const pub = post.publishedAt?.trim();
+  if (pub) {
+    const t = Date.parse(pub);
+    if (!Number.isNaN(t)) return new Date(t).toISOString();
+  }
+  return new Date().toISOString();
+}
 
 function add(entries: SitemapEntry[], seen: Set<string>, pathName: string, priority: number, changefreq: SitemapEntry["changefreq"] = "weekly", lastmod?: string) {
   const cleanPath = pathName.startsWith("/") ? pathName : `/${pathName}`;
@@ -92,12 +108,13 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
     "/pdf-tools",
     "/developer-tools",
     "/marketing-tools",
+    "/uk-finance-tax",
   ].forEach((p) => add(entries, seen, p, p === "/" ? 1 : 0.82, "weekly", nowIso));
 
   categories.forEach((category) => add(entries, seen, `/category/${category.slug}`, 0.8, "weekly", nowIso));
   tools.forEach((tool) => add(entries, seen, `/tools/${tool.slug}`, 0.86, "weekly", nowIso));
   blogPosts.forEach((post) => {
-    const m = Number.isNaN(Date.parse(post.dateModified)) ? nowIso : new Date(post.dateModified).toISOString();
+    const m = blogPostSitemapLastMod(post);
     add(entries, seen, `/blog/${post.slug}`, 0.76, "weekly", m);
   });
 
@@ -114,7 +131,7 @@ export function renderSitemapXml(entries: SitemapEntry[]): string {
       const lastmod = e.lastmod ? `<lastmod>${e.lastmod}</lastmod>` : "";
       const changefreq = e.changefreq ? `<changefreq>${e.changefreq}</changefreq>` : "";
       const priority = typeof e.priority === "number" ? `<priority>${e.priority.toFixed(2)}</priority>` : "";
-      return `<url><loc>${e.loc}</loc>${lastmod}${changefreq}${priority}</url>`;
+      return `<url><loc>${escapeXml(e.loc)}</loc>${lastmod}${changefreq}${priority}</url>`;
     })
     .join("");
   return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${rows}</urlset>`;

@@ -6,7 +6,7 @@ function Article() {
   return (
     <>
       <p className="leading-7 text-slate-700">
-        AI drafts often arrive perfectly grammatical yet oddly weightless—parallel sentence openings, no idioms, missing concrete
+        AI drafts often arrive perfectly grammatical yet oddly weightless - parallel sentence openings, no idioms, missing concrete
         nouns. “Humanizing” is less about tricking detectors and more about restoring specificity, variance, and voice.
       </p>
 
@@ -38,13 +38,13 @@ function Article() {
         <Link href="/ai-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           AI tools
         </Link>{" "}
-        for outlines and subject lines—keep humans in the loop for YMYL topics.
+        for outlines and subject lines - keep humans in the loop for YMYL topics.
       </p>
 
       <BlogToolCallout
         href="/tools/ai-content-humanizer"
         title="AI content humanizer"
-        description="Paste stiff copy, explore natural rewrites, then edit for facts and tone — not the other way around."
+        description="Paste stiff copy, explore natural rewrites, then edit for facts and tone  -  not the other way around."
       />
     </>
   );

@@ -52,13 +52,13 @@ export async function verifyAndRecordLiveLink(opts: {
     });
     html = await res.text();
   } catch {
-    return { ok: true, found: false, message: "Could not fetch the page yet — try again later." };
+    return { ok: true, found: false, message: "Could not fetch the page yet - try again later." };
   }
 
   const lower = html.toLowerCase();
   const found = lower.includes("toollabz.com") || lower.includes("www.toollabz.com") || /\btoollabz\b/.test(lower);
   if (!found) {
-    return { ok: true, found: false, message: "Not found yet — toollabz.com not detected on that page." };
+    return { ok: true, found: false, message: "Not found yet - toollabz.com not detected on that page." };
   }
 
   const today = new Date().toISOString().slice(0, 10);
@@ -78,5 +78,5 @@ export async function verifyAndRecordLiveLink(opts: {
     updated_at: ts,
   });
   updateProspect(opts.prospectId, { status: "live" });
-  return { ok: true, found: true, message: "Link verified — toollabz.com found on page." };
+  return { ok: true, found: true, message: "Link verified - toollabz.com found on page." };
 }

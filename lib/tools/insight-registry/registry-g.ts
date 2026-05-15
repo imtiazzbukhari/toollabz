@@ -228,7 +228,7 @@ export const TOOL_INSIGHTS_G: Record<string, ToolPageInsight> = {
       "Nurseries sell bulk by the loose cubic yard while bags quote oddball coverage; this stays in honest geometry before you argue delivery minimums.",
     example: "400 sq ft at 3 in deep → 100 cu ft → about 3.7 cu yd before rounding up to whole truck increments.",
     insights: [
-      "Weed fabric and edging steal a little area—measure after hardscape is set.",
+      "Weed fabric and edging steal a little area-measure after hardscape is set.",
       "Fresh arborist chips settle; depth looks thinner after the first rain.",
       "Dyed mulch moisture changes weight, not the yardage you computed here.",
     ],
@@ -251,7 +251,7 @@ export const TOOL_INSIGHTS_G: Record<string, ToolPageInsight> = {
     example: "10×12 room, 12 in tiles, 10% waste → 120 ft² × 1.1 ÷ 1 ft² → 132 pieces before box rounding.",
     insights: [
       "Subtract vanities and islands only if you already took them out of the floor area you typed.",
-      "Large-format tiles crack the plan if subfloor flatness fails—labor, not count, blows budgets.",
+      "Large-format tiles crack the plan if subfloor flatness fails-labor, not count, blows budgets.",
       "Keep one attic box of the same dye lot for future chip repairs.",
     ],
   },
@@ -262,7 +262,7 @@ export const TOOL_INSIGHTS_G: Record<string, ToolPageInsight> = {
     example: "8,000 sq ft lawn, bag covers 5,000 sq ft → two bags minimum even if the math says 1.6.",
     insights: [
       "Split apps in shoulder seasons beat one heroic dump that washes out.",
-      "Buffer strips near water deserve zero product—this tool cannot see your easements.",
+      "Buffer strips near water deserve zero product-this tool cannot see your easements.",
       "Soil tests beat guessing NPK ratios from aisle marketing copy.",
     ],
   },
@@ -273,7 +273,7 @@ export const TOOL_INSIGHTS_G: Record<string, ToolPageInsight> = {
     example: "180 sq ft of pasted wall, 56 usable sq ft per roll → four rolls mathematically, five psychologically for dye lot safety.",
     insights: [
       "Stair kite walls and bulkheads need manual area adds this form does not sketch.",
-      "Peel-and-stick tolerances differ from traditional clay-coated papers—trust that SKU only.",
+      "Peel-and-stick tolerances differ from traditional clay-coated papers-trust that SKU only.",
       "Batch numbers matter more than saving eight dollars on a fifth roll mid-job.",
     ],
   },

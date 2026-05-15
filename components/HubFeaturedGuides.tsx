@@ -10,8 +10,7 @@ export default function HubFeaturedGuides({ posts, title = "Featured guides" }: 
         {title}
       </h2>
       <p className="mt-2 max-w-3xl text-sm text-slate-600">
-        Long-form explainers that pair with the calculators in this hub — open a post, then return here to plug in your own
-        numbers.
+        Long-form explainers that pair with the calculators in this hub. Open a post, then return here to plug in your own numbers.
       </p>
       <ul className="mt-6 grid gap-4 md:grid-cols-3">
         {posts.map((p) => (

@@ -3,6 +3,9 @@ import path from "node:path";
 import { blogPosts, blogPostSlugs } from "@/lib/blog/registry";
 import { tools } from "@/lib/tools/data";
 import { loadPerformanceAggregates } from "../performance/load-aggregates";
+import { loadPerformanceAggregatesMerged } from "../seo-metrics/merge-performance";
+import { buildSeoDataPlaneSnapshot, type SeoDataPlaneSnapshot } from "../seo-metrics/build-seo-data-plane-snapshot";
+import { buildOrphanToolLinkHints, type OrphanLinkHint } from "../internal-link-orphans";
 import { loadBehaviorAggregates } from "../growth/load-behavior-aggregates";
 import { buildContentPerformanceLoopSnapshot } from "../growth/performance-content-loop";
 import { buildBehaviorPrActionQueue } from "../growth/behavior-actions";
@@ -203,10 +206,24 @@ export type DashboardSnapshot = {
   };
   failSafe: { rules: string[] };
   logsNote: string;
+  /** Provenance for `pagePerformance` rows (Postgres rollup vs JSON import). */
+  pageMetricsProvenance: {
+    sourceLabel: string | null;
+    updatedAt: string | null;
+    hasPreviousWindow: boolean;
+  };
+  /** Postgres-backed GSC/GA4 slice + SQL-derived opportunities (empty when DATABASE_URL unset). */
+  seoDataPlane: SeoDataPlaneSnapshot;
+  /** Heuristic orphan detection from GSC pages + internal graph proxies. */
+  orphanLinkHints: OrphanLinkHint[];
 };
 
-export function buildDashboardSnapshot(): DashboardSnapshot {
-  const performance = loadPerformanceAggregates();
+export async function buildDashboardSnapshot(): Promise<DashboardSnapshot> {
+  const performance = (await loadPerformanceAggregatesMerged()) ?? loadPerformanceAggregates();
+  const [seoDataPlane, orphanLinkHints] = await Promise.all([
+    buildSeoDataPlaneSnapshot(),
+    Promise.resolve(buildOrphanToolLinkHints(performance?.pages ?? [])),
+  ]);
   const behavior = loadBehaviorAggregates();
   const pages = performance?.pages ?? [];
   const growthLoop = buildContentPerformanceLoopSnapshot(performance, behavior);
@@ -559,10 +576,17 @@ export function buildDashboardSnapshot(): DashboardSnapshot {
         "No production writes from API routes; artifacts land on git branches only.",
         "Blog/tool pipelines require quality gate before PR (scripts exit 0 on skip).",
         "Outreach: draft → approve → send; SMTP only when OUTREACH_DRY_RUN=0; daily cap enforced.",
-        "RPM and behavior signals adjust ranking heuristics only — not on-page HTML.",
+        "RPM and behavior signals adjust ranking heuristics only - not on-page HTML.",
       ],
     },
     logsNote:
       "Structured logs: CONTENT_ENGINE / pipeline JSON on stdout in CI. Ship to your log drain (Datadog, Axiom, etc.) from the runner.",
+    pageMetricsProvenance: {
+      sourceLabel: performance?.source ?? null,
+      updatedAt: performance?.updatedAt ?? null,
+      hasPreviousWindow: Boolean(performance?.pagesPrevious?.length),
+    },
+    seoDataPlane,
+    orphanLinkHints,
   };
 }

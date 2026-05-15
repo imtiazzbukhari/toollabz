@@ -10,13 +10,13 @@ function Article() {
 
       <h2 className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">The only break-even that matters on closing day</h2>
       <p className="mt-3 leading-7 text-slate-700">
-        Take closing costs you truly won’t recover immediately (points, title, origination—whatever is real in your quote). Divide by the monthly payment drop on the part you care about—usually P&I if you are comparing apples to apples. That’s months to get your cash back.
+        Take closing costs you truly won’t recover immediately (points, title, origination - whatever is real in your quote). Divide by the monthly payment drop on the part you care about - usually P&I if you are comparing apples to apples. That’s months to get your cash back.
         If you might sell before then, the refi math gets mushy fast.
       </p>
 
       <h2 className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">Numbers: $6,200 costs, $185/mo P&I savings</h2>
       <p className="mt-3 leading-7 text-slate-700">
-        <strong className="font-semibold text-slate-800">$6,200 ÷ $185 ≈ 33.5</strong> months to recover hard dollars. Under three years. Sounds fine—unless you’re listing in eighteen months because of a job change. Also check whether the “savings” assumed you rolled costs into the loan (you still borrowed them).
+        <strong className="font-semibold text-slate-800">$6,200 ÷ $185 ≈ 33.5</strong> months to recover hard dollars. Under three years. Sounds fine - unless you’re listing in eighteen months because of a job change. Also check whether the “savings” assumed you rolled costs into the loan (you still borrowed them).
       </p>
       <p className="mt-3 leading-7 text-slate-700">
         Model your actual balance, remaining term, new rate, and costs in the{" "}
@@ -37,7 +37,7 @@ function Article() {
       </p>
       <h3 className="mt-6 text-lg font-semibold text-slate-900">What about cash-out?</h3>
       <p className="mt-2 leading-7 text-slate-700">
-        You’re borrowing more. Payment might still drop if the rate craters, but you’re not “saving” on the chunk you took out—you’re financing it.
+        You’re borrowing more. Payment might still drop if the rate craters, but you’re not “saving” on the chunk you took out - you’re financing it.
       </p>
     </>
   );

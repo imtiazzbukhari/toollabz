@@ -67,7 +67,7 @@ function StatusBadge({ status }: { status: string }) {
 async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, { credentials: "include", ...init });
   const j = (await res.json().catch(() => ({}))) as T & { error?: string };
-  if (res.status === 401) throw new Error("Unauthorized — sign in via SEO console.");
+  if (res.status === 401) throw new Error("Unauthorized - sign in via SEO console.");
   if (!res.ok) throw new Error((j as { error?: string }).error ?? res.statusText);
   return j as T;
 }
@@ -210,7 +210,7 @@ export default function OutreachManagerPage() {
     }
     setVerifyMsg({
       tone: j.found ? "ok" : "warn",
-      text: j.found ? "Link verified ✓" : (j.message ?? "Not found yet — check URL"),
+      text: j.found ? "Link verified ✓" : (j.message ?? "Not found yet - check URL"),
     });
     if (j.found) {
       setVerifyRow(null);
@@ -263,7 +263,7 @@ export default function OutreachManagerPage() {
         <div className="space-y-4">
           {items.map((row) => {
             const c = row.content;
-            const ct = c?.content_type ?? row.content_type ?? "—";
+            const ct = c?.content_type ?? row.content_type ?? "-";
             const subj = c?.subject_line ?? row.subject_line;
             const days = daysSinceSent(sentTs(row));
             const showFollowUp =
@@ -288,7 +288,7 @@ export default function OutreachManagerPage() {
                       </p>
                     ) : null}
                     <p className="mt-1 text-sm text-slate-800">
-                      <span className="font-medium text-slate-700">Contact:</span> {row.contact_email ?? "—"}
+                      <span className="font-medium text-slate-700">Contact:</span> {row.contact_email ?? "-"}
                     </p>
                     <p className="mt-1 text-sm text-slate-600">
                       Sent: {sentTs(row) ? sentTs(row)!.slice(0, 10) : "Not sent yet"}
@@ -393,7 +393,7 @@ export default function OutreachManagerPage() {
       {modal ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" role="dialog">
           <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-6 shadow-xl">
-            <h2 className="text-lg font-semibold text-slate-900">Record response — {modal.domain}</h2>
+            <h2 className="text-lg font-semibold text-slate-900">Record response - {modal.domain}</h2>
             <div className="mt-4 space-y-2 text-sm text-slate-800">
               <label className="flex items-center gap-2">
                 <input type="radio" name="rt" checked={responseType === "approved"} onChange={() => setResponseType("approved")} />

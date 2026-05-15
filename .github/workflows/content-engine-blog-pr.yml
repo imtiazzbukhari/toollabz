@@ -1,5 +1,5 @@
 # Safe automated blog pipeline: cron → production APIs → quality gate → branch + PR (never push to main).
-name: Content Engine — Blog PR
+name: Content Engine - Blog PR
 
 on:
   schedule:

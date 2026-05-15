@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
        LIMIT 1`,
     )
     .get() as { t: string | null; cnt: number } | undefined;
-  const bestPerformingContentType = bestRow?.t && bestRow.cnt > 0 ? bestRow.t : "—";
+  const bestPerformingContentType = bestRow?.t && bestRow.cnt > 0 ? bestRow.t : "-";
 
   const activity: ActivityEntry[] = getActivity(40);
 

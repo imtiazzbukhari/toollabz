@@ -39,7 +39,7 @@ function Article() {
       <p className="mt-3 leading-7 text-slate-700">
         Amortization schedules allocate each EMI into interest due on the remaining balance plus principal reduction. Month one
         uses almost the whole balance, so the interest component dominates. Month forty uses a tiny balance, so principal dominates.
-        Nothing sneaky happened — the bank did not secretly flip a switch. If you prepay principal, the bank recomputes the
+        Nothing sneaky happened  -  the bank did not secretly flip a switch. If you prepay principal, the bank recomputes the
         remaining schedule (or shortens tenor, depending on contract). Our{" "}
         <Link href="/tools/loan-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           loan calculator
@@ -94,7 +94,7 @@ const faqSchema = [
   {
     question: "Is the Toollabz EMI calculator financial advice?",
     answer:
-      "No. It is educational software that performs deterministic arithmetic from the numbers you supply. Laws, tax treatment, and lender policies change by jurisdiction. For binding decisions—especially large mortgages or business loans—verify with qualified professionals and signed documents.",
+      "No. It is educational software that performs deterministic arithmetic from the numbers you supply. Laws, tax treatment, and lender policies change by jurisdiction. For binding decisions - especially large mortgages or business loans - verify with qualified professionals and signed documents.",
   },
 ] as const;
 
@@ -104,7 +104,7 @@ export const howToCalculateEmiFormulaExamplesFreeCalculatorPost: BlogPostDefinit
   description:
     "Learn the EMI formula banks use, convert APR to monthly rate, walk through a $18k worked example, and run the same numbers in Toollabz free calculators.",
   title: "How to Calculate EMI: Formula, Examples & Free Calculator",
-  excerpt: "Close-form EMI math, a typed example, amortization intuition, and a free calculator CTA — without spreadsheet trauma.",
+  excerpt: "Close-form EMI math, a typed example, amortization intuition, and a free calculator CTA  -  without spreadsheet trauma.",
   publishedAt: "2026-04-26",
   category: "Finance",
   tags: ["EMI", "loan", "formula", "amortization"],

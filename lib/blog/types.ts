@@ -33,6 +33,18 @@ export type BlogPostDefinition = {
   readingTimeMinutes?: number;
   /** In-page anchors for table of contents */
   tableOfContents?: Array<{ id: string; label: string }>;
+  /** Curated sibling posts for topical clusters (slugs must exist in registry). */
+  relatedPostsSlugs?: string[];
+  /** Snippet-friendly bullets shown above the article body */
+  keyTakeaways?: string[];
+  /** Short editorial framing (no fabricated credentials) */
+  editorialNote?: string[];
+  /** Optional references (prefer primary sources you actually cite in prose) */
+  sources?: Array<{ label: string; href?: string }>;
+  /** “Common mistakes” callouts rendered after the article */
+  commonMistakes?: Array<{ title: string; body: string }>;
+  /** When this guidance pairs best with live calculators */
+  whenToUseTools?: string[];
   author?: BlogAuthor;
   Article: () => ReactNode;
 };

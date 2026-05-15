@@ -17,7 +17,7 @@ function Article() {
         Classic form: <code className="rounded bg-violet-100/80 px-1.5 py-0.5 text-sm">ROI = (Gain − Cost) / Cost</code>. Multiply
         by 100 for percent. Example: spend <strong>$4,000</strong> on a campaign that produces <strong>$6,500</strong> incremental
         margin → gain <strong>$2,500</strong> → ROI = <strong>62.5%</strong>. If someone reports 162%, they may be using gain over
-        cost instead of (gain−cost)/cost—define terms in the slide footer.
+        cost instead of (gain−cost)/cost - define terms in the slide footer.
       </p>
 
       <h2 id="time" className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">
@@ -60,7 +60,7 @@ const faqSchema = [
   {
     question: "Can ROI be negative?",
     answer:
-      "Yes, when gain is less than cost. Report negative ROI clearly rather than clamping to zero—otherwise you hide losing experiments.",
+      "Yes, when gain is less than cost. Report negative ROI clearly rather than clamping to zero - otherwise you hide losing experiments.",
   },
   {
     question: "How do I handle multi-touch attribution?",

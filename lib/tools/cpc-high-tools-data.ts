@@ -1,4 +1,4 @@
-/** Reference-style constants for high-CPC estimator tools — illustrative only, not insurer/legal advice. */
+/** Reference-style constants for high-CPC estimator tools - illustrative only, not insurer/legal advice. */
 
 export const US_STATE_OPTIONS = [
   { label: "AL", value: "AL" }, { label: "AK", value: "AK" }, { label: "AZ", value: "AZ" }, { label: "AR", value: "AR" },
@@ -25,7 +25,7 @@ export const AUTO_INSURANCE_STATE_BASE_MONTHLY: Record<string, number> = {
   DC: 175,
 };
 
-/** Approximate total DUI-related cost band midpoints (USD) for first offense — varies by case. */
+/** Approximate total DUI-related cost band midpoints (USD) for first offense - varies by case. */
 export const DUI_STATE_COST_MIDPOINT: Record<string, number> = {
   AL: 12000, AK: 14000, AZ: 15000, AR: 11000, CA: 18000, CO: 13000, CT: 14000, DE: 12000,
   FL: 15000, GA: 12500, HI: 13000, ID: 10000, IL: 16000, IN: 11000, IA: 10500, KS: 11000,
@@ -36,12 +36,12 @@ export const DUI_STATE_COST_MIDPOINT: Record<string, number> = {
   WI: 12500, WY: 10500, DC: 15000,
 };
 
-/** 2025 FPL annual (approximate) for household size 1–8 — used for subsidy eligibility math. */
+/** 2025 FPL annual (approximate) for household size 1–8 - used for subsidy eligibility math. */
 export const FPL_2025_ANNUAL: Record<number, number> = {
   1: 15060, 2: 20440, 3: 25820, 4: 31200, 5: 36580, 6: 41960, 7: 47340, 8: 52720,
 };
 
-/** Monthly benchmark Silver premium anchor by state (USD) — simplified modeling input. */
+/** Monthly benchmark Silver premium anchor by state (USD) - simplified modeling input. */
 export const ACA_SILVER_BENCHMARK_MONTHLY: Record<string, number> = {
   AL: 520, AK: 720, AZ: 480, AR: 450, CA: 410, CO: 395, CT: 540, DE: 505, FL: 490, GA: 455,
   HI: 510, ID: 425, IL: 465, IN: 430, IA: 445, KS: 455, KY: 465, LA: 520, ME: 495, MD: 445,
@@ -50,13 +50,13 @@ export const ACA_SILVER_BENCHMARK_MONTHLY: Record<string, number> = {
   TN: 455, TX: 455, UT: 405, VT: 640, VA: 455, WA: 395, WV: 720, WI: 545, WY: 720, DC: 420,
 };
 
-/** 2025 VA monthly compensation — veteran alone, no dependents (USD). */
+/** 2025 VA monthly compensation - veteran alone, no dependents (USD). */
 export const VA_COMPENSATION_2025_MONTHLY: Record<number, number> = {
   10: 175.51, 20: 346.95, 30: 537.42, 40: 774.01, 50: 1102.04, 60: 1395.93, 70: 1759.19,
   80: 2044.89, 90: 2297.96, 100: 3794.59,
 };
 
-/** Workers' comp illustrative max TTD weekly caps (USD, rounded) — varies by year; not legal advice. */
+/** Workers' comp illustrative max TTD weekly caps (USD, rounded) - varies by year; not legal advice. */
 export const WORKERS_COMP_TTD_WEEKLY_CAP: Record<string, number> = {
   AL: 1063, AK: 1280, AZ: 1085, AR: 920, CA: 1356, CO: 1217, CT: 1500, DE: 864, FL: 1155, GA: 800,
   HI: 1163, ID: 915, IL: 1720, IN: 1170, IA: 1063, KS: 1048, KY: 1156, LA: 786, ME: 1047, MD: 1200,

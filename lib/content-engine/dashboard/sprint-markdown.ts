@@ -12,7 +12,7 @@ export function buildSprintMarkdown(input: {
   lines.push(`Week of: ${input.sprint.weekOf}`, "");
   lines.push("## Top actions", "");
   for (const a of input.sprint.topActions) {
-    lines.push(`### ${a.order}. ${a.targetPage} — ${a.exactFix}`);
+    lines.push(`### ${a.order}. ${a.targetPage}: ${a.exactFix}`);
     lines.push(`- Est. time: ${a.estimatedHours}h`);
     lines.push(`- Expected uplift: $${a.expectedRevenueImpactUsd.toFixed(2)} (${a.confidence})`);
     lines.push("- Checklist:");
@@ -29,7 +29,7 @@ export function buildSprintMarkdown(input: {
   lines.push("");
   lines.push("## Learning insights", "");
   for (const i of input.learning.insights) {
-    lines.push(`- ${i.fixType}: win rate ${i.winRate.toFixed(1)}%, avg actual $${i.avgActualLiftUsd.toFixed(2)} — ${i.recommendation}`);
+    lines.push(`- ${i.fixType}: win rate ${i.winRate.toFixed(1)}%, avg actual $${i.avgActualLiftUsd.toFixed(2)}. ${i.recommendation}`);
   }
   lines.push("");
   return lines.join("\n");

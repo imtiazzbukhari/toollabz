@@ -21,7 +21,7 @@ export async function postHumanReviewAssistComment(owner, repo, issueNumber, tok
     "",
     "### Human tone",
     "- [ ] **Voice** matches Toollabz (plain, precise, non-hypey); trim any template-y cadence.",
-    "- [ ] **Second pass**: read aloud the first 3 paragraphs — if it sounds like generic AI, rewrite the opener.",
+    "- [ ] **Second pass**: read aloud the first 3 paragraphs - if it sounds like generic AI, rewrite the opener.",
     "",
     "### AdSense / RPM (UX-safe)",
     "- [ ] **After intro**: at most one display unit after the first substantive section (not inside the lede).",

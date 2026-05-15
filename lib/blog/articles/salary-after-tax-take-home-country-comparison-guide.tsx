@@ -74,7 +74,7 @@ const faqSchema = [
   {
     question: "Should I use marginal or average rate?",
     answer:
-      "For incremental decisions (401k contribution change), marginal rate matters. For translating an annual gross to monthly spendable cash, blended average rate often feels closer—still approximate.",
+      "For incremental decisions (401k contribution change), marginal rate matters. For translating an annual gross to monthly spendable cash, blended average rate often feels closer - still approximate.",
   },
   {
     question: "Do stock grants show up in salary after tax?",
@@ -104,7 +104,7 @@ export const salaryAfterTaxTakeHomeCountryComparisonGuidePost: BlogPostDefinitio
   description:
     "How gross becomes net, illustrative US/UK/DE/UAE mechanics, comparison table, and a free salary-after-tax calculator rehearsal.",
   title: "Salary After Tax: How Much Do You Actually Take Home?",
-  excerpt: "Mechanics, a regional comparison table, and a calculator CTA — with payroll caveats.",
+  excerpt: "Mechanics, a regional comparison table, and a calculator CTA  -  with payroll caveats.",
   publishedAt: "2026-04-26",
   category: "Finance",
   tags: ["salary", "tax", "payroll"],

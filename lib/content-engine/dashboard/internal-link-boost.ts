@@ -25,7 +25,11 @@ export function buildInternalLinkBoostSuggestions(
   for (const w of weak) {
     const clusterId = clusterIdForPath(w.path) ?? undefined;
     const pillar = clusterId ? TOPIC_CLUSTERS.find((c) => c.id === clusterId)?.pillarToolSlug : undefined;
-    const suggestions = suggestAuthorityAugmentedLinks(w.path, w.path.replace(/[-/]/g, " "), { clusterId, pillarToolSlug: pillar }, 4);
+    const suggestions = suggestAuthorityAugmentedLinks(w.path, w.path.replace(/[-/]/g, " "), {
+      clusterId,
+      pillarToolSlug: pillar,
+      authorityPaths: authority,
+    }, 4);
     if (suggestions.length === 0) continue;
     const sourceCandidates = authority
       .filter((p) => p !== w.path && (clusterIdForPath(p) === clusterId || p.startsWith("/blog/")))

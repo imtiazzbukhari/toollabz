@@ -1,4 +1,4 @@
-/** Hard-coded quality gates — single source of truth for backlink outreach. */
+/** Hard-coded quality gates - single source of truth for backlink outreach. */
 
 export const PROHIBITED_TLDS = [
   ".shop",

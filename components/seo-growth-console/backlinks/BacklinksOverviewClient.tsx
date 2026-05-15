@@ -51,7 +51,7 @@ function ErrorBox({ message }: { message: string }) {
 }
 
 export default function BacklinksOverviewClient() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const base = pathname.startsWith("/dashboard/backlinks") ? "/dashboard/backlinks" : "/seo-growth-console/backlinks";
   const genHref = backlinksContentGeneratorPath(pathname);
   const outreachHref = backlinksOutreachPath(pathname);
@@ -128,7 +128,7 @@ export default function BacklinksOverviewClient() {
             { label: "Total prospects", value: String(data?.totalProspects ?? 0) },
             { label: "Total live", value: String(data?.totalLive ?? 0) },
             { label: "Avg sent → live", value: `${data?.avgSentToLiveDays ?? 0}d` },
-            { label: "Best content type", value: data?.bestPerformingContentType ?? "—" },
+            { label: "Best content type", value: data?.bestPerformingContentType ?? "-" },
           ].map((row) => (
             <div key={row.label} className="rounded-md border border-slate-100 bg-slate-50/80 px-3 py-2">
               <dt className="text-xs font-medium text-slate-500">{row.label}</dt>

@@ -1,4 +1,6 @@
 import { computeCpcHighTools } from "./cpc-high-tools-compute";
+import { computeExpansionPhase1 } from "./expansion-phase1-compute";
+import { computeExpansionPhase2 } from "./expansion-phase2-compute";
 import { SMALL_CLAIMS_BY_STATE } from "./small-claims-data";
 import type { ToolComputationResult } from "./computation-result";
 
@@ -30,7 +32,7 @@ const money = (value: number) => `$${value.toFixed(2)}`;
 const moneyLocale = (value: number) =>
   `$${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-/** Typical lifespan ranges (years) — population averages; individual dogs vary widely. */
+/** Typical lifespan ranges (years) - population averages; individual dogs vary widely. */
 const DOG_BREED_LIFE_YEARS: Record<string, { min: number; max: number }> = {
   "labrador-retriever": { min: 11, max: 13 },
   "golden-retriever": { min: 10, max: 12 },
@@ -100,6 +102,10 @@ const titleCase = (text: string) =>
 export function computeTool(slug: string, form: Record<string, string>): ToolComputationResult {
   const cpc = computeCpcHighTools(slug, form);
   if (cpc) return cpc;
+  const phase1 = computeExpansionPhase1(slug, form);
+  if (phase1) return phase1;
+  const phase2 = computeExpansionPhase2(slug, form);
+  if (phase2) return phase2;
   switch (slug) {
     case "cm-to-feet": {
       const err = requiredNumber(form.cm, "Centimeters");
@@ -222,14 +228,31 @@ export function computeTool(slug: string, form: Record<string, string>): ToolCom
       for (let i = 0; i < length; i++) pwd += chars[Math.floor(Math.random() * chars.length)];
       return { title: "Generated Password", value: pwd };
     }
-    case "json-formatter":
+    case "json-formatter": {
+      if (!(form.json || "").trim()) return invalid("JSON input is required.");
+      try {
+        const parsed = JSON.parse(form.json || "{}");
+        return { title: "Formatted JSON", value: JSON.stringify(parsed, null, 2) };
+      } catch (error) {
+        return { title: "JSON Error", value: `Invalid JSON: ${(error as Error).message}`, error: true };
+      }
+    }
     case "json-validator": {
       if (!(form.json || "").trim()) return invalid("JSON input is required.");
       try {
         const parsed = JSON.parse(form.json || "{}");
-        return { title: slug === "json-formatter" ? "Formatted JSON" : "Validation", value: slug === "json-formatter" ? JSON.stringify(parsed, null, 2) : "Valid JSON ✅" };
+        const formatted = JSON.stringify(parsed, null, 2);
+        return {
+          title: "Valid JSON",
+          value: formatted,
+          extra: [
+            "Status: parsed successfully (syntax OK).",
+            `Root type: ${Array.isArray(parsed) ? "array" : parsed !== null && typeof parsed === "object" ? "object" : typeof parsed}`,
+            "This tool does not validate schemas (JSON Schema) - only parseability.",
+          ],
+        };
       } catch (error) {
-        return { title: "Validation", value: `Invalid JSON: ${(error as Error).message}`, error: true };
+        return { title: "Invalid JSON", value: (error as Error).message, error: true };
       }
     }
     case "color-palette-generator": {
@@ -5075,7 +5098,7 @@ export function computeTool(slug: string, form: Record<string, string>): ToolCom
           value: "Not finite at zero burn",
           extra: [
             `Cash on hand: ${moneyLocale(cash)}`,
-            "With zero average net burn you are not depleting cash on this assumption—reforecast if growth spend restarts burn.",
+            "With zero average net burn you are not depleting cash on this assumption-reforecast if growth spend restarts burn.",
           ],
         };
       }
@@ -5085,7 +5108,7 @@ export function computeTool(slug: string, form: Record<string, string>): ToolCom
         value: `${months.toLocaleString("en-US", { maximumFractionDigits: 2 })} months`,
         extra: [
           `Cash: ${moneyLocale(cash)}; avg net burn: ${moneyLocale(burn)}/mo`,
-          "Linear model only—excludes fundraising, revenue ramps, and lumpy expenses.",
+          "Linear model only-excludes fundraising, revenue ramps, and lumpy expenses.",
         ],
       };
     }
@@ -5148,7 +5171,7 @@ export function computeTool(slug: string, form: Record<string, string>): ToolCom
         value: `${cuYd.toLocaleString("en-US", { maximumFractionDigits: 3 })} cu yd`,
         extra: [
           `≈ ${cuFt.toLocaleString("en-US", { maximumFractionDigits: 2 })} cu ft (${area.toLocaleString("en-US", { maximumFractionDigits: 2 })} sq ft × ${depthIn.toLocaleString("en-US", { maximumFractionDigits: 2 })} in deep)`,
-          "Compaction and settling not modeled—round up for bag counts and supplier minimums.",
+          "Compaction and settling not modeled-round up for bag counts and supplier minimums.",
         ],
       };
     }

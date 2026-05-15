@@ -51,7 +51,7 @@ export function buildBacklinkProspects(opportunities: readonly PrioritizedOpport
           authorityScore: Math.max(10, authorityScore - 20),
           spamRisk: "high",
           contactHint: "Verify site manually; skip obvious PBNs and scraped lists.",
-          notes: ["Low commercial intent keyword — deprioritize unless topical fit is strong."],
+          notes: ["Low commercial intent keyword - deprioritize unless topical fit is strong."],
         });
       } else {
         out.push({

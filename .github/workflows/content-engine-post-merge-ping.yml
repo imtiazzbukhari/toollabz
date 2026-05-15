@@ -1,5 +1,5 @@
 # After merge to main, hint Google that sitemap may have changed (best-effort).
-name: Content Engine — Post-merge sitemap ping
+name: Content Engine - Post-merge sitemap ping
 
 on:
   push:

@@ -326,7 +326,7 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
       const afterAtty = net * 0.67;
       return {
         title: "Illustrative net range (after fault)",
-        value: `${money(Math.round(low))} — ${money(Math.round(high))}`,
+        value: `${money(Math.round(low))} - ${money(Math.round(high))}`,
         extra: [
           `Midpoint estimate: ${money(Math.round(net))}; after ~33% fee line: ${money(Math.round(afterAtty))}`,
           `Economic damages subtotal: ${money(Math.round(economic))}`,
@@ -352,7 +352,7 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
           value: "Medicaid expansion may apply",
           extra: [
             `Income is below ~100% FPL for a household of ${hh} in this simplified check.`,
-            "Enrollment, immigration status, and state expansion rules matter—verify with a marketplace assister.",
+            "Enrollment, immigration status, and state expansion rules matter-verify with a marketplace assister.",
           ],
         };
       }
@@ -370,7 +370,7 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
         extra: [
           `Gross plan tier premium (modeled): ${moneyCents(grossPrem)}; modeled subsidy on benchmark: ${moneyCents(subsidyMo)}`,
           `Household at ~${fplRatio.toFixed(0)}% of ${new Date().getFullYear()} FPL (simplified).`,
-          "ACA rules, CSR, family glitch, and exact SLCSP differ—use Healthcare.gov or state exchange for binding numbers.",
+          "ACA rules, CSR, family glitch, and exact SLCSP differ-use Healthcare.gov or state exchange for binding numbers.",
         ],
       };
     }
@@ -406,7 +406,7 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
         extra: [
           `Monthly payment change: ${moneyCents(curPay)} → ${moneyCents(newPay)} (save ${moneyCents(save)}/mo)`,
           `Closing costs ${money(close)} recovered after ~${be.toFixed(1)} months of savings`,
-          "Interest paid over full new term may exceed current loan if you reset amortization—compare total interest separately.",
+          "Interest paid over full new term may exceed current loan if you reset amortization-compare total interest separately.",
         ],
       };
     }
@@ -430,10 +430,10 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
       const high = ttd + ppd * 1.3 + med + wage * 26 * 0.1;
       return {
         title: "Illustrative total benefit band",
-        value: `${money(Math.round(low))} — ${money(Math.round(high))}`,
+        value: `${money(Math.round(low))} - ${money(Math.round(high))}`,
         extra: [
           `Modeled TTD (${wks} wks): ${money(Math.round(ttd))}; modeled PPD component: ${money(Math.round(ppd))}; medical entered: ${money(Math.round(med))}`,
-          "Every state uses different schedules, IME rules, and MSA requirements—not legal advice.",
+          "Every state uses different schedules, IME rules, and MSA requirements-not legal advice.",
         ],
       };
     }
@@ -480,10 +480,10 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
       const total = mid * mult + lost + impound;
       return {
         title: "Illustrative total cost band",
-        value: `${money(Math.round(total * 0.85))} — ${money(Math.round(total * 1.25))}`,
+        value: `${money(Math.round(total * 0.85))} - ${money(Math.round(total * 1.25))}`,
         extra: [
           `State midpoint before lost wages/impound: ${money(Math.round(mid * mult))}`,
-          "Criminal defense, SR-22, and multi-year insurance changes are highly variable—not legal advice.",
+          "Criminal defense, SR-22, and multi-year insurance changes are highly variable-not legal advice.",
         ],
       };
     }
@@ -501,7 +501,7 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
       const net = (econ + non) * cap;
       return {
         title: "Modeled malpractice range",
-        value: `${money(Math.round(net * 0.55))} — ${money(Math.round(net * 1.65))}`,
+        value: `${money(Math.round(net * 0.55))} - ${money(Math.round(net * 1.65))}`,
         extra: [
           `Economic subtotal: ${money(Math.round(econ))}; non-economic modeled: ${money(Math.round(non))}`,
           "Caps, MICRA, affidavits of merit, and carrier limits are not modeled in detail.",
@@ -534,7 +534,7 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
         extra: [
           `Rough DSCR-style cushion vs modeled 5-yr term payment at ${estRate}%: ${dscr.toFixed(2)}`,
           `Illustrative 5-year term payment: ${moneyCents(pmt)}/mo`,
-          "Lenders use tax returns, industry risk, and collateral—not this screen.",
+          "Lenders use tax returns, industry risk, and collateral-not this screen.",
         ],
       };
     }
@@ -618,7 +618,7 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
       const net = econ + non;
       return {
         title: "Premises liability sketch",
-        value: `${money(Math.round(net * 0.5))} — ${money(Math.round(net * 1.5))}`,
+        value: `${money(Math.round(net * 0.5))} - ${money(Math.round(net * 1.5))}`,
         extra: [
           `Economic: ${money(Math.round(econ))}; modeled non-economic: ${money(Math.round(non))}`,
           "Notice, open-and-obvious defenses, and comparative fault are case-specific.",
@@ -634,7 +634,7 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
       const net = econ * mult;
       return {
         title: "Commercial truck case band",
-        value: `${money(Math.round(net * 0.65))} — ${money(Math.round(net * 1.5))}`,
+        value: `${money(Math.round(net * 0.65))} - ${money(Math.round(net * 1.5))}`,
         extra: [
           `Economic baseline: ${money(Math.round(econ))}; carrier limit and FMCSA issues not priced here.`,
           "Not legal advice.",
@@ -651,13 +651,13 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
       const suit = trust * 1.8;
       return {
         title: "Illustrative total compensation band",
-        value: `${money(Math.round(trust))} — ${money(Math.round(suit))}`,
+        value: `${money(Math.round(trust))} - ${money(Math.round(suit))}`,
         extra: [
           `Trust fund sketch: ${money(Math.round(trust))}; lawsuit upper sketch: ${money(Math.round(suit))}`,
           ...(form.mesoVeteran === "yes"
-            ? ["VA survivors or dependency benefits may add separate monthly awards—verify with a VSO."]
+            ? ["VA survivors or dependency benefits may add separate monthly awards-verify with a VSO."]
             : []),
-          "Statutes of limitation and specialized asbestos counsel are critical—not legal advice.",
+          "Statutes of limitation and specialized asbestos counsel are critical-not legal advice.",
         ],
       };
     }
@@ -716,9 +716,9 @@ export function computeCpcHighTools(slug: string, form: Record<string, string>):
         title: "Program sketch",
         value: pslfOk ? "PSLF may be in range (illustrative)" : "Consider IDR forgiveness timeline",
         extra: [
-          `PSLF needs 120 qualifying payments in eligible employment—entered ~${yrs} years.`,
+          `PSLF needs 120 qualifying payments in eligible employment-entered ~${yrs} years.`,
           `Illustrative IDR forgiveness horizon: ~${idrY} months of payments in many plans (varies).`,
-          "Loan type, consolidation, and waiver rules matter—verify with StudentAid.gov.",
+          "Loan type, consolidation, and waiver rules matter-verify with StudentAid.gov.",
         ],
       };
     }

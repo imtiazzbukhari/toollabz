@@ -13,7 +13,7 @@ function slugFromPath(path: string): string {
 }
 
 /**
- * When a URL shows strong demand, suggest follow-on pages (human/PR pipeline — not auto-published).
+ * When a URL shows strong demand, suggest follow-on pages (human/PR pipeline - not auto-published).
  */
 export function suggestExpansionsForUrl(path: string, metric: GscPageMetric): ExpansionIdea[] {
   const slug = slugFromPath(path);

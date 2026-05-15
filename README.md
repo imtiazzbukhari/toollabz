@@ -49,7 +49,7 @@ The dev server runs at `http://localhost:3000`. Blog posts are registered via `l
 
 ## Scripts
 
-- `npm run images:webp` — convert PNGs under `public/` (see `scripts/convert-png-to-webp.mjs`).
-- `node scripts/convert-to-webp.mjs` — create `.webp` alongside `.png`/`.jpg` without deleting sources.
-- `npx tsx scripts/audit-internal-links.ts` — crawl sitemap URLs against `BASE_URL` (requires a running server).
-- `node scripts/pre-deploy-check.mjs` — env example, robots, sitemap smoke checks.
+- `npm run images:webp` - convert PNGs under `public/` (see `scripts/convert-png-to-webp.mjs`).
+- `node scripts/convert-to-webp.mjs` - create `.webp` alongside `.png`/`.jpg` without deleting sources.
+- `npx tsx scripts/audit-internal-links.ts` - crawl sitemap URLs against `BASE_URL` (requires a running server).
+- `node scripts/pre-deploy-check.mjs` - env example, robots, sitemap smoke checks.

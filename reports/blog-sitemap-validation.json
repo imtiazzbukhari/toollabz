@@ -1,0 +1,33 @@
+{
+  "generatedAt": "2026-05-15T18:30:32.253Z",
+  "origin": "https://toollabz.com",
+  "blogPostRegistryCount": 100,
+  "blogUrlsInSitemap": 100,
+  "ok": true,
+  "missingBlogPaths": [],
+  "duplicatePaths": [],
+  "blogPathsWithInvalidLastmod": [],
+  "extraBlogUrlsNotInRegistry": [],
+  "sampleBlogLastmods": [
+    {
+      "slug": "working-days-uk-timezones-business-slas-toollabz",
+      "lastmod": "2026-05-16T12:00:00.000Z"
+    },
+    {
+      "slug": "uk-self-employed-dividend-salary-effective-percent-toollabz",
+      "lastmod": "2026-05-16T12:00:00.000Z"
+    },
+    {
+      "slug": "saas-roas-churn-retention-metrics-primer-toollabz",
+      "lastmod": "2026-05-16T12:00:00.000Z"
+    },
+    {
+      "slug": "marketplace-seller-fees-stripe-paypal-etsy-ebay-toollabz",
+      "lastmod": "2026-05-16T12:00:00.000Z"
+    },
+    {
+      "slug": "jwt-expiry-api-healthchecks-curl-playbook-toollabz",
+      "lastmod": "2026-05-16T12:00:00.000Z"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 /**
  * Next.js `output: "standalone"` ships a minimal server under `.next/standalone`.
  * Client chunks, CSS, and media live under `.next/static` at the repo root and are NOT
- * copied automatically — without this step, `/_next/static/*` returns 404 and the UI
+ * copied automatically - without this step, `/_next/static/*` returns 404 and the UI
  * renders unstyled. Public files must also live beside the server as `./public`.
  *
  * Run automatically after `next build` via the `build` npm script.
@@ -20,12 +20,12 @@ const publicSrc = path.join(root, "public");
 const publicDest = path.join(standaloneDir, "public");
 
 if (!fs.existsSync(standaloneDir)) {
-  console.warn("[copy-standalone-assets] .next/standalone missing — skipping (run `next build` with output: standalone).");
+  console.warn("[copy-standalone-assets] .next/standalone missing - skipping (run `next build` with output: standalone).");
   process.exit(0);
 }
 
 if (!fs.existsSync(staticSrc)) {
-  console.error("[copy-standalone-assets] Missing .next/static — build may have failed or distDir changed.");
+  console.error("[copy-standalone-assets] Missing .next/static - build may have failed or distDir changed.");
   process.exit(1);
 }
 
@@ -39,5 +39,5 @@ if (fs.existsSync(publicSrc)) {
   fs.cpSync(publicSrc, publicDest, { recursive: true });
   console.log("[copy-standalone-assets] Copied public -> .next/standalone/public");
 } else {
-  console.warn("[copy-standalone-assets] No public/ folder at project root — skipped.");
+  console.warn("[copy-standalone-assets] No public/ folder at project root - skipped.");
 }

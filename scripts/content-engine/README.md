@@ -1,4 +1,4 @@
-# Content engine — safe PR pipelines
+# Content engine - safe PR pipelines
 
 These scripts automate **pull requests only**. Nothing is pushed to `main` without review.
 
@@ -45,7 +45,7 @@ On push to `main` when blog articles, manifest, or `lib/tools/data.ts` change, c
 
 ## Tool proposal PR (`create-tool-proposal-pr.ts`)
 
-Creates `lib/content-engine/tool-proposals/{slug}/` with `SPEC.json` + `README.md` only — **no** `data.ts` or live routes.
+Creates `lib/content-engine/tool-proposals/{slug}/` with `SPEC.json` + `README.md` only - **no** `data.ts` or live routes.
 
 When `GROQ_API_KEY` is set, `SPEC.json` is enriched with a fast Groq JSON pass (optional).
 
@@ -75,7 +75,7 @@ GitHub Actions schedule is the default. To trigger from Vercel instead, add a se
 
 ## Performance-driven SEO (optional)
 
-1. **Search Console feedback** — Export “Pages” CSV from Google Search Console, then:
+1. **Search Console feedback** - Export “Pages” CSV from Google Search Console, then:
 
    ```bash
    npm run search-console:import-pages -- path/to/Pages.csv lib/content-engine/performance/aggregates.json
@@ -83,17 +83,17 @@ GitHub Actions schedule is the default. To trigger from Vercel instead, add a se
 
    Commit `aggregates.json` or deploy with `CONTENT_ENGINE_PERFORMANCE_JSON` pointing at the file. Cron + `prioritizeForPipeline` boost keywords that overlap high-traffic `/blog/...` paths.
 
-2. **Dynamic quality weights** — Copy `lib/content-engine/performance/weights.example.json` to `weights.json`, tune, commit. Override path with `CONTENT_ENGINE_WEIGHTS_JSON`. Suggested starting point from outcomes: `suggestDimensionWeightsFromOutcomes` in `lib/content-engine/performance/suggest-weights.ts` (apply manually after review).
+2. **Dynamic quality weights** - Copy `lib/content-engine/performance/weights.example.json` to `weights.json`, tune, commit. Override path with `CONTENT_ENGINE_WEIGHTS_JSON`. Suggested starting point from outcomes: `suggestDimensionWeightsFromOutcomes` in `lib/content-engine/performance/suggest-weights.ts` (apply manually after review).
 
-3. **PR human assist** — After each automated blog PR, `scripts/content-engine/lib/pr-comment.mjs` posts a checklist comment (intro / examples / tone).
+3. **PR human assist** - After each automated blog PR, `scripts/content-engine/lib/pr-comment.mjs` posts a checklist comment (intro / examples / tone).
 
-4. **Topic clusters** — Defined in `lib/content-engine/topic-clusters.ts`; cron JSON includes `topicClusters` samples for editorial planning.
+4. **Topic clusters** - Defined in `lib/content-engine/topic-clusters.ts`; cron JSON includes `topicClusters` samples for editorial planning.
 
-5. **Content variation** — `POST /api/generate-blog` accepts optional `variationSeed`; the pipeline maps it to tone + intro + example instructions for the model.
+5. **Content variation** - `POST /api/generate-blog` accepts optional `variationSeed`; the pipeline maps it to tone + intro + example instructions for the model.
 
 ## Revenue / AdSense optimization (optional)
 
-- **CPC proxy** — `lib/content-engine/monetization/cpc-scoring.ts` boosts finance, loans, insurance, business, SaaS metrics (MRR, CAC, LTV, churn, etc.) in discovery + queue ranking.
-- **RPM protection** — `low-value.ts` + `revenue-merge.ts` deprioritize generic utilities and high-impression / near-zero CTR paths when `aggregates.json` is present.
-- **Cron JSON** — `stats.monetizationLeaders` + `hints.adsensePlacement` for editors.
-- **PR checklist** — includes AdSense placement reminders (no scripts injected by automation).
+- **CPC proxy** - `lib/content-engine/monetization/cpc-scoring.ts` boosts finance, loans, insurance, business, SaaS metrics (MRR, CAC, LTV, churn, etc.) in discovery + queue ranking.
+- **RPM protection** - `low-value.ts` + `revenue-merge.ts` deprioritize generic utilities and high-impression / near-zero CTR paths when `aggregates.json` is present.
+- **Cron JSON** - `stats.monetizationLeaders` + `hints.adsensePlacement` for editors.
+- **PR checklist** - includes AdSense placement reminders (no scripts injected by automation).

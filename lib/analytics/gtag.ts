@@ -1,7 +1,7 @@
 /**
  * Google Analytics 4 via gtag.js (browser only).
  *
- * Env: NEXT_PUBLIC_GA_ID — measurement ID (e.g. G-XXXXXXXXXX).
+ * Env: NEXT_PUBLIC_GA_ID - measurement ID (e.g. G-XXXXXXXXXX).
  */
 
 export const GA_TRACKING_ID = (

@@ -2,11 +2,13 @@ import Link from "next/link";
 import { toolGlassPanel } from "@/lib/tool-ui";
 import { POPULAR_TOOL_SLUGS } from "@/lib/tools/popular-tools";
 import { tools } from "@/lib/tools/data";
+import { blogPosts } from "@/lib/blog/registry";
 
 const popular = POPULAR_TOOL_SLUGS.map((slug) => tools.find((t) => t.slug === slug)).filter(Boolean) as typeof tools;
+const guideCount = blogPosts.length;
 
 /**
- * Long-form homepage copy for crawlers (keywords + internal links) using the same glass panel as other hubs.
+ * Long-form homepage copy for crawlers (topical depth + internal links) using the same glass panel as other hubs.
  */
 export default function HomeSeoDeepSection() {
   return (
@@ -14,69 +16,59 @@ export default function HomeSeoDeepSection() {
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 md:py-8">
         <div className={`p-6 sm:p-8 ${toolGlassPanel}`}>
           <h2 id="home-seo-guide-heading" className="text-xl font-bold text-slate-900 sm:text-2xl">
-            Free online tools for calculators, converters, PDF workflows, and AI drafting
+            Developer utilities, UK finance and tax, SaaS metrics, and practical calculators in one place
           </h2>
           <div className="mt-4 space-y-4 text-sm leading-relaxed text-slate-600 sm:text-base">
             <p>
-              Toollabz is built for people who want{" "}
-              <strong className="font-semibold text-slate-800">free online tools</strong> that behave predictably: you
-              open a page, enter values, and leave with an answer you can paste into email, a spreadsheet, or a ticket.
-              The collection spans{" "}
-              <Link href="/finance-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-                finance calculators
-              </Link>
-              ,{" "}
-              <Link href="/utility-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-                unit converters
-              </Link>
-              ,{" "}
-              <Link href="/pdf-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-                PDF tools
-              </Link>{" "}
-              for merge and compression tasks, and{" "}
-              <Link href="/ai-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-                AI tools
-              </Link>{" "}
-              that help you draft subject lines, posts, and summaries you still edit by hand. Every experience is wired
-              with HTTPS canonical URLs, structured headings, and internal links so you can move between related utilities
-              without losing context.
-            </p>
-            <p>
-              When someone searches for{" "}
-              <strong className="font-semibold text-slate-800">calculators and converters</strong>, they usually need a
-              fast answer - not a signup wall. That is why paycheck, loan, ROI, VAT, and measurement utilities live next
-              to encoding helpers and JSON validators: real workflows rarely stop at a single page. Use the directory
-              search on the homepage hero, then follow category hubs (
+              Toollabz is structured for{" "}
+              <strong className="font-semibold text-slate-800">repeatable workflows</strong>: deterministic calculators and
+              formatters you can trust in a meeting, a ticket, or a spreadsheet. The strongest verticals are{" "}
               <Link href="/developer-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-                developer
-              </Link>
-              ,{" "}
-              <Link href="/marketing-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-                marketing
+                developer utilities
+              </Link>{" "}
+              (JSON, JWT, SQL), the{" "}
+              <Link href="/uk-finance-tax" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+                UK finance and tax hub
               </Link>
               ,{" "}
               <Link href="/business-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-                business
+                business and SaaS metrics
               </Link>
-              ) to discover adjacent tools you might not think to search for explicitly.
+              , GST for Australia alongside global finance tools, plus converters, PDF utilities, and marketing calculators.
+              Pages use HTTPS canonical URLs, structured headings, FAQs, and internal links so you can move between related
+              tools without losing context.
             </p>
             <p>
-              <strong className="font-semibold text-slate-800">PDF tools</strong> focus on the last mile before upload:
-              merge exhibits, shrink oversized attachments, and keep filenames consistent. Pair them with{" "}
+              When you need{" "}
+              <strong className="font-semibold text-slate-800">UK-specific answers</strong>, start from the finance hub
+              for salary, self-employment, dividends, and working-days sketches, then follow related links into VAT, loans,
+              or business margin tools. For{" "}
+              <strong className="font-semibold text-slate-800">operators and founders</strong>, pair{" "}
+              <Link href="/marketing-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+                marketing calculators
+              </Link>{" "}
+              with fee and break-even utilities when you are sanity-checking a launch or a payout. For{" "}
+              <strong className="font-semibold text-slate-800">engineering</strong>, keep JSON validation, JWT inspection,
+              and SQL formatting next to your API debugging flow.
+            </p>
+            <p>
+              <strong className="font-semibold text-slate-800">PDF tools</strong> cover merge and compression for the last
+              mile before upload; pair them with{" "}
+              <Link href="/finance-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+                finance calculators
+              </Link>{" "}
+              or{" "}
               <Link href="/real-estate-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
                 real estate calculators
               </Link>{" "}
-              when you are packaging disclosures, or with invoice utilities when you are sending client-ready packets.
-            </p>
-            <p>
-              <strong className="font-semibold text-slate-800">AI tools</strong> on Toollabz are framed as drafting
-              assistants: you supply facts, tone, and audience, then edit outputs before publishing - especially important
-              for regulated industries. Link from AI generators to marketing ROI calculators when you are building a
-              campaign narrative backed by numbers, or jump to{" "}
+              when you are packaging disclosures or client-ready packets.{" "}
+              <strong className="font-semibold text-slate-800">AI tools</strong> are framed as drafting assistants: you
+              supply facts and tone, then edit before publishing-especially important in regulated topics. For depth beyond
+              a single page, use the{" "}
               <Link href="/blog" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-                guides
+                article library
               </Link>{" "}
-              when you want longer explanations.
+              ({guideCount}+ guides on tax concepts, JSON and JWT usage, SaaS metrics, and workflow explainers).
             </p>
             <p>
               Start with a high-intent shortcut below, then explore the full{" "}
@@ -100,8 +92,8 @@ export default function HomeSeoDeepSection() {
               <Link href="/" className="font-medium text-violet-700 underline-offset-2 hover:underline">
                 Toollabz.com
               </Link>{" "}
-              as your hub for repeat tasks: the site is designed so related tools surface together, FAQs clarify scope,
-              and you spend less time tab-hopping across single-purpose domains.
+              when you want related utilities to surface together: less tab-hopping across single-purpose sites, clearer
+              scope in FAQs, and hubs that stitch crawl-friendly paths between clusters.
             </p>
           </div>
         </div>

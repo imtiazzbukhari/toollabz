@@ -2,7 +2,7 @@ import { ToolDefinition } from "./tools/types";
 import { getToolFaqs } from "./tools/content";
 import { TOOL_SEO_OVERRIDES } from "./tools/tool-seo-overrides";
 import { SITE_LAST_UPDATED_DATE_TIME } from "./site-freshness";
-import { CTR_TOOL_TITLES } from "./tools/tool-ctr-titles";
+import { getSerpPrimaryLine } from "./tools/tool-serp-primary-cache";
 
 function normalizeOrigin(raw: string | undefined): string | undefined {
   const s = raw?.trim().replace(/\/$/, "");
@@ -84,65 +84,137 @@ export function absoluteUrl(path = "/") {
   return `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-/** SERP meta description: 150–160 chars with primary keyword, benefit, and Toollabz. */
+function hashSlug(s: string): number {
+  let h = 5381;
+  for (let i = 0; i < s.length; i += 1) h = (h * 33) ^ s.charCodeAt(i);
+  return h >>> 0;
+}
+
+/** SERP meta description: 140–160 chars, keyword + CTA, starts with description lead-in (SEO test compatibility). */
 export function buildToolMetaDescription(tool: ToolDefinition): string {
-  const minLen = 150;
-  const maxLen = 158;
+  const minLen = 140;
+  const maxLen = 160;
   const brand = "Toollabz";
-  const kw = (tool.keywords[0] ?? tool.name).trim();
-  const base = (tool.description.trim() || `${tool.name} — free online tool.`).replace(/\s+/g, " ");
-  const benefit = `Run ${kw} in your browser, free — no signup.`;
-  const close = ` ${brand}.`;
-  let body = `${base} ${benefit}${close}`.replace(/\s+/g, " ").trim();
+  const desc = (tool.description.trim() || `${tool.name} | free online tool.`).replace(/\s+/g, " ");
+  const kw = (tool.keywords[0] ?? tool.name).trim().replace(/\s+/g, " ");
+  const variant = hashSlug(tool.slug) % 4;
+  const closers = [
+    ` Try it free on ${brand} | instant online ${kw}, no signup.`,
+    ` Open it free on ${brand} for fast ${kw} results | HTTPS, no account.`,
+    ` Use this free ${brand} tool online for instant ${kw} | no signup required.`,
+    ` Run ${kw} free on ${brand} now | online, instant, no registration.`,
+  ];
+  const closer = closers[variant] ?? closers[0];
+  const headBudget = Math.max(48, maxLen - closer.length - 2);
+  const head = desc.slice(0, Math.min(headBudget, desc.length));
+  const bridge = desc.length > head.length ? "…" : "";
+  let body = `${head}${bridge}${closer}`.replace(/\s+/g, " ").trim();
   if (body.length > maxLen) {
-    const reserve = benefit.length + close.length + 4;
-    const clipLen = Math.max(48, maxLen - reserve);
-    body = `${base.slice(0, clipLen).trim()}… ${benefit}${close}`.replace(/\s+/g, " ").trim();
+    body = `${desc.slice(0, Math.max(48, maxLen - closer.length - 2)).trim()}…${closer}`.replace(/\s+/g, " ").trim();
   }
   if (body.length < minLen) {
-    body = `${body} FAQs and related calculators on ${brand}.`.slice(0, maxLen);
+    const pad = ` ${tool.shortDescription.trim()}`.replace(/\s+/g, " ");
+    body = `${body}${pad}`.replace(/\s+/g, " ").trim().slice(0, maxLen);
+  }
+  if (body.length < minLen) {
+    body = `${body} Browse related free tools on ${brand}.`.replace(/\s+/g, " ").trim().slice(0, maxLen);
+  }
+  if (body.length < minLen) {
+    body = `${desc} ${tool.shortDescription} ${closer}`.replace(/\s+/g, " ").trim().slice(0, maxLen);
   }
   return body.slice(0, maxLen);
 }
 
-const SERP_TITLE_MAX = 62;
-/** Visible + SERP title suffix for all tool pages. */
-export const TOOL_PAGE_TITLE_SUFFIX = " | Toollabz - Free Online Tools";
+const META_DESC_MIN = 140;
+const META_DESC_MAX = 160;
+
+/** Pad or trim editorial / override copy into Google-friendly snippet length. */
+export function normalizeToolMetaDescription(raw: string, tool: ToolDefinition): string {
+  let d = raw.trim().replace(/\s+/g, " ");
+  if (d.length > META_DESC_MAX) return d.slice(0, META_DESC_MAX);
+  const fillers = [
+    ` Try it free on Toollabz | HTTPS, instant ${(tool.keywords[0] ?? tool.name).trim()}, no signup.`,
+    ` Open this online tool anytime for repeatable ${(tool.keywords[1] ?? tool.category).replace(/-/g, " ")} workflows.`,
+    ` Compare scenarios, then explore related calculators from the same Toollabz directory.`,
+  ];
+  let i = 0;
+  while (d.length < META_DESC_MIN && i < fillers.length) {
+    d = `${d}${fillers[i]}`.replace(/\s+/g, " ").trim();
+    i += 1;
+  }
+  if (d.length < META_DESC_MIN) {
+    d = `${d} ${tool.shortDescription.trim()}`.replace(/\s+/g, " ").trim().slice(0, META_DESC_MAX);
+  }
+  if (d.length < META_DESC_MIN) {
+    const tail = (tool.description.trim() || tool.name).replace(/\s+/g, " ");
+    d = `${d} ${tail}`.replace(/\s+/g, " ").trim().slice(0, META_DESC_MAX);
+  }
+  return d.slice(0, META_DESC_MAX);
+}
+
+const SERP_TITLE_MAX = 60;
+/** Short branded suffix keeps SERP titles within ~60 chars when possible. */
+export const TOOL_PAGE_TITLE_SUFFIX = " | Toollabz";
+
+const LEGACY_TOOL_TITLE_SUFFIX = " | Toollabz - Free Online Tools";
 
 function clampSerpTitle(s: string, max = SERP_TITLE_MAX): string {
   const t = s.trim();
   if (t.length <= max) return t;
+  const suffix = TOOL_PAGE_TITLE_SUFFIX;
+  const idx = t.lastIndexOf(suffix);
+  if (idx > 0) {
+    const budget = max - suffix.length;
+    if (budget > 8) {
+      const primary = t.slice(0, idx).trim();
+      const clipped = `${primary.slice(0, Math.max(1, budget - 1)).trim()}…${suffix}`;
+      if (clipped.length <= max) return clipped;
+    }
+  }
   return `${t.slice(0, Math.max(1, max - 1)).trim()}…`;
 }
 
-const CTR_TITLE_MAX = 68;
+const CTR_TITLE_MAX = 78;
 
 /**
- * SERP titles: `[primary line] | Toollabz - Free Online Tools`.
- * CTR templates must still include `tool.name` as substring (integrity tests).
+ * SERP titles: `[primary line] | Toollabz`.
+ * Primary line always includes `tool.name` as substring (integrity tests + CTR cache).
  */
 export function buildSerpToolTitle(tool: ToolDefinition): string {
-  const ctr = CTR_TOOL_TITLES[tool.slug];
-  const primary = (ctr ?? tool.name).trim();
-  const full = `${primary}${TOOL_PAGE_TITLE_SUFFIX}`;
+  const primary = getSerpPrimaryLine(tool).trim();
+  const suffix = TOOL_PAGE_TITLE_SUFFIX;
+  const full = `${primary}${suffix}`;
   if (full.length <= CTR_TITLE_MAX) return full;
-  return clampSerpTitle(full, CTR_TITLE_MAX);
+  const fallback = `${tool.name.trim()}${suffix}`;
+  if (fallback.length <= CTR_TITLE_MAX) return fallback;
+  return clampSerpTitle(fallback, CTR_TITLE_MAX);
 }
 
 function ensureToolPageTitleFormat(raw: string): string {
-  const t = raw.trim();
+  let t = raw.trim();
   if (t.endsWith(TOOL_PAGE_TITLE_SUFFIX)) return t;
-  const base = t.replace(/\s*\|\s*Toollabz\s*$/i, "").trim();
+  if (t.endsWith(LEGACY_TOOL_TITLE_SUFFIX)) {
+    t = t.slice(0, -LEGACY_TOOL_TITLE_SUFFIX.length).trim();
+    return `${t}${TOOL_PAGE_TITLE_SUFFIX}`;
+  }
+  const base = t.replace(/\s*\|\s*Toollabz(\s*-\s*Free Online Tools)?\s*$/i, "").trim();
   return `${base}${TOOL_PAGE_TITLE_SUFFIX}`;
 }
 
 export function toolMetadata(tool: ToolDefinition) {
   const path = `/tools/${tool.slug}`;
   const override = TOOL_SEO_OVERRIDES[tool.slug];
-  const title = override?.title
-    ? clampSerpTitle(ensureToolPageTitleFormat(override.title), 72)
-    : buildSerpToolTitle(tool);
-  const description = override?.description ?? buildToolMetaDescription(tool);
+  let title: string;
+  if (override?.title) {
+    const formatted = ensureToolPageTitleFormat(override.title);
+    const candidate = clampSerpTitle(formatted, 78);
+    title = candidate.includes(tool.name) ? candidate : buildSerpToolTitle(tool);
+  } else {
+    title = buildSerpToolTitle(tool);
+  }
+  const description = override?.description
+    ? normalizeToolMetaDescription(override.description, tool)
+    : buildToolMetaDescription(tool);
   const url = absoluteUrl(path);
   const ogImage = absoluteUrl("/logo-toollabz.webp");
   return {

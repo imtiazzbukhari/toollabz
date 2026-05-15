@@ -62,7 +62,7 @@ const withBuild = process.argv.includes("--build");
 console.log("=== Toolabz preflight ===\n");
 
 console.log("Environment checklist (production):\n");
-console.log("  NEXT_PUBLIC_SITE_URL — canonical origin, no trailing slash (required for `next build` in production code paths)");
+console.log("  NEXT_PUBLIC_SITE_URL - canonical origin, no trailing slash (required for `next build` in production code paths)");
 
 let failed = false;
 
@@ -85,7 +85,7 @@ const optional = [
 console.log("\nOptional (analytics / monetization):\n");
 for (const [key, hint] of optional) {
   const v = (process.env[key] || fileEnv[key] || "").trim();
-  console.log(v ? `  OK ${key}` : `  · ${key} — ${hint}`);
+  console.log(v ? `  OK ${key}` : `  · ${key} - ${hint}`);
 }
 
 if (failed) {

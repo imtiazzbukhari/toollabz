@@ -56,13 +56,16 @@ function fileDates(sourceFile: string): { publishedAt: string; dateModified: str
 }
 
 function normalizePost(raw: BlogPostDefinition, sourceFile: string): BlogPostResolved {
-  const { publishedAt: filePublishedAt, dateModified } = fileDates(sourceFile);
+  const { publishedAt: filePublishedAt, dateModified: fileModifiedIso } = fileDates(sourceFile);
   const title = raw.title.trim();
   const description = (raw.description ?? raw.excerpt ?? `${title} on Toollabz.`).trim();
   const excerpt = (raw.excerpt ?? description).trim();
   const baseSeo = (raw.seoTitle ?? title).trim();
   const seoTitle = baseSeo.includes("Toollabz") ? baseSeo : `${baseSeo} | Toollabz - Free Online Tools`;
   const publishedAt = (raw.publishedAt ?? filePublishedAt).trim();
+  const rawDm = raw.dateModified?.trim();
+  const dateModified =
+    rawDm && !Number.isNaN(Date.parse(rawDm)) ? new Date(rawDm).toISOString() : fileModifiedIso;
   const author = raw.author ?? DEFAULT_BLOG_AUTHOR;
   const tags = [...(raw.tags ?? [])];
   const readingTimeMinutes =
@@ -76,6 +79,12 @@ function normalizePost(raw: BlogPostDefinition, sourceFile: string): BlogPostRes
     publishedAt,
     dateModified,
     relatedToolSlugs: [...(raw.relatedToolSlugs ?? [])],
+    relatedPostsSlugs: [...(raw.relatedPostsSlugs ?? [])],
+    keyTakeaways: [...(raw.keyTakeaways ?? [])],
+    editorialNote: [...(raw.editorialNote ?? [])],
+    sources: [...(raw.sources ?? [])],
+    commonMistakes: [...(raw.commonMistakes ?? [])],
+    whenToUseTools: [...(raw.whenToUseTools ?? [])],
     sourceFile,
     author,
     tags,

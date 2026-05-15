@@ -5,7 +5,7 @@ function Article() {
   return (
     <>
       <p className="leading-7 text-slate-700">
-        Television loves a giant number on the screen. Real files start with boring PDFs: emergency bills, ortho follow-ups, missed shifts, a W-2 trail. Adjusters live in that world first. “Pain and suffering” enters later—and it fights with policy limits, fault splits, and how credible the specials look on paper.
+        Television loves a giant number on the screen. Real files start with boring PDFs: emergency bills, ortho follow-ups, missed shifts, a W-2 trail. Adjusters live in that world first. “Pain and suffering” enters later - and it fights with policy limits, fault splits, and how credible the specials look on paper.
       </p>
 
       <h2 className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">Economic damages are the floor people actually argue</h2>
@@ -15,7 +15,7 @@ function Article() {
 
       <h2 className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">Sketch: $18.5k specials, moderate injury, 80% other-side fault</h2>
       <p className="mt-3 leading-7 text-slate-700">
-        Suppose specials land around <strong className="font-semibold text-slate-800">$18,500</strong> and you model moderate severity for discussion purposes. A rough band might land in the mid five figures before fees—then fault shaves your side. Change the fault percentage and watch the band move. That sensitivity is the point.
+        Suppose specials land around <strong className="font-semibold text-slate-800">$18,500</strong> and you model moderate severity for discussion purposes. A rough band might land in the mid five figures before fees - then fault shaves your side. Change the fault percentage and watch the band move. That sensitivity is the point.
       </p>
       <p className="mt-3 leading-7 text-slate-700">
         The{" "}
@@ -40,7 +40,7 @@ export const personalInjurySettlementRealityPost: BlogPostDefinition = {
   slug: "personal-injury-settlement-specials-and-limits",
   seoTitle: "Personal Injury Settlements: Why Specials Matter More Than a Multiplier",
   description:
-    "How medical bills and lost wages anchor US injury talks, why policy limits matter, and how to use Toollabz’s personal injury settlement calculator as math only—not legal advice.",
+    "How medical bills and lost wages anchor US injury talks, why policy limits matter, and how to use Toollabz’s personal injury settlement calculator as math only - not legal advice.",
   title: "Personal injury settlements: the boring paperwork that drives the number",
   excerpt:
     "Before pain-and-suffering multipliers, there are bills, wages, and fault. Here’s how to think in ranges without confusing a calculator for counsel.",

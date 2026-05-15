@@ -28,7 +28,7 @@ function ErrorBox({ message }: { message: string }) {
 }
 
 function DrBadge({ dr }: { dr: number | null }) {
-  if (dr == null) return <span className="text-slate-600">—</span>;
+  if (dr == null) return <span className="text-slate-600">-</span>;
   const cls =
     dr >= 60 ? "bg-emerald-100 text-emerald-800" : dr >= 30 ? "bg-amber-100 text-amber-800" : "bg-rose-100 text-rose-800";
   return <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${cls}`}>{dr}</span>;
@@ -124,7 +124,7 @@ export default function LiveLinksPage() {
       setErr(j.error ?? j.message ?? "Request failed");
       return;
     }
-    setVerifyNote({ ok: Boolean(j.found), text: j.found ? "Link verified ✓" : (j.message ?? "Not found yet — check URL") });
+    setVerifyNote({ ok: Boolean(j.found), text: j.found ? "Link verified ✓" : (j.message ?? "Not found yet - check URL") });
     if (j.found) {
       setFormOpen(false);
       setProspectId("");
@@ -168,7 +168,7 @@ export default function LiveLinksPage() {
         ].map((m) => (
           <div key={m.label} className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
             <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{m.label}</p>
-            <p className="mt-2 text-3xl font-bold text-slate-900">{loading ? "—" : m.value}</p>
+            <p className="mt-2 text-3xl font-bold text-slate-900">{loading ? "-" : m.value}</p>
           </div>
         ))}
       </div>
@@ -299,10 +299,10 @@ export default function LiveLinksPage() {
                   <td className="px-3 py-2">
                     <DrBadge dr={r.dr} />
                   </td>
-                  <td className="px-3 py-2 text-slate-800">{r.type ?? "—"}</td>
-                  <td className="px-3 py-2 text-slate-600">{r.anchor ?? "—"}</td>
+                  <td className="px-3 py-2 text-slate-800">{r.type ?? "-"}</td>
+                  <td className="px-3 py-2 text-slate-600">{r.anchor ?? "-"}</td>
                   <td className="px-3 py-2 text-slate-800">{r.dofollow ? "D" : "NF"}</td>
-                  <td className="px-3 py-2 text-slate-800">{r.relevance ?? "—"}</td>
+                  <td className="px-3 py-2 text-slate-800">{r.relevance ?? "-"}</td>
                   <td className="px-3 py-2 text-sm text-slate-700">{r.date_live.slice(0, 10)}</td>
                   <td className="px-3 py-2 text-slate-800">{r.date_lost ? "Lost" : "Active"}</td>
                 </tr>

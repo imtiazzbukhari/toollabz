@@ -1,5 +1,5 @@
 # Manual: open a PR with tool spec + checklist only (no live tool registration).
-name: Content Engine — Tool proposal PR
+name: Content Engine - Tool proposal PR
 
 on:
   workflow_dispatch:

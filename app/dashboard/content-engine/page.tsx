@@ -186,7 +186,7 @@ export default function ContentEngineDashboardPage() {
                       : "text-rose-700"
                 }`}
               >
-                {orchestrator.healthScore ?? "—"}
+                {orchestrator.healthScore ?? "-"}
               </p>
               <p className="mt-1 text-xs text-slate-500">{orchestrator.lastScanSummary || orchestrator.updatedAt || "No scan yet"}</p>
             </div>

@@ -6,7 +6,7 @@ function Article() {
     <>
       <p className="leading-7 text-slate-700">
         VAT (value-added tax) is a consumption tax collected in stages. For a small business, the operational headache is not the
-        headline percentage—it is knowing when to add VAT to a quote, when to show VAT-inclusive prices, and how to reconcile
+        headline percentage - it is knowing when to add VAT to a quote, when to show VAT-inclusive prices, and how to reconcile
         input credits against output tax so cash flow does not surprise you at filing time.
       </p>
 
@@ -29,7 +29,7 @@ function Article() {
         Cash flow vs “tax collected”
       </h2>
       <p className="mt-3 leading-7 text-slate-700">
-        Collecting VAT from customers creates a liability—it is not revenue you keep. Small businesses sometimes spend the cash
+        Collecting VAT from customers creates a liability - it is not revenue you keep. Small businesses sometimes spend the cash
         and discover the remittance deadline hurts. A simple discipline is to sweep collected VAT to a labeled sub-account or
         envelope budget until payment, even if your bank is one account in practice.
       </p>

@@ -23,7 +23,7 @@ Requirements:
 - Include: introduction, 3-5 main sections, conclusion
 - Include: 1 natural contextual link to toollabz.com using this specific tool URL: ${opts.toolUrl}
   Tool name context: ${opts.toolName}
-  Anchor text must be natural — brand name or generic. Good: "this free salary calculator", "Toollabz", "a free online tool"
+  Anchor text must be natural - brand name or generic. Good: "this free salary calculator", "Toollabz", "a free online tool"
   NEVER use: "best free tools" or keyword-stuffed anchors
 - Include: 3-5 relevant statistics with sources (name the source in text)
 - Tone: helpful, expert, non-promotional
@@ -53,7 +53,7 @@ export function resourcePitchPrompt(opts: {
 
 Target resource page: ${opts.prospectUrl}
 Page focus: ${opts.pageFocus}
-Most relevant toollabz tool: ${opts.toolName} — ${opts.toolUrl}
+Most relevant toollabz tool: ${opts.toolName} - ${opts.toolUrl}
 Tool description: ${opts.toolDescription}
 
 Requirements:
@@ -80,13 +80,13 @@ export function directoryListingPrompt(opts: { directoryName: string; categories
   return `Write optimized tool listing content for toollabz.com to submit to ${opts.directoryName}.
 
 Requirements:
-- Tool name: "Toollabz — Free Online Tools"
+- Tool name: "Toollabz - Free Online Tools"
 - Tagline: max 10 words, benefit-focused
 - Short description: 50-80 words
 - Long description: 150-200 words
 - Categories to tag: ${opts.categories.join(", ")}
 - Key features: 5 bullet points (strings)
-- Screenshots needed: yes — list which tool pages to screenshot (paths like /tools/emi-calculator)
+- Screenshots needed: yes - list which tool pages to screenshot (paths like /tools/emi-calculator)
 - Website: https://toollabz.com
 - Pricing: Free
 

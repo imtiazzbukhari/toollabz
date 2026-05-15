@@ -10,8 +10,8 @@ export default function SeoConsoleLoginForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const sp = useSearchParams();
-  const next = sp.get("next") || "/seo-growth-console";
-  const cfgErr = sp.get("error");
+  const next = sp?.get("next") || "/seo-growth-console";
+  const cfgErr = sp?.get("error") ?? null;
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();

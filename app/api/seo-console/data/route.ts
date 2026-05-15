@@ -9,5 +9,6 @@ export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
   const denied = assertDashboardDataAuthorized(req);
   if (denied) return denied;
-  return Response.json({ ok: true, snapshot: buildDashboardSnapshot() });
+  const snapshot = await buildDashboardSnapshot();
+  return Response.json({ ok: true, snapshot });
 }

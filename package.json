@@ -7,6 +7,7 @@
   },
   "scripts": {
     "blog:manifest": "node scripts/generate-blog-manifest.mjs",
+    "validate:blog-sitemap": "tsx scripts/validate-blog-sitemap.ts",
     "content-engine:blog-pr": "node scripts/content-engine/create-blog-pr.mjs",
     "content-engine:growth-pr": "node scripts/content-engine/create-growth-actions-pr.mjs",
     "content-engine:programmatic-pr": "node scripts/content-engine/create-programmatic-blog-pr.mjs",
@@ -24,8 +25,9 @@
     "dev": "next dev",
     "dev:turbo": "next dev --turbopack",
     "clean": "rm -rf .next",
-    "build": "npm run clean && next build && node scripts/copy-standalone-assets.mjs",
-    "build:incremental": "next build && node scripts/copy-standalone-assets.mjs",
+    "build": "next build && node scripts/copy-standalone-assets.mjs",
+    "build:clean": "npm run clean && next build && node scripts/copy-standalone-assets.mjs",
+    "prestart": "node scripts/ensure-next-build.mjs",
     "start": "next start",
     "start:standalone": "node .next/standalone/server.js",
     "lint": "eslint app components lib scripts tests utils --ext .js,.jsx,.ts,.tsx --max-warnings=0",
@@ -37,7 +39,10 @@
     "images:png-to-webp": "node scripts/convert-png-to-webp.mjs",
     "images:webp": "node scripts/convert-to-webp.mjs",
     "audit:links": "tsx scripts/audit-internal-links.ts",
-    "predeploy": "node scripts/pre-deploy-check.mjs"
+    "predeploy": "node scripts/pre-deploy-check.mjs",
+    "db:migrate:seo": "tsx scripts/db-migrate-seo.ts",
+    "seo:print-gsc-opportunities": "tsx scripts/print-gsc-db-opportunities.ts",
+    "seo:discoverability": "tsx scripts/seo-discoverability-heuristic.ts"
   },
   "dependencies": {
     "@tailwindcss/oxide-linux-x64-gnu": "^4.2.2",
@@ -50,11 +55,13 @@
     "nodemailer": "^6.10.0",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^4.10.38",
+    "pg": "^8.13.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^3.8.1",
     "sharp": "^0.33.5",
-    "swr": "^2.4.1"
+    "swr": "^2.4.1",
+    "yaml": "^2.8.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
@@ -63,6 +70,7 @@
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^22.13.10",
     "@types/nodemailer": "^6.4.17",
+    "@types/pg": "^8.11.10",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "eslint": "^9.22.0",

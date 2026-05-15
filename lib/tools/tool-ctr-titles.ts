@@ -4,6 +4,12 @@
  */
 export const CTR_TOOL_TITLES: Record<string, string> = {
   "loan-calculator": "Loan Calculator - Calculate Monthly Payments Instantly (Free)",
+  "html-formatter": "HTML Formatter | Readable Tags for Reviews (Free)",
+  "yaml-validator": "YAML Validator | Fast Syntax Check Online (Free)",
+  "stripe-fee-calculator": "Stripe Fee Calculator | Percent + Fixed Net Payout (Free)",
+  "self-employed-tax-calculator-uk": "Self Employed Tax Calculator UK | Effective Rate Sketch (Free)",
+  "roas-calculator": "ROAS Calculator | Revenue per Ad Spend Online (Free)",
+  "working-days-calculator-uk": "Working Days Calculator UK | Weekdays Minus Holidays (Free)",
   "salary-after-tax-calculator": "Salary After Tax Calculator - Estimate Take-Home Pay Fast (Free)",
   "paycheck-calculator-usa": "Paycheck Calculator USA - Net Pay & Deductions Instantly (Free)",
   "vat-calculator": "VAT Calculator - Add or Remove Tax Instantly (Free)",
@@ -14,5 +20,5 @@ export const CTR_TOOL_TITLES: Record<string, string> = {
   "compound-interest-calculator": "Compound Interest Calculator - Growth Projection Instantly (Free)",
   "pdf-merge": "PDF Merge - Combine PDF Files Online (Free)",
   "pdf-compress": "PDF Compress - Shrink File Size Online (Free)",
-  "ai-content-humanizer": "AI Content Humanizer - Rewrite for Natural Tone (Free)",
+  "ai-content-humanizer": "Content Humanizer (templates) - Natural Tone Rewrites (Free)",
 };

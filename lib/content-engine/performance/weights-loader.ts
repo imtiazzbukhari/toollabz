@@ -42,7 +42,7 @@ function clampWeights(w: QualityDimensionWeights): QualityDimensionWeights {
 
 /**
  * Optional `lib/content-engine/performance/weights.json` or `CONTENT_ENGINE_WEIGHTS_JSON` path.
- * Shape: `{ "dimensions": { "uniqueness": 0.2, ... } }` — values renormalized to sum to 1.
+ * Shape: `{ "dimensions": { "uniqueness": 0.2, ... } }` - values renormalized to sum to 1.
  */
 export function loadQualityWeights(): QualityDimensionWeights {
   if (memo) return memo;

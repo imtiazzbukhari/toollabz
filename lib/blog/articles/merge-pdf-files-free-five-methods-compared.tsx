@@ -78,7 +78,7 @@ function Article() {
       <BlogToolCallout
         href="/tools/pdf-merge"
         title="PDF merge (browser)"
-        description="Choose two or more PDFs, merge in order, and download a single file — tap-to-upload friendly on phones."
+        description="Choose two or more PDFs, merge in order, and download a single file  -  tap-to-upload friendly on phones."
       />
     </>
   );
@@ -88,7 +88,7 @@ const faqSchema = [
   {
     question: "Is my PDF secure when I merge online?",
     answer:
-      "Processing happens in your browser session on Toollabz PDF utilities—files are not uploaded to our servers for merge. Still, avoid public computers for confidential contracts, clear downloads afterward, and use offline tools if your policy forbids any browser-based handling.",
+      "Processing happens in your browser session on Toollabz PDF utilities - files are not uploaded to our servers for merge. Still, avoid public computers for confidential contracts, clear downloads afterward, and use offline tools if your policy forbids any browser-based handling.",
   },
   {
     question: "What is the maximum file size?",
@@ -123,7 +123,7 @@ export const mergePdfFilesFreeFiveMethodsComparedPost: BlogPostDefinition = {
   description:
     "Compare browser merge, Preview, Acrobat, CLI, and print-to-PDF workflows. Step-by-step checklist plus Toollabz PDF merge CTA.",
   title: "How to Merge PDF Files Free: 5 Methods Compared",
-  excerpt: "Pick the right merge workflow for privacy, automation, and quality — then use Toollabz for quick browser merges.",
+  excerpt: "Pick the right merge workflow for privacy, automation, and quality  -  then use Toollabz for quick browser merges.",
   publishedAt: "2026-04-26",
   category: "PDF",
   tags: ["PDF", "merge", "security"],

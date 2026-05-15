@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
   const expansionQueue = buildExpansionQueueFromAggregates(pages, 10);
   const scalingBlog = pickScalingBlogCandidate(expansionQueue, existingBlog);
 
-  const dash = buildDashboardSnapshot();
+  const dash = await buildDashboardSnapshot();
 
   return Response.json({
     ok: true,

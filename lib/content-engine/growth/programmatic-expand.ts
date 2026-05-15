@@ -3,7 +3,7 @@ import type { GscPageMetric } from "../performance/types";
 export type ProgrammaticQueryIdea = {
   primaryKeyword: string;
   kind: "numeric_principal" | "numeric_term" | "location" | "intent_variation";
-  /** For humans / backlog — not a live URL. */
+  /** For humans / backlog - not a live URL. */
   suggestedSlugHint: string;
   rationale: string;
 };
@@ -23,7 +23,7 @@ function pathBaseKeyword(path: string): string | null {
 
 /**
  * Derive programmatic SEO keyword ideas from a high-performing tool/blog path.
- * Intended for backlog / LLM seeding — does not create routes.
+ * Intended for backlog / LLM seeding - does not create routes.
  */
 export function expandProgrammaticQueriesForPath(
   metric: GscPageMetric,

@@ -5,7 +5,7 @@ function Article() {
   return (
     <>
       <p className="leading-7 text-slate-700">
-        EMI—equated monthly installment—is the number that makes a loan feel “affordable” on paper. Banks advertise it because
+        EMI - equated monthly installment - is the number that makes a loan feel “affordable” on paper. Banks advertise it because
         humans anchor to monthly cash flow, not total interest paid across five years. Understanding how EMI is derived helps
         you compare offers, spot aggressive front-loading, and decide whether a shorter term is worth the squeeze.
       </p>
@@ -60,7 +60,7 @@ function Article() {
         for debt sequencing tools if you are juggling more than one obligation.
       </p>
       <p className="mt-3 leading-7 text-slate-700">
-        Educational content only—not a lending decision. Always read your promissory note and confirm figures with the institution
+        Educational content only - not a lending decision. Always read your promissory note and confirm figures with the institution
         extending credit.
       </p>
     </>

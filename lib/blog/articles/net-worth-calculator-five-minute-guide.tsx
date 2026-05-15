@@ -6,7 +6,7 @@ function Article() {
   return (
     <>
       <p className="leading-7 text-slate-700">
-        Net worth is assets minus liabilities at a point in time. The hard part is not subtraction—it is deciding what counts as an
+        Net worth is assets minus liabilities at a point in time. The hard part is not subtraction - it is deciding what counts as an
         asset, which balances are gross of fees, and whether you mark illiquid positions to market or to conservative estimates.
       </p>
 
@@ -21,7 +21,7 @@ function Article() {
           <strong>Investments:</strong> brokerage balances, retirement accounts, RSUs vested and sellable.
         </li>
         <li>
-          <strong>Property:</strong> fair value minus mortgages/HELOCs—use conservative comps if you will not sell soon.
+          <strong>Property:</strong> fair value minus mortgages/HELOCs - use conservative comps if you will not sell soon.
         </li>
         <li>
           <strong>Other assets:</strong> vehicles, private loans receivable, business equity if separately trackable.
@@ -67,7 +67,7 @@ const faqSchema = [
   {
     question: "What about student loans in forbearance?",
     answer:
-      "If the legal obligation exists, include the outstanding principal even if payments are paused—unless policy explicitly forgave portions you can document.",
+      "If the legal obligation exists, include the outstanding principal even if payments are paused - unless policy explicitly forgave portions you can document.",
   },
   {
     question: "How often should I recompute?",
@@ -82,7 +82,7 @@ const faqSchema = [
   {
     question: "Can businesses use the same framework?",
     answer:
-      "Founders often track personal net worth separately from company balance sheets. Mixing them muddies runway conversations—keep legal entities distinct.",
+      "Founders often track personal net worth separately from company balance sheets. Mixing them muddies runway conversations - keep legal entities distinct.",
   },
 ] as const;
 

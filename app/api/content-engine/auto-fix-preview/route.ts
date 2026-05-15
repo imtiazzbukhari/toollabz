@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
   const denied = assertContentEngineAuthorized(req);
   if (denied) return denied;
-  const dash = buildDashboardSnapshot();
+  const dash = await buildDashboardSnapshot();
   const gl = dash.growthLoop;
   const files = buildAutoFixPrFiles({
     ctrRows: gl?.ctrQueue ?? [],

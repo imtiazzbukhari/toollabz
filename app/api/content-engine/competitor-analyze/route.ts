@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 /**
- * POST JSON { ourPath, competitorUrls: string[] } — fetches https competitors, extracts headings, gaps vs our template.
+ * POST JSON { ourPath, competitorUrls: string[] } - fetches https competitors, extracts headings, gaps vs our template.
  */
 export async function POST(req: NextRequest) {
   const denied = assertContentEngineAuthorized(req);

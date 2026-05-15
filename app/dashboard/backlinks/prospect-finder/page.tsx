@@ -22,7 +22,7 @@ type Prospect = {
 async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, { credentials: "include", ...init });
   const j = (await res.json().catch(() => ({}))) as T & { error?: string; ok?: boolean };
-  if (res.status === 401) throw new Error("Unauthorized — sign in via SEO console.");
+  if (res.status === 401) throw new Error("Unauthorized - sign in via SEO console.");
   if (!res.ok) throw new Error((j as { error?: string }).error ?? res.statusText);
   return j as T;
 }

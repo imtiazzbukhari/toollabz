@@ -20,7 +20,7 @@ function Article() {
         packaging, payment fees, incremental support). Contribution per unit is{" "}
         <code className="rounded bg-violet-100/80 px-1.5 py-0.5 text-sm">p − v</code>. Break-even units ≈{" "}
         <code className="rounded bg-violet-100/80 px-1.5 py-0.5 text-sm">F / (p − v)</code> when the denominator is positive. If{" "}
-        <code className="rounded bg-violet-100/80 px-1.5 py-0.5 text-sm">p ≤ v</code>, you never break even on marginal math—fix
+        <code className="rounded bg-violet-100/80 px-1.5 py-0.5 text-sm">p ≤ v</code>, you never break even on marginal math - fix
         pricing or cost structure first.
       </p>
 
@@ -34,7 +34,7 @@ function Article() {
         <code className="rounded bg-violet-100/80 px-1.5 py-0.5 text-sm">$45</code>, so break-even units ≈{" "}
         <code className="rounded bg-violet-100/80 px-1.5 py-0.5 text-sm">24,000 / 45 ≈ 534</code> units/month. Anything beyond
         534 generates incremental profit before corporate allocations. Plug your own numbers into the calculator below and
-        stress-test ±10% on price and variable cost—small swings move the threshold sharply when margins are thin.
+        stress-test ±10% on price and variable cost - small swings move the threshold sharply when margins are thin.
       </p>
 
       <h2 id="limits" className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">
@@ -72,7 +72,7 @@ const faqSchema = [
   {
     question: "How do discounts affect break-even?",
     answer:
-      "Effective price drops, shrinking contribution. Model discounts explicitly rather than lowering price silently in the calculator—otherwise you cannot reconcile promotions.",
+      "Effective price drops, shrinking contribution. Model discounts explicitly rather than lowering price silently in the calculator - otherwise you cannot reconcile promotions.",
   },
   {
     question: "Can I use this for SaaS?",

@@ -100,7 +100,7 @@ async function main() {
   pipelineLog({ step: "wrote_markdown", path: rel });
 
   runGit(["add", rel]);
-  runGit(["commit", "-m", "content-engine: refresh growth action queue (CTR + behavior)\n\nAutomated suggestions only — review before any CMS/SERP edits."]);
+  runGit(["commit", "-m", "content-engine: refresh growth action queue (CTR + behavior)\n\nAutomated suggestions only - review before any CMS/SERP edits."]);
   runGit(["remote", "set-url", "origin", authRemote]);
   runGit(["push", "-u", "origin", branch]);
 

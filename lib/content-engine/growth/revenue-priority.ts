@@ -25,7 +25,7 @@ function gscByPath(pages: readonly GscPageMetric[]): Map<string, GscPageMetric> 
 
 /**
  * Boost / penalize opportunities using optional `pageRevenue` RPM joined with GSC traffic on the same path.
- * Does not auto-edit pages — only discovery ranking.
+ * Does not auto-edit pages - only discovery ranking.
  */
 export function applyPageRpmSignals(
   rows: readonly PrioritizedOpportunity[],

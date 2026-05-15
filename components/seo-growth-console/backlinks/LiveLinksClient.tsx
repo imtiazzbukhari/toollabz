@@ -51,8 +51,8 @@ export default function LiveLinksClient() {
                       {l.source_url}
                     </a>
                   </td>
-                  <td className="px-3 py-2">{l.dr ?? "—"}</td>
-                  <td className="px-3 py-2">{l.type ?? "—"}</td>
+                  <td className="px-3 py-2">{l.dr ?? "-"}</td>
+                  <td className="px-3 py-2">{l.type ?? "-"}</td>
                   <td className="px-3 py-2">{l.date_live}</td>
                 </tr>
               ))

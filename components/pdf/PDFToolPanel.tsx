@@ -178,7 +178,7 @@ export default function PDFToolPanel({
           className={`flex min-h-[44px] w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-violet-300/80 bg-violet-50/40 px-4 py-4 text-center transition hover:border-violet-400 hover:bg-violet-50/80 sm:py-5`}
         >
           <span className="text-sm font-semibold text-violet-900">Tap to choose PDF{slug === "pdf-merge" ? "s" : ""}</span>
-          <span className="mt-1 text-xs text-slate-600">Works on mobile and desktop — opens your device file picker.</span>
+          <span className="mt-1 text-xs text-slate-600">Works on mobile and desktop - opens your device file picker.</span>
         </button>
         {files.length > 0 ? (
           <p className="text-xs text-slate-600" aria-live="polite">

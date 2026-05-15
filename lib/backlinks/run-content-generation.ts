@@ -27,7 +27,7 @@ export function buildContentQualityWarnings(opts: {
     const wc = countWords(opts.articleBody);
     if (wc < 1000) w.push(`Article under ${QUALITY_GATES.minContentWords} words (${wc}).`);
     if (opts.toolUrl && !opts.articleBody.includes("toollabz.com") && !opts.articleBody.includes("toollabz")) {
-      w.push("No obvious Toollabz link found in article body — verify manually.");
+      w.push("No obvious Toollabz link found in article body - verify manually.");
     }
     if (opts.anchor && anchorLooksKeywordStuffed(opts.anchor)) {
       w.push("Anchor text may be keyword-stuffed.");

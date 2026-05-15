@@ -28,7 +28,7 @@ export default function ToolsDirectoryClient({ tools, totalCount }: Props) {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    const initialQ = searchParams.get("q");
+    const initialQ = searchParams?.get("q");
     if (initialQ && initialQ !== query) {
       setQuery(initialQ);
     }
@@ -94,7 +94,7 @@ export default function ToolsDirectoryClient({ tools, totalCount }: Props) {
           ) : (
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {matchingTools.map((tool) => (
-                <ToolCard key={tool.slug} tool={tool} showThumbnail={false} />
+                <ToolCard key={tool.slug} tool={tool} />
               ))}
             </div>
           )}
@@ -110,7 +110,7 @@ export default function ToolsDirectoryClient({ tools, totalCount }: Props) {
             </p>
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {popularTools.map((tool) => (
-                <ToolCard key={tool.slug} tool={tool} showThumbnail={false} />
+                <ToolCard key={tool.slug} tool={tool} />
               ))}
             </div>
           </section>
@@ -139,7 +139,7 @@ export default function ToolsDirectoryClient({ tools, totalCount }: Props) {
                 ) : (
                   <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {section.tools.map((tool) => (
-                      <ToolCard key={tool.slug} tool={tool} showThumbnail={false} />
+                      <ToolCard key={tool.slug} tool={tool} />
                     ))}
                   </div>
                 )}

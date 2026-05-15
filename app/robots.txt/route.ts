@@ -1,9 +1,10 @@
-import { siteUrl } from "@/lib/seo";
+import { sitemapPublicOrigin } from "@/lib/content-engine/sitemap-data";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const origin = sitemapPublicOrigin();
   const body = [
     "User-agent: *",
     "Allow: /",
@@ -16,7 +17,7 @@ export async function GET() {
     "Disallow: /seo-growth-console/",
     "Disallow: /api/seo-console/",
     "Disallow: /api/outreach/",
-    `Sitemap: ${siteUrl}/sitemap.xml`,
+    `Sitemap: ${origin}/sitemap.xml`,
   ].join("\n");
   return new Response(`${body}\n`, {
     headers: {

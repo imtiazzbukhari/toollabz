@@ -64,25 +64,16 @@ export default function UtilityToolsPage() {
         </div>
       </section>
       <CategoryToolSpotlights tools={filtered} currentGroup="utility" />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((tool) => (
-          <article
-            key={tool.slug}
-            className="flex h-full min-h-[11rem] flex-col rounded-2xl border border-white/50 bg-white/75 p-5 shadow-[0_8px_20px_rgba(0,0,0,0.05)]"
-          >
-            <h2 className="text-base font-semibold leading-snug text-slate-900">{tool.name}</h2>
-            <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{tool.shortDescription}</p>
-            <div className="mt-4">
-              <Link
-                href={`/tools/${tool.slug}`}
-                className="inline-flex rounded-xl bg-gradient-to-r from-violet-600 to-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:brightness-110"
-              >
-                Open Tool
-              </Link>
-            </div>
-          </article>
-        ))}
-      </div>
+      <section className="mt-10" aria-labelledby="util-all-tools">
+        <h2 id="util-all-tools" className="text-xl font-bold text-slate-900 sm:text-2xl">
+          Tools in this hub
+        </h2>
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((tool) => (
+            <ToolCard key={tool.slug} tool={tool} />
+          ))}
+        </div>
+      </section>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
     </div>

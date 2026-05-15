@@ -415,7 +415,7 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
         <div className="space-y-4">
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Backlink discovery (templates)</h3>
-            <p className="mb-3 text-xs text-slate-500">Query seeds from live opportunities — verify every domain manually before outreach.</p>
+            <p className="mb-3 text-xs text-slate-500">Query seeds from live opportunities - verify every domain manually before outreach.</p>
             <DataTable
               columns={["Domain (seed)", "Query", "Relevance", "Authority", "Spam", "Contact"]}
               rows={(Array.isArray(snapshot.backlinkDiscovery) ? (snapshot.backlinkDiscovery as Array<Record<string, unknown>>) : []).map((p) => [
@@ -426,7 +426,7 @@ export default function SeoConsoleSectionPage({ section }: { section: keyof type
                 <StatusBadge key={String(p.domain)} status={String(p.spamRisk)} />,
                 String(p.contactHint).slice(0, 48),
               ])}
-              emptyMessage="No discovery rows — add keyword opportunities in aggregates."
+              emptyMessage="No discovery rows - add keyword opportunities in aggregates."
             />
           </section>
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">

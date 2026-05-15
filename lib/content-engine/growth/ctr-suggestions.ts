@@ -17,7 +17,7 @@ function ctr(m: GscPageMetric): number {
 }
 
 /**
- * A/B/C style SERP copy ideas for high-impression, low-CTR URLs (editorial — never auto-applied).
+ * A/B/C style SERP copy ideas for high-impression, low-CTR URLs (editorial; never auto-applied).
  */
 export function suggestSerpVariantsForPage(metric: GscPageMetric): SerpVariantSuggestion[] | null {
   const c = ctr(metric);
@@ -29,13 +29,13 @@ export function suggestSerpVariantsForPage(metric: GscPageMetric): SerpVariantSu
     {
       variant: "A",
       title: `${titleCase}: what to check first (with examples)`,
-      metaDescription: `Walk through ${topic} with plain-language steps, realistic numbers, and common mistakes—so you leave with a clear decision.`,
+      metaDescription: `Walk through ${topic} with plain-language steps, realistic numbers, and common mistakes, so you leave with a clear decision.`,
       rationale: "Adds specificity + outcome; often lifts CTR vs generic phrasing.",
     },
     {
       variant: "B",
       title: `${titleCase} explained in under 5 minutes`,
-      metaDescription: `Short, practical ${topic} guide: definitions, a quick checklist, and what to do next—built for scanning on mobile.`,
+      metaDescription: `Short, practical ${topic} guide: definitions, a quick checklist, and what to do next, built for scanning on mobile.`,
       rationale: "Time-bound promise + format hint can improve SERP relevance.",
     },
     {

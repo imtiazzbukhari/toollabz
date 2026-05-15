@@ -64,7 +64,7 @@ export function buildMonetizationSprintPlan(scorecard: MonetizationScorecard): M
     }));
 
   const orderedSteps = top.map(
-    (a) => `#${a.order}: ${a.targetPage} — ${a.exactFix} (${a.estimatedHours}h, +$${a.expectedRevenueImpactUsd.toFixed(2)}).`,
+    (a) => `#${a.order}: ${a.targetPage}: ${a.exactFix} (${a.estimatedHours}h, +$${a.expectedRevenueImpactUsd.toFixed(2)}).`,
   );
   const estimatedHours = Number(top.reduce((n, a) => n + a.estimatedHours, 0).toFixed(1));
   const expectedRevenueGainUsd = Number(top.reduce((n, a) => n + a.expectedRevenueImpactUsd, 0).toFixed(2));

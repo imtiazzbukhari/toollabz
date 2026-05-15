@@ -10,7 +10,7 @@ import type { InternalLinkSuggestion } from "../types";
 export function suggestAuthorityAugmentedLinks(
   topic: string,
   bodyPreview: string,
-  opts: { clusterId?: string; pillarToolSlug?: string },
+  opts: { clusterId?: string; pillarToolSlug?: string; authorityPaths?: string[] },
   limit = 6,
 ): InternalLinkSuggestion[] {
   const merged: InternalLinkSuggestion[] = [];
@@ -22,6 +22,31 @@ export function suggestAuthorityAugmentedLinks(
     seen.add(item.href);
     merged.push(item);
   };
+
+  for (const p of opts.authorityPaths ?? []) {
+    if (!p.startsWith("/")) continue;
+    if (p.startsWith("/tools/")) {
+      const slug = p.replace(/^\/tools\//, "").split("/")[0];
+      const t = toolMap.get(slug);
+      if (t) {
+        push({
+          href: `/tools/${t.slug}`,
+          anchor: t.name,
+          reason: "Authority flow: high-traffic tool page (GSC click proxy)",
+        });
+      }
+    } else if (p.startsWith("/blog/")) {
+      const slug = p.replace(/^\/blog\//, "").split("/")[0];
+      const post = blogPosts.find((x) => x.slug === slug);
+      if (post) {
+        push({
+          href: `/blog/${post.slug}`,
+          anchor: post.title,
+          reason: "Authority flow: high-traffic article (GSC click proxy)",
+        });
+      }
+    }
+  }
 
   if (opts.pillarToolSlug) {
     const t = toolMap.get(opts.pillarToolSlug);

@@ -1,5 +1,5 @@
 /**
- * Heuristic CPC proxy (0–100) for prioritization — not real auction CPC.
+ * Heuristic CPC proxy (0–100) for prioritization - not real auction CPC.
  * Biases toward finance, credit, housing, insurance, business, and SaaS metrics.
  */
 

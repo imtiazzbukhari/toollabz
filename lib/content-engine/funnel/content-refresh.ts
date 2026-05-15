@@ -27,7 +27,7 @@ function suggestionsFor(path: string, signal: RefreshCandidate["signal"]): strin
 }
 
 /**
- * Pages that likely need a content refresh (editorial queue — does not auto-edit).
+ * Pages that likely need a content refresh (editorial queue - does not auto-edit).
  */
 export function findRefreshCandidates(aggregates: PerformanceAggregates | null, max = 12): RefreshCandidate[] {
   if (!aggregates?.pages?.length) return [];

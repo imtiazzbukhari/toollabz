@@ -2,7 +2,7 @@ import { blogPostBySlug } from "@/lib/blog/registry";
 import { toolMap } from "@/lib/tools/data";
 
 /**
- * Structural headings we expect on templates (proxy for on-page H2s) — not a live DOM crawl.
+ * Structural headings we expect on templates (proxy for on-page H2s) - not a live DOM crawl.
  */
 export function getOurTemplateHeadingsForPath(path: string): string[] {
   const blog = path.replace(/\/+$/, "").match(/^\/blog\/([^/?#]+)$/i);

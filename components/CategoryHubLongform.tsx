@@ -1,11 +1,18 @@
+import Link from "next/link";
 import type { DirectoryGroupId } from "@/lib/tools/directory-groups";
 import { toolGlassPanel } from "@/lib/tool-ui";
+
+type HubClusterNavSection = {
+  title: string;
+  links: { href: string; label: string }[];
+};
 
 type HubCopy = {
   h2: string;
   intro: string[];
   benefits: string[];
   faqs: { question: string; answer: string }[];
+  clusterNav?: HubClusterNavSection[];
 };
 
 const HUB_COPY: Record<DirectoryGroupId, HubCopy> = {
@@ -42,6 +49,29 @@ const HUB_COPY: Record<DirectoryGroupId, HubCopy> = {
         question: "Can I link internally from a blog post to a specific calculator?",
         answer:
           "Yes. Each tool has a stable HTTPS URL under /tools/{slug} with canonical metadata, which helps readers land on the exact experience you reference.",
+      },
+    ],
+    clusterNav: [
+      {
+        title: "UK tax and pay (planning sketches)",
+        links: [
+          { href: "/uk-finance-tax", label: "UK finance and tax hub" },
+          { href: "/tools/salary-after-tax-calculator-uk", label: "Salary after tax (UK)" },
+          { href: "/tools/self-employed-tax-calculator-uk", label: "Self-employed tax (UK)" },
+          { href: "/tools/dividend-tax-calculator-uk", label: "Dividend tax (UK)" },
+          { href: "/tools/freelance-day-rate-calculator", label: "Freelance day rate" },
+        ],
+      },
+      {
+        title: "Australia, Zakat, and related explainers",
+        links: [
+          { href: "/tools/gst-calculator-australia", label: "GST calculator (Australia)" },
+          { href: "/tools/zakat-calculator", label: "Zakat calculator" },
+          { href: "/blog/uk-self-employed-dividend-salary-effective-percent-toollabz", label: "UK self-employed vs dividend vs salary" },
+          { href: "/blog/gst-australia-inclusive-exclusive-10-percent-small-business", label: "GST inclusive vs exclusive (Australia)" },
+          { href: "/blog/gst-vs-vat-uk-au-cross-border-pricing-toollabz", label: "GST vs VAT (Australia vs UK)" },
+          { href: "/blog/zakat-calculation-nisab-practical-guide-respectful", label: "Zakat, nisab, and practical planning" },
+        ],
       },
     ],
   },
@@ -114,6 +144,27 @@ const HUB_COPY: Record<DirectoryGroupId, HubCopy> = {
         question: "Why include FAQs on business tool pages?",
         answer:
           "They clarify scope, reduce misuse, and give search engines additional natural-language context around intent and limitations.",
+      },
+    ],
+    clusterNav: [
+      {
+        title: "Growth and unit economics",
+        links: [
+          { href: "/tools/roas-calculator", label: "ROAS calculator" },
+          { href: "/tools/stripe-fee-calculator", label: "Stripe fee calculator" },
+          { href: "/tools/churn-calculator", label: "Churn calculator" },
+          { href: "/tools/cac-calculator-saas", label: "CAC calculator (SaaS)" },
+          { href: "/tools/break-even-calculator-business", label: "Break-even calculator" },
+          { href: "/tools/employee-cost-calculator", label: "Employee loaded cost" },
+        ],
+      },
+      {
+        title: "Long-form context",
+        links: [
+          { href: "/blog/saas-roas-churn-retention-metrics-primer-toollabz", label: "ROAS, churn, and retention primer" },
+          { href: "/blog/marketplace-seller-fees-stripe-paypal-etsy-ebay-toollabz", label: "Marketplace seller fees compared" },
+          { href: "/blog/roi-vs-roas-when-to-trust-each-metric", label: "ROI vs ROAS" },
+        ],
       },
     ],
   },
@@ -224,6 +275,28 @@ const HUB_COPY: Record<DirectoryGroupId, HubCopy> = {
           "Searchers often include intent phrases like safe, online, or compare. Unique copy aligns the page with those phrases while the grid still presents tools visually.",
       },
     ],
+    clusterNav: [
+      {
+        title: "Core developer tools",
+        links: [
+          { href: "/tools/jwt-decoder", label: "JWT decoder" },
+          { href: "/tools/json-validator", label: "JSON validator" },
+          { href: "/tools/sql-formatter", label: "SQL formatter" },
+          { href: "/tools/regex-tester", label: "Regex tester" },
+          { href: "/tools/yaml-validator", label: "YAML validator" },
+          { href: "/tools/base64-encoder-decoder", label: "Base64 encoder / decoder" },
+        ],
+      },
+      {
+        title: "Guides and playbooks",
+        links: [
+          { href: "/blog/developer-text-json-yaml-html-csv-pipeline-toollabz", label: "Text pipeline: JSON, YAML, HTML, CSV" },
+          { href: "/blog/jwt-expiry-api-healthchecks-curl-playbook-toollabz", label: "JWT expiry and curl health checks" },
+          { href: "/blog/json-formatting-and-validation-explained-developer", label: "JSON formatting and validation" },
+          { href: "/blog/sql-cron-readability-schedulers-developer-guide-toollabz", label: "SQL and cron readability" },
+        ],
+      },
+    ],
   },
   utility: {
     h2: "Utility tools for everyday conversions, text, and quick answers",
@@ -258,6 +331,27 @@ const HUB_COPY: Record<DirectoryGroupId, HubCopy> = {
         question: "Do utilities respect privacy for pasted text?",
         answer:
           "Design favors client-side processing where feasible, but avoid pasting confidential data on shared machines regardless.",
+      },
+    ],
+    clusterNav: [
+      {
+        title: "Converters and measurement",
+        links: [
+          { href: "/tools/stone-to-kg-converter", label: "Stone to kg" },
+          { href: "/tools/feet-inches-to-cm-converter", label: "Feet and inches to cm" },
+          { href: "/tools/acres-to-hectares-converter", label: "Acres to hectares" },
+          { href: "/tools/currency-converter", label: "Currency converter" },
+          { href: "/tools/time-zone-converter", label: "Time zone converter" },
+        ],
+      },
+      {
+        title: "Business days and guides",
+        links: [
+          { href: "/tools/business-days-calculator", label: "Business days calculator" },
+          { href: "/tools/working-days-calculator-uk", label: "Working days (UK)" },
+          { href: "/blog/working-days-uk-timezones-business-slas-toollabz", label: "Working days, UK holidays, and SLAs" },
+          { href: "/blog/imperial-metric-stone-feet-acres-hectares-conversion-guide", label: "Imperial and metric conversion guide" },
+        ],
       },
     ],
   },
@@ -322,6 +416,27 @@ export default function CategoryHubLongform({ group }: { group: DirectoryGroupId
           ))}
         </ul>
       </div>
+      {copy.clusterNav?.length ? (
+        <div className="space-y-6">
+          <h3 className="text-lg font-semibold text-slate-900">Cluster navigation</h3>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {copy.clusterNav.map((section) => (
+              <div key={section.title}>
+                <p className="text-sm font-semibold text-slate-800">{section.title}</p>
+                <ul className="mt-2 space-y-2 text-sm text-slate-600">
+                  {section.links.map((l) => (
+                    <li key={l.href}>
+                      <Link href={l.href} className="text-violet-700 underline-offset-2 hover:underline">
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
       <div>
         <h3 className="text-lg font-semibold text-slate-900">FAQs</h3>
         <dl className="mt-3 space-y-4 text-sm leading-relaxed text-slate-600 sm:text-base">

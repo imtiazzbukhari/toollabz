@@ -53,7 +53,7 @@ export function compareOurPageVsCompetitors(
     competitors: [...competitors],
     missingSectionThemes: missing.slice(0, 24),
     notes: [
-      "Themes appear in 2+ competitor pages but not in our template proxy list — editorial candidates for new H2s/sections.",
+      "Themes appear in 2+ competitor pages but not in our template proxy list - editorial candidates for new H2s/sections.",
       "This is not legal advice to copy text; add original sections that satisfy the same intent.",
     ],
   };

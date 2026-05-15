@@ -1,6 +1,6 @@
 import { Clock3 } from "lucide-react";
 
-/** Static aside chrome for tool results — server-rendered (no client JS). */
+/** Static aside chrome for tool results - server-rendered (no client JS). */
 export default function ToolResultsAsideHeader() {
   return (
     <div className="mb-4 flex items-center justify-between border-b border-violet-200/40 pb-3">

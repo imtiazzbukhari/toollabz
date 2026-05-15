@@ -3,8 +3,8 @@ import { buildDashboardSnapshot } from "../lib/content-engine/dashboard/build-da
 import { encodeSeoCookieToken, timingSafeStringEq } from "../lib/content-engine/seo-console-auth";
 
 describe("dashboard / snapshot", () => {
-  it("buildDashboardSnapshot returns stable keys", () => {
-    const s = buildDashboardSnapshot();
+  it("buildDashboardSnapshot returns stable keys", async () => {
+    const s = await buildDashboardSnapshot();
     expect(s.overview.blogCount).toBeGreaterThan(0);
     expect(s.overview.toolCount).toBeGreaterThan(0);
     expect(s.priorityEngineOrder.length).toBeGreaterThan(3);
@@ -14,6 +14,10 @@ describe("dashboard / snapshot", () => {
     expect(s.clusterDomination.summaries.length).toBeGreaterThan(0);
     expect(s.outreachExecution.queueSummary.dailyCap).toBeGreaterThan(0);
     expect(s.competitorIntelligence.path).toContain("competitor-analyze");
+    expect(s.pageMetricsProvenance).toBeDefined();
+    expect(s.pageMetricsProvenance).toHaveProperty("sourceLabel");
+    expect(s.seoDataPlane).toBeDefined();
+    expect(Array.isArray(s.orphanLinkHints)).toBe(true);
   });
 });
 

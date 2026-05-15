@@ -23,7 +23,7 @@ export default function LiveExchangeRateBar({
       });
       const data = (await res.json()) as { rate?: number; error?: string; asOf?: string };
       if (!res.ok) {
-        setStatus(data.error === "rate_limited" ? "Too many requests — try again shortly." : "Could not load rate.");
+        setStatus(data.error === "rate_limited" ? "Too many requests - try again shortly." : "Could not load rate.");
         return;
       }
       if (typeof data.rate !== "number") {
@@ -32,7 +32,7 @@ export default function LiveExchangeRateBar({
       }
       setForm((s) => ({ ...s, rate: String(data.rate) }));
       setStatus(
-        `Reference: 1 ${from} ≈ ${data.rate} ${to}${data.asOf ? ` (as of ${data.asOf})` : ""} — ECB via Frankfurter; bank spreads extra.`,
+        `Reference: 1 ${from} ≈ ${data.rate} ${to}${data.asOf ? ` (as of ${data.asOf})` : ""} - ECB via Frankfurter; bank spreads extra.`,
       );
     } catch {
       setStatus("Network error");

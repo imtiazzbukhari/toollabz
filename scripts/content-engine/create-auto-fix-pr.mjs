@@ -104,7 +104,7 @@ async function main() {
   }
 
   runGit(["add", ...relPaths]);
-  runGit(["commit", "-m", "content-engine: auto-fix drafts (CTR + behavior)\n\nEditorial suggestions only — no live metadata changes."]);
+  runGit(["commit", "-m", "content-engine: auto-fix drafts (CTR + behavior)\n\nEditorial suggestions only - no live metadata changes."]);
   runGit(["remote", "set-url", "origin", authRemote]);
   runGit(["push", "-u", "origin", branch]);
 

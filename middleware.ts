@@ -29,7 +29,7 @@ function canonicalApexHostname(): string {
   return "toollabz.com";
 }
 
-/** Dev / loopback: entire middleware bypass (local `next dev`, etc.). */
+/** Dev / loopback: skip HTTPS/www canonicalization only (SEO console auth still runs below). */
 function isLocalDevHost(hostNoPort: string): boolean {
   const h = hostNoPort.toLowerCase();
   return h === "localhost" || h === "127.0.0.1" || h === "[::1]" || h.endsWith(".local");
@@ -84,10 +84,6 @@ function redirectOrNext(hostForHsts: string, target: URL, apex: string): NextRes
 export function middleware(request: NextRequest) {
   const hostHeader = request.headers.get("host") ?? "";
   const hostNoPort = hostHeader.split(":")[0]?.toLowerCase() ?? "";
-
-  if (!hostNoPort || isLocalDevHost(hostNoPort)) {
-    return NextResponse.next();
-  }
 
   const apex = canonicalApexHostname();
   const apexOk = isTrustedProductionApex(apex);

@@ -10,7 +10,7 @@ export type GscPageMetric = {
 /** Optional AdSense / analytics export merged by path with GSC rows. */
 export type PageRevenueMetric = {
   path: string;
-  /** USD (or your account currency) per 1,000 sessions/pageviews — align with your import script. */
+  /** USD (or your account currency) per 1,000 sessions/pageviews - align with your import script. */
   rpm: number;
   earnings?: number;
   /** Ad / monetized impressions when available. */

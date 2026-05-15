@@ -10,7 +10,7 @@ function ctr(p: GscPageMetric): number {
 }
 
 /**
- * Section-level ideas for URLs with demand but weak CTR (no third-party SERP scrape — safe default).
+ * Section-level ideas for URLs with demand but weak CTR (no third-party SERP scrape - safe default).
  */
 export function buildSerpGapSuggestions(pages: readonly GscPageMetric[] | undefined, max = 8): SerpGapRow[] {
   if (!pages?.length) return [];

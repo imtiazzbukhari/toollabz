@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-05-15T18:22:36.567Z",
+  "siteOrigin": "https://toollabz.com",
+  "summary": {
+    "toolCount": 276,
+    "sitemapUrlCount": 425,
+    "toolsMissingFromSitemap": 0,
+    "noindexLinesFound": 0,
+    "canonicalMismatchesInSample": 0
+  },
+  "toolsMissingFromSitemap": [],
+  "noindexOccurrences": [],
+  "canonicalMismatchesSample": [],
+  "notes": [
+    "Orphan detection and crawl depth require a live crawl or GSC export; this script only compares tool slugs to buildSitemapEntries.",
+    "Review noindex hits manually-some are intentional (e.g. 404, dashboards)."
+  ]
+}

@@ -8,7 +8,7 @@ export type AdSlotRecommendation = {
 };
 
 /**
- * Editorial placement strategy — does not inject scripts. Use with your AdSense component / layout.
+ * Editorial placement strategy. Does not inject scripts. Use with your AdSense component / layout.
  * Keeps reading flow: never before first paragraph; avoid sticky overlap with CTAs.
  */
 export const ADSENSE_SLOT_RECOMMENDATIONS: readonly AdSlotRecommendation[] = [
@@ -47,9 +47,9 @@ export function adsensePlacementMarkdownGuide(): string {
     "",
     "Suggested order for long articles:",
     "",
-    "1. **After intro** — following the first substantive H2 block (not inside the lede).",
-    "2. **Mid content** — between major sections after ~50–60% scroll depth equivalent.",
-    "3. **Before FAQ** — single unit above the FAQ heading.",
+    "1. **After intro**: following the first substantive H2 block (not inside the lede).",
+    "2. **Mid content**: between major sections after ~50–60% scroll depth equivalent.",
+    "3. **Before FAQ**: single unit above the FAQ heading.",
     "",
     "Avoid: hero-before-content, more than 3 display units per long page, or placements that push primary CTA (tool links) below the fold on mobile.",
     "",

@@ -1,0 +1,106 @@
+{
+  "generatedAt": "2026-05-15T00:00:00.000Z",
+  "phase": 3,
+  "newBlogSlugs": [
+    "roi-vs-roas-when-to-trust-each-metric",
+    "markup-vs-margin-formulas-pricing-mistakes",
+    "gross-profit-vs-net-profit-explained-for-operators",
+    "how-loan-amortization-schedules-work-principal-interest",
+    "rental-yield-vs-monthly-cash-flow-investment-property",
+    "apr-vs-interest-rate-mortgage-auto-loans",
+    "salary-after-tax-explained-withholdings-deductions-net-pay",
+    "merge-pdf-without-losing-quality-metadata-fonts",
+    "compress-pdf-safely-for-email-and-archiving",
+    "best-free-pdf-workflows-merge-split-compress-archiving",
+    "how-ai-content-detectors-work-limits-ethics",
+    "ai-prompts-small-business-templates-operations-sales-support",
+    "ai-text-humanization-editorial-workflow-beyond-spinning",
+    "json-formatting-and-validation-explained-developer",
+    "regex-beginner-guide-practical-patterns-toollabz"
+  ],
+  "contentClusters": {
+    "finance": {
+      "pillarHubs": ["/finance-tools", "/business-tools"],
+      "newPosts": [
+        "markup-vs-margin-formulas-pricing-mistakes",
+        "gross-profit-vs-net-profit-explained-for-operators",
+        "how-loan-amortization-schedules-work-principal-interest",
+        "apr-vs-interest-rate-mortgage-auto-loans",
+        "salary-after-tax-explained-withholdings-deductions-net-pay"
+      ],
+      "siblingPostsLinked": [
+        "break-even-analysis-formula-examples-calculator",
+        "vat-calculator-guide-small-businesses",
+        "how-to-calculate-salary-after-tax-usa",
+        "how-to-calculate-emi-formula-examples-free-calculator",
+        "mortgage-payment-usa-piti-escrow-guide"
+      ],
+      "toolsLinked": [
+        "roi-calculator",
+        "roi-calculator-marketing",
+        "profit-margin-calculator-business",
+        "break-even-calculator-business",
+        "loan-calculator",
+        "emi-calculator",
+        "early-loan-payoff-calculator",
+        "salary-after-tax-calculator",
+        "credit-card-interest-calculator",
+        "vat-calculator"
+      ]
+    },
+    "marketing": {
+      "pillarHubs": ["/marketing-tools"],
+      "newPosts": ["roi-vs-roas-when-to-trust-each-metric"],
+      "siblingPostsLinked": [
+        "roi-calculator-explained-for-marketing-campaigns",
+        "how-to-calculate-roi-business",
+        "how-to-calculate-roi"
+      ],
+      "toolsLinked": ["roi-calculator-marketing", "cac-calculator", "conversion-rate-calculator"]
+    },
+    "realEstate": {
+      "pillarHubs": ["/real-estate-tools"],
+      "newPosts": ["rental-yield-vs-monthly-cash-flow-investment-property"],
+      "siblingPostsLinked": ["rent-vs-buy-usa-guide", "how-to-compare-rent-vs-buy-without-hype"],
+      "toolsLinked": ["rental-yield-calculator", "property-roi-calculator", "rent-vs-buy-calculator", "loan-calculator", "mortgage-affordability-calculator"]
+    },
+    "pdf": {
+      "pillarHubs": ["/pdf-tools", "/utility-tools"],
+      "newPosts": [
+        "merge-pdf-without-losing-quality-metadata-fonts",
+        "compress-pdf-safely-for-email-and-archiving",
+        "best-free-pdf-workflows-merge-split-compress-archiving"
+      ],
+      "siblingPostsLinked": ["how-to-merge-pdf-files-for-free", "merge-pdf-files-free-five-methods-compared"],
+      "toolsLinked": ["pdf-merge", "pdf-split", "pdf-compress", "pdf-to-word", "word-to-pdf", "mb-to-gb"]
+    },
+    "ai": {
+      "pillarHubs": ["/ai-tools"],
+      "newPosts": [
+        "how-ai-content-detectors-work-limits-ethics",
+        "ai-prompts-small-business-templates-operations-sales-support",
+        "ai-text-humanization-editorial-workflow-beyond-spinning"
+      ],
+      "siblingPostsLinked": ["ai-content-humanizer-natural-text-guide"],
+      "toolsLinked": [
+        "ai-content-humanizer",
+        "ai-cold-email-generator",
+        "ai-email-subject-line-generator",
+        "word-counter",
+        "ai-linkedin-post-generator",
+        "ai-product-description-generator"
+      ]
+    },
+    "developer": {
+      "pillarHubs": ["/developer-tools"],
+      "newPosts": ["json-formatting-and-validation-explained-developer", "regex-beginner-guide-practical-patterns-toollabz"],
+      "siblingPostsLinked": [],
+      "toolsLinked": ["json-formatter", "json-validator", "regex-tester", "url-encoder-decoder", "base64-encoder-decoder"]
+    }
+  },
+  "internalLinkingNotes": [
+    "Each new article targets 5–12 contextual internal links (blog↔blog, blog↔tool, blog↔hub).",
+    "Related posts use curated relatedPostsSlugs first, then scored fallbacks via getRelatedBlogPostsForPost.",
+    "Break-even topic duplicates avoided: existing break-even-analysis-formula-examples-calculator is the canonical break-even article; new finance posts link to it instead of spawning a thin duplicate."
+  ]
+}

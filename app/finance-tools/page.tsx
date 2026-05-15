@@ -33,7 +33,7 @@ export default function FinanceToolsPage() {
   const featuredPosts = hubFeaturedPostsForGroup("finance");
   const popularFinance = hubPopularToolsForGroup("finance");
   const collectionLd = hubCollectionLdForGroup("finance", {
-    name: "Finance tools — calculators & planners",
+    name: "Finance tools - calculators & planners",
     description: "Free finance calculators: loans, paychecks, tax estimates, savings, and debt tools on Toollabz.",
     path: "/finance-tools",
   });
@@ -51,6 +51,13 @@ export default function FinanceToolsPage() {
         <ChevronRight className="h-3.5 w-3.5 shrink-0 opacity-40" aria-hidden />
         <span className="font-medium text-slate-700">Finance Tools</span>
       </nav>
+      <p className="mb-4 text-sm text-slate-600">
+        <span className="text-slate-500">UK-focused planning hub: </span>
+        <Link href="/uk-finance-tax" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+          UK finance &amp; tax
+        </Link>
+        <span className="text-slate-500"> · GST and Zakat tools included.</span>
+      </p>
       <PageLastUpdated className="mb-4" />
       <header className={`mb-10 p-6 sm:p-8 ${toolGlassPanel}`}>
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-violet-600">Category</p>
@@ -73,7 +80,7 @@ export default function FinanceToolsPage() {
         <h2 id="finance-popular" className="text-xl font-bold text-slate-900 sm:text-2xl">
           Popular picks in finance
         </h2>
-        <p className="mt-2 text-sm text-slate-600">High-intent calculators visitors open often — start here if you are new to the hub.</p>
+        <p className="mt-2 text-sm text-slate-600">High-intent calculators visitors open often - start here if you are new to the hub.</p>
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {popularFinance.map((tool) => (
             <ToolCard key={`pop-${tool.slug}`} tool={tool} />

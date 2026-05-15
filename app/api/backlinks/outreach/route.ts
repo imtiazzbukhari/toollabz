@@ -55,7 +55,7 @@ function addDaysIso(days: number): string {
 }
 
 function followUpFallback(domain: string, subject: string, snippet: string) {
-  const sub = subject.trim() ? `Re: ${subject.trim()}` : `Following up — Toollabz for ${domain}`;
+  const sub = subject.trim() ? `Re: ${subject.trim()}` : `Following up - Toollabz for ${domain}`;
   const body = `Hi,
 
 Following up on my earlier email about featuring Toollabz (free calculators and tools) for ${domain}.

@@ -83,10 +83,10 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
     ],
   },
   "loan-calculator": {
-    audience: "anyone about to sign a promissory note—from first car loans to refi-curious homeowners",
+    audience: "anyone about to sign a promissory note - from first car loans to refi-curious homeowners",
     scenario: "turning rate talk into a monthly payment you can sanity-check against rent and savings",
     exampleInput: "$28,500 used car at 7.2% APR, 63 months, $2,000 down (financed $26,500)",
-    exampleOutput: "payment around $455/mo before tax/title at the dealer—use that to decide if GAP or a shorter term is worth it",
+    exampleOutput: "payment around $455/mo before tax/title at the dealer - use that to decide if GAP or a shorter term is worth it",
     pitfall: "typing the sticker price as principal after you already put cash down",
     interpretation: "if the payment feels fine but total interest shocks you, shorten the term or increase the down payment and rerun",
     relatedIntent: "stack next to the EMI calculator for identical-math wording, or compound interest if you are weighing pay-down vs invest",
@@ -99,7 +99,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
       {
         question: "Why does a 1% rate change move my payment so much?",
         answer:
-          "Longer terms amplify small APR differences because interest accrues across more months. Slide the rate a quarter point and watch total interest—it is the hidden sticker shock.",
+          "Longer terms amplify small APR differences because interest accrues across more months. Slide the rate a quarter point and watch total interest - it is the hidden sticker shock.",
       },
       {
         question: "Can I model paying extra each month here?",
@@ -112,20 +112,20 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
     audience: "people translating “rate sounds fine” into “what leaves my account every month”",
     scenario: "choosing between two tenure options the lender happily printed side by side",
     exampleInput: "₹38L @ 8.9% for 96 months vs the same principal @ 8.7% for 84 months",
-    exampleOutput: "you see EMI drop on the longer file but total interest climb—pick the pain you can live with",
+    exampleOutput: "you see EMI drop on the longer file but total interest climb - pick the pain you can live with",
     pitfall: "optimizing EMI alone while ignoring insurance, maintenance, or HOA that also hit cash flow",
     interpretation: "write down both EMI and total interest before you emotionally anchor on the smaller monthly number",
     relatedIntent: "pair with loan calculator for dollar/rupee parity checks and early payoff tools if you plan lump-sum attacks",
     faq: [
       {
-        question: "EMI vs “simple divide principal by months”—what gives?",
+        question: "EMI vs “simple divide principal by months” - what gives?",
         answer:
           "EMI amortizes interest on the declining balance, so early payments skew interest-heavy. Straight division ignores finance charges entirely.",
       },
       {
         question: "Does rounding on EMI matter?",
         answer:
-          "Pennies add up over years. If two apps differ slightly, it is usually rounding mid-calculation—compare total outflow, not just the first month.",
+          "Pennies add up over years. If two apps differ slightly, it is usually rounding mid-calculation - compare total outflow, not just the first month.",
       },
       {
         question: "Can I use this for floating-rate loans?",
@@ -138,7 +138,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
     audience: "savers who want the boring miracle of time + rate, without a broker slideshow",
     scenario: "answering “if I park this for N years at APY-ish assumptions, what do I actually end up with?”",
     exampleInput: "$14,200 bonus after tax, 4.35% APY, monthly compounding, 6 years untouched",
-    exampleOutput: "about $18.4k—enough to feel real, small enough that fee drag still matters in real banks",
+    exampleOutput: "about $18.4k - enough to feel real, small enough that fee drag still matters in real banks",
     pitfall: "assuming APY from an ad will stay fixed for the whole horizon when promo periods exist",
     interpretation: "run twice: once monthly compounding, once annual, so you feel how banks phrase the same tea differently",
     relatedIntent: "contrast with savings-interest and retirement tools when you start layering contributions, not just a lump sum",
@@ -151,7 +151,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
       {
         question: "Is this calculator inflation-adjusted?",
         answer:
-          "No—the output is nominal dollars. For purchasing power, mentally haircut the ending balance with your own inflation guess or pair with an inflation-impact tool.",
+          "No - the output is nominal dollars. For purchasing power, mentally haircut the ending balance with your own inflation guess or pair with an inflation-impact tool.",
       },
       {
         question: "Can I model adding $200 every month?",
@@ -164,7 +164,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
     audience: "people negotiating offers, moving states, or side-eyeing their first real paystub",
     scenario: "turning gross comp into something rent and daycare math can actually use",
     exampleInput: "$118k gross, blended effective 24% for fed+state+FICA-ish bite, monthly view",
-    exampleOutput: "roughly $7.4k/mo net before voluntary 401(k) tweaks—enough to decide if that apartment walk score is affordable",
+    exampleOutput: "roughly $7.4k/mo net before voluntary 401(k) tweaks - enough to decide if that apartment walk score is affordable",
     pitfall: "copying a friend’s “I lose 30%” rule of thumb when your deductions, pre-tax benefits, and locality differ",
     interpretation: "if you have a paystub, steal the effective percentage temporarily; if not, bracket high and low scenarios",
     relatedIntent: "open paycheck calculator for per-check rhythm and the country-specific salary tools when you leave generic USA assumptions",
@@ -175,7 +175,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
           "Pre-tax commuter accounts, catch-up 401(k), bonuses taxed weirdly, and local quirks all move the needle. This page is a directional map, not HR software.",
       },
       {
-        question: "Monthly or annual salary—does it matter?",
+        question: "Monthly or annual salary - does it matter?",
         answer:
           "Only that you keep salary and tax rate in the same time window. Annual gross with an annualized effective rate is the least confusing combo for most people.",
       },
@@ -400,13 +400,13 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
     audience: "W-2 workers who think in “per deposit” dollars, not HRIS codes",
     scenario: "figuring out whether the raise actually buys groceries after withholding quirks",
     exampleInput: "$86,400 salary, 18% combined withholding guess, 4% pre-tax benefits, biweekly payroll",
-    exampleOutput: "roughly $2,420 net per check—enough to decide if the HSA election is worth the squeeze",
+    exampleOutput: "roughly $2,420 net per check - enough to decide if the HSA election is worth the squeeze",
     pitfall: "forgetting that semimonthly (24) vs biweekly (26) checks change the per-deposit math even at the same annual gross",
     interpretation: "match pay frequency to your employer before you compare offers; the annual number alone lies politely",
     relatedIntent: "use hourly converters when offers mix wage types, then salary-after-tax when you only know gross bands",
     faq: [
       {
-        question: "My stub shows weird letters—what do I punch in?",
+        question: "My stub shows weird letters - what do I punch in?",
         answer:
           "Add federal, state, and local (if any) into one blended percent if you are lazy, or split once you know each line. The goal is to mimic last month, not predict next April perfectly.",
       },
@@ -418,7 +418,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
       {
         question: "Can I model 401(k) changes?",
         answer:
-          "Yes—shift the deduction percentage and watch per-check net move. Great for open enrollment arguments with yourself.",
+          "Yes - shift the deduction percentage and watch per-check net move. Great for open enrollment arguments with yourself.",
       },
     ],
   },
@@ -524,7 +524,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
     audience: "couples tired of Instagram equity flexing who still want adult numbers",
     scenario: "deciding if the next lease renewal is the fork where buying deserves a serious look",
     exampleInput: "$2,450 rent growing 3.8%/yr vs $3,050/mo all-in buy scenario (PITI + HOA + maintenance reserve)",
-    exampleOutput: "seven-year cumulative outflow comparison—sometimes renting still wins even when you want the yard",
+    exampleOutput: "seven-year cumulative outflow comparison - sometimes renting still wins even when you want the yard",
     pitfall: "assuming you will stay long enough for the buy math to matter when job mobility says otherwise",
     interpretation: "if you might bounce in three years, weight the buy case less even if monthlies look close today",
     relatedIntent: "open mortgage payment + affordability tools once buy wins on cash flow so you understand lender-facing constraints",
@@ -537,7 +537,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
       {
         question: "Where do maintenance dollars come from?",
         answer:
-          "Use a monthly reserve you would actually wire to savings—roofs and HVAC bills arrive as events, not smooth curves.",
+          "Use a monthly reserve you would actually wire to savings - roofs and HVAC bills arrive as events, not smooth curves.",
       },
       {
         question: "Why seven years?",
@@ -1080,7 +1080,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
   },
   "mortgage-payment-calculator": {
     audience: "buyers who already stalked listings and now need the adult monthly number",
-    scenario: "building the full house payment stack—not just principal and interest from a rate ad",
+    scenario: "building the full house payment stack - not just principal and interest from a rate ad",
     exampleInput: "$468k price, 8% down, 6.75% note, $6.2k taxes/yr, $1.4k insurance/yr, $140 HOA, PMI until 20% equity",
     exampleOutput: "a PITI+HOA line that finally matches why your lender pre-approval felt tighter than Zillow’s payment",
     pitfall: "comparing a PI-only quote from a rate table to a rent check that already includes maintenance psychology",
@@ -1095,19 +1095,19 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
       {
         question: "Should I include HOA for a detached home?",
         answer:
-          "Usually zero, but some neighborhoods still carry association fees—type what applies, even if it hurts.",
+          "Usually zero, but some neighborhoods still carry association fees - type what applies, even if it hurts.",
       },
       {
         question: "Does this tell me if I qualify?",
         answer:
-          "No—it tells you what payment components feel like. DTI and reserves live in underwriting land; use affordability tools for that angle.",
+          "No - it tells you what payment components feel like. DTI and reserves live in underwriting land; use affordability tools for that angle.",
       },
     ],
   },
   "credit-card-payoff-calculator": {
     audience: "households juggling multiple APRs and one stubborn balance that will not die",
     scenario: "choosing avalanche discipline versus snowball morale with real balances typed in",
-    exampleInput: "$7.8k @ 26.99%, $2.4k @ 17.99%, $900 @ 0% promo ending in 5 months—$520/mo available",
+    exampleInput: "$7.8k @ 26.99%, $2.4k @ 17.99%, $900 @ 0% promo ending in 5 months - $520/mo available",
     exampleOutput: "month-by-month balances so you can see which card actually clears first under each strategy",
     pitfall: "typing minimums too low and wondering why the timeline still looks hopeless",
     interpretation: "if avalanche saves hundreds but snowball keeps you paying, pick the strategy you will not ghost after February",
@@ -1121,7 +1121,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
       {
         question: "Does this know my promo end date automatically?",
         answer:
-          "No—you tell the tool when the teaser ends so the effective APR shock shows up in your plan.",
+          "No - you tell the tool when the teaser ends so the effective APR shock shows up in your plan.",
       },
       {
         question: "Should I pause investing while I run this?",
@@ -1134,7 +1134,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
     audience: "homeowners drowning in mailers with cartoon eagles promising “lower payment today”",
     scenario: "deciding if closing costs are a speed bump or a brick wall on the way to savings",
     exampleInput: "$3,950 lender fees + $1,800 title, saving $132/mo on PI, planning to stay 4 years",
-    exampleOutput: "break-even near month 44—inside your horizon, but tighter than the radio ad implied",
+    exampleOutput: "break-even near month 44 - inside your horizon, but tighter than the radio ad implied",
     pitfall: "ignoring term reset where payment falls but lifetime interest rises",
     interpretation: "write down both break-even months and total interest delta if the new loan adds years back on the clock",
     relatedIntent: "cross-check with mortgage payment at the new rate before you emotionally commit to signing",
@@ -1142,7 +1142,7 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
       {
         question: "What belongs in closing costs?",
         answer:
-          "Lender fees, title, recording, appraisal, points—anything cash-to-close that does not build equity. If unsure, bracket high.",
+          "Lender fees, title, recording, appraisal, points - anything cash-to-close that does not build equity. If unsure, bracket high.",
       },
       {
         question: "Why do “no cost” refis still show break-even?",
@@ -1152,15 +1152,15 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
       {
         question: "Does this include escrow changes?",
         answer:
-          "Not automatically—escrow swings can move cash needs even when PI drops. Keep a cushion story alongside the math here.",
+          "Not automatically - escrow swings can move cash needs even when PI drops. Keep a cushion story alongside the math here.",
       },
     ],
   },
   "roi-calculator": {
     audience: "operators who need a single defensible percent after money actually moved",
-    scenario: "proving whether a spend returned more than it consumed—not whether revenue looked shiny",
+    scenario: "proving whether a spend returned more than it consumed - not whether revenue looked shiny",
     exampleInput: "$4,200 spent on tooling + contractor time, $6,850 net profit directly attributable after fees",
-    exampleOutput: "ROI ≈ 63% on net gain vs cost—enough to justify renewal if the pipeline stays warm",
+    exampleOutput: "ROI ≈ 63% on net gain vs cost - enough to justify renewal if the pipeline stays warm",
     pitfall: "counting gross revenue as “gain” while forgetting refunds, discounts, and variable costs",
     interpretation: "if two teammates disagree, align on what “cost” includes before you fight over the numerator",
     relatedIntent: "graduate to marketing ROI or margin calculators when campaigns need attribution nuance",
@@ -1168,12 +1168,12 @@ export const phase1Profiles: Record<string, Phase1Profile> = {
       {
         question: "Is ROI the same as ROAS?",
         answer:
-          "ROAS is usually revenue divided by ad spend. ROI here wants net gain divided by all-in cost—tighter, sometimes uglier, more honest.",
+          "ROAS is usually revenue divided by ad spend. ROI here wants net gain divided by all-in cost - tighter, sometimes uglier, more honest.",
       },
       {
         question: "Can ROI be negative?",
         answer:
-          "Yes. If you spent more than you gained, the percentage goes negative—useful for killing projects early with data, not drama.",
+          "Yes. If you spent more than you gained, the percentage goes negative - useful for killing projects early with data, not drama.",
       },
       {
         question: "What time window should I use?",

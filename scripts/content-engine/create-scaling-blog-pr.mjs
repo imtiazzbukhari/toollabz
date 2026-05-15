@@ -182,7 +182,7 @@ async function main() {
       "",
       scaling.rationale ? `**Rationale:** ${scaling.rationale}` : "",
       "",
-      "_Generated from GSC strength + expansion queue — review before merge._",
+      "_Generated from GSC strength + expansion queue - review before merge._",
     ].join("\n"),
   });
 

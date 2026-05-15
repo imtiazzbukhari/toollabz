@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (action === "automation_bundle") {
-      const snapshot = buildDashboardSnapshot();
+      const snapshot = await buildDashboardSnapshot();
       appendConsoleLog({ type: "ai_action", level: "info", message: "Automation bundle refreshed." });
       return Response.json({ ok: true, bundle: snapshot });
     }
@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (action === "run_audit" || action === "refresh_clusters") {
-      const snapshot = buildDashboardSnapshot();
+      const snapshot = await buildDashboardSnapshot();
       appendConsoleLog({ type: "ai_action", level: "info", message: action === "run_audit" ? "Audit completed." : "Clusters refreshed." });
       return Response.json({ ok: true, snapshot });
     }

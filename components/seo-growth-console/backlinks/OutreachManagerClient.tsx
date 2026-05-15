@@ -105,7 +105,7 @@ export default function OutreachManagerClient() {
       <div>
         <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Outreach manager</h1>
         <p className="mt-2 rounded-xl border border-rose-200/80 bg-rose-50/90 p-3 text-sm text-rose-950 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-50">
-          <strong>Manual send only.</strong> Content is ready — you send the email from your own mailbox. Automated bulk sending
+          <strong>Manual send only.</strong> Content is ready - you send the email from your own mailbox. Automated bulk sending
           violates anti-spam laws and Google guidelines. Each message should be personally sent and tracked here.
         </p>
       </div>
@@ -124,7 +124,7 @@ export default function OutreachManagerClient() {
                 <div>
                   <p className="font-semibold text-slate-900 dark:text-white">{row.domain}</p>
                   <p className="text-xs text-slate-500">
-                    {row.page_type} · score {row.quality_score} · {row.subject_line ?? row.content_title ?? "—"}
+                    {row.page_type} · score {row.quality_score} · {row.subject_line ?? row.content_title ?? "-"}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">

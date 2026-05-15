@@ -11,7 +11,7 @@ function cx(...c: Array<string | false | undefined>) {
 }
 
 export default function BacklinksSubnav() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const base = backlinksBasePath(pathname);
   const dash = isDashboardBacklinks(pathname);
 

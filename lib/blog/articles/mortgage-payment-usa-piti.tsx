@@ -6,7 +6,7 @@ function Article() {
     <>
       <p className="leading-7 text-slate-700">
         My cousin almost passed on a house because the listing payment on a flyer looked “impossible.” It was P&I only. Taxes in that county were brutal, HOA was $180, and they were putting 10% down so PMI was in play.
-        Suddenly the number she needed for cash flow was $640 higher than the flyer. Nothing illegal—just a different layer of the stack.
+        Suddenly the number she needed for cash flow was $640 higher than the flyer. Nothing illegal - just a different layer of the stack.
       </p>
 
       <h2 className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">What actually hits your checking account</h2>
@@ -30,7 +30,7 @@ function Article() {
         <Link href="/tools/mortgage-payment-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           mortgage payment calculator
         </Link>{" "}
-        — it keeps P&I exact on the loan amount while you sanity-check escrow assumptions.
+         -  it keeps P&I exact on the loan amount while you sanity-check escrow assumptions.
       </p>
 
       <h2 className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">FAQ</h2>
@@ -54,10 +54,10 @@ export const mortgagePaymentUsaPitiPost: BlogPostDefinition = {
   slug: "mortgage-payment-usa-piti-escrow-guide",
   seoTitle: "Mortgage Payment in the USA: Why PITI Beats the Sticker Rate (Real Numbers)",
   description:
-    "P&I is only part of your US mortgage payment. Taxes, insurance, PMI, and HOA change what you actually spend—worked example plus a link to Toollabz’s free mortgage payment calculator.",
+    "P&I is only part of your US mortgage payment. Taxes, insurance, PMI, and HOA change what you actually spend - worked example plus a link to Toollabz’s free mortgage payment calculator.",
   title: "Mortgage payment in the USA: what PITI actually means",
   excerpt:
-    "A $412k example shows how taxes, insurance, and PMI stack on top of principal and interest—so you budget like a human, not a flyer.",
+    "A $412k example shows how taxes, insurance, and PMI stack on top of principal and interest - so you budget like a human, not a flyer.",
   publishedAt: "2026-04-11",
   relatedToolSlugs: ["mortgage-payment-calculator", "refinance-break-even-calculator", "loan-calculator", "home-equity-loan-calculator"],
   Article,

@@ -1,7 +1,17 @@
 import { ToolDefinition, ToolFAQ } from "./types";
-import { phase1Profiles } from "./phase1-seo";
+import type { Phase1Profile } from "./phase1-seo";
+import { phase1Profiles as phase1ProfilesCore } from "./phase1-seo";
+import { expansionPhase1Profiles } from "./phase1-seo-expansion-batch1";
+import { expansionPhase2Profiles } from "./phase2-seo-expansion-batch2";
 import { TOOL_SEO_CONTENT_LEAD } from "./tool-seo-content-lead";
 import { pickBySlug, slugContentVariant } from "./content-variation";
+import { augmentToolFaqsForIntent } from "./faq-expansion";
+
+const phase1Profiles: Record<string, Phase1Profile> = {
+  ...phase1ProfilesCore,
+  ...expansionPhase1Profiles,
+  ...expansionPhase2Profiles,
+};
 
 /** Category-specific FAQs merged early so finance/PDF/AI pages hit common intent queries. */
 function categoryTemplateFaqs(tool: ToolDefinition): ToolFAQ[] {
@@ -11,12 +21,12 @@ function categoryTemplateFaqs(tool: ToolDefinition): ToolFAQ[] {
       {
         question: "How accurate is this calculator?",
         answer:
-          "Outputs follow the documented formula with deterministic rounding. Accuracy depends on the rates and assumptions you enter—always confirm tax, FX, and lending rules with a qualified professional for regulated decisions.",
+          "Outputs follow the documented formula with deterministic rounding. Accuracy depends on the rates and assumptions you enter-always confirm tax, FX, and lending rules with a qualified professional for regulated decisions.",
       },
       {
         question: "Does this include tax?",
         answer:
-          "Only when the fields explicitly model tax, withholding, or VAT. Otherwise amounts are neutral numerics—label currency and tax treatment yourself.",
+          "Only when the fields explicitly model tax, withholding, or VAT. Otherwise amounts are neutral numerics-label currency and tax treatment yourself.",
       },
       {
         question: "What currency does this use?",
@@ -40,7 +50,7 @@ function categoryTemplateFaqs(tool: ToolDefinition): ToolFAQ[] {
       {
         question: "Is my file secure when I upload it?",
         answer:
-          "PDF utilities run client-side in your browser for merge/split/compress flows—files are not uploaded to Toollabz servers for those paths. Avoid sensitive documents on shared devices.",
+          "PDF utilities run client-side in your browser for merge/split/compress flows-files are not uploaded to Toollabz servers for those paths. Avoid sensitive documents on shared devices.",
       },
       {
         question: "What is the maximum file size?",
@@ -55,7 +65,7 @@ function categoryTemplateFaqs(tool: ToolDefinition): ToolFAQ[] {
       {
         question: "Can I merge password-protected PDFs?",
         answer:
-          "You generally need to unlock locally first—passworded inputs often fail in browser libraries until decrypted.",
+          "You generally need to unlock locally first-passworded inputs often fail in browser libraries until decrypted.",
       },
       {
         question: "Do you store my files after processing?",
@@ -89,7 +99,7 @@ function categoryTemplateFaqs(tool: ToolDefinition): ToolFAQ[] {
       {
         question: "How many times can I use this for free?",
         answer:
-          "There is no metered credit on Toollabz for these flows—stay reasonable so shared infrastructure stays fast for everyone.",
+          "There is no metered credit on Toollabz for these flows-stay reasonable so shared infrastructure stays fast for everyone.",
       },
     ];
   }
@@ -337,6 +347,44 @@ const formulas: Record<string, string> = {
   "divorce-settlement-calculator": "Net pool split 50/50 sketch; alimony = 15%×income gap (illustrative)",
   "va-disability-rating-calculator": "Sequential whole-person combine, round to 10%; map to 2025 monthly pay table",
   "student-loan-forgiveness-calculator": "PSLF flag if public employer and years ≥10; else long IDR horizon placeholder",
+  "jwt-decoder": "Base64URL-decode JWT segments; JSON.parse header/payload; time claims from numeric seconds",
+  "uuid-generator": "RFC 4122 v4 UUID via crypto.randomUUID (or random hex fallback)",
+  "sql-formatter": "Keyword-aware line breaks for SQL readability without semantic changes",
+  "cron-expression-generator": "Five-field cron tokenization with per-field human-readable summaries",
+  "markdown-to-html-converter": "Escaped HTML output from a Markdown subset (headings, lists, emphasis, links, code fences)",
+  "unix-timestamp-converter": "Epoch seconds ↔ UTC via JavaScript Date; 13-digit treated as milliseconds",
+  "gst-calculator-australia": "GST 10%: gross = net×1.1; net = gross÷1.1; gst = gross−net",
+  "zakat-calculator": "Due = (wealth − nisab) × rate when wealth > nisab; otherwise zero on this line",
+  "freelance-day-rate-calculator": "Gross-up target ÷ billable days where gross-up = target ÷ (1 − tax/reserve%)",
+  "employee-cost-calculator": "Loaded annual = salary × (1 + benefits%) × (1 + overhead%)",
+  "invoice-late-fee-calculator": "Simple interest fee = principal × (annual% ÷ 100) × (days ÷ 365)",
+  "stone-to-kg-converter": "1 st = 6.35029318 kg via 14 lb at 0.45359237 kg/lb",
+  "feet-inches-to-cm-converter": "cm = (ft×12 + in) × 2.54; reverse divides total inches into feet and inches",
+  "acres-to-hectares-converter": "1 international acre = 0.40468564224 hectares",
+  "html-formatter": "Readable pass: split adjacent tags onto new lines without semantic rewriting",
+  "css-minifier": "Remove /* */ comments; collapse whitespace and redundant separators",
+  "json-minifier": "JSON.stringify(parsed) with no spaces",
+  "xml-formatter": "Tag adjacency newline insertion for readability (not XSD validation)",
+  "yaml-validator": "yaml parse → structural syntax check; root type reported",
+  "csv-to-json-converter": "Rows → objects keyed by header cells; quoted commas preserved per line",
+  "jwt-expiry-checker": "Base64URL payload JSON; exp/iat seconds ×1000 vs Date.now()",
+  "api-status-checker": "URL parser + suggested curl -I (no live fetch in sync engine)",
+  "self-employed-tax-calculator-uk": "Take-home ≈ profit × (1 − incomeTax% − NI%)",
+  "dividend-tax-calculator-uk": "Net ≈ gross − gross × (tax% ÷ 100)",
+  "stripe-fee-calculator": "Fee = amount × fee% + fixed; net = amount − fee",
+  "paypal-fee-calculator": "Fee = amount × fee% + fixed; net = amount − fee",
+  "etsy-fee-calculator": "Fees = listing + price×transaction% + price×payment%",
+  "ebay-fee-calculator": "Fees = sold×finalValue% + fixedPerOrder",
+  "churn-calculator": "Remaining = start × (1 − churn%)^months",
+  "roas-calculator": "ROAS = revenue ÷ spend; ROI% = (revenue − spend) ÷ spend × 100",
+  "working-days-calculator-uk": "Weekdays Mon–Fri UTC inclusive minus user bank holiday count",
+  "business-days-calculator": "Weekdays Mon–Fri UTC inclusive between ISO dates",
+  "random-team-generator": "Fisher–Yates shuffle then round-robin into N buckets",
+  "lbs-to-kg-converter": "kg = lb × 0.45359237",
+  "feet-to-cm-converter": "cm = ft × 30.48 (international foot)",
+  "pace-calculator": "pace sec/km = elapsed ÷ km; km/h = km ÷ (elapsed/3600)",
+  "mph-to-kmh-converter": "km/h = mph × 1.609344",
+  "square-feet-to-square-meters-converter": "m² = ft² × 0.09290304",
 };
 
 export function getToolFormula(slug: string) {
@@ -439,7 +487,7 @@ export function getToolFaqs(tool: ToolDefinition): ToolFAQ[] {
   ];
 
   const out = dedupeToolFaqs([...merged, ...pad]);
-  return out.slice(0, 12);
+  return augmentToolFaqsForIntent(tool, out, formula);
 }
 
 export function getToolSeoContent(tool: ToolDefinition): string[] {

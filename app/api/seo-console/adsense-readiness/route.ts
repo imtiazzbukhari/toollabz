@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   if (!isSeoConsoleAuthenticated(req)) return Response.json({ ok: false, error: "Unauthorized." }, { status: 401 });
-  const snapshot = buildDashboardSnapshot();
+  const snapshot = await buildDashboardSnapshot();
   return Response.json({
     ok: true,
     score: snapshot.adsenseReadiness.score,

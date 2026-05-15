@@ -1,5 +1,7 @@
 import type { ToolCategory, ToolDefinition } from "./types";
 import { cpcHighToolDefinitions } from "./cpc-high-tools-definitions";
+import { expansionPhase1ToolDefinitions } from "./expansion-phase1-tool-definitions";
+import { expansionPhase2ToolDefinitions } from "./expansion-phase2-tool-definitions";
 import { SMALL_CLAIMS_STATE_OPTIONS } from "./small-claims-data";
 
 const makeFAQs = (name: string) => [
@@ -38,7 +40,7 @@ export const tools: ToolDefinition[] = [
   { slug: "word-counter", name: "Word Counter", shortDescription: "Count words, chars, and lines.", description: "Analyze text length instantly.", category: "utility", fields: [{ name: "text", label: "Text", type: "textarea", placeholder: "Paste your text" }], keywords: ["word count"], howToUse: simpleHowTo, faqs: makeFAQs("Word Counter"), related: ["case-converter", "json-validator"] },
   { slug: "case-converter", name: "Case Converter", shortDescription: "Convert text between cases.", description: "Transform to upper, lower, title, and sentence case.", category: "utility", fields: [{ name: "text", label: "Text", type: "textarea" }, { name: "mode", label: "Case", type: "select", options: [{label:"UPPER",value:"upper"},{label:"lower",value:"lower"},{label:"Title Case",value:"title"},{label:"Sentence case",value:"sentence"}] }], keywords: ["case converter"], howToUse: simpleHowTo, faqs: makeFAQs("Case Converter"), related: ["word-counter", "username-generator"] },
   { slug: "password-generator", name: "Password Generator", shortDescription: "Generate strong random passwords.", description: "Create secure passwords with custom length and symbols.", category: "utility", fields: [{ name: "length", label: "Length", type: "number", min: 6 }, { name: "symbols", label: "Include Symbols", type: "select", options: [{label:"Yes",value:"yes"},{label:"No",value:"no"}] }], keywords: ["password generator"], howToUse: simpleHowTo, faqs: makeFAQs("Password Generator"), related: ["username-generator", "random-name-generator"] },
-  { slug: "json-formatter", name: "JSON Formatter", shortDescription: "Format minified JSON beautifully.", description: "Beautify JSON with indentation and readability.", category: "developer", fields: [{ name: "json", label: "JSON Input", type: "textarea" }], keywords: ["json formatter"], howToUse: simpleHowTo, faqs: makeFAQs("JSON Formatter"), related: ["json-validator", "base64-encoder-decoder"] },
+  { slug: "json-formatter", name: "JSON Formatter", shortDescription: "Format minified JSON beautifully.", description: "Beautify JSON with indentation and readability.", category: "developer", fields: [{ name: "json", label: "JSON Input", type: "textarea" }], keywords: ["json formatter"], howToUse: simpleHowTo, faqs: makeFAQs("JSON Formatter"), related: ["json-validator", "jwt-decoder", "sql-formatter", "base64-encoder-decoder"] },
   { slug: "color-palette-generator", name: "Color Palette Generator", shortDescription: "Generate palette from a base color.", description: "Create modern shades and tints for your projects.", category: "generators", fields: [{ name: "hex", label: "Base Hex Color", type: "text", placeholder: "#7C3AED" }], keywords: ["color palette"], howToUse: simpleHowTo, faqs: makeFAQs("Color Palette Generator"), related: ["business-name-generator", "username-generator"] },
 
   // phase 2 pdf
@@ -485,8 +487,8 @@ export const tools: ToolDefinition[] = [
   },
   {
     slug: "ai-email-subject-line-generator",
-    name: "AI Email Subject Line Generator",
-    shortDescription: "Generate high-converting email subject lines quickly.",
+    name: "Email Subject Line Generator (templates)",
+    shortDescription: "Pattern-based subject line ideas from topic, audience, and tone - not a hosted frontier model.",
     description: "Create context-aware email subject line ideas for outreach, promotions, and lifecycle campaigns.",
     category: "generators",
     fields: [
@@ -512,8 +514,8 @@ export const tools: ToolDefinition[] = [
   },
   {
     slug: "ai-cold-email-generator",
-    name: "AI Cold Email Generator",
-    shortDescription: "Generate personalized cold email drafts fast.",
+    name: "Cold Email Draft Generator (templates)",
+    shortDescription: "Structured outreach drafts from offer, audience, and CTA inputs - rules and phrasing patterns, not GPT-class output.",
     description: "Create tailored cold outreach emails based on offer, audience, and desired CTA.",
     category: "generators",
     fields: [
@@ -540,8 +542,8 @@ export const tools: ToolDefinition[] = [
   },
   {
     slug: "ai-linkedin-post-generator",
-    name: "AI LinkedIn Post Generator",
-    shortDescription: "Generate structured LinkedIn post drafts in seconds.",
+    name: "LinkedIn Post Draft Generator (templates)",
+    shortDescription: "Hook/value/CTA outlines from your topic inputs - editorial templates, not autonomous posting.",
     description: "Create audience-specific LinkedIn posts with hook, value, and CTA structure.",
     category: "generators",
     fields: [
@@ -568,8 +570,8 @@ export const tools: ToolDefinition[] = [
   },
   {
     slug: "ai-resume-summary-generator",
-    name: "AI Resume Summary Generator",
-    shortDescription: "Generate targeted resume summary statements quickly.",
+    name: "Resume Summary Generator (templates)",
+    shortDescription: "Professional summary sentences from role, skills, and achievement fields - pattern fill, not résumé parsing AI.",
     description: "Create concise professional summaries tailored to role, experience, and key strengths.",
     category: "generators",
     fields: [
@@ -596,8 +598,8 @@ export const tools: ToolDefinition[] = [
   },
   {
     slug: "ai-product-description-generator",
-    name: "AI Product Description Generator",
-    shortDescription: "Generate product descriptions optimized for conversion.",
+    name: "Product Description Generator (templates)",
+    shortDescription: "Benefit-led copy shells from product facts and tone - template assembly, not live web scraping or LLM browsing.",
     description: "Create persuasive product copy from product name, audience, features, and brand tone.",
     category: "generators",
     fields: [
@@ -1572,7 +1574,7 @@ export const tools: ToolDefinition[] = [
       { question: "Can I use this for config files?", answer: "Yes, it is useful for validating JSON-based config files before deployment." },
       { question: "Is this tool mobile friendly?", answer: "Yes, it works across desktop and mobile using the same validation logic." },
     ],
-    related:["api-response-formatter","json-formatter","regex-tester","base64-encoder-decoder","url-encoder-decoder"],
+    related:["jwt-decoder","json-formatter","sql-formatter","regex-tester","unix-timestamp-converter"],
   },
   {
     slug: "base64-encoder-decoder",
@@ -1813,8 +1815,8 @@ export const tools: ToolDefinition[] = [
   },
   {
     slug: "ai-content-humanizer",
-    name: "AI Content Humanizer",
-    shortDescription: "Rewrite robotic text into natural human-friendly versions.",
+    name: "Content Humanizer (templates)",
+    shortDescription: "Tone-controlled rewrites from pasted text using local patterns - not a hosted frontier model.",
     description: "Humanize AI-written paragraphs into clearer, more conversational copy while preserving intent.",
     category: "generators",
     fields: [
@@ -1824,7 +1826,7 @@ export const tools: ToolDefinition[] = [
     ],
     keywords: ["ai content humanizer","ai content humanizer free","humanize ai text online","make ai text sound human","undetectable ai text rewriter"],
     howToUse: ["Paste your draft content.", "Choose target tone and audience.", "Generate multiple rewrites and pick your best version.", "Regenerate for alternate wording with the same meaning."],
-    faqs: makeFAQs("AI Content Humanizer"),
+    faqs: makeFAQs("Content Humanizer (templates)"),
     related: ["ai-prompt-optimizer", "ai-linkedin-post-generator", "ai-product-description-generator", "word-counter", "case-converter"],
   },
   {
@@ -1896,7 +1898,7 @@ export const tools: ToolDefinition[] = [
     keywords: ["freelance rate calculator","freelancer hourly rate calculator","consulting rate calculator","how much should i charge freelance","project pricing calculator freelancer"],
     howToUse: ["Enter your annual take-home target and business expenses.", "Set tax rate and realistic annual billable hours.", "Calculate your baseline hourly rate.", "Enter project hours to get a suggested project quote."],
     faqs: makeFAQs("Freelance Rate Calculator"),
-    related: ["hourly-to-salary-converter-usa", "salary-to-hourly-converter-usa", "profit-margin-calculator-business", "cac-calculator-saas", "budget-planner-monthly-usa"],
+    related: ["hourly-to-salary-converter-usa", "salary-to-hourly-converter-usa", "profit-margin-calculator-business", "cac-calculator-saas", "freelance-day-rate-calculator", "budget-planner-monthly-usa"],
   },
   {
     slug: "adsense-revenue-calculator",
@@ -1948,8 +1950,8 @@ export const tools: ToolDefinition[] = [
   },
   {
     slug: "ai-prompt-optimizer",
-    name: "AI Prompt Optimizer",
-    shortDescription: "Improve weak prompts into clearer, high-output prompt variants.",
+    name: "Prompt Rewriter (templates)",
+    shortDescription: "Structured prompt variants from your draft - rule-based templates, not automatic model tuning.",
     description: "Rewrite vague prompts into structured, outcome-focused prompts for better AI responses.",
     category: "generators",
     fields: [
@@ -1959,7 +1961,7 @@ export const tools: ToolDefinition[] = [
     ],
     keywords: ["ai prompt optimizer","prompt improvement tool","chatgpt prompt optimizer","better ai prompts generator","prompt engineering assistant"],
     howToUse: ["Paste your original prompt.", "Choose task type and constraints.", "Generate optimized prompt variants.", "Use the best version and regenerate for alternatives."],
-    faqs: makeFAQs("AI Prompt Optimizer"),
+    faqs: makeFAQs("Prompt Rewriter (templates)"),
     related: ["ai-content-humanizer", "tiktok-script-generator", "youtube-metadata-generator", "api-response-formatter", "schema-markup-generator"],
   },
   {
@@ -2486,8 +2488,8 @@ export const tools: ToolDefinition[] = [
   },
   {
     slug: "ai-social-bio-generator",
-    name: "AI Social Bio Generator",
-    shortDescription: "Generate multiple social bios with tone and platform-aware hooks.",
+    name: "Social Bio Generator (templates)",
+    shortDescription: "Bio variants from platform, niche, and tone - template assembly; edit facts manually before publishing.",
     description: "Create several bio variants for Instagram, TikTok, X, or LinkedIn from your niche and tone - edit facts before publishing.",
     category: "generators",
     fields: [
@@ -2528,7 +2530,7 @@ export const tools: ToolDefinition[] = [
       "Generate multiple variants and merge accurate proof points manually.",
     ],
     faqs: [
-      ...makeFAQs("AI Social Bio Generator"),
+      ...makeFAQs("Social Bio Generator (templates)"),
       { question: "Will it invent credentials?", answer: "It can - always verify titles, metrics, and claims before publishing." },
       { question: "How many bios do I get?", answer: "Several variants appear in the main and extra outputs - regenerate for more angles." },
       { question: "Should I include a CTA?", answer: "Yes - one clear next step (newsletter, lead magnet, booking) improves conversions." },
@@ -2727,8 +2729,8 @@ export const tools: ToolDefinition[] = [
   },
   {
     slug: "ai-search-appearance-checker",
-    name: "AI Search Appearance Checker",
-    shortDescription: "Generate prompts and content angles to improve AI-overview and SERP visibility.",
+    name: "SERP & AI Visibility Planner (templates)",
+    shortDescription: "Checklist-style prompts from brand/topics - planning only; does not query live search or AI answers.",
     description:
       "Produce structured ideas for entity clarity, snippet strategy, FAQ blocks, and content gaps based on your brand and core topics - edit with real data before publishing.",
     category: "generators",
@@ -2751,7 +2753,7 @@ export const tools: ToolDefinition[] = [
       "Regenerate for alternate angles, then implement manually with verified facts.",
     ],
     faqs: [
-      ...makeFAQs("AI Search Appearance Checker"),
+      ...makeFAQs("SERP & AI Visibility Planner (templates)"),
       { question: "Does this query live AI results?", answer: "No - it outputs planning prompts; live surfaces change frequently." },
       { question: "Will this guarantee rankings?", answer: "No - search and AI answers depend on many factors beyond this brief." },
       { question: "Should I copy text verbatim?", answer: "No - edit with accurate statistics and compliance-approved claims." },
@@ -2837,8 +2839,8 @@ export const tools: ToolDefinition[] = [
   },
   {
     slug: "ai-citation-checker",
-    name: "AI Citation Checker",
-    shortDescription: "Heuristic scan for URLs, DOI-like ids, and vague attribution in drafts.",
+    name: "Citation Heuristic Checker",
+    shortDescription: "Pattern scan for URLs, DOI-like tokens, and vague attribution - not web-backed fact checking.",
     description:
       "Score how citation-ready a passage is using pattern checks - not fact verification. Flags missing links near stats and generic “studies show” phrasing.",
     category: "marketing",
@@ -2864,7 +2866,7 @@ export const tools: ToolDefinition[] = [
       "Remember: this tool does not access the web or verify truth - only surface heuristics.",
     ],
     faqs: [
-      ...makeFAQs("AI Citation Checker"),
+      ...makeFAQs("Citation Heuristic Checker"),
       {
         question: "Can this detect AI hallucinations?",
         answer: "No. It only highlights citation patterns; you must verify facts against primary sources yourself.",
@@ -5479,7 +5481,7 @@ export const tools: ToolDefinition[] = [
     name: "Currency Converter",
     shortDescription: "Convert amounts with a live ECB-based quote (Frankfurter) or your own manual rate.",
     description:
-      "Pick two ISO currencies, fetch a live mid-market quote from Frankfurter (ECB data), or paste your own bank rate. Multiply amount × (target per 1 source) before large transfers — Toollabz.",
+      "Pick two ISO currencies, fetch a live mid-market quote from Frankfurter (ECB data), or paste your own bank rate. Multiply amount × (target per 1 source) before large transfers - Toollabz.",
     category: "finance",
     fields: [
       {
@@ -5487,21 +5489,21 @@ export const tools: ToolDefinition[] = [
         label: "From currency",
         type: "select",
         options: [
-          { value: "USD", label: "USD — US Dollar" },
-          { value: "EUR", label: "EUR — Euro" },
-          { value: "GBP", label: "GBP — British Pound" },
-          { value: "JPY", label: "JPY — Japanese Yen" },
-          { value: "CHF", label: "CHF — Swiss Franc" },
-          { value: "CAD", label: "CAD — Canadian Dollar" },
-          { value: "AUD", label: "AUD — Australian Dollar" },
-          { value: "INR", label: "INR — Indian Rupee" },
-          { value: "MXN", label: "MXN — Mexican Peso" },
-          { value: "BRL", label: "BRL — Brazilian Real" },
-          { value: "CNY", label: "CNY — Chinese Yuan" },
-          { value: "NZD", label: "NZD — New Zealand Dollar" },
-          { value: "SEK", label: "SEK — Swedish Krona" },
-          { value: "NOK", label: "NOK — Norwegian Krone" },
-          { value: "PLN", label: "PLN — Polish Zloty" },
+          { value: "USD", label: "USD - US Dollar" },
+          { value: "EUR", label: "EUR - Euro" },
+          { value: "GBP", label: "GBP - British Pound" },
+          { value: "JPY", label: "JPY - Japanese Yen" },
+          { value: "CHF", label: "CHF - Swiss Franc" },
+          { value: "CAD", label: "CAD - Canadian Dollar" },
+          { value: "AUD", label: "AUD - Australian Dollar" },
+          { value: "INR", label: "INR - Indian Rupee" },
+          { value: "MXN", label: "MXN - Mexican Peso" },
+          { value: "BRL", label: "BRL - Brazilian Real" },
+          { value: "CNY", label: "CNY - Chinese Yuan" },
+          { value: "NZD", label: "NZD - New Zealand Dollar" },
+          { value: "SEK", label: "SEK - Swedish Krona" },
+          { value: "NOK", label: "NOK - Norwegian Krone" },
+          { value: "PLN", label: "PLN - Polish Zloty" },
         ],
       },
       {
@@ -5509,27 +5511,27 @@ export const tools: ToolDefinition[] = [
         label: "To currency",
         type: "select",
         options: [
-          { value: "EUR", label: "EUR — Euro" },
-          { value: "USD", label: "USD — US Dollar" },
-          { value: "GBP", label: "GBP — British Pound" },
-          { value: "JPY", label: "JPY — Japanese Yen" },
-          { value: "CHF", label: "CHF — Swiss Franc" },
-          { value: "CAD", label: "CAD — Canadian Dollar" },
-          { value: "AUD", label: "AUD — Australian Dollar" },
-          { value: "INR", label: "INR — Indian Rupee" },
-          { value: "MXN", label: "MXN — Mexican Peso" },
-          { value: "BRL", label: "BRL — Brazilian Real" },
-          { value: "CNY", label: "CNY — Chinese Yuan" },
-          { value: "NZD", label: "NZD — New Zealand Dollar" },
-          { value: "SEK", label: "SEK — Swedish Krona" },
-          { value: "NOK", label: "NOK — Norwegian Krone" },
-          { value: "PLN", label: "PLN — Polish Zloty" },
+          { value: "EUR", label: "EUR - Euro" },
+          { value: "USD", label: "USD - US Dollar" },
+          { value: "GBP", label: "GBP - British Pound" },
+          { value: "JPY", label: "JPY - Japanese Yen" },
+          { value: "CHF", label: "CHF - Swiss Franc" },
+          { value: "CAD", label: "CAD - Canadian Dollar" },
+          { value: "AUD", label: "AUD - Australian Dollar" },
+          { value: "INR", label: "INR - Indian Rupee" },
+          { value: "MXN", label: "MXN - Mexican Peso" },
+          { value: "BRL", label: "BRL - Brazilian Real" },
+          { value: "CNY", label: "CNY - Chinese Yuan" },
+          { value: "NZD", label: "NZD - New Zealand Dollar" },
+          { value: "SEK", label: "SEK - Swedish Krona" },
+          { value: "NOK", label: "NOK - Norwegian Krone" },
+          { value: "PLN", label: "PLN - Polish Zloty" },
         ],
       },
       { name: "amount", label: "Amount to convert", type: "number", min: 0, step: 0.000001 },
       {
         name: "rate",
-        label: "Exchange rate (target per 1 source) — optional if currencies match or you use “Live rate”",
+        label: "Exchange rate (target per 1 source) - optional if currencies match or you use “Live rate”",
         type: "number",
         min: 0,
         step: 1e-8,
@@ -5547,7 +5549,7 @@ export const tools: ToolDefinition[] = [
       "Choose the source currency and target currency from the dropdown lists.",
       "Click “Apply live rate” to pull a Frankfurter ECB-based mid-market quote, or type your own bank rate in the rate field.",
       "Enter the amount in the source currency and run calculate.",
-      "Double-check totals before wiring money — spreads and fees are not modeled here.",
+      "Double-check totals before wiring money - spreads and fees are not modeled here.",
     ],
     faqs: [
       {
@@ -6264,7 +6266,7 @@ export const tools: ToolDefinition[] = [
       },
       {
         question: "1099 vs W-2?",
-        answer: "Math is the same; payroll and withholding differ—ask finance.",
+        answer: "Math is the same; payroll and withholding differ-ask finance.",
       },
       {
         question: "Currency?",
@@ -6299,7 +6301,7 @@ export const tools: ToolDefinition[] = [
     faqs: [
       {
         question: "What if burn is zero or negative?",
-        answer: "You are cash-flow flat or positive; runway in this simple model is not finite—reforecast with realistic growth spend.",
+        answer: "You are cash-flow flat or positive; runway in this simple model is not finite-reforecast with realistic growth spend.",
       },
       {
         question: "Should I include credit lines?",
@@ -6389,7 +6391,7 @@ export const tools: ToolDefinition[] = [
     ],
     howToUse: [
       "Enter trailing or projected annual revenue on the same basis you report internally.",
-      "Enter average headcount, FTEs, or year-end count—match the definition you compare against peers.",
+      "Enter average headcount, FTEs, or year-end count-match the definition you compare against peers.",
       "Click calculate for revenue per employee.",
     ],
     faqs: [
@@ -6403,7 +6405,7 @@ export const tools: ToolDefinition[] = [
       },
       {
         question: "Does higher RPE mean healthier?",
-        answer: "Not always—capital-heavy models and thin margins can distort the story.",
+        answer: "Not always-capital-heavy models and thin margins can distort the story.",
       },
       {
         question: "Use GAAP revenue?",
@@ -6442,7 +6444,7 @@ export const tools: ToolDefinition[] = [
     faqs: [
       {
         question: "Why cubic yards?",
-        answer: "Bulk mulch is often sold by the yard; bags usually list coverage at a depth—cross-check the label.",
+        answer: "Bulk mulch is often sold by the yard; bags usually list coverage at a depth-cross-check the label.",
       },
       {
         question: "Slopes and irregular shapes?",
@@ -6458,7 +6460,7 @@ export const tools: ToolDefinition[] = [
       },
       {
         question: "Compost instead of mulch?",
-        answer: "Same volume formula; compost is often applied thinner—adjust depth intentionally.",
+        answer: "Same volume formula; compost is often applied thinner-adjust depth intentionally.",
       },
     ],
     related: ["concrete-slab-volume-calculator", "paint-calculator", "fence-cost-calculator", "lawn-fertilizer-bags-calculator", "unit-price-calculator"],
@@ -6498,7 +6500,7 @@ export const tools: ToolDefinition[] = [
       },
       {
         question: "Short loads?",
-        answer: "Truck minimums can matter more than the last tenth of a yard—ask the plant.",
+        answer: "Truck minimums can matter more than the last tenth of a yard-ask the plant.",
       },
       {
         question: "Bagged mix?",
@@ -6544,7 +6546,7 @@ export const tools: ToolDefinition[] = [
       },
       {
         question: "Pattern match?",
-        answer: "Large-format and herringbone layouts often need more than standard waste—bump the percentage.",
+        answer: "Large-format and herringbone layouts often need more than standard waste-bump the percentage.",
       },
       {
         question: "Boxes vs loose?",
@@ -6603,7 +6605,7 @@ export const tools: ToolDefinition[] = [
       },
       {
         question: "Pets and kids?",
-        answer: "Follow label re-entry and watering instructions—this calculator is quantity only.",
+        answer: "Follow label re-entry and watering instructions-this calculator is quantity only.",
       },
     ],
     related: ["mulch-volume-calculator", "concrete-slab-volume-calculator", "electricity-cost-calculator-usa", "water-footprint-calculator", "paint-calculator"],
@@ -6628,7 +6630,7 @@ export const tools: ToolDefinition[] = [
     ],
     howToUse: [
       "Sum wall areas (length × height per wall) and subtract major openings if you already netted them.",
-      "Enter the roll’s usable coverage from the label—not the room’s raw perimeter guess.",
+      "Enter the roll’s usable coverage from the label-not the room’s raw perimeter guess.",
       "Click calculate for a roll count baseline; buy an extra roll for pattern match if advised.",
     ],
     faqs: [
@@ -6655,6 +6657,8 @@ export const tools: ToolDefinition[] = [
     ],
     related: ["floor-tile-quantity-calculator", "paint-calculator", "flooring-cost-calculator", "mulch-volume-calculator", "unit-price-calculator"],
   },
+  ...expansionPhase1ToolDefinitions,
+  ...expansionPhase2ToolDefinitions,
   ...cpcHighToolDefinitions,
 ];
 

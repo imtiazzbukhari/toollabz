@@ -47,7 +47,7 @@ export function buildToolIdeaRows(rows: readonly PrioritizedOpportunity[], limit
     out.push({
       title: r.suggestedToolAngle ?? `Extend tooling for “${r.keyword}”`,
       slugHint,
-      rationale: `High CPC proxy (${r.cpcScore ?? 0}) with cluster ${r.clusterId ?? "n/a"} — validate spec before implementation.`,
+      rationale: `High CPC proxy (${r.cpcScore ?? 0}) with cluster ${r.clusterId ?? "n/a"}; validate spec before implementation.`,
       priority: r.priority,
       linkedTools: [...(r.linkToolSlugs ?? [])],
     });

@@ -1,0 +1,335 @@
+{
+  "generatedAt": "2026-05-15T18:22:36.576Z",
+  "rows": [
+    {
+      "tier": "P0",
+      "url": "https://toollabz.com/uk-finance-tax",
+      "reason": "New topical hub; UK + AU GST + Zakat cluster; strong internal links from finance nav and long-form guides.",
+      "expectedSeoOpportunity": "Capture long-tail UK pay and dividend intent; support E-E-A-T with disclaimers and companion blogs."
+    },
+    {
+      "tier": "P0",
+      "url": "https://toollabz.com/tools/salary-after-tax-calculator-uk",
+      "reason": "UK YMYL-adjacent calculators tied to the UK hub and cluster posts.",
+      "expectedSeoOpportunity": "Branded and long-tail queries for take-home and sole trader planning sketches."
+    },
+    {
+      "tier": "P0",
+      "url": "https://toollabz.com/tools/self-employed-tax-calculator-uk",
+      "reason": "UK YMYL-adjacent calculators tied to the UK hub and cluster posts.",
+      "expectedSeoOpportunity": "Branded and long-tail queries for take-home and sole trader planning sketches."
+    },
+    {
+      "tier": "P0",
+      "url": "https://toollabz.com/tools/dividend-tax-calculator-uk",
+      "reason": "UK YMYL-adjacent calculators tied to the UK hub and cluster posts.",
+      "expectedSeoOpportunity": "Branded and long-tail queries for take-home and sole trader planning sketches."
+    },
+    {
+      "tier": "P0",
+      "url": "https://toollabz.com/tools/freelance-day-rate-calculator",
+      "reason": "UK YMYL-adjacent calculators tied to the UK hub and cluster posts.",
+      "expectedSeoOpportunity": "Branded and long-tail queries for take-home and sole trader planning sketches."
+    },
+    {
+      "tier": "P0",
+      "url": "https://toollabz.com/tools/zakat-calculator",
+      "reason": "UK YMYL-adjacent calculators tied to the UK hub and cluster posts.",
+      "expectedSeoOpportunity": "Branded and long-tail queries for take-home and sole trader planning sketches."
+    },
+    {
+      "tier": "P0",
+      "url": "https://toollabz.com/tools/gst-calculator-australia",
+      "reason": "GST Australia tool plus supporting blog; commercial intent for SMB invoicing.",
+      "expectedSeoOpportunity": "Inclusive-exclusive and invoice sanity-check queries."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/json-formatter",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/json-validator",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/base64-encoder-decoder",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/url-encoder-decoder",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/regex-tester",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/api-response-formatter",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/schema-markup-generator",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/json-to-php-array-converter",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/htaccess-redirect-generator",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/core-web-vitals-suggestion-tool",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/domain-age-checker",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/meta-tag-analyzer",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/robots-txt-generator",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/broken-link-checker",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/html-to-json-converter",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/json-to-html-converter",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/metadata-stripper-tool",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/jwt-decoder",
+      "reason": "Developer utilities with deterministic outputs; strong snippet and referral potential.",
+      "expectedSeoOpportunity": "JWT, JSON, SQL, YAML long-tail; linkable from docs and Stack threads."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/cac-calculator-saas",
+      "reason": "High-intent SaaS and marketplace math; cited in business hub and ROAS content.",
+      "expectedSeoOpportunity": "Founder and growth marketer queries with spreadsheet alternatives."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/break-even-calculator-business",
+      "reason": "High-intent SaaS and marketplace math; cited in business hub and ROAS content.",
+      "expectedSeoOpportunity": "Founder and growth marketer queries with spreadsheet alternatives."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/break-even-calculator",
+      "reason": "High-intent SaaS and marketplace math; cited in business hub and ROAS content.",
+      "expectedSeoOpportunity": "Founder and growth marketer queries with spreadsheet alternatives."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/cac-calculator",
+      "reason": "High-intent SaaS and marketplace math; cited in business hub and ROAS content.",
+      "expectedSeoOpportunity": "Founder and growth marketer queries with spreadsheet alternatives."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/stripe-fee-calculator",
+      "reason": "High-intent SaaS and marketplace math; cited in business hub and ROAS content.",
+      "expectedSeoOpportunity": "Founder and growth marketer queries with spreadsheet alternatives."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/churn-calculator",
+      "reason": "High-intent SaaS and marketplace math; cited in business hub and ROAS content.",
+      "expectedSeoOpportunity": "Founder and growth marketer queries with spreadsheet alternatives."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/roas-calculator",
+      "reason": "High-intent SaaS and marketplace math; cited in business hub and ROAS content.",
+      "expectedSeoOpportunity": "Founder and growth marketer queries with spreadsheet alternatives."
+    },
+    {
+      "tier": "P1",
+      "url": "https://toollabz.com/tools/refinance-break-even-calculator",
+      "reason": "High-intent SaaS and marketplace math; cited in business hub and ROAS content.",
+      "expectedSeoOpportunity": "Founder and growth marketer queries with spreadsheet alternatives."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/how-to-calculate-emi-formula-examples-free-calculator",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/how-to-calculate-take-home-salary-country-guide",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/salary-after-tax-take-home-country-comparison-guide",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/loan-calculator-how-banks-calculate-your-emi",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/how-to-estimate-take-home-pay-from-gross-salary",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/emi-calculation-explained",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/best-tools-for-paycheck-planning-usa",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/uk-self-employed-dividend-salary-effective-percent-toollabz",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/gst-australia-inclusive-exclusive-10-percent-small-business",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/zakat-calculation-nisab-practical-guide-respectful",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/rent-vs-buy-usa-guide",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/how-to-compare-rent-vs-buy-without-hype",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/mortgage-payment-usa-piti-escrow-guide",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/break-even-analysis-formula-examples-calculator",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/vat-calculator-uk-eu-uae-add-remove-guide",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/how-to-calculate-roi-business",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/business-loan-what-lenders-scan-first",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/roi-calculator-explained-for-marketing-campaigns",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/saas-roas-churn-retention-metrics-primer-toollabz",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/marketplace-seller-fees-stripe-paypal-etsy-ebay-toollabz",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/employee-loaded-cost-pricing-seat-economics-toollabz",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    },
+    {
+      "tier": "P2",
+      "url": "https://toollabz.com/blog/ai-content-humanizer-natural-text-guide",
+      "reason": "Hub-featured cluster posts; backlink and discovery amplifiers for tool URLs.",
+      "expectedSeoOpportunity": "Informational depth, FAQ rich results, and internal equity to calculators."
+    }
+  ]
+}

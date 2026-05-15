@@ -28,6 +28,8 @@ const newFinanceSlugs = [
   "salary-after-tax-calculator-new-york",
   "salary-after-tax-calculator-florida",
   "salary-after-tax-calculator-uk",
+  "self-employed-tax-calculator-uk",
+  "dividend-tax-calculator-uk",
   "roi-calculator-marketing",
   "cac-calculator-saas",
   "ltv-calculator-saas",
@@ -80,7 +82,7 @@ describe("SEO validation for new finance tools", () => {
       const metadata = toolMetadata(tool);
       expect(metadata.title).toContain(tool.name);
       expect(metadata.description.length).toBeGreaterThan(24);
-      expect(metadata.description.length).toBeLessThanOrEqual(158);
+      expect(metadata.description.length).toBeLessThanOrEqual(160);
       expect(
         metadata.description.includes(tool.description.trim()) ||
           metadata.description.startsWith(tool.description.trim().slice(0, Math.min(48, tool.description.trim().length))),

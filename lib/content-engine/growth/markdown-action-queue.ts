@@ -36,7 +36,7 @@ export function buildGrowthActionQueueDocument(input: {
   const parts = [
     "# Growth action queue (automated draft)",
     "",
-    `_Generated: ${input.generatedAt}. These are **suggestions only** — merge via normal PR review._`,
+    `_Generated: ${input.generatedAt}. These are **suggestions only**; merge via normal PR review._`,
     "",
     "## 1. Behavior → content PR checklist",
     "",
@@ -54,6 +54,6 @@ export function buildGrowthActionQueueDocument(input: {
     for (const c of input.ctrBlocks) parts.push(formatCtrPrBlock(c.path, c.ctr, c.variants), "");
   }
 
-  parts.push("## 3. Programmatic / scaling", "", input.programmaticHeadline ?? "_Run `npm run content-engine:programmatic-pr` or `content-engine:scaling-pr` after reviewing cron `growthLoop`._", "", "---", "", "## Next automation", "", "- `npm run content-engine:growth-pr` — opens PR with this file.", "");
+  parts.push("## 3. Programmatic / scaling", "", input.programmaticHeadline ?? "_Run `npm run content-engine:programmatic-pr` or `content-engine:scaling-pr` after reviewing cron `growthLoop`._", "", "---", "", "## Next automation", "", "- `npm run content-engine:growth-pr` opens PR with this file.", "");
   return parts.join("\n");
 }

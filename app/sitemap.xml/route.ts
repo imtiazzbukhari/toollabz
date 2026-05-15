@@ -5,7 +5,7 @@ import { cacheGet, cacheSet } from "@/lib/cache/unified-cache";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const SITEMAP_CACHE_KEY = "sitemap:xml:v1";
+const SITEMAP_CACHE_KEY = "sitemap:xml:v2";
 
 export async function GET() {
   const cached = await cacheGet(SITEMAP_CACHE_KEY);

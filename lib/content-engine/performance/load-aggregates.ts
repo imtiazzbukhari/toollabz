@@ -89,7 +89,7 @@ export function loadPerformanceAggregates(): PerformanceAggregates | null {
       const out = parseAggregates(parsed);
       if (out && out.pages.length > 0) return out;
     } catch {
-      /* ignore parse errors — fail safe */
+      /* ignore parse errors - fail safe */
     }
   }
   return null;

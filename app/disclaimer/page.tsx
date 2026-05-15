@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { siteUrl } from "@/lib/seo";
+import { formatSiteLastUpdatedForDisplay, SITE_LAST_UPDATED_ISO } from "@/lib/site-freshness";
 import { toolGlassCard, toolGlassPanel } from "@/lib/tool-ui";
 
 export const metadata: Metadata = {
@@ -30,7 +31,10 @@ export default function DisclaimerPage() {
 
       <header className={`mb-8 p-6 sm:p-8 ${toolGlassPanel}`}>
         <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 text-balance sm:text-4xl">Disclaimer</h1>
-        <p className="mt-3 text-sm text-slate-600">Last updated: April 21, 2026</p>
+        <p className="mt-3 text-sm text-slate-600">
+          Last updated:{" "}
+          <time dateTime={SITE_LAST_UPDATED_ISO}>{formatSiteLastUpdatedForDisplay()}</time>
+        </p>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
           Toollabz provides free online tools for general information, education, and convenience. By using the site, you agree that
           the limitations below apply.

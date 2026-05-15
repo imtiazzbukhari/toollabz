@@ -8,7 +8,7 @@ function Article() {
         Take-home pay is never “gross minus one magic percentage.” Countries fund healthcare differently, treat pension
         contributions as mandatory or optional, and apply progressive brackets that bite harder as income rises. The honest way
         to plan is to model the same inputs your payroll team uses: gross pay, pay frequency, filing status or equivalent, and
-        the major deductions that apply to you—not a stranger on social media.
+        the major deductions that apply to you - not a stranger on social media.
       </p>
 
       <h2 id="why-country-matters" className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">
@@ -21,7 +21,7 @@ function Article() {
         That is why a single “effective rate” from a headline article rarely lands on your payslip.
       </p>
       <p className="mt-3 leading-7 text-slate-700">
-        Start by anchoring the jurisdiction you are paid in, then list every line item that appears on a recent payslip—even if
+        Start by anchoring the jurisdiction you are paid in, then list every line item that appears on a recent payslip - even if
         you do not love reading it. Bonuses, RSUs, and overtime often have different withholding rules than base salary; if you
         only model base pay, you will feel surprised when a bonus month hits.
       </p>
@@ -64,7 +64,7 @@ function Article() {
         for loan and savings neighbors once your net baseline is credible.
       </p>
       <p className="mt-3 leading-7 text-slate-700">
-        Nothing here is tax or legal advice—jurisdictions change, credits phase in and out, and payroll engines differ. Treat
+        Nothing here is tax or legal advice - jurisdictions change, credits phase in and out, and payroll engines differ. Treat
         calculators as orientation, then confirm with a qualified professional before you sign.
       </p>
     </>

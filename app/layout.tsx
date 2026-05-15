@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   description:
-    "Free calculators, converters, and PDF tools in one secure hub. Fast results, clear guides, and 238+ utilities on Toollabz — no signup.",
+    "Free calculators, converters, and PDF tools in one secure hub. Fast results, clear guides, and 238+ utilities on Toollabz - no signup.",
   metadataBase: new URL("https://toollabz.com"),
   applicationName: "Toollabz",
   authors: [{ name: "Toollabz", url: "https://toollabz.com" }],

@@ -1,7 +1,7 @@
 #!/usr/bin/env npx tsx
 /**
  * Opens a PR with a tool implementation proposal (spec + checklist only).
- * Does NOT modify lib/tools/data.ts or app routes — human moves code after review.
+ * Does NOT modify lib/tools/data.ts or app routes - human moves code after review.
  *
  * Local validation (no GitHub): CONTENT_ENGINE_DRY_RUN=1 TOOL_SLUG=my-tool TOOL_NAME="My Tool" npm run content-engine:tool-proposal-pr
  */

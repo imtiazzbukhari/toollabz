@@ -22,6 +22,10 @@ export default function ToolWorkspaceShell({
         asideHeader={<ToolResultsAsideHeader />}
         insightPanel={<ToolInsightPanel insight={insight} />}
       />
+      <p className="text-center text-[11px] leading-snug text-slate-500">
+        Calculations follow the documented formula on this page; rounding and input units can change the last digit-treat
+        outputs as educational estimates unless you reconcile with source systems.
+      </p>
       <p className="text-center text-xs text-slate-500">
         * This is an estimate. Actual amounts may vary slightly based on input assumptions.
       </p>

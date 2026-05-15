@@ -7,7 +7,7 @@ const UTILITY_SLUG_HINTS =
 
 const GENERIC_SHORT_QUERY = /^[a-z0-9\s-]{1,18}$/;
 
-/** Money / decision terms — if absent on short queries, treat as low commercial intent. */
+/** Money / decision terms - if absent on short queries, treat as low commercial intent. */
 const VALUE_HINT =
   /\b(money|pay|cost|price|save|debt|loan|tax|salary|mortgage|insurance|invest|roi|profit|budget|credit|rate|apr|payment|refinance|rent|buy|sell|business|invoice|revenue|fee|premium|deductible)\b/i;
 

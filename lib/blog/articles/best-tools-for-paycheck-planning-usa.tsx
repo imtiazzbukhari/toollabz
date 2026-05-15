@@ -6,7 +6,7 @@ function Article() {
     <>
       <p className="leading-7 text-slate-700">
         Paycheck planning usually fails for a boring reason: people use one number for every decision. But a healthy money workflow
-        needs three lenses—annual net, per-paycheck cash flow, and monthly budget pressure. If you mix those, you feel behind even
+        needs three lenses - annual net, per-paycheck cash flow, and monthly budget pressure. If you mix those, you feel behind even
         when your income is objectively fine.
       </p>
 

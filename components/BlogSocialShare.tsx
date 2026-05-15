@@ -2,7 +2,7 @@ import { absoluteUrl } from "@/lib/seo";
 
 export default function BlogSocialShare({ title, path }: { title: string; path: string }) {
   const url = encodeURIComponent(absoluteUrl(path));
-  const text = encodeURIComponent(`${title} — Toollabz`);
+  const text = encodeURIComponent(`${title} - Toollabz`);
   const linkedin = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
   const twitter = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
   const facebook = `https://www.facebook.com/sharer/sharer.php?u=${url}`;

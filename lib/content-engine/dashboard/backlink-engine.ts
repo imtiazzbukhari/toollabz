@@ -23,7 +23,8 @@ If you’re open to it, I can share a draft outline that adds a net-new angle (n
 
 Either way, thanks for the great work on {{their_site}}.
 
-— {{sender}}
+Thanks,
+{{sender}}
 ${siteName} · ${siteUrl}`,
       safetyNotes: [
         "Send max 8/day per domain pool; never mail scraped lists without verification.",
@@ -40,9 +41,10 @@ While reading {{page_url}}, I hit a broken link to {{dead_url}}.
 
 We published an updated explainer that covers the same intent: {{our_url}}
 
-No pressure—only sharing in case it saves you a 404.
+No pressure. I am only sharing in case it saves you a 404.
 
-— {{sender}}
+Thanks,
+{{sender}}
 ${siteName}`,
       safetyNotes: [
         "Use only genuinely broken links you verified manually.",

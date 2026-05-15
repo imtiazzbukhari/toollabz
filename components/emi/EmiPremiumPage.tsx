@@ -1,9 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { ToolDefinition } from "@/lib/tools/types";
-import { toolIllustrationSrc } from "@/lib/tools/tool-illustration";
 import { toolGlassPanel } from "@/lib/tool-ui";
+import ToolHeroVisual from "@/components/ToolHeroVisual";
 import EmiCalculatorWidget from "./EmiCalculatorWidget";
 
 export default function EmiPremiumPage({ tool }: { tool: ToolDefinition }) {
@@ -46,16 +45,7 @@ export default function EmiPremiumPage({ tool }: { tool: ToolDefinition }) {
           </div>
           <div className="relative mx-auto w-full max-w-sm">
             <div className="absolute -inset-8 -z-10 rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.25),rgba(59,130,246,0.05)_70%)] blur-2xl" />
-            <Image
-              src={toolIllustrationSrc()}
-              alt=""
-              width={640}
-              height={400}
-              className="h-auto w-full rounded-2xl object-cover object-center shadow-[0_18px_40px_rgba(76,29,149,0.15)] ring-1 ring-violet-200/35"
-              priority
-              sizes="(max-width: 768px) 100vw, 384px"
-              aria-hidden
-            />
+            <ToolHeroVisual tool={tool} variant="compact" />
           </div>
         </div>
       </section>

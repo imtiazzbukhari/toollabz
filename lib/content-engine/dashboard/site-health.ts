@@ -39,7 +39,7 @@ export function detectSiteHealthIssues(pages: readonly GscPageMetric[] | undefin
         issues.push({
           kind: "deep_serp",
           path: p.path,
-          detail: `Avg position ${p.position.toFixed(1)} with ${p.impressions} impressions — consider internal links + refresh.`,
+          detail: `Avg position ${p.position.toFixed(1)} with ${p.impressions} impressions. Consider internal links + refresh.`,
         });
       }
     }

@@ -43,6 +43,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: "/images/seo/toollabz-free-calculators-hub.webp",
+        destination: "/hero-toollabz-hub.webp",
+      },
+    ];
+  },
   async headers() {
     return [
       {
@@ -65,6 +73,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/hero-toollabz-hub.webp",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=2592000, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        source: "/images/seo/toollabz-free-calculators-hub.webp",
         headers: [
           {
             key: "Cache-Control",

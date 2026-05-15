@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import {
   ArrowRight,
+  BookOpen,
   ChevronRight,
   Sparkles,
   ShieldCheck,
@@ -19,37 +20,37 @@ import { getCategoryIcon } from "@/utils/icons";
 import HomeSearchForm from "@/components/HomeSearchForm";
 import NewsletterFormDeferred from "@/components/NewsletterFormDeferred";
 import { toolsInDirectoryGroup } from "@/lib/tools/directory-groups";
-import { HOMEPAGE_AUTHORITY_SLUGS, POPULAR_TOOL_SLUGS } from "@/lib/tools/popular-tools";
+import { HOMEPAGE_MAJOR_SHOWCASE_SLUGS, POPULAR_TOOL_SLUGS } from "@/lib/tools/popular-tools";
+import { blogPosts } from "@/lib/blog/registry";
 import { TOOLLABZ_HERO_IMAGE } from "@/lib/tools/tool-illustration";
 import { absoluteUrl, breadcrumbJsonLd, siteUrl } from "@/lib/seo";
-import { freshnessRankForSlug } from "@/lib/site-freshness";
+import { getHomepageFeaturedGuidePins, getHomepageRecentlyUpdatedTools } from "@/lib/homepage-content-surface";
 import HomeSeoDeepSection from "@/components/HomeSeoDeepSection";
 import PageLastUpdated from "@/components/PageLastUpdated";
 import PopularCalculationsBlock from "@/components/PopularCalculationsBlock";
 
+const guideCount = blogPosts.length;
+
 export const metadata: Metadata = {
   title: {
-    absolute: "Toollabz - Free Online Tools: Calculators, Converters & PDF Hub",
+    absolute: "Toollabz | Developer utilities, UK finance tools, calculators & guides",
   },
-  description:
-    `Browse ${tools.length}+ free calculators, converters & PDF tools on Toollabz — fast, HTTPS, with FAQs and hubs. No signup; canonical pages for every utility.`,
+  description: `Practical online calculators, developer utilities (JSON, JWT, SQL), UK finance and tax hub, SaaS metrics, GST (Australia), converters, PDF tools, and ${guideCount}+ guides. HTTPS, FAQs, category hubs, no signup.`,
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Toollabz - Free Online Tools: Calculators, Converters & PDF Hub",
-    description:
-      `Search ${tools.length}+ free calculators, converters, PDF utilities, and AI helpers on Toollabz — structured data, hubs, and internal links.`,
+    title: "Toollabz | Developer utilities, UK finance tools, calculators & guides",
+    description: `Calculators, developer utilities, UK finance hub, SaaS metrics, GST tools, PDF workflows, and ${guideCount}+ articles. Structured pages with internal links between related tools.`,
     url: siteUrl,
     type: "website",
     siteName: "Toollabz",
-    images: [{ url: absoluteUrl("/logo-toollabz.webp"), width: 469, height: 469, alt: "Toollabz logo — free online tools hub" }],
+    images: [{ url: absoluteUrl("/logo-toollabz.webp"), width: 469, height: 469, alt: "Toollabz logo" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Toollabz - Free Online Tools: Calculators, Converters & PDF Hub",
-    description:
-      `Free calculators, converters & PDF hub: ${tools.length}+ tools on Toollabz with guides, FAQs, and category hubs.`,
+    title: "Toollabz | Developer utilities, UK finance tools, calculators & guides",
+    description: `Deterministic tools and long-form guides: ${tools.length}+ utilities, ${guideCount}+ articles, category hubs for crawl and discovery.`,
     images: [absoluteUrl("/logo-toollabz.webp")],
   },
 };
@@ -66,10 +67,9 @@ const homeBreadcrumbLd = breadcrumbJsonLd([
 ]);
 
 export default function Home() {
-  const recentlyUpdatedTools = [...tools]
-    .sort((a, b) => freshnessRankForSlug(a.slug) - freshnessRankForSlug(b.slug))
-    .slice(0, 12);
-  const authorityTools = HOMEPAGE_AUTHORITY_SLUGS.map((slug) => tools.find((t) => t.slug === slug)).filter(
+  const featuredGuidePins = getHomepageFeaturedGuidePins(6);
+  const recentlyUpdatedTools = getHomepageRecentlyUpdatedTools(tools, 12);
+  const majorShowcaseTools = HOMEPAGE_MAJOR_SHOWCASE_SLUGS.map((slug) => tools.find((t) => t.slug === slug)).filter(
     Boolean,
   ) as typeof tools;
   const categoryGradients: Record<string, string> = {
@@ -85,30 +85,89 @@ export default function Home() {
     legal: "from-purple-500 to-violet-600",
     creator: "from-sky-500 to-indigo-500",
   };
-  const homepageCategories = [
-    { label: "Finance", href: "/finance-tools", slug: "finance" },
-    { label: "Business", href: "/business-tools", slug: "business" },
-    { label: "Real Estate", href: "/real-estate-tools", slug: "real-estate" },
-    { label: "AI Tools", href: "/ai-tools", slug: "generators" },
-    { label: "Utilities", href: "/utility-tools", slug: "utility" },
-  ] as const;
+  type HomeCluster = {
+    label: string;
+    href: string;
+    iconSlug: string;
+    blurb: string;
+    count: number | string;
+  };
+
+  const homepageClusters: HomeCluster[] = [
+    {
+      label: "Developer tools",
+      href: "/developer-tools",
+      iconSlug: "developer",
+      blurb: "JWT, JSON, SQL, regex, encoders",
+      count: toolsInDirectoryGroup(tools, "developer").length,
+    },
+    {
+      label: "UK finance & tax",
+      href: "/uk-finance-tax",
+      iconSlug: "finance",
+      blurb: "Pay sketches, GST AU, Zakat, guides",
+      count: "Hub",
+    },
+    {
+      label: "GST (Australia)",
+      href: "/tools/gst-calculator-australia",
+      iconSlug: "finance",
+      blurb: "Inclusive vs exclusive 10%",
+      count: "Tool + guides",
+    },
+    {
+      label: "Finance",
+      href: "/finance-tools",
+      iconSlug: "finance",
+      blurb: "Loans, paychecks, savings",
+      count: tools.filter((t) => t.category === "finance").length,
+    },
+    {
+      label: "Business & SaaS",
+      href: "/business-tools",
+      iconSlug: "business",
+      blurb: "ROAS, churn, CAC, margins",
+      count: toolsInDirectoryGroup(tools, "business-saas").length,
+    },
+    {
+      label: "Marketing",
+      href: "/marketing-tools",
+      iconSlug: "marketing",
+      blurb: "ROI, CPC, campaign math",
+      count: tools.filter((t) => t.category === "marketing").length,
+    },
+    {
+      label: "Utilities",
+      href: "/utility-tools",
+      iconSlug: "utility",
+      blurb: "Converters, dates, text",
+      count: toolsInDirectoryGroup(tools, "utility").length,
+    },
+    {
+      label: "PDF",
+      href: "/pdf-tools",
+      iconSlug: "pdf",
+      blurb: "Merge, compress, split",
+      count: tools.filter((t) => t.category === "pdf").length,
+    },
+  ];
 
   const howItWorks = [
-    { title: "Search", text: "Find the exact tool in seconds with smart search.", icon: Search },
-    { title: "Use", text: "Fill in your values with a simple and guided flow.", icon: Wrench },
-    { title: "Get Results", text: "Instantly get accurate output and copy with confidence.", icon: CheckCircle2 },
+    { title: "Search", text: "Jump to a tool, hub, or guide from the hero search or cluster cards.", icon: Search },
+    { title: "Run", text: "Deterministic calculators and encoders with labeled fields and formula context.", icon: Wrench },
+    { title: "Explore", text: "Follow related tools and articles to finish the workflow without tab roulette.", icon: CheckCircle2 },
   ];
 
   const stats = [
-    { value: `${tools.length}+`, label: "Free tools", icon: Sparkles },
-    { value: "100%", label: "Free, no signup", icon: Users },
-    { value: "No storage", label: "We do not keep your inputs", icon: ShieldCheck },
-    { value: "Apr 2026", label: "Directory updated", icon: Zap },
+    { value: `${tools.length}+`, label: "Tools", icon: Sparkles },
+    { value: `${guideCount}+`, label: "Guides & articles", icon: BookOpen },
+    { value: "HTTPS", label: "Canonical pages", icon: ShieldCheck },
+    { value: "No signup", label: "Privacy-first defaults", icon: Users },
   ];
   const trustItems = [
-    { title: "Always Free", text: "All tools are 100% free to use. No hidden costs.", icon: Sparkles },
-    { title: "Fast & Reliable", text: "Lightning-fast processing with accurate results.", icon: Zap },
-    { title: "Privacy First", text: "Your data is secure and never stored on our servers.", icon: ShieldCheck },
+    { title: "Depth you can cite", text: "Long-form guides next to calculators: UK finance, GST, JWT pipelines, SaaS metrics.", icon: BookOpen },
+    { title: "Deterministic utilities", text: "Developer and finance tools favor predictable math over black-box outputs.", icon: Zap },
+    { title: "No account wall", text: "Run tools in the browser session; we do not warehouse your pasted payloads.", icon: ShieldCheck },
   ];
 
   const softSectionCardTight =
@@ -123,15 +182,16 @@ export default function Home() {
           <div className="relative z-10 text-center md:text-left">
             <div className="rounded-2xl bg-[#eef2ff]/55 px-3 py-5 shadow-[0_12px_40px_rgba(99,102,241,0.06)] backdrop-blur-[10px] sm:px-4 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none">
               <span className="inline-flex rounded-full bg-violet-100 px-3 py-1 text-[11px] font-medium text-violet-700">
-                100% Free • No Limits
+                Calculators · Developer utilities · UK finance hub
               </span>
               <h1 className="mt-5 text-[2.25rem] font-extrabold leading-[1.08] text-slate-900 text-balance sm:text-5xl md:mt-6 md:text-6xl">
-                Free online tools, calculators
+                Practical tools and guides
                 <br />
-                converters & PDF - <span className="text-gradient">smart hub</span>
+                for <span className="text-gradient">finance, developers, and operators</span>
               </h1>
               <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-slate-600 sm:mt-5 md:mx-0">
-                Fast, reliable, and beautifully crafted tools to solve your everyday workflows.
+                {tools.length}+ utilities with FAQs and hubs, {guideCount}+ articles on GST, UK pay, JWT/JSON pipelines, SaaS
+                metrics, and converters. Built for quick answers and deeper reading when you need it.
               </p>
               <div className="mx-auto mt-6 max-w-xl md:mx-0 md:mt-8">
                 <HomeSearchForm variant="hero-premium" />
@@ -183,39 +243,46 @@ export default function Home() {
           <a href="#categories" className="font-medium text-slate-700 transition hover:text-violet-600">
             Categories
           </a>
+          <ChevronRight className="h-3.5 w-3.5 shrink-0 opacity-40" aria-hidden />
+          <Link href="/blog" className="font-medium text-slate-700 transition hover:text-violet-600">
+            Blog
+          </Link>
         </nav>
         <PageLastUpdated className="mt-1" />
       </div>
       <section id="categories" className="section-fade mt-6 bg-transparent md:mt-8">
         <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 md:py-6 lg:py-7">
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-xl font-semibold sm:text-2xl">Browse by Category</h2>
+          <div>
+            <h2 className="text-xl font-semibold sm:text-2xl">Browse by cluster</h2>
+            <p className="mt-1 max-w-2xl text-sm text-slate-600">
+              Jump into a hub for UK tax, developer utilities, SaaS math, or PDF workflows. Each hub stitches tools to guides.
+            </p>
+          </div>
           <Link href="/tools" className="inline-flex w-fit items-center gap-1 text-sm text-violet-600 transition duration-300 hover:text-violet-700">
-            <span>View all</span>
+            <span>Full directory</span>
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          {homepageCategories.map((category) => {
-            const Icon = getCategoryIcon(category.slug);
-            const gradient = categoryGradients[category.slug] ?? "from-violet-500 to-blue-500";
-            const count =
-              category.slug === "generators"
-                ? toolsInDirectoryGroup(tools, "ai").length
-                : category.slug === "utility"
-                  ? toolsInDirectoryGroup(tools, "utility").length
-                  : tools.filter((t) => t.category === category.slug).length;
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {homepageClusters.map((cluster) => {
+            const Icon = getCategoryIcon(cluster.iconSlug);
+            const gradient = categoryGradients[cluster.iconSlug] ?? "from-violet-500 to-blue-500";
+            const countLabel = typeof cluster.count === "number" ? `${cluster.count}+ tools` : cluster.count;
             return (
               <Link
-                key={category.label}
-                href={category.href}
-                className="group rounded-2xl border border-white/50 bg-white/75 p-6 shadow-[0_8px_20px_rgba(0,0,0,0.05)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(76,29,149,0.12)]"
+                key={cluster.href}
+                href={cluster.href}
+                className="group rounded-2xl border border-white/50 bg-white/75 p-5 shadow-[0_8px_20px_rgba(0,0,0,0.05)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(76,29,149,0.12)]"
               >
-                <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${gradient} text-white shadow-md transition duration-300 group-hover:shadow-[0_0_28px_rgba(99,102,241,0.45)]`}>
+                <div
+                  className={`inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${gradient} text-white shadow-md transition duration-300 group-hover:shadow-[0_0_24px_rgba(99,102,241,0.4)]`}
+                >
                   <Icon className="h-5 w-5" aria-hidden="true" />
                 </div>
-                <p className="mt-4 text-base font-semibold text-slate-900">{category.label}</p>
-                <p className="mt-1 text-sm text-slate-500">{count}+ tools</p>
+                <p className="mt-3 text-base font-semibold text-slate-900">{cluster.label}</p>
+                <p className="mt-1 text-xs leading-snug text-slate-500">{cluster.blurb}</p>
+                <p className="mt-2 text-xs font-medium text-violet-700">{countLabel}</p>
               </Link>
             );
           })}
@@ -223,18 +290,51 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="featured-guides" className="section-fade bg-transparent" aria-labelledby="featured-guides-heading">
+        <div className="mx-auto max-w-7xl px-4 pb-1 pt-0 sm:px-6 sm:pb-2">
+            <h2 id="featured-guides-heading" className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            Picked guides
+          </h2>
+          <p className="mt-1 max-w-2xl text-xs text-slate-500">
+            Six articles from a larger pin pool; which six you see updates when the site-wide refresh date changes.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {featuredGuidePins.map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="inline-flex items-center rounded-full border border-violet-200/80 bg-white/80 px-3 py-1.5 text-xs font-medium text-violet-800 shadow-sm transition hover:border-violet-300 hover:bg-violet-50/90 sm:text-sm"
+              >
+                {g.label}
+              </Link>
+            ))}
+            <Link
+              href="/blog"
+              className="inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold text-violet-700 underline-offset-2 hover:underline sm:text-sm"
+            >
+              All articles
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section id="popular-tools" className="section-fade bg-transparent">
         <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 md:py-6 lg:py-7">
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-xl font-semibold sm:text-2xl">Popular Tools</h2>
-          <Link href="/tools" className="inline-flex w-fit items-center gap-1 text-sm text-violet-600 transition duration-300 hover:text-violet-700">
+          <div>
+            <h2 className="text-xl font-semibold sm:text-2xl">Popular tools</h2>
+            <p className="mt-1 max-w-2xl text-sm text-slate-600">
+              High-intent calculators and PDF utilities people open often. Each page links to related tools and matching guides.
+            </p>
+          </div>
+          <Link href="/tools" className="inline-flex w-fit shrink-0 items-center gap-1 text-sm text-violet-600 transition duration-300 hover:text-violet-700">
             <span>View all tools</span>
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {popular.map((tool) => (
-            <ToolCard key={tool.slug} tool={tool} showThumbnail={false} />
+            <ToolCard key={tool.slug} tool={tool} />
           ))}
         </div>
         </div>
@@ -243,19 +343,19 @@ export default function Home() {
       <section className="section-fade bg-transparent">
         <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 md:py-6 lg:px-8">
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 className="text-xl font-semibold sm:text-2xl">Recently updated tools</h2>
+            <h2 className="text-xl font-semibold sm:text-2xl">Strategic picks (fresh rotation)</h2>
             <Link href="/tools" className="inline-flex w-fit items-center gap-1 text-sm text-violet-600 transition duration-300 hover:text-violet-700">
               <span>Full directory</span>
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           </div>
           <p className="mb-4 max-w-3xl text-sm text-slate-600">
-            Ordering refreshes when the site content stamp changes - explore tools you might not see in the default
-            popularity sort.
+            UK finance, developer utilities, SaaS metrics, and high-intent calculators that are not duplicated from Popular or Featured
+            clusters. Order refreshes when the site-wide stamp changes so new launches can surface naturally.
           </p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {recentlyUpdatedTools.map((tool) => (
-              <ToolCard key={tool.slug} tool={tool} showThumbnail={false} />
+              <ToolCard key={tool.slug} tool={tool} />
             ))}
           </div>
         </div>
@@ -269,31 +369,52 @@ export default function Home() {
 
       <section className="section-fade bg-transparent">
         <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 md:py-6 lg:px-8">
-          <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 className="text-xl font-semibold sm:text-2xl">Major tools and hubs</h2>
-            <Link href="/finance-tools" className="inline-flex w-fit items-center gap-1 text-sm text-violet-600 transition duration-300 hover:text-violet-700">
-              <span>Finance hub</span>
-              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-            </Link>
+          <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <h2 className="text-xl font-semibold sm:text-2xl">Featured across strongest clusters</h2>
+              <p className="mt-1 max-w-2xl text-sm text-slate-600">
+                Twelve representative tools across UK pay, GST, JWT/JSON/SQL, fees, and core finance. Open any card for FAQs and
+                related links.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2 text-sm">
+              <Link href="/developer-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+                Developer hub
+              </Link>
+              <span className="text-slate-300" aria-hidden>
+                |
+              </span>
+              <Link href="/uk-finance-tax" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+                UK finance hub
+              </Link>
+              <span className="text-slate-300" aria-hidden>
+                |
+              </span>
+              <Link href="/business-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+                Business hub
+              </Link>
+            </div>
           </div>
-          <p className="mb-4 max-w-3xl text-sm text-slate-600">
-            High-intent calculators, PDF utilities, and AI helpers - each page links onward to related tools and
-            amount-specific benchmarks where they exist.
-          </p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {authorityTools.map((tool) => (
-              <ToolCard key={tool.slug} tool={tool} showThumbnail={false} />
+            {majorShowcaseTools.map((tool) => (
+              <ToolCard key={tool.slug} tool={tool} />
             ))}
           </div>
+          <p className="mt-4 text-center text-sm text-slate-600 lg:text-left">
+            <Link href="/tools" className="font-semibold text-violet-700 underline-offset-2 hover:underline">
+              Browse the full directory
+            </Link>{" "}
+            for every slug, including AI and real-estate clusters.
+          </p>
         </div>
       </section>
 
       <section className="section-fade bg-transparent">
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 md:py-4">
         <div className="mb-3 text-center md:text-left">
-          <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Used by thousands</h2>
+          <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Built for repeat use</h2>
           <p className="mt-1 text-sm text-slate-600">
-            {tools.length}+ free tools, reliable uptime, and a privacy-first experience on Toollabz.
+            {tools.length}+ tools and {guideCount}+ articles, HTTPS-only pages, and hubs that stitch workflows together.
           </p>
         </div>
         <div className="grid gap-3 rounded-2xl border border-white/50 bg-white/40 p-4 shadow-[0_8px_20px_rgba(15,23,42,0.05)] backdrop-blur-md sm:grid-cols-2 lg:grid-cols-4">
@@ -319,25 +440,15 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 md:py-4">
         <div className="mb-3 text-center md:text-left">
           <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">How it works</h2>
-          <p className="mt-1 text-sm text-slate-600">Search, run the tool, and copy results — illustrated with the same hub art you see on tool pages.</p>
+          <p className="mt-1 text-sm text-slate-600">
+            Search, run a tool, then follow curated related links into guides or sibling calculators. No signup.
+          </p>
         </div>
           <div className="mt-4 grid items-start gap-4 md:grid-cols-3">
             {howItWorks.map((step, idx) => {
               const Icon = step.icon;
               return (
                 <div key={step.title} className={`relative overflow-hidden ${softSectionCardTight}`}>
-                  <div className="relative mb-3 aspect-[4/3] w-full overflow-hidden rounded-xl border border-violet-200/40 bg-gradient-to-br from-violet-50/90 to-blue-50/60">
-                    <Image
-                      src={TOOLLABZ_HERO_IMAGE}
-                      alt={`Toollabz how it works — step ${idx + 1}: ${step.title}`}
-                      width={480}
-                      height={360}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-contain object-center p-3 opacity-95"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                  </div>
                   <div className="mb-2 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-blue-500 text-white">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </div>
@@ -356,8 +467,8 @@ export default function Home() {
       <section className="section-fade bg-transparent">
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 md:py-4">
         <div className="mb-3 text-center md:text-left">
-          <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Why Choose Toollabz</h2>
-          <p className="mt-1 text-sm text-slate-600">Built for modern users who need fast, reliable, and private tools.</p>
+          <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Why Toollabz</h2>
+          <p className="mt-1 text-sm text-slate-600">Authority comes from depth: paired guides, FAQs, and cluster hubs next to the forms.</p>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           {trustItems.map((item) => {
@@ -428,7 +539,7 @@ export default function Home() {
             <div>
             <h3 className="text-xl font-semibold sm:text-2xl">Stay in the loop</h3>
             <p className="mt-1 text-sm text-violet-100">
-              Get notified when we add new tools — no spam, unsubscribe anytime.
+              Get notified when we add new tools - no spam, unsubscribe anytime.
             </p>
             </div>
           </div>

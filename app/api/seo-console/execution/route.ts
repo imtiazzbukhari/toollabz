@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
   const rec = body && typeof body === "object" ? (body as Record<string, unknown>) : {};
   const op = typeof rec.operation === "string" ? rec.operation : "";
 
-  const snap = buildDashboardSnapshot();
+  const snap = await buildDashboardSnapshot();
   const pageMetrics = new Map(snap.pagePerformance.map((p) => [p.path, p]));
 
   try {

@@ -110,22 +110,22 @@ export async function GET(req: NextRequest) {
       adsensePlacement: adsensePlacementMarkdownGuide(),
       highRpmZones: highRpmZoneHints(),
       performanceJson:
-        "Optional pagesPrevious in aggregates JSON: same shape as pages, prior period clicks — enables declining_clicks in refreshCandidates.",
+        "Optional pagesPrevious in aggregates JSON: same shape as pages, prior period clicks - enables declining_clicks in refreshCandidates.",
       behaviorCollect:
         "POST /api/behavior/collect with JSON { ingestKey, events: [{ path, maxScroll, activeMs, lastSection? }] }. Set TOOLLABZ_BEHAVIOR_INGEST_KEY and NEXT_PUBLIC_TOOLLABZ_BEHAVIOR_INGEST_KEY to the same value. Optional CONTENT_ENGINE_BEHAVIOR_PERSIST=1 writes CONTENT_ENGINE_BEHAVIOR_JSON (or lib/content-engine/growth/behavior-aggregates.json).",
       growthLoop:
         "stats.growthLoop joins GSC queues: ctrQueue (SERP A/B ideas), programmaticQueue (numeric/geo/variations), expansionQueue (guides/FAQs/comparisons), engagementHints (from behavior rollups).",
       growthPr:
-        "npm run content-engine:growth-pr — opens PR with lib/content-engine/action-queue/latest.md (CTR + behavior checklists, never auto-applied).",
-      programmaticPr: "npm run content-engine:programmatic-pr — high-confidence programmatic blog via GET /api/content-engine/automation-bundle + generate-blog + PR.",
-      scalingPr: "npm run content-engine:scaling-pr — expansion/scaling blog candidate from automation-bundle.",
+        "npm run content-engine:growth-pr - opens PR with lib/content-engine/action-queue/latest.md (CTR + behavior checklists, never auto-applied).",
+      programmaticPr: "npm run content-engine:programmatic-pr - high-confidence programmatic blog via GET /api/content-engine/automation-bundle + generate-blog + PR.",
+      scalingPr: "npm run content-engine:scaling-pr - expansion/scaling blog candidate from automation-bundle.",
       automationBundle: "GET /api/content-engine/automation-bundle (auth) returns programmaticPick + scalingBlog for CI.",
       pageRevenue:
-        "Optional aggregates.pageRevenue[]: { path, rpm, earnings?, monetizedImpressions? } — feeds revenueLeaderboard + priority RPM boost. Populate from AdSense page export via npm run adsense:merge-csv -- export.csv.",
+        "Optional aggregates.pageRevenue[]: { path, rpm, earnings?, monetizedImpressions? } - feeds revenueLeaderboard + priority RPM boost. Populate from AdSense page export via npm run adsense:merge-csv -- export.csv.",
       autoFixPr:
-        "npm run content-engine:autofix-pr — PR with lib/content-engine/auto-fix-queue/*.md from GET /api/content-engine/auto-fix-preview (CTR + behavior).",
+        "npm run content-engine:autofix-pr - PR with lib/content-engine/auto-fix-queue/*.md from GET /api/content-engine/auto-fix-preview (CTR + behavior).",
       competitorAnalyze:
-        "POST /api/content-engine/competitor-analyze — { ourPath, competitorUrls[] } returns heading gaps vs fetched competitors.",
+        "POST /api/content-engine/competitor-analyze - { ourPath, competitorUrls[] } returns heading gaps vs fetched competitors.",
       outreach:
         "POST /api/outreach/draft → approve → send (OUTREACH_DRY_RUN=0 + SMTP env). POST /api/outreach/replied when a thread responds.",
       activeClusters:

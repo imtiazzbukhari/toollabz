@@ -106,6 +106,46 @@ export default function SeoGrowthConsoleDashboard() {
     () => (Array.isArray(snapshot.pagePerformance) ? (snapshot.pagePerformance as Array<Record<string, unknown>>) : []),
     [snapshot],
   );
+  const pageMetricsProvenance = useMemo(
+    () => ((snapshot.pageMetricsProvenance ?? {}) as Record<string, unknown>),
+    [snapshot],
+  );
+  const seoDataPlane = useMemo(() => (snapshot.seoDataPlane as Record<string, unknown> | undefined) ?? {}, [snapshot]);
+  const seoOpportunities = useMemo(
+    () => (Array.isArray(seoDataPlane.opportunities) ? (seoDataPlane.opportunities as Array<Record<string, unknown>>) : []),
+    [seoDataPlane],
+  );
+  const seoGa4Join = useMemo(
+    () => (Array.isArray(seoDataPlane.ga4GscJoin) ? (seoDataPlane.ga4GscJoin as Array<Record<string, unknown>>) : []),
+    [seoDataPlane],
+  );
+  const seoIngest = (seoDataPlane.ingest as Record<string, unknown> | undefined) ?? {};
+  const seoLastGsc = (seoIngest.lastGsc as Record<string, unknown> | null | undefined) ?? null;
+  const seoLastGa4 = (seoIngest.lastGa4 as Record<string, unknown> | null | undefined) ?? null;
+  const seoIngestHealth = useMemo(
+    () => (seoDataPlane.ingestHealth as Record<string, unknown> | null | undefined) ?? null,
+    [seoDataPlane],
+  );
+  const seoIngestHealthRollup = useMemo(
+    () => (seoIngestHealth?.rollupWindows as { current28d?: string; previous28d?: string } | undefined) ?? {},
+    [seoIngestHealth],
+  );
+  const seoIngestHealthGsc = useMemo(
+    () => (seoIngestHealth?.gscDaily as { stale?: boolean; lastSuccessAt?: string | null; lastError?: string | null } | undefined) ?? {},
+    [seoIngestHealth],
+  );
+  const seoIngestHealthGa4 = useMemo(
+    () => (seoIngestHealth?.ga4Daily as { stale?: boolean; lastSuccessAt?: string | null; lastError?: string | null } | undefined) ?? {},
+    [seoIngestHealth],
+  );
+  const seoRecentIngestRuns = useMemo(
+    () => (Array.isArray(seoDataPlane.recentIngestRuns) ? (seoDataPlane.recentIngestRuns as Array<Record<string, unknown>>) : []),
+    [seoDataPlane],
+  );
+  const orphanLinkHints = useMemo(
+    () => (Array.isArray(snapshot.orphanLinkHints) ? (snapshot.orphanLinkHints as Array<Record<string, unknown>>) : []),
+    [snapshot],
+  );
   const gscSiteTrends = useMemo(() => (snapshot.gscSiteTrends as Record<string, unknown> | undefined) ?? {}, [snapshot]);
   const toolPerformance = useMemo(() => (snapshot.toolPerformance as Record<string, unknown> | undefined) ?? {}, [snapshot]);
   const revenueTracking = useMemo(() => (snapshot.revenueTracking as Record<string, unknown> | undefined) ?? {}, [snapshot]);
@@ -436,14 +476,14 @@ export default function SeoGrowthConsoleDashboard() {
             columns={["When", "Kind", "Impact", "Score", "CTR Δ", "Action", "Pull"]}
             rows={executionHistory.slice(0, 12).map((h) => {
               const md = h.metricDeltas && typeof h.metricDeltas === "object" ? (h.metricDeltas as Record<string, unknown>) : null;
-              const ctrDelta = md?.ctrChangePct != null ? `${num(md.ctrChangePct) > 0 ? "+" : ""}${num(md.ctrChangePct).toFixed(1)}%` : "—";
+              const ctrDelta = md?.ctrChangePct != null ? `${num(md.ctrChangePct) > 0 ? "+" : ""}${num(md.ctrChangePct).toFixed(1)}%` : "-";
               const path = typeof h.path === "string" ? h.path : "";
               const canPull = path.startsWith("/") && (h.kind === "fix_now" || h.kind === "queue_sprint");
               return [
                 String(h.executedAt).slice(0, 19),
                 String(h.kind),
                 <StatusBadge key={`${h.id}-imp`} status={String(h.impactClassification ?? "pending")} />,
-                h.successScore != null ? String(num(h.successScore)) : "—",
+                h.successScore != null ? String(num(h.successScore)) : "-",
                 ctrDelta,
                 String(h.actionId).slice(0, 24),
                 canPull ? (
@@ -458,7 +498,7 @@ export default function SeoGrowthConsoleDashboard() {
                   </button>
                 ) : (
                   <span key={`pull-${String(h.id)}`} className="text-xs text-slate-400">
-                    —
+                    -
                   </span>
                 ),
               ];
@@ -478,24 +518,24 @@ export default function SeoGrowthConsoleDashboard() {
               </div>
               <div>
                 <dt className="text-xs text-slate-500">Success rate</dt>
-                <dd className="font-semibold">{executionPerformance.successRate != null ? `${num(executionPerformance.successRate)}%` : "—"}</dd>
+                <dd className="font-semibold">{executionPerformance.successRate != null ? `${num(executionPerformance.successRate)}%` : "-"}</dd>
               </div>
               <div>
                 <dt className="text-xs text-slate-500">Avg success score</dt>
-                <dd className="font-semibold">{executionPerformance.avgSuccessScore != null ? String(executionPerformance.avgSuccessScore) : "—"}</dd>
+                <dd className="font-semibold">{executionPerformance.avgSuccessScore != null ? String(executionPerformance.avgSuccessScore) : "-"}</dd>
               </div>
               <div>
                 <dt className="text-xs text-slate-500">Avg CTR Δ (when measured)</dt>
                 <dd className="font-semibold">
                   {executionPerformance.avgCtrChangeWhenMeasured != null
                     ? `${num(executionPerformance.avgCtrChangeWhenMeasured) > 0 ? "+" : ""}${num(executionPerformance.avgCtrChangeWhenMeasured).toFixed(1)}%`
-                    : "—"}
+                    : "-"}
                 </dd>
               </div>
             </dl>
             <p className="mt-3 text-xs text-slate-500">
               Learning model: {num(executionLearningSummary.kindMultiplierCount)} kind multipliers ·{" "}
-              {num(executionLearningSummary.pathMultiplierCount)} paths · updated {String(executionLearningSummary.updatedAt ?? "—").slice(0, 19)}
+              {num(executionLearningSummary.pathMultiplierCount)} paths · updated {String(executionLearningSummary.updatedAt ?? "-").slice(0, 19)}
             </p>
             <h4 className="mt-4 text-xs font-semibold uppercase text-slate-500">Top performing fixes</h4>
             <ul className="mt-2 space-y-1 text-xs">
@@ -514,9 +554,9 @@ export default function SeoGrowthConsoleDashboard() {
               columns={["Tool", "Traffic Δ %", "Clicks Δ %", "Revenue Δ", "Note"]}
               rows={toolImpactTracking.slice(0, 8).map((t) => [
                 String(t.slug),
-                t.trafficChangePct != null ? `${num(t.trafficChangePct) > 0 ? "+" : ""}${num(t.trafficChangePct).toFixed(1)}%` : "—",
-                t.clicksChangePct != null ? `${num(t.clicksChangePct) > 0 ? "+" : ""}${num(t.clicksChangePct).toFixed(1)}%` : "—",
-                t.revenueChangeUsd != null ? `$${num(t.revenueChangeUsd).toFixed(0)}` : "—",
+                t.trafficChangePct != null ? `${num(t.trafficChangePct) > 0 ? "+" : ""}${num(t.trafficChangePct).toFixed(1)}%` : "-",
+                t.clicksChangePct != null ? `${num(t.clicksChangePct) > 0 ? "+" : ""}${num(t.clicksChangePct).toFixed(1)}%` : "-",
+                t.revenueChangeUsd != null ? `$${num(t.revenueChangeUsd).toFixed(0)}` : "-",
                 String(t.note).slice(0, 56),
               ])}
               emptyMessage="No tool impact rows."
@@ -528,6 +568,16 @@ export default function SeoGrowthConsoleDashboard() {
       <section className="grid gap-4 xl:grid-cols-2">
         <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">Page performance (GSC)</h3>
+          <p className="mb-1 text-xs text-slate-500">
+            Source: <span className="font-mono">{String(pageMetricsProvenance.sourceLabel ?? "-")}</span>
+            {pageMetricsProvenance.updatedAt ? (
+              <>
+                {" "}
+                · As of <span className="font-mono">{String(pageMetricsProvenance.updatedAt).slice(0, 19)}</span> UTC
+              </>
+            ) : null}
+            {pageMetricsProvenance.hasPreviousWindow === true ? " · Prior window loaded for deltas" : " · No prior window (deltas show as -)"}
+          </p>
           <p className="mb-3 text-xs text-slate-500">Impressions, clicks, CTR, average position, and period deltas when prior import exists.</p>
           <DataTable
             columns={["Path", "Impr.", "Clicks", "CTR %", "Pos.", "CTR Δ", "Rank"]}
@@ -536,12 +586,12 @@ export default function SeoGrowthConsoleDashboard() {
               num(r.impressions).toLocaleString(),
               num(r.clicks).toLocaleString(),
               num(r.ctr).toFixed(2),
-              r.averagePosition != null ? num(r.averagePosition).toFixed(1) : "—",
-              r.ctrChangePct != null ? `${num(r.ctrChangePct) > 0 ? "+" : ""}${num(r.ctrChangePct).toFixed(1)}%` : "—",
+              r.averagePosition != null ? num(r.averagePosition).toFixed(1) : "-",
+              r.ctrChangePct != null ? `${num(r.ctrChangePct) > 0 ? "+" : ""}${num(r.ctrChangePct).toFixed(1)}%` : "-",
               <span key={`${r.path}-mv`} className="flex items-center gap-1">
                 {String(r.rankingMovement) === "up" ? <TrendingUp className="h-3.5 w-3.5 text-emerald-500" /> : null}
                 {String(r.rankingMovement) === "down" ? <TrendingDown className="h-3.5 w-3.5 text-rose-500" /> : null}
-                {String(r.rankingMovement) === "stable" ? <span className="text-slate-400">—</span> : null}
+                {String(r.rankingMovement) === "stable" ? <span className="text-slate-400">-</span> : null}
                 {r.positionDelta != null ? <span className="text-xs text-slate-500">Δ{num(r.positionDelta).toFixed(1)}</span> : null}
               </span>,
             ])}
@@ -566,6 +616,130 @@ export default function SeoGrowthConsoleDashboard() {
           ) : (
             <p className="text-sm text-slate-500">No trend series yet.</p>
           )}
+        </article>
+      </section>
+
+      <section className="grid gap-4 xl:grid-cols-2">
+        <article className="rounded-2xl border border-emerald-200/80 bg-emerald-50/40 p-5 shadow-sm dark:border-emerald-900/50 dark:bg-emerald-950/20">
+          <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-emerald-800 dark:text-emerald-300">Live SEO data plane (Postgres)</h3>
+          <p className="mb-3 text-xs text-slate-600 dark:text-slate-400">
+            Opportunities are derived from stored <span className="font-mono">gsc_*_daily</span> metrics (not templates). Configure{" "}
+            <span className="font-mono">DATABASE_URL</span> and POST <span className="font-mono">/api/cron/seo-daily</span> with{" "}
+            <span className="font-mono">x-seo-cron-secret</span>.
+          </p>
+          <p className="mb-2 text-xs text-slate-500">
+            Postgres: <strong>{seoDataPlane.postgres === true ? "on" : "off"}</strong>
+            {typeof seoDataPlane.dbError === "string" && seoDataPlane.dbError ? (
+              <span className="ml-2 text-rose-600 dark:text-rose-400">· {seoDataPlane.dbError}</span>
+            ) : null}
+            {seoLastGsc?.at ? (
+              <>
+                {" "}
+                · Last GSC job: <span className="font-mono">{String(seoLastGsc.at).slice(0, 19)}</span> ({String(seoLastGsc.status ?? "-")})
+              </>
+            ) : null}
+            {seoLastGa4?.at ? (
+              <>
+                {" "}
+                · Last GA4 job: <span className="font-mono">{String(seoLastGa4.at).slice(0, 19)}</span> ({String(seoLastGa4.status ?? "-")})
+              </>
+            ) : null}
+          </p>
+          {seoIngestHealth && typeof seoIngestHealth === "object" ? (
+            <div className="mb-3 rounded-lg border border-emerald-200/60 bg-white/80 p-2 text-xs text-slate-600 dark:border-emerald-900/40 dark:bg-slate-900/40 dark:text-slate-300">
+              <p>
+                <strong>Rollup windows (UTC):</strong> current {String(seoIngestHealthRollup.current28d ?? "-")} · prev{" "}
+                {String(seoIngestHealthRollup.previous28d ?? "-")}
+              </p>
+              <p className="mt-1">
+                GSC sync stale?{" "}
+                <strong>{seoIngestHealthGsc.stale === true ? "yes" : "no"}</strong> (threshold {String(seoIngestHealth.staleAfterHours ?? "-")}h) · last success{" "}
+                <span className="font-mono">{String(seoIngestHealthGsc.lastSuccessAt ?? "-").slice(0, 19)}</span>
+                {seoIngestHealthGsc.lastError ? (
+                  <span className="text-rose-600 dark:text-rose-400"> · {String(seoIngestHealthGsc.lastError).slice(0, 120)}</span>
+                ) : null}
+              </p>
+              <p className="mt-1">
+                GA4 configured? <strong>{seoIngestHealth.ga4Configured === true ? "yes" : "no"}</strong>
+                {seoIngestHealth.ga4Configured === true ? (
+                  <>
+                    {" "}
+                    · stale? <strong>{seoIngestHealthGa4.stale === true ? "yes" : "no"}</strong> · last success{" "}
+                    <span className="font-mono">{String(seoIngestHealthGa4.lastSuccessAt ?? "-").slice(0, 19)}</span>
+                    {seoIngestHealthGa4.lastError ? (
+                      <span className="text-rose-600 dark:text-rose-400"> · {String(seoIngestHealthGa4.lastError).slice(0, 120)}</span>
+                    ) : null}
+                  </>
+                ) : null}
+              </p>
+            </div>
+          ) : null}
+          {seoRecentIngestRuns.length > 0 ? (
+            <div className="mb-3">
+              <h4 className="mb-1 text-xs font-semibold uppercase text-slate-500">Recent ingest runs</h4>
+              <DataTable
+                columns={["Source", "Status", "Started", "Finished"]}
+                rows={seoRecentIngestRuns.slice(0, 6).map((r) => [
+                  String(r.source),
+                  String(r.status),
+                  String(r.startedAt).slice(0, 19),
+                  r.finishedAt ? String(r.finishedAt).slice(0, 19) : "-",
+                ])}
+                emptyMessage=" "
+              />
+            </div>
+          ) : null}
+          <DataTable
+            columns={["Kind", "Window", "Path / query", "Signal", "Action"]}
+            rows={seoOpportunities.slice(0, 10).map((o) => {
+              const ev = (o.evidence as Record<string, unknown> | undefined) ?? {};
+              return [
+                String(o.kind),
+                String(ev.windowCurrent ?? "-").slice(0, 28),
+                <span key={String(o.path ?? o.query)} className="font-mono text-xs">
+                  {String(o.path ?? o.query ?? "-").slice(0, 40)}
+                </span>,
+                JSON.stringify(o.metrics ?? {}).slice(0, 52),
+                String(o.suggestedAction ?? "").slice(0, 64),
+              ];
+            })}
+            emptyMessage="No Postgres GSC snapshots yet - run the daily cron after migration."
+          />
+        </article>
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900/50">
+          <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">GA4 organic ↔ GSC join (28d)</h3>
+          {seoIngestHealth?.rollupWindows ? (
+            <p className="mb-2 text-xs text-slate-500">
+              Rolling window: <span className="font-mono">{String(seoIngestHealthRollup.current28d ?? "-")}</span> (same bounds as GSC side of join).
+            </p>
+          ) : null}
+          <p className="mb-3 text-xs text-slate-500">Engagement rate = engagedSessions / sessions (organic channel when filter enabled).</p>
+          <DataTable
+            columns={["Path", "GSC clicks", "GA4 organic sessions", "Engagement"]}
+            rows={seoGa4Join.slice(0, 10).map((r) => [
+              <span key={String(r.path)} className="font-mono text-xs">
+                {String(r.path).slice(0, 40)}
+              </span>,
+              num(r.gscClicks).toLocaleString(),
+              num(r.ga4OrganicSessions).toLocaleString(),
+              r.engagementRate != null ? `${(num(r.engagementRate) * 100).toFixed(1)}%` : "-",
+            ])}
+            emptyMessage="No join rows (set GA4_PROPERTY_ID + grant Analytics Viewer on the property)."
+          />
+          <h4 className="mt-4 text-xs font-semibold uppercase text-slate-500">Orphan / weak internal graph (tools)</h4>
+          <p className="mb-2 text-xs text-slate-500">Heuristic from related[] + description mentions vs GSC impressions.</p>
+          <DataTable
+            columns={["Path", "Impressions", "Inbound signals", "Note"]}
+            rows={orphanLinkHints.slice(0, 8).map((h) => [
+              <span key={String(h.path)} className="font-mono text-xs">
+                {String(h.path).slice(0, 40)}
+              </span>,
+              num(h.impressions).toLocaleString(),
+              num(h.inboundSignals).toLocaleString(),
+              String(h.note ?? "").slice(0, 72),
+            ])}
+            emptyMessage="No orphan hints (needs GSC page rows for /tools/* paths)."
+          />
         </article>
       </section>
 
@@ -709,7 +883,7 @@ export default function SeoGrowthConsoleDashboard() {
                   />
                 ) : (
                   <span key={`cb-${id}`} className="text-slate-400">
-                    —
+                    -
                   </span>
                 ),
                 title.slice(0, 56),

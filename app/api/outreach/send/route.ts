@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     return Response.json({
       ok: true,
       dryRun: true,
-      note: "OUTREACH_DRY_RUN is not 0 — no email sent. Set OUTREACH_DRY_RUN=0 and SMTP env to send.",
+      note: "OUTREACH_DRY_RUN is not 0 - no email sent. Set OUTREACH_DRY_RUN=0 and SMTP env to send.",
     });
   }
 

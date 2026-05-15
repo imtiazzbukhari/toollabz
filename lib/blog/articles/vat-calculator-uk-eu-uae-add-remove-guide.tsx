@@ -20,7 +20,7 @@ function Article() {
         <code className="rounded bg-violet-100/80 px-1.5 py-0.5 text-sm">G = N × (1 + v)</code>. If you only know gross and need
         net, <code className="rounded bg-violet-100/80 px-1.5 py-0.5 text-sm">N = G / (1 + v)</code> and VAT portion is{" "}
         <code className="rounded bg-violet-100/80 px-1.5 py-0.5 text-sm">G − N</code>. Those two lines power most VAT calculator
-        apps, including ours — the rest is UX and rounding policy.
+        apps, including ours; the rest is UX and rounding policy.
       </p>
 
       <h2 id="rates" className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">
@@ -29,7 +29,7 @@ function Article() {
       <div className="mt-4 overflow-x-auto rounded-xl border border-violet-200/60 bg-white/80">
         <table className="min-w-full text-left text-sm text-slate-700">
           <caption className="border-b border-violet-100 px-4 py-2 text-left text-xs font-semibold text-slate-600">
-            Illustrative standard rates — confirm with official sources for your period.
+            Illustrative standard rates; confirm with official sources for your period.
           </caption>
           <thead className="bg-violet-50/80 text-xs font-bold uppercase tracking-wide text-violet-900">
             <tr>
@@ -63,8 +63,12 @@ function Article() {
         the number. For deeper SMB context, see our{" "}
         <Link href="/blog/vat-calculator-guide-small-businesses" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           VAT guide for small businesses
-        </Link>{" "}
-        and the{" "}
+        </Link>
+        , the{" "}
+        <Link href="/blog/gst-vs-vat-uk-au-cross-border-pricing-toollabz" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+          GST vs VAT (Australia vs UK) comparison
+        </Link>
+        , and the{" "}
         <Link href="/finance-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           finance tools hub
         </Link>
@@ -84,12 +88,12 @@ const faqSchema = [
   {
     question: "How do I add 20% VAT to a UK net price?",
     answer:
-      "Multiply the net price by 1.20 to obtain the VAT-inclusive gross. If you need the VAT component alone, compute gross minus net, or equivalently multiply net by 0.20. Rounding should follow your invoice policy—some businesses round per line, others per invoice total.",
+      "Multiply the net price by 1.20 to obtain the VAT-inclusive gross. If you need the VAT component alone, compute gross minus net, or equivalently multiply net by 0.20. Rounding should follow your invoice policy - some businesses round per line, others per invoice total.",
   },
   {
     question: "How do I remove VAT from a gross EU price?",
     answer:
-      "Divide the gross amount by (1 + rate as decimal). Example at 19%: gross / 1.19 yields the net base; subtract net from gross to isolate VAT. If your receipt shows multiple rates, split line items—one blended division will be wrong.",
+      "Divide the gross amount by (1 + rate as decimal). Example at 19%: gross / 1.19 yields the net base; subtract net from gross to isolate VAT. If your receipt shows multiple rates, split line items - one blended division will be wrong.",
   },
   {
     question: "Does the Toollabz VAT calculator include reduced rates?",
@@ -119,11 +123,16 @@ export const vatCalculatorUkEuUaeAddRemoveGuidePost: BlogPostDefinition = {
   description:
     "Add vs remove VAT formulas, UK/EU/UAE reference rates (verify officially), worked examples, and a free VAT calculator on Toollabz.",
   title: "VAT Calculator: How to Add & Remove VAT (UK, EU, UAE Guide)",
-  excerpt: "Net vs gross math, regional reference table, and calculator CTA — with compliance caveats spelled out.",
+  excerpt: "Net vs gross math, regional reference table, and calculator CTA; compliance caveats spelled out.",
   publishedAt: "2026-04-26",
   category: "Business",
   tags: ["VAT", "UK", "EU", "UAE", "tax"],
   readingTimeMinutes: 15,
+  relatedPostsSlugs: [
+    "gst-vs-vat-uk-au-cross-border-pricing-toollabz",
+    "gst-australia-inclusive-exclusive-10-percent-small-business",
+    "vat-calculator-guide-small-businesses",
+  ],
   tableOfContents: [
     { id: "add-remove", label: "Add vs remove VAT" },
     { id: "rates", label: "Regional reference rates" },

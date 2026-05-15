@@ -3,12 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { capStaticParams } from "@/lib/build/static-generation";
-import { blogPostBySlug, blogPostSlugs, blogPosts } from "@/lib/blog/registry";
+import { blogPostBySlug, blogPostSlugs } from "@/lib/blog/registry";
 import { getRelatedToolsForBlogPost } from "@/lib/blog/related-tools";
 import { absoluteUrl, breadcrumbJsonLd, siteUrl } from "@/lib/seo";
 import { toolGlassCard, toolGlassPanel } from "@/lib/tool-ui";
 import BlogAuthorBio from "@/components/BlogAuthorBio";
 import BlogSocialShare from "@/components/BlogSocialShare";
+import BlogReadingProgress from "@/components/BlogReadingProgress";
+import { getRelatedBlogPostsForPost } from "@/lib/blog/related-posts";
+import { formatSiteLastUpdatedForDisplay, SITE_LAST_UPDATED_ISO } from "@/lib/site-freshness";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -105,10 +108,11 @@ export default async function BlogArticlePage({ params }: Props) {
     { name: post.title, path },
   ]);
 
-  const relatedPosts = blogPosts.filter((p) => p.slug !== post.slug).slice(0, 4);
+  const relatedPosts = getRelatedBlogPostsForPost(post, 5);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+      <BlogReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       {faqJsonLd ? (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
@@ -133,6 +137,10 @@ export default async function BlogArticlePage({ params }: Props) {
           <span>Published {post.publishedAt}</span>
           <span aria-hidden>·</span>
           <span>{post.readingTimeMinutes} min read</span>
+          <span aria-hidden>·</span>
+          <span>
+            Reviewed {formatSiteLastUpdatedForDisplay()} ({SITE_LAST_UPDATED_ISO})
+          </span>
         </p>
         {(post.category || post.tags.length > 0) && (
           <div className="mt-3 flex flex-wrap gap-2">
@@ -147,7 +155,28 @@ export default async function BlogArticlePage({ params }: Props) {
           </div>
         )}
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">{post.excerpt}</p>
+        {post.editorialNote && post.editorialNote.length > 0 ? (
+          <aside className="mt-5 rounded-xl border border-violet-200/60 bg-white/80 p-4 text-sm leading-relaxed text-slate-700">
+            <p className="text-xs font-bold uppercase tracking-wide text-violet-700">Editorial standards</p>
+            {post.editorialNote.map((line) => (
+              <p key={line} className="mt-2">
+                {line}
+              </p>
+            ))}
+          </aside>
+        ) : null}
       </header>
+
+      {post.keyTakeaways && post.keyTakeaways.length > 0 ? (
+        <section className={`mb-10 max-w-3xl p-5 sm:p-6 ${toolGlassCard}`} aria-label="Key takeaways">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-violet-800">Key takeaways</h2>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-800 sm:text-base">
+            {post.keyTakeaways.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {post.tableOfContents && post.tableOfContents.length > 0 ? (
         <nav
@@ -170,6 +199,56 @@ export default async function BlogArticlePage({ params }: Props) {
       <article className="max-w-3xl" data-content-section="body">
         <Body />
       </article>
+
+      {post.whenToUseTools && post.whenToUseTools.length > 0 ? (
+        <section className="mx-auto mt-10 max-w-3xl" aria-labelledby="when-tools">
+          <h2 id="when-tools" className="text-lg font-bold text-slate-900 sm:text-xl">
+            When to pair this guide with a live calculator
+          </h2>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
+            {post.whenToUseTools.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {post.commonMistakes && post.commonMistakes.length > 0 ? (
+        <section className="mx-auto mt-10 max-w-3xl" aria-labelledby="common-mistakes-blog">
+          <h2 id="common-mistakes-blog" className="text-lg font-bold text-slate-900 sm:text-xl">
+            Common mistakes
+          </h2>
+          <div className="mt-4 space-y-4">
+            {post.commonMistakes.map((m) => (
+              <div key={m.title} className={`rounded-xl border border-amber-200/60 bg-amber-50/50 p-4 sm:p-5 ${toolGlassCard}`}>
+                <h3 className="text-base font-semibold text-amber-950">{m.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-amber-950/90">{m.body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {post.sources && post.sources.length > 0 ? (
+        <section className="mx-auto mt-10 max-w-3xl" aria-labelledby="sources-blog">
+          <h2 id="sources-blog" className="text-lg font-bold text-slate-900 sm:text-xl">
+            References & further reading
+          </h2>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
+            {post.sources.map((s) => (
+              <li key={s.label}>
+                {s.href ? (
+                  <a href={s.href} className="font-medium text-violet-800 underline-offset-2 hover:underline" rel="noreferrer">
+                    {s.label}
+                  </a>
+                ) : (
+                  s.label
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {post.faqSchema && post.faqSchema.length > 0 ? (
         <section className="mx-auto mt-12 max-w-3xl" aria-labelledby="post-faq" data-content-section="faq">

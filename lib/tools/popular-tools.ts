@@ -38,3 +38,23 @@ const HOMEPAGE_AUTHORITY_EXTRA = [
 export const HOMEPAGE_AUTHORITY_SLUGS: readonly string[] = [
   ...new Set<string>([...POPULAR_TOOL_SLUGS, ...HOMEPAGE_AUTHORITY_EXTRA]),
 ];
+
+/**
+ * Curated homepage “major” grid: strongest cluster representatives (deduped, capped for scanability).
+ * Full breadth remains in /tools and HOMEPAGE_AUTHORITY_SLUGS-driven surfaces elsewhere.
+ */
+export const HOMEPAGE_MAJOR_SHOWCASE_SLUGS = [
+  "jwt-decoder",
+  "json-validator",
+  "sql-formatter",
+  "gst-calculator-australia",
+  "salary-after-tax-calculator-uk",
+  "self-employed-tax-calculator-uk",
+  "working-days-calculator-uk",
+  "roas-calculator",
+  "stripe-fee-calculator",
+  "break-even-calculator",
+  "loan-calculator",
+  "vat-calculator",
+  "currency-converter",
+] as const satisfies readonly string[];

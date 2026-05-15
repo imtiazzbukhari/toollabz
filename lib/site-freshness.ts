@@ -2,13 +2,15 @@
  * Site-wide content refresh stamp for visible "Last updated" copy and JSON-LD dates.
  * Override in production with NEXT_PUBLIC_SITE_LAST_UPDATED=YYYY-MM-DD when you ship content changes.
  */
-const RAW = process.env.NEXT_PUBLIC_SITE_LAST_UPDATED?.trim() ?? "2026-04-21";
+const DEFAULT_SITE_LAST_UPDATED = "2026-05-15";
+
+const RAW = process.env.NEXT_PUBLIC_SITE_LAST_UPDATED?.trim() ?? DEFAULT_SITE_LAST_UPDATED;
 
 function normalizeIsoDate(s: string): string {
   if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
   const d = new Date(s);
   if (!Number.isNaN(d.getTime())) return d.toISOString().slice(0, 10);
-  return "2026-04-21";
+  return DEFAULT_SITE_LAST_UPDATED;
 }
 
 export const SITE_LAST_UPDATED_ISO = normalizeIsoDate(RAW);

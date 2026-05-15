@@ -22,7 +22,7 @@ type ContentRow = {
 async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, { credentials: "include", ...init });
   const j = (await res.json().catch(() => ({}))) as T & { error?: string; message?: string };
-  if (res.status === 401) throw new Error("Unauthorized — sign in via SEO console.");
+  if (res.status === 401) throw new Error("Unauthorized - sign in via SEO console.");
   if (!res.ok) throw new Error((j as { error?: string }).error ?? (j as { message?: string }).message ?? res.statusText);
   return j as T;
 }
@@ -168,7 +168,7 @@ export default function ContentGeneratorPage() {
 
       <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
         Requires <code className="rounded bg-amber-100 px-1 text-amber-950">ANTHROPIC_API_KEY</code> on the server. Without it, the
-        generate API returns an error — you can still paste copy and save.
+        generate API returns an error - you can still paste copy and save.
       </div>
 
       {error ? <ErrorBox message={error} /> : null}
@@ -307,7 +307,7 @@ export default function ContentGeneratorPage() {
               </div>
             </>
           ) : prospectId ? (
-            <p className="text-sm text-slate-600">No saved content yet — generate with AI or save after drafting elsewhere.</p>
+            <p className="text-sm text-slate-600">No saved content yet - generate with AI or save after drafting elsewhere.</p>
           ) : (
             <p className="text-sm text-slate-600">Select a prospect to begin.</p>
           )}
