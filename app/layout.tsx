@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import SkipToMainLink from "@/components/SkipToMainLink";
 import DeferredClientObservers from "@/components/DeferredClientObservers";
 import { GA_TRACKING_ID } from "@/lib/analytics/gtag";
-import { ADSENSE_CLIENT_ID } from "@/lib/analytics/env";
+import { ADSENSE_PUBLISHER_ID } from "@/lib/analytics/env";
 import { organizationSchema, websiteSearchActionSchema } from "@/lib/seo";
 
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
@@ -97,12 +97,9 @@ export default function RootLayout({
             <link rel="preconnect" href="https://www.google-analytics.com" crossOrigin="anonymous" />
           </>
         ) : null}
-        {ADSENSE_CLIENT_ID ? (
-          <>
-            <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-            <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
-          </>
-        ) : null}
+        {/* AdSense: warm connection before the main script (afterInteractive). */}
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
         {GA_TRACKING_ID ? (
           <>
             <Script
@@ -119,15 +116,18 @@ gtag('config', '${GA_TRACKING_ID}', { send_page_view: false });
             </Script>
           </>
         ) : null}
-        {ADSENSE_CLIENT_ID ? (
-          <Script
-            id="adsense-loader"
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
-            crossOrigin="anonymous"
-            strategy="lazyOnload"
-          />
-        ) : null}
+        {/*
+          Global AdSense loader (single instance — do not add adsbygoogle.js elsewhere).
+          Future display units: place <AdsenseUnit adSlot="…" variant="…" /> in page bodies
+          (e.g. app/page.tsx between sections, tool pages sidebar, blog article mid-content).
+        */}
+        <Script
+          id="adsense-global-loader"
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: websiteJsonLd }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: orgJsonLd }} />
         <DeferredClientObservers />
