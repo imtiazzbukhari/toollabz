@@ -151,6 +151,13 @@ export function middleware(request: NextRequest) {
   return withHsts(res, hostNoPort, apex);
 }
 
+/**
+ * Skip middleware for Next static assets and favicon so:
+ * - `/_next/static/*` always gets correct Content-Type and no extra work (rate limits, redirects).
+ * - Production cannot regress into “HTML loads but CSS/JS 404 or wrong handler” due to proxy + middleware edge cases.
+ *
+ * @see https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
+ */
 export const config = {
-  matcher: "/:path*",
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

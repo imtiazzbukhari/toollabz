@@ -20,8 +20,10 @@ const publicSrc = path.join(root, "public");
 const publicDest = path.join(standaloneDir, "public");
 
 if (!fs.existsSync(standaloneDir)) {
-  console.warn("[copy-standalone-assets] .next/standalone missing - skipping (run `next build` with output: standalone).");
-  process.exit(0);
+  console.error(
+    "[copy-standalone-assets] .next/standalone missing — `next build` did not produce standalone output (check next.config output: standalone).",
+  );
+  process.exit(1);
 }
 
 if (!fs.existsSync(staticSrc)) {

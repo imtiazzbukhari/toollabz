@@ -31,7 +31,7 @@ The dev server runs at `http://localhost:3000`. Blog posts are registered via `l
 
 1. Set `NEXT_PUBLIC_SITE_URL` to the HTTPS apex (no trailing slash).
 2. Configure optional analytics, Mailchimp, and Redis as needed.
-3. Run `npm run build` and fix any TypeScript or ESLint errors.
+3. Run `npm run build` (this copies `.next/static` into `.next/standalone` and **fails** if CSS/JS chunks are missing — required for styled standalone deploys).
 4. Run `node scripts/pre-deploy-check.mjs` (set `RUN_BUILD=1` to include a production build).
 5. After deploy, verify `robots.txt` and `/sitemap.xml` in production.
 

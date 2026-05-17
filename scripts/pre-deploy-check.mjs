@@ -85,6 +85,12 @@ function main() {
     } catch (e) {
       fail(`next build: ${e instanceof Error ? e.message : String(e)}`);
     }
+    try {
+      execSync("npm run validate:standalone", { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+      pass("standalone static assets present (CSS/JS chunks)");
+    } catch (e) {
+      fail(`standalone asset validation: ${e instanceof Error ? e.message : String(e)}`);
+    }
   } else {
     pass("next build skipped (set RUN_BUILD=1 to run)");
   }
