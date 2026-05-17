@@ -13,10 +13,16 @@ export async function GET() {
     "Disallow: /signup",
     "Disallow: /signup/",
     "Disallow: /api/",
+    "Disallow: /dashboard",
+    "Disallow: /dashboard/",
     "Disallow: /seo-growth-console",
     "Disallow: /seo-growth-console/",
     "Disallow: /api/seo-console/",
     "Disallow: /api/outreach/",
+    "",
+    "User-agent: Mediapartners-Google",
+    "Allow: /",
+    "",
     `Sitemap: ${origin}/sitemap.xml`,
   ].join("\n");
   return new Response(`${body}\n`, {
