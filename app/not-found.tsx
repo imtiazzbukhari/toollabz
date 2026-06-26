@@ -10,7 +10,7 @@ import { POPULAR_TOOL_SLUGS } from "@/lib/tools/popular-tools";
 export const metadata: Metadata = {
   title: { absolute: "Page not found | Toollabz - Free Online Tools" },
   description:
-    "404 on Toollabz: search free calculators, converters, PDF tools, and AI helpers, or jump to popular picks - HTTPS hub, no signup.",
+    "404 on Toollabz: search calculators, converters, PDF tools, and AI helpers, or jump to popular picks from the tool directory.",
   robots: { index: false, follow: true },
 };
 

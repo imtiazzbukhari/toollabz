@@ -37,9 +37,36 @@ import { SITEMAP_CM_TO_FEET_SLUGS, SITEMAP_LOAN_PRINCIPALS, SITEMAP_SALARY_GROSS
 export type SitemapEntry = {
   loc: string;
   lastmod?: string;
-  changefreq?: "daily" | "weekly" | "monthly";
+  changefreq?: "daily" | "weekly" | "monthly" | "yearly";
   priority?: number;
 };
+
+const TOP_TOOLS = new Set([
+  "loan-calculator",
+  "salary-after-tax-calculator",
+  "vat-calculator",
+  "paycheck-calculator-usa",
+  "roi-calculator",
+  "pdf-merge",
+  "pdf-compress",
+  "net-worth-calculator",
+  "compound-interest-calculator",
+  "ai-content-humanizer",
+  "break-even-calculator",
+  "profit-margin-calculator",
+  "currency-converter",
+  "json-validator",
+  "mortgage-affordability-calculator",
+  "credit-card-payoff-calculator",
+  "emi-calculator",
+  "invoice-generator",
+  "budget-planner-monthly-usa",
+  "retirement-age-calculator",
+]);
+
+function getToolPriority(slug: string): number {
+  return TOP_TOOLS.has(slug) ? 0.8 : 0.7;
+}
 
 function escapeXml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
@@ -100,6 +127,7 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
     "/terms",
     "/disclaimer",
     "/contact",
+    "/research",
     "/finance-tools",
     "/business-tools",
     "/real-estate-tools",
@@ -109,13 +137,22 @@ export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
     "/developer-tools",
     "/marketing-tools",
     "/uk-finance-tax",
-  ].forEach((p) => add(entries, seen, p, p === "/" ? 1 : 0.82, "weekly", nowIso));
+  ].forEach((p) =>
+    add(
+      entries,
+      seen,
+      p,
+      p === "/" ? 1.0 : p === "/research" ? 0.7 : 0.6,
+      p === "/" ? "weekly" : p === "/research" ? "yearly" : "monthly",
+      nowIso,
+    ),
+  );
 
-  categories.forEach((category) => add(entries, seen, `/category/${category.slug}`, 0.8, "weekly", nowIso));
-  tools.forEach((tool) => add(entries, seen, `/tools/${tool.slug}`, 0.86, "weekly", nowIso));
+  categories.forEach((category) => add(entries, seen, `/category/${category.slug}`, 0.6, "monthly", nowIso));
+  tools.forEach((tool) => add(entries, seen, `/tools/${tool.slug}`, getToolPriority(tool.slug), "monthly", nowIso));
   blogPosts.forEach((post) => {
     const m = blogPostSitemapLastMod(post);
-    add(entries, seen, `/blog/${post.slug}`, 0.76, "weekly", m);
+    add(entries, seen, `/blog/${post.slug}`, 0.7, "yearly", m);
   });
 
   SITEMAP_CM_TO_FEET_SLUGS.forEach((cm) => add(entries, seen, `/cm-to-feet/${cm}-cm-to-feet`, 0.72, "monthly", nowIso));

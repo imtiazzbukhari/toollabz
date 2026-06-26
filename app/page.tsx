@@ -9,9 +9,6 @@ import {
   ShieldCheck,
   Zap,
   Users,
-  Search,
-  Wrench,
-  CheckCircle2,
   Mail,
 } from "lucide-react";
 import ToolCard from "@/components/ToolCard";
@@ -33,25 +30,27 @@ const guideCount = blogPosts.length;
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Toollabz | Developer utilities, UK finance tools, calculators & guides",
+    absolute: "Toollabz — 238+ Free Online Tools, Calculators & Utilities",
   },
-  description: `Practical online calculators, developer utilities (JSON, JWT, SQL), UK finance and tax hub, SaaS metrics, GST (Australia), converters, PDF tools, and ${guideCount}+ guides. HTTPS, FAQs, category hubs, no signup.`,
+  description:
+    "Free online calculators and tools for finance, tax, business, health, developer, and productivity. VAT calculator, salary after tax, loan calculator, BMI, JSON formatter, Base64, and 230+ more. No account needed.",
   alternates: {
-    canonical: "/",
+    canonical: "https://toollabz.com",
   },
   openGraph: {
-    title: "Toollabz | Developer utilities, UK finance tools, calculators & guides",
+    title: "Toollabz — 238+ Free Online Tools & Calculators",
     description: `Calculators, developer utilities, UK finance hub, SaaS metrics, GST tools, PDF workflows, and ${guideCount}+ articles. Structured pages with internal links between related tools.`,
     url: siteUrl,
     type: "website",
     siteName: "Toollabz",
-    images: [{ url: absoluteUrl("/logo-toollabz.webp"), width: 469, height: 469, alt: "Toollabz logo" }],
+    locale: "en_GB",
+    images: [{ url: absoluteUrl("/api/og?title=Toollabz&category=Free%20Online%20Tools"), width: 1200, height: 630, alt: "Toollabz" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Toollabz | Developer utilities, UK finance tools, calculators & guides",
-    description: `Deterministic tools and long-form guides: ${tools.length}+ utilities, ${guideCount}+ articles, category hubs for crawl and discovery.`,
-    images: [absoluteUrl("/logo-toollabz.webp")],
+    title: "Toollabz — 238+ Free Online Tools",
+    description: "Free VAT, salary, loan, BMI, JSON tools and 230+ more. No account needed.",
+    images: [absoluteUrl("/api/og?title=Toollabz&category=Free%20Online%20Tools")],
   },
 };
 
@@ -65,6 +64,24 @@ const homeBreadcrumbLd = breadcrumbJsonLd([
   { name: "All tools", path: "/tools" },
   { name: "Categories", path: "/#categories" },
 ]);
+
+const homeWebsiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Toollabz",
+  alternateName: "Toollabz.com",
+  url: "https://toollabz.com",
+  description:
+    "238+ free online tools for finance, tax, business, health, developer, and productivity. No account required.",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: "https://toollabz.com/tools?q={search_term_string}",
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
 
 export default function Home() {
   const featuredGuidePins = getHomepageFeaturedGuidePins(6);
@@ -153,9 +170,41 @@ export default function Home() {
   ];
 
   const howItWorks = [
-    { title: "Search", text: "Jump to a tool, hub, or guide from the hero search or cluster cards.", icon: Search },
-    { title: "Run", text: "Deterministic calculators and encoders with labeled fields and formula context.", icon: Wrench },
-    { title: "Explore", text: "Follow related tools and articles to finish the workflow without tab roulette.", icon: CheckCircle2 },
+    {
+      title: "Search",
+      text: "Find the exact tool in seconds with smart search.",
+      icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="21" cy="21" r="12" stroke="currentColor" strokeWidth="2.5" />
+          <path d="M30 30L40 40" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+        </svg>
+      ),
+    },
+    {
+      title: "Use",
+      text: "Fill in your values with a simple and guided flow.",
+      icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="12" width="32" height="24" rx="4" stroke="currentColor" strokeWidth="2.5" />
+          <path d="M16 24h16M16 30h10" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+        </svg>
+      ),
+    },
+    {
+      title: "Get Results",
+      text: "Instantly get accurate output and copy with confidence.",
+      icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 36l8-10 6 6 8-14 8 18"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ),
+    },
   ];
 
   const stats = [
@@ -168,6 +217,12 @@ export default function Home() {
     { title: "Depth you can cite", text: "Long-form guides next to calculators: UK finance, GST, JWT pipelines, SaaS metrics.", icon: BookOpen },
     { title: "Deterministic utilities", text: "Developer and finance tools favor predictable math over black-box outputs.", icon: Zap },
     { title: "No account wall", text: "Run tools in the browser session; we do not warehouse your pasted payloads.", icon: ShieldCheck },
+  ];
+  const earlyTrustStats = [
+    { value: `${tools.length}+`, label: "Free Tools" },
+    { value: "No Account", label: "Required" },
+    { value: "Updated", label: "Monthly" },
+    { value: "50+", label: "Countries using Toollabz" },
   ];
 
   const softSectionCardTight =
@@ -214,11 +269,11 @@ export default function Home() {
             <div className="absolute -inset-20 -z-10 rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.36),rgba(59,130,246,0.22)_42%,rgba(255,255,255,0)_76%)] blur-[90px]" />
             <Image
               src={TOOLLABZ_HERO_IMAGE}
-              alt="Toollabz - smart tools hub illustration"
-              width={719}
-              height={547}
+              alt="Toollabz — free online tools hub illustration"
+              width={600}
+              height={400}
               className="h-auto w-full scale-[1.08] drop-shadow-[0_28px_36px_rgba(76,29,149,0.28)] md:translate-x-6 lg:scale-[1.15] lg:translate-x-10"
-              priority
+              priority={true}
               fetchPriority="high"
               sizes="(max-width: 1280px) 55vw, 720px"
             />
@@ -230,6 +285,38 @@ export default function Home() {
       <HomeSeoDeepSection />
 
       <div className="space-y-4">
+      <section className="section-fade bg-transparent" aria-labelledby="homepage-trust-heading">
+        <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 md:py-6">
+          <div className="rounded-3xl border border-violet-200/60 bg-white/70 p-5 shadow-[0_10px_32px_rgba(99,102,241,0.08)] backdrop-blur-md sm:p-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <h2 id="homepage-trust-heading" className="text-xl font-semibold text-slate-900 sm:text-2xl">
+                  Built for accuracy, not accounts
+                </h2>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                  Used by freelancers, students, and businesses in 50+ countries. Calculators are reviewed against official
+                  sources where relevant, including HMRC, IRS, and other public guidance.
+                </p>
+              </div>
+              <Link
+                href="/about"
+                className="inline-flex w-fit rounded-xl border border-violet-200 bg-white px-4 py-2 text-sm font-semibold text-violet-800 shadow-sm transition hover:border-violet-300 hover:bg-violet-50"
+              >
+                Editorial standards
+              </Link>
+            </div>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {earlyTrustStats.map((item) => (
+                <div key={`${item.value}-${item.label}`} className="rounded-2xl border border-violet-100 bg-white/85 p-4">
+                  <p className="text-2xl font-extrabold text-slate-900">{item.value}</p>
+                  <p className="mt-1 text-sm text-slate-600">{item.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div className="mx-auto max-w-7xl px-4 pt-2 sm:px-6">
         <nav className="flex flex-wrap items-center gap-1 text-sm text-slate-500" aria-label="Breadcrumb">
           <Link href="/" className="transition hover:text-violet-600">
@@ -446,11 +533,10 @@ export default function Home() {
         </div>
           <div className="mt-4 grid items-start gap-4 md:grid-cols-3">
             {howItWorks.map((step, idx) => {
-              const Icon = step.icon;
               return (
                 <div key={step.title} className={`relative overflow-hidden ${softSectionCardTight}`}>
                   <div className="mb-2 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-blue-500 text-white">
-                    <Icon className="h-5 w-5" aria-hidden="true" />
+                    {step.icon}
                   </div>
                   <h3 className="font-semibold text-slate-900">{step.title}</h3>
                   <p className="mt-1.5 text-sm leading-snug text-slate-600">{step.text}</p>
@@ -551,6 +637,7 @@ export default function Home() {
       </section>
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeBreadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeWebsiteLd) }} />
     </div>
   );
 }

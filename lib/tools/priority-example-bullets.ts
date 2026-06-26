@@ -2,6 +2,36 @@
  * Human-style “example usage” bullets for high-intent tools (replaces templated rotation).
  */
 export const PRIORITY_EXAMPLE_BULLETS: Record<string, readonly string[]> = {
+  "profit-margin-calculator": [
+    "A candle shop sells a gift box for $48 and the materials plus packaging cost $29. The gross profit is $19, so margin is 39.6%.",
+    "A SaaS add-on brings in $12,000 of monthly revenue and costs $3,900 to serve. The margin is 67.5%, while markup would be higher because it uses cost as the base.",
+    "You are checking whether a 15% discount still leaves room for payment fees and shipping before approving a promotion.",
+    "You are standardizing a sales report where one teammate used markup and another used margin, so every product line uses revenue as the denominator.",
+  ],
+  "vat-calculator": [
+    "A UK bakery sells £480 of net goods at 20% VAT. VAT is £96 and the gross invoice total is £576.",
+    "A contractor receives a £1,200 VAT-inclusive bill at 20%. The net amount is £1,000 and VAT is £200.",
+    "A shop comparing zero-rated and standard-rated items can run each VAT rate separately before preparing the customer receipt.",
+    "A freelancer near a quarterly submission can check VAT-exclusive and VAT-inclusive figures before reconciling against HMRC records.",
+  ],
+  "youtube-earnings-calculator": [
+    "A channel with 250,000 monthly views, 55% monetized playbacks, and a $4.80 RPM would estimate about $660 monthly revenue.",
+    "A creator comparing two niches can model 80,000 views at $2.20 RPM versus 30,000 views at $9.50 RPM before planning content.",
+    "You are checking whether a sponsorship floor makes sense by comparing expected AdSense revenue with the sponsor fee.",
+    "You are budgeting editing costs and need to know how many views are required to cover a $450 monthly software stack.",
+  ],
+  "net-worth-calculator": [
+    "A household has $42,000 cash, $310,000 home equity, $68,000 retirement savings, and $24,000 debt. Net worth is $396,000.",
+    "A founder separating personal and business finances can run assets and liabilities twice so company debt does not pollute household numbers.",
+    "You are preparing a lender worksheet and need one clean total after subtracting credit cards, loans, and other obligations.",
+    "You are tracking progress each quarter and want the change in net worth, not just the balance of one investment account.",
+  ],
+  "break-even-calculator": [
+    "A cafe has $6,000 fixed monthly costs, sells lunch boxes for $12, and spends $7 in variable cost per box. Break-even is 1,200 boxes.",
+    "A course creator spending $2,400 on production with a $79 price and $9 platform cost needs about 35 sales to break even.",
+    "You are deciding whether a paid ad test needs 40, 400, or 4,000 orders before the campaign makes sense.",
+    "You are checking if a price cut still covers fixed costs once variable costs rise with every extra sale.",
+  ],
   "loan-calculator": [
     "You are quoted 6.4% on a $385k refi over 28 years and want the payment in dollars before you call the loan officer back.",
     "Two banks show the same rate but different fees-you model principal net of points to see which monthly payment actually wins.",

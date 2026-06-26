@@ -79,6 +79,10 @@ export default function PrivacyPage() {
             cookies, pixels, or similar technologies to measure delivery, limit frequency, and show more relevant ads. We will
             update this policy and, where required, provide choices or consent mechanisms aligned with applicable law.
           </p>
+          <p className="mt-3 leading-7 text-slate-700">
+            We may display advertisements served by Google AdSense. Google uses cookies to serve ads based on your prior visits
+            to this and other websites. You may opt out of personalised advertising by visiting Google&apos;s Ad Settings.
+          </p>
         </section>
 
         <section className={`p-6 sm:p-8 ${toolGlassCard}`}>

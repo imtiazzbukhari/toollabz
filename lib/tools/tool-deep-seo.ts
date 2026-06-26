@@ -3,12 +3,8 @@ import { getToolFormula } from "./content";
 import { PRIORITY_EXAMPLE_BULLETS } from "./priority-example-bullets";
 import { pickBySlug, slugContentVariant } from "./content-variation";
 
-function catLabel(category: string): string {
-  return category.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-}
-
 const OPENERS = [
-  "If you landed here from search, you probably want a straight answer without signing up for another account.",
+  "Start with the example and formula on this page when you need a quick answer you can explain later.",
   "This page is written for people who prefer clarity over jargon: what the tool does, how it behaves, and where it fits in a workflow.",
   "Toollabz keeps the interface lightweight on purpose so you can focus on inputs, outputs, and the story the numbers tell.",
   "Whether you are planning, estimating, or sanity-checking a figure someone sent you, the goal is the same: fast, repeatable math you can trust.",
@@ -68,13 +64,13 @@ export function getToolDeepGuideParagraphs(tool: ToolDefinition): string[] {
         ? "operators who need a quick numeric checkpoint during the week"
         : "teams that want a shared baseline before deeper analysis";
 
-  const p1 = `${opener} ${tool.name} is a free online Toollabz experience centered on “${kw}” and related searches such as “${kw2}”. ${voice} The short description on this page - “${tool.shortDescription}” - is the fastest way to confirm you are in the right place before you scroll to the interactive area above the guide sections.`;
+  const p1 = `${opener} ${tool.name} is centered on "${kw}" and related searches such as "${kw2}". ${voice} The short description on this page - "${tool.shortDescription}" - is the fastest way to confirm you are in the right place before you scroll through the guide sections.`;
 
   const p2 = `${mid} you should treat ${tool.name.toLowerCase()} as a structured sandbox: enter realistic values, capture the output, then adjust one variable at a time. That approach mirrors how spreadsheets are used, but with guardrails so invalid combinations are caught early. People who care about ${kw} often rerun the same tool monthly; bookmark the HTTPS URL so your team always references the same definitions.`;
 
   const p3 = `Who should use this tool? ${audience} will get the most value when ${tool.description.slice(0, Math.min(220, tool.description.length))}${tool.description.length > 220 ? "…" : ""} If your scenario is more specialized than the fields allow, treat the result as directional and extend the model offline with the extra constraints your organization requires.`;
 
-  const p4 = `Why Toollabz keeps ${tool.category} tools consistent: internal links on this page point to adjacent utilities so you can finish multi-step work - convert units, validate payloads, estimate tax bands, or draft copy - without bouncing between unrelated domains. That topical clustering also helps search systems understand that this URL is part of a broader, trustworthy collection rather than a thin doorway page.`;
+  const p4 = `Why Toollabz keeps ${tool.category} tools consistent: internal links on this page point to adjacent utilities so you can finish multi-step work - convert units, validate payloads, estimate tax bands, or draft copy - with the same assumptions in view.`;
 
   const p5 = `Responsible use matters. ${tool.name} does not know your jurisdiction, employer rules, lender overlays, or medical facts unless you type them; it cannot replace licensed advice where regulations apply. When stakes are high, export your assumptions and outputs, then validate with a qualified professional. For everyday estimation and classroom-style exploration, run multiple cases, write down deltas, and use the FAQ section to clarify edge cases you might otherwise overlook.`;
 
@@ -126,6 +122,5 @@ export function getToolRealWorldExampleBullets(tool: ToolDefinition): string[] {
 
 export function getToolLogicExplanationParagraph(tool: ToolDefinition): string {
   const formula = getToolFormula(tool.slug);
-  const cat = catLabel(tool.category);
-  return `How the logic is expressed on this page: the implementation follows ${formula} The UI maps your fields into that relationship, validates obvious mistakes (empty values, impossible ranges where detectable), and returns a readable breakdown. Category context (${cat}) determines which related tools we recommend next, because people who finish ${tool.name.toLowerCase()} often continue with a neighboring calculator or converter rather than stopping at a single number.`;
+  return `How the logic is expressed on this page: the implementation follows ${formula} The UI maps your fields into that relationship, validates obvious mistakes such as empty values or impossible ranges where detectable, and returns a readable breakdown.`;
 }

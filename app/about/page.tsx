@@ -5,6 +5,8 @@ import { absoluteUrl, breadcrumbJsonLd, siteUrl } from "@/lib/seo";
 import { toolGlassCard, toolGlassPanel } from "@/lib/tool-ui";
 import { tools } from "@/lib/tools/data";
 
+const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "hello@toollabz.com";
+
 export const metadata: Metadata = {
   title: { absolute: `About Toollabz | Toollabz - Free Online Tools` },
   description:
@@ -24,12 +26,14 @@ const team = [
   {
     name: "Imtiaz Ahmad",
     role: "Founder & lead engineer",
-    bio: "Owns architecture, performance budgets, and the boring reliability work that keeps hundreds of tools fast on modest hardware.",
+    initials: "IA",
+    bio: "Imtiaz founded Toollabz in April 2026 and leads product engineering, calculator logic, performance, and technical SEO. His focus is building practical tools with visible assumptions, fast pages, and enough explanation for users to check the result instead of blindly trusting a black box.",
   },
   {
     name: "Toollabz Editorial",
     role: "Product editor",
-    bio: "Coordinates accuracy reviews for finance and legal-adjacent calculators, pairs long-form guides with the live tools, and keeps disclaimers visible.",
+    initials: "TE",
+    bio: "The editorial workflow reviews finance and legal-adjacent pages for formula clarity, source references, and visible disclaimers. Pages are updated when rates, public guidance, or tool behavior changes.",
   },
 ] as const;
 
@@ -50,6 +54,15 @@ export default function AboutPage() {
       name: "Toollabz",
       url: siteUrl,
       logo: absoluteUrl("/logo-toollabz.webp"),
+      foundingDate: "2026-04",
+      description:
+        "Free online tools for finance, business, PDF, developer, and utility tasks with visible formulas, FAQs, and editorial review notes.",
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: contactEmail,
+        url: absoluteUrl("/contact"),
+      },
     },
   };
 
@@ -85,41 +98,52 @@ export default function AboutPage() {
       <header className={`mb-8 p-6 sm:p-8 ${toolGlassPanel}`}>
         <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 text-balance sm:text-4xl">About Toollabz</h1>
         <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-          We publish {tools.length}+ free, HTTPS-first calculators, converters, and PDF utilities so you can finish real work
-          without signing up for another SaaS trial.
+          Founded in April 2026, Toollabz publishes {tools.length}+ HTTPS-first calculators, converters, developer helpers,
+          and PDF utilities for people who need a quick answer and a clear explanation of how it was produced.
         </p>
       </header>
 
       <div className="space-y-8">
         <section className={`p-6 sm:p-8 ${toolGlassCard}`}>
-          <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Founding story</h2>
+          <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Who We Are</h2>
           <p className="mt-4 leading-7 text-slate-700">
-            Toollabz started from a simple frustration: most “free tool” sites either paywall mid-flow, ship dark-pattern ads, or
-            hide assumptions inside black-box JavaScript. We wanted the opposite-deterministic math, visible formulas where
-            possible, and pages that read well on a phone on a train.
+            Toollabz started from a simple frustration: many “free tool” sites either paywall mid-flow, bury assumptions inside
+            black-box JavaScript, or pad pages with generic copy. Our mission is to keep useful calculations accessible, explain
+            the formula in plain language, and show enough context for users to spot mistakes before relying on an output.
           </p>
           <p className="mt-4 leading-7 text-slate-700">
-            Today the directory spans finance, PDF, developer, and AI drafting utilities. Growth is intentionally boring: ship a
-            tool, document how it behaves, link to siblings and hubs, and revisit when tax tables or browser APIs change.
-          </p>
-        </section>
-
-        <section className={`p-6 sm:p-8 ${toolGlassCard}`}>
-          <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Mission</h2>
-          <p className="mt-4 leading-7 text-slate-700">
-            Make accurate utilities accessible: no account wall between you and the calculation, canonical URLs for every page,
-            structured data for discovery, and plain-language limits so you know when to escalate to a licensed professional.
+            Compared with larger directories such as Calculator.net or Omni Calculator, Toollabz is narrower and more workflow
+            focused. We pair tools with related guides, keep the UI lightweight, and prioritize transparent assumptions over
+            trying to cover every possible academic model.
           </p>
         </section>
 
         <section className={`p-6 sm:p-8 ${toolGlassCard}`}>
-          <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Team</h2>
+          <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Our Editorial Standards</h2>
+          <p className="mt-4 leading-7 text-slate-700">
+            Each calculator starts with a documented formula, test inputs, and visible limits. Finance and tax tools are reviewed
+            against official sources where relevant, such as HMRC for UK tax and VAT guidance and IRS material for US tax context.
+          </p>
+          <p className="mt-4 leading-7 text-slate-700">
+            Rate-sensitive pages are checked on a predictable cadence: UK tax rates after each April update, US tax assumptions
+            after official annual releases, and general calculators monthly when we refresh tool content. Toollabz is for
+            planning and education, not licensed financial, legal, medical, or tax advice.
+          </p>
+        </section>
+
+        <section className={`p-6 sm:p-8 ${toolGlassCard}`}>
+          <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Meet the Team</h2>
           <ul className="mt-4 space-y-5">
             {team.map((member) => (
-              <li key={member.name} className="border-b border-violet-100 pb-5 last:border-0 last:pb-0">
-                <p className="text-lg font-semibold text-slate-900">{member.name}</p>
-                <p className="text-sm font-medium text-violet-700">{member.role}</p>
-                <p className="mt-2 leading-7 text-slate-700">{member.bio}</p>
+              <li key={member.name} className="flex gap-4 border-b border-violet-100 pb-5 last:border-0 last:pb-0">
+                <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-violet-100 text-sm font-bold text-violet-800">
+                  {member.initials}
+                </span>
+                <div>
+                  <p className="text-lg font-semibold text-slate-900">{member.name}</p>
+                  <p className="text-sm font-medium text-violet-700">{member.role}</p>
+                  <p className="mt-2 leading-7 text-slate-700">{member.bio}</p>
+                </div>
               </li>
             ))}
           </ul>
@@ -128,8 +152,11 @@ export default function AboutPage() {
         <section className={`p-6 sm:p-8 ${toolGlassCard}`}>
           <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Contact</h2>
           <p className="mt-4 leading-7 text-slate-700">
-            For partnerships, corrections on a calculator, or DMCA-style PDF concerns, use the contact page - we read every
-            message, even if we cannot reply instantly.
+            For corrections, partnerships, calculator feedback, or privacy questions, email{" "}
+            <a href={`mailto:${contactEmail}`} className="font-medium text-violet-800 underline-offset-2 hover:underline">
+              {contactEmail}
+            </a>
+            . We aim to review genuine support and correction requests within 2-3 business days.
           </p>
           <Link
             href="/contact"

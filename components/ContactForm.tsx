@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { Send } from "lucide-react";
 import { toolGlassPanel, toolInputClass } from "@/lib/tool-ui";
 
-const CONTACT_EMAIL = "contact@toolabz.com";
+const CONTACT_EMAIL = "hello@toollabz.com";
 
 export default function ContactForm() {
   const [name, setName] = useState("");

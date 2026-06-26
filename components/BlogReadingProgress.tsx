@@ -1,21 +1,36 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { event } from "@/lib/analytics/gtag";
 
 /** Thin scroll progress bar (no layout shift; fixed height). */
-export default function BlogReadingProgress() {
+export default function BlogReadingProgress({ postSlug }: { postSlug?: string }) {
   const [pct, setPct] = useState(0);
 
   useEffect(() => {
     const el = document.documentElement;
+    const tracked = new Set<number>();
     const onScroll = () => {
       const max = el.scrollHeight - el.clientHeight;
-      setPct(max > 0 ? Math.min(1, Math.max(0, el.scrollTop / max)) : 0);
+      const nextPct = max > 0 ? Math.min(1, Math.max(0, el.scrollTop / max)) : 0;
+      setPct(nextPct);
+      if (!postSlug) return;
+      const scrolled = nextPct * 100;
+      [25, 50, 75, 100].forEach((milestone) => {
+        if (scrolled >= milestone && !tracked.has(milestone)) {
+          tracked.add(milestone);
+          event("blog_scroll_depth", {
+            event_category: "Blog Engagement",
+            post_slug: postSlug,
+            depth_percentage: milestone,
+          });
+        }
+      });
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [postSlug]);
 
   return (
     <div

@@ -26,47 +26,49 @@ import * as m20 from "./articles/home-equity-usa-borrow";
 import * as m21 from "./articles/hourly-vs-salary";
 import * as m22 from "./articles/how-ai-content-detectors-work-limits-ethics";
 import * as m23 from "./articles/how-loan-amortization-schedules-work-principal-interest";
-import * as m24 from "./articles/how-to-calculate-emi-formula-examples-free-calculator";
-import * as m25 from "./articles/how-to-calculate-mortgage-payment-with-taxes-and-insurance";
-import * as m26 from "./articles/how-to-calculate-take-home-salary-country-guide";
-import * as m27 from "./articles/how-to-compare-rent-vs-buy-without-hype";
-import * as m28 from "./articles/how-to-estimate-take-home-pay-from-gross-salary";
-import * as m29 from "./articles/how-to-merge-pdf-files-for-free";
-import * as m30 from "./articles/imperial-metric-stone-feet-acres-hectares-conversion-guide";
-import * as m31 from "./articles/invoice-late-fee-simple-interest-contracts-toollabz";
-import * as m32 from "./articles/json-formatting-and-validation-explained-developer";
-import * as m33 from "./articles/jwt-expiry-api-healthchecks-curl-playbook-toollabz";
-import * as m34 from "./articles/jwt-token-decode-vs-verify-security-guide-toollabz";
-import * as m35 from "./articles/loan-calculator-how-banks-calculate-your-emi";
-import * as m36 from "./articles/marketplace-seller-fees-stripe-paypal-etsy-ebay-toollabz";
-import * as m37 from "./articles/markup-vs-margin-formulas-pricing-mistakes";
-import * as m38 from "./articles/medical-malpractice-basics";
-import * as m39 from "./articles/merge-pdf-files-free-five-methods-compared";
-import * as m40 from "./articles/merge-pdf-without-losing-quality-metadata-fonts";
-import * as m41 from "./articles/mortgage-payment-usa-piti";
-import * as m42 from "./articles/net-worth-calculator-five-minute-guide";
-import * as m43 from "./articles/personal-injury-settlement-reality";
-import * as m44 from "./articles/refinance-break-even-usa";
-import * as m45 from "./articles/regex-beginner-guide-practical-patterns-toollabz";
-import * as m46 from "./articles/rent-vs-buy-usa";
-import * as m47 from "./articles/rental-yield-vs-monthly-cash-flow-investment-property";
-import * as m48 from "./articles/roi-business";
-import * as m49 from "./articles/roi-calculator-explained-for-marketing-campaigns";
-import * as m50 from "./articles/roi-calculator-measure-return-on-investment";
-import * as m51 from "./articles/roi-simple";
-import * as m52 from "./articles/roi-vs-roas-when-to-trust-each-metric";
-import * as m53 from "./articles/saas-roas-churn-retention-metrics-primer-toollabz";
-import * as m54 from "./articles/salary-after-tax-explained-withholdings-deductions-net-pay";
-import * as m55 from "./articles/salary-after-tax-take-home-country-comparison-guide";
-import * as m56 from "./articles/salary-after-tax-usa";
-import * as m57 from "./articles/sql-cron-readability-schedulers-developer-guide-toollabz";
-import * as m58 from "./articles/student-loan-forgiveness-roadmap";
-import * as m59 from "./articles/tool-seo-expansion";
-import * as m60 from "./articles/uk-self-employed-dividend-salary-effective-percent-toollabz";
-import * as m61 from "./articles/vat-calculator-guide-small-businesses";
-import * as m62 from "./articles/vat-calculator-uk-eu-uae-add-remove-guide";
-import * as m63 from "./articles/working-days-uk-timezones-business-slas-toollabz";
-import * as m64 from "./articles/zakat-calculation-nisab-practical-guide-respectful";
+import * as m24 from "./articles/how-much-can-i-rent-my-house-for-uk";
+import * as m25 from "./articles/how-to-calculate-emi-formula-examples-free-calculator";
+import * as m26 from "./articles/how-to-calculate-mortgage-payment-with-taxes-and-insurance";
+import * as m27 from "./articles/how-to-calculate-take-home-salary-country-guide";
+import * as m28 from "./articles/how-to-compare-rent-vs-buy-without-hype";
+import * as m29 from "./articles/how-to-estimate-take-home-pay-from-gross-salary";
+import * as m30 from "./articles/how-to-merge-pdf-files-for-free";
+import * as m31 from "./articles/imperial-metric-stone-feet-acres-hectares-conversion-guide";
+import * as m32 from "./articles/invoice-late-fee-simple-interest-contracts-toollabz";
+import * as m33 from "./articles/json-formatting-and-validation-explained-developer";
+import * as m34 from "./articles/jwt-expiry-api-healthchecks-curl-playbook-toollabz";
+import * as m35 from "./articles/jwt-token-decode-vs-verify-security-guide-toollabz";
+import * as m36 from "./articles/loan-calculator-how-banks-calculate-your-emi";
+import * as m37 from "./articles/margin-vs-percentage-difference";
+import * as m38 from "./articles/marketplace-seller-fees-stripe-paypal-etsy-ebay-toollabz";
+import * as m39 from "./articles/markup-vs-margin-formulas-pricing-mistakes";
+import * as m40 from "./articles/medical-malpractice-basics";
+import * as m41 from "./articles/merge-pdf-files-free-five-methods-compared";
+import * as m42 from "./articles/merge-pdf-without-losing-quality-metadata-fonts";
+import * as m43 from "./articles/mortgage-payment-usa-piti";
+import * as m44 from "./articles/net-worth-calculator-five-minute-guide";
+import * as m45 from "./articles/personal-injury-settlement-reality";
+import * as m46 from "./articles/refinance-break-even-usa";
+import * as m47 from "./articles/regex-beginner-guide-practical-patterns-toollabz";
+import * as m48 from "./articles/rent-vs-buy-usa";
+import * as m49 from "./articles/rental-yield-vs-monthly-cash-flow-investment-property";
+import * as m50 from "./articles/roi-business";
+import * as m51 from "./articles/roi-calculator-explained-for-marketing-campaigns";
+import * as m52 from "./articles/roi-calculator-measure-return-on-investment";
+import * as m53 from "./articles/roi-simple";
+import * as m54 from "./articles/roi-vs-roas-when-to-trust-each-metric";
+import * as m55 from "./articles/saas-roas-churn-retention-metrics-primer-toollabz";
+import * as m56 from "./articles/salary-after-tax-explained-withholdings-deductions-net-pay";
+import * as m57 from "./articles/salary-after-tax-take-home-country-comparison-guide";
+import * as m58 from "./articles/salary-after-tax-usa";
+import * as m59 from "./articles/sql-cron-readability-schedulers-developer-guide-toollabz";
+import * as m60 from "./articles/student-loan-forgiveness-roadmap";
+import * as m61 from "./articles/tool-seo-expansion";
+import * as m62 from "./articles/uk-self-employed-dividend-salary-effective-percent-toollabz";
+import * as m63 from "./articles/vat-calculator-guide-small-businesses";
+import * as m64 from "./articles/vat-calculator-uk-eu-uae-add-remove-guide";
+import * as m65 from "./articles/working-days-uk-timezones-business-slas-toollabz";
+import * as m66 from "./articles/zakat-calculation-nisab-practical-guide-respectful";
 
 export const BLOG_ARTICLE_MODULE_ENTRIES = [
   { sourceFile: "ai-content-humanizer-natural-text-guide.tsx", module: m0 },
@@ -93,45 +95,47 @@ export const BLOG_ARTICLE_MODULE_ENTRIES = [
   { sourceFile: "hourly-vs-salary.tsx", module: m21 },
   { sourceFile: "how-ai-content-detectors-work-limits-ethics.tsx", module: m22 },
   { sourceFile: "how-loan-amortization-schedules-work-principal-interest.tsx", module: m23 },
-  { sourceFile: "how-to-calculate-emi-formula-examples-free-calculator.tsx", module: m24 },
-  { sourceFile: "how-to-calculate-mortgage-payment-with-taxes-and-insurance.tsx", module: m25 },
-  { sourceFile: "how-to-calculate-take-home-salary-country-guide.tsx", module: m26 },
-  { sourceFile: "how-to-compare-rent-vs-buy-without-hype.tsx", module: m27 },
-  { sourceFile: "how-to-estimate-take-home-pay-from-gross-salary.tsx", module: m28 },
-  { sourceFile: "how-to-merge-pdf-files-for-free.tsx", module: m29 },
-  { sourceFile: "imperial-metric-stone-feet-acres-hectares-conversion-guide.tsx", module: m30 },
-  { sourceFile: "invoice-late-fee-simple-interest-contracts-toollabz.tsx", module: m31 },
-  { sourceFile: "json-formatting-and-validation-explained-developer.tsx", module: m32 },
-  { sourceFile: "jwt-expiry-api-healthchecks-curl-playbook-toollabz.tsx", module: m33 },
-  { sourceFile: "jwt-token-decode-vs-verify-security-guide-toollabz.tsx", module: m34 },
-  { sourceFile: "loan-calculator-how-banks-calculate-your-emi.tsx", module: m35 },
-  { sourceFile: "marketplace-seller-fees-stripe-paypal-etsy-ebay-toollabz.tsx", module: m36 },
-  { sourceFile: "markup-vs-margin-formulas-pricing-mistakes.tsx", module: m37 },
-  { sourceFile: "medical-malpractice-basics.tsx", module: m38 },
-  { sourceFile: "merge-pdf-files-free-five-methods-compared.tsx", module: m39 },
-  { sourceFile: "merge-pdf-without-losing-quality-metadata-fonts.tsx", module: m40 },
-  { sourceFile: "mortgage-payment-usa-piti.tsx", module: m41 },
-  { sourceFile: "net-worth-calculator-five-minute-guide.tsx", module: m42 },
-  { sourceFile: "personal-injury-settlement-reality.tsx", module: m43 },
-  { sourceFile: "refinance-break-even-usa.tsx", module: m44 },
-  { sourceFile: "regex-beginner-guide-practical-patterns-toollabz.tsx", module: m45 },
-  { sourceFile: "rent-vs-buy-usa.tsx", module: m46 },
-  { sourceFile: "rental-yield-vs-monthly-cash-flow-investment-property.tsx", module: m47 },
-  { sourceFile: "roi-business.tsx", module: m48 },
-  { sourceFile: "roi-calculator-explained-for-marketing-campaigns.tsx", module: m49 },
-  { sourceFile: "roi-calculator-measure-return-on-investment.tsx", module: m50 },
-  { sourceFile: "roi-simple.tsx", module: m51 },
-  { sourceFile: "roi-vs-roas-when-to-trust-each-metric.tsx", module: m52 },
-  { sourceFile: "saas-roas-churn-retention-metrics-primer-toollabz.tsx", module: m53 },
-  { sourceFile: "salary-after-tax-explained-withholdings-deductions-net-pay.tsx", module: m54 },
-  { sourceFile: "salary-after-tax-take-home-country-comparison-guide.tsx", module: m55 },
-  { sourceFile: "salary-after-tax-usa.tsx", module: m56 },
-  { sourceFile: "sql-cron-readability-schedulers-developer-guide-toollabz.tsx", module: m57 },
-  { sourceFile: "student-loan-forgiveness-roadmap.tsx", module: m58 },
-  { sourceFile: "tool-seo-expansion.tsx", module: m59 },
-  { sourceFile: "uk-self-employed-dividend-salary-effective-percent-toollabz.tsx", module: m60 },
-  { sourceFile: "vat-calculator-guide-small-businesses.tsx", module: m61 },
-  { sourceFile: "vat-calculator-uk-eu-uae-add-remove-guide.tsx", module: m62 },
-  { sourceFile: "working-days-uk-timezones-business-slas-toollabz.tsx", module: m63 },
-  { sourceFile: "zakat-calculation-nisab-practical-guide-respectful.tsx", module: m64 },
+  { sourceFile: "how-much-can-i-rent-my-house-for-uk.tsx", module: m24 },
+  { sourceFile: "how-to-calculate-emi-formula-examples-free-calculator.tsx", module: m25 },
+  { sourceFile: "how-to-calculate-mortgage-payment-with-taxes-and-insurance.tsx", module: m26 },
+  { sourceFile: "how-to-calculate-take-home-salary-country-guide.tsx", module: m27 },
+  { sourceFile: "how-to-compare-rent-vs-buy-without-hype.tsx", module: m28 },
+  { sourceFile: "how-to-estimate-take-home-pay-from-gross-salary.tsx", module: m29 },
+  { sourceFile: "how-to-merge-pdf-files-for-free.tsx", module: m30 },
+  { sourceFile: "imperial-metric-stone-feet-acres-hectares-conversion-guide.tsx", module: m31 },
+  { sourceFile: "invoice-late-fee-simple-interest-contracts-toollabz.tsx", module: m32 },
+  { sourceFile: "json-formatting-and-validation-explained-developer.tsx", module: m33 },
+  { sourceFile: "jwt-expiry-api-healthchecks-curl-playbook-toollabz.tsx", module: m34 },
+  { sourceFile: "jwt-token-decode-vs-verify-security-guide-toollabz.tsx", module: m35 },
+  { sourceFile: "loan-calculator-how-banks-calculate-your-emi.tsx", module: m36 },
+  { sourceFile: "margin-vs-percentage-difference.tsx", module: m37 },
+  { sourceFile: "marketplace-seller-fees-stripe-paypal-etsy-ebay-toollabz.tsx", module: m38 },
+  { sourceFile: "markup-vs-margin-formulas-pricing-mistakes.tsx", module: m39 },
+  { sourceFile: "medical-malpractice-basics.tsx", module: m40 },
+  { sourceFile: "merge-pdf-files-free-five-methods-compared.tsx", module: m41 },
+  { sourceFile: "merge-pdf-without-losing-quality-metadata-fonts.tsx", module: m42 },
+  { sourceFile: "mortgage-payment-usa-piti.tsx", module: m43 },
+  { sourceFile: "net-worth-calculator-five-minute-guide.tsx", module: m44 },
+  { sourceFile: "personal-injury-settlement-reality.tsx", module: m45 },
+  { sourceFile: "refinance-break-even-usa.tsx", module: m46 },
+  { sourceFile: "regex-beginner-guide-practical-patterns-toollabz.tsx", module: m47 },
+  { sourceFile: "rent-vs-buy-usa.tsx", module: m48 },
+  { sourceFile: "rental-yield-vs-monthly-cash-flow-investment-property.tsx", module: m49 },
+  { sourceFile: "roi-business.tsx", module: m50 },
+  { sourceFile: "roi-calculator-explained-for-marketing-campaigns.tsx", module: m51 },
+  { sourceFile: "roi-calculator-measure-return-on-investment.tsx", module: m52 },
+  { sourceFile: "roi-simple.tsx", module: m53 },
+  { sourceFile: "roi-vs-roas-when-to-trust-each-metric.tsx", module: m54 },
+  { sourceFile: "saas-roas-churn-retention-metrics-primer-toollabz.tsx", module: m55 },
+  { sourceFile: "salary-after-tax-explained-withholdings-deductions-net-pay.tsx", module: m56 },
+  { sourceFile: "salary-after-tax-take-home-country-comparison-guide.tsx", module: m57 },
+  { sourceFile: "salary-after-tax-usa.tsx", module: m58 },
+  { sourceFile: "sql-cron-readability-schedulers-developer-guide-toollabz.tsx", module: m59 },
+  { sourceFile: "student-loan-forgiveness-roadmap.tsx", module: m60 },
+  { sourceFile: "tool-seo-expansion.tsx", module: m61 },
+  { sourceFile: "uk-self-employed-dividend-salary-effective-percent-toollabz.tsx", module: m62 },
+  { sourceFile: "vat-calculator-guide-small-businesses.tsx", module: m63 },
+  { sourceFile: "vat-calculator-uk-eu-uae-add-remove-guide.tsx", module: m64 },
+  { sourceFile: "working-days-uk-timezones-business-slas-toollabz.tsx", module: m65 },
+  { sourceFile: "zakat-calculation-nisab-practical-guide-respectful.tsx", module: m66 },
 ] as const;

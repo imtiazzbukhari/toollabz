@@ -3,8 +3,9 @@ import type { Metadata } from "next";
 import PremiumPageShell from "@/components/PremiumPageShell";
 
 export const metadata: Metadata = {
-  title: "Sign Up",
+  title: { absolute: "Sign Up | Toollabz" },
   description: "Create your Toollabz account. Sign-up flow is coming soon.",
+  robots: { index: false, follow: false },
   alternates: {
     canonical: "/signup",
   },

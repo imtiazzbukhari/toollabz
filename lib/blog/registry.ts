@@ -24,6 +24,10 @@ function toIsoDate(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
+function ensureTitleYear(title: string): string {
+  return /\b20(25|26)\b/.test(title) ? title : `${title} (2026)`;
+}
+
 function looksLikeBlogPost(value: unknown): value is BlogPostDefinition {
   if (!value || typeof value !== "object") return false;
   const v = value as Partial<BlogPostDefinition>;
@@ -57,10 +61,10 @@ function fileDates(sourceFile: string): { publishedAt: string; dateModified: str
 
 function normalizePost(raw: BlogPostDefinition, sourceFile: string): BlogPostResolved {
   const { publishedAt: filePublishedAt, dateModified: fileModifiedIso } = fileDates(sourceFile);
-  const title = raw.title.trim();
+  const title = ensureTitleYear(raw.title.trim());
   const description = (raw.description ?? raw.excerpt ?? `${title} on Toollabz.`).trim();
   const excerpt = (raw.excerpt ?? description).trim();
-  const baseSeo = (raw.seoTitle ?? title).trim();
+  const baseSeo = ensureTitleYear((raw.seoTitle ?? title).trim());
   const seoTitle = baseSeo.includes("Toollabz") ? baseSeo : `${baseSeo} | Toollabz - Free Online Tools`;
   const publishedAt = (raw.publishedAt ?? filePublishedAt).trim();
   const rawDm = raw.dateModified?.trim();

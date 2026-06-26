@@ -215,6 +215,37 @@ export function computeTool(slug: string, form: Record<string, string>): ToolCom
       const words = text.trim() ? text.trim().split(/\s+/).length : 0;
       return { title: "Word Count", value: String(words), extra: [ `Characters: ${text.length}`, `Lines: ${text ? text.split(/\n/).length : 0}` ] };
     }
+    case "character-counter": {
+      const text = form.text || "";
+      if (!text.trim()) return invalid("Please enter text to count.");
+      const withoutSpaces = text.replace(/\s/g, "").length;
+      return { title: "Character Count", value: String(text.length), extra: [ `Without spaces: ${withoutSpaces}`, `Lines: ${text.split(/\n/).length}` ] };
+    }
+    case "percentage-calculator": {
+      const mode = form.mode || "partOf";
+      const x = n(form.x), y = n(form.y);
+      if (mode === "partOf") {
+        if (y === 0) return invalid("Y must not be zero.");
+        return { title: "Percentage", value: `${((x / y) * 100).toFixed(2)}%` };
+      }
+      if (mode === "percentOf") return { title: "Result", value: String((x / 100) * y) };
+      if (y === 0) return invalid("Original value must not be zero.");
+      return { title: "Percentage Change", value: `${(((x - y) / y) * 100).toFixed(2)}%` };
+    }
+    case "bmi-calculator": {
+      const weight = n(form.weight), heightM = n(form.height) / 100;
+      if (weight <= 0 || heightM <= 0) return invalid("Weight and height must be greater than zero.");
+      const bmi = weight / (heightM * heightM);
+      const category = bmi < 18.5 ? "Underweight" : bmi < 25 ? "Healthy range" : bmi < 30 ? "Overweight" : "Obese range";
+      return { title: "BMI", value: bmi.toFixed(1), extra: [ `Category: ${category}` ] };
+    }
+    case "tip-calculator": {
+      const bill = n(form.bill), tip = n(form.tip), people = Math.max(1, n(form.people, 1));
+      if (bill < 0 || tip < 0) return invalid("Bill and tip percentage must be non-negative.");
+      const tipAmount = bill * (tip / 100);
+      const total = bill + tipAmount;
+      return { title: "Per Person", value: money(total / people), extra: [ `Tip: ${money(tipAmount)}`, `Total: ${money(total)}` ] };
+    }
     case "case-converter": {
       const text = form.text || ""; const mode = form.mode || "upper";
       const value = mode === "upper" ? text.toUpperCase() : mode === "lower" ? text.toLowerCase() : mode === "title" ? titleCase(text) : text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();

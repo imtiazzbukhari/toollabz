@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   description:
-    "Free calculators, converters, and PDF tools in one secure hub. Fast results, clear guides, and 238+ utilities on Toollabz - no signup.",
+    "Free calculators, converters, and PDF tools in one secure hub. Fast results, clear guides, and 238+ practical utilities on Toollabz.",
   metadataBase: new URL("https://toollabz.com"),
   applicationName: "Toollabz",
   authors: [{ name: "Toollabz", url: "https://toollabz.com" }],
@@ -87,6 +87,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex min-h-screen flex-col overflow-x-hidden">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preload" href="/logo-toollabz.webp" as="image" />
         <link rel="dns-prefetch" href="https://api.frankfurter.app" />
         <link rel="preconnect" href="https://api.frankfurter.app" crossOrigin="anonymous" />
         {GA_TRACKING_ID ? (
@@ -104,9 +107,9 @@ export default function RootLayout({
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
-              strategy="lazyOnload"
+              strategy="afterInteractive"
             />
-            <Script id="ga4-gtag-init" strategy="lazyOnload">
+            <Script id="ga4-gtag-init" strategy="afterInteractive">
               {`
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}

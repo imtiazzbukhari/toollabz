@@ -3,6 +3,31 @@
  * Descriptions target ≤155 chars where possible for snippets.
  */
 export const TOOL_SEO_OVERRIDES: Record<string, { title: string; description: string }> = {
+  "profit-margin-calculator": {
+    title: "Profit Margin Calculator - Free Online Tool | Toollabz",
+    description:
+      "Calculate profit margin instantly. Compare revenue, cost, profit, margin, and markup for pricing decisions. Reviewed formula, free to use.",
+  },
+  "vat-calculator": {
+    title: "VAT Calculator - Free Online Tool | Toollabz",
+    description:
+      "Calculate VAT instantly. Add or remove UK VAT at 20%, 5%, or 0% in seconds. Reviewed for small business use, free to use.",
+  },
+  "youtube-earnings-calculator": {
+    title: "YouTube Earnings Calculator - Free Online Tool | Toollabz",
+    description:
+      "Estimate YouTube earnings instantly. Model views, RPM, and monetized playbacks for creator revenue planning. Free to use.",
+  },
+  "net-worth-calculator": {
+    title: "Net Worth Calculator - Free Online Tool | Toollabz",
+    description:
+      "Calculate net worth instantly. Add assets and liabilities to see your financial baseline. Reviewed for planning, free to use.",
+  },
+  "break-even-calculator": {
+    title: "Break-Even Calculator - Free Online Tool | Toollabz",
+    description:
+      "Calculate break-even instantly. Find units or sales needed to cover fixed and variable costs. Reviewed formula, free to use.",
+  },
   "mortgage-payment-calculator": {
     title: "Mortgage Payment Calculator (USA) - PITI, PMI & HOA | Toollabz",
     description:
@@ -16,7 +41,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, { title: string; description: st
   "credit-card-payoff-calculator": {
     title: "Credit Card Payoff Calculator (USA) | Toollabz",
     description:
-      "Pay down up to 3 cards: avalanche, snowball, or minimums. Month-by-month interest and months-to-debt-free-free, no signup.",
+      "Calculate credit card payoff instantly. Compare avalanche, snowball, or minimum payments across 3 cards. Reviewed for planning use.",
   },
   "personal-injury-settlement-calculator": {
     title: "Personal Injury Settlement Calculator (USA) - Free 2026 | Toollabz",
@@ -46,12 +71,12 @@ export const TOOL_SEO_OVERRIDES: Record<string, { title: string; description: st
   "loan-calculator": {
     title: "Loan Calculator - Monthly Payment & Total Interest (Free) | Toollabz",
     description:
-      "Model principal, APR, and term in one place. See monthly payment and total interest before you sign-free, HTTPS, no account.",
+      "Calculate loan payments instantly. See monthly payment and total interest before you sign. Reviewed formula, free with no account needed.",
   },
   "salary-after-tax-calculator": {
     title: "Salary After Tax Calculator - Net Pay From Gross (Free) | Toollabz",
     description:
-      "Turn gross salary into estimated take-home using your own effective rate. Great for offer comparisons-free, private, fast.",
+      "Calculate salary after tax instantly. Estimate take-home pay from gross salary for offer comparisons. Reviewed monthly, free to use.",
   },
   "emi-calculator": {
     title: "EMI Calculator - Home, Auto & Personal Loan EMI (Free) | Toollabz",
@@ -66,12 +91,12 @@ export const TOOL_SEO_OVERRIDES: Record<string, { title: string; description: st
   "paycheck-calculator-usa": {
     title: "Paycheck Calculator USA - Biweekly & Weekly Net Pay (Free) | Toollabz",
     description:
-      "Calculate gross-to-net paycheck estimate using annual salary, pay frequency, and tax assumptions. Per-paycheck net-free, HTTPS, no signup.",
+      "Calculate USA paycheck net pay instantly. Model weekly or biweekly gross-to-net with tax assumptions. Reviewed for US planning.",
   },
   "rent-vs-buy-calculator-usa": {
     title: "Rent vs Buy Calculator USA - 7-Year Cash-Outflow View (Free) | Toollabz",
     description:
-      "Estimate long-term housing cost difference between renting and buying for USA scenarios. Model rent growth vs buy cash-free, no signup.",
+      "Compare rent vs buy instantly. Model 7-year cash outflow, rent growth, and ownership costs for US housing decisions. Free to use.",
   },
   "roi-calculator": {
     title: "ROI Calculator - Gain, Cost & True Return % (Free) | Toollabz",

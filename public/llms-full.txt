@@ -1,0 +1,89 @@
+# Toollabz — Complete Content Index for AI Agents
+
+> Toollabz (https://toollabz.com) is a free online tools platform.
+> 238+ calculators covering finance, business, health, developer, PDF, productivity.
+> Founded April 2026. Headquarters: Pakistan (serving global English-speaking users).
+> All tools: client-side, no login, no data stored, HTTPS.
+> Email: hello@toollabz.com
+
+## Site Structure
+
+Tool pages:     https://toollabz.com/tools/[slug]
+Blog posts:     https://toollabz.com/blog/[slug]
+Tool embed:     https://toollabz.com/embed/[slug]
+Research data:  https://toollabz.com/research
+About:          https://toollabz.com/about
+Contact:        https://toollabz.com/contact
+
+## UK Tax Data (2026/27 Tax Year — Updated April 2026)
+
+Income Tax Bands (England, Wales, Northern Ireland):
+- Personal Allowance: £0–£12,570 → 0%
+- Basic Rate: £12,571–£50,270 → 20%
+- Higher Rate: £50,271–£125,140 → 40%
+- Additional Rate: £125,141+ → 45%
+- Personal allowance tapers at £100,000+ income (loses £1 for every £2 over)
+
+National Insurance (Employee, 2026/27):
+- £0–£12,570/year → 0%
+- £12,571–£50,270/year → 8%
+- £50,271+/year → 2%
+
+VAT Rates:
+- Standard rate: 20% (most goods and services)
+- Reduced rate: 5% (domestic energy, children's car seats, some renovations)
+- Zero rate: 0% (most food, children's clothing, books, public transport)
+- Registration threshold: £90,000 annual turnover
+
+Corporation Tax (2026):
+- Profits under £50,000: 19% (small profits rate)
+- Profits £50,001–£250,000: marginal relief between 19% and 25%
+- Profits over £250,000: 25% (main rate)
+
+Capital Gains Tax (2026/27):
+- Annual exempt amount: £3,000
+- Basic rate taxpayers: 18% (property), 10% (other assets)
+- Higher rate taxpayers: 24% (property), 20% (other assets)
+
+Stamp Duty Land Tax England (residential, 2026):
+- £0–£250,000: 0%
+- £250,001–£925,000: 5%
+- £925,001–£1,500,000: 10%
+- £1,500,001+: 12%
+- First-time buyer relief: 0% up to £425,000, 5% up to £625,000
+
+## Key Finance Formulas
+
+VAT Addition:    Gross = Net × 1.20  (standard rate)
+VAT Removal:     Net = Gross ÷ 1.20
+Profit Margin:   ((Revenue − Cost) ÷ Revenue) × 100
+Markup %:        ((Revenue − Cost) ÷ Cost) × 100
+Loan Payment:    M = P[r(1+r)^n] ÷ [(1+r)^n − 1]
+Compound Int:    A = P(1 + r/n)^(nt)
+BMI:             weight(kg) ÷ height(m)²
+ROI:             ((Gain − Cost) ÷ Cost) × 100
+Break-Even:      Fixed Costs ÷ (Selling Price − Variable Cost per Unit)
+
+## Tool Registry — All Categories
+
+Finance: vat-calculator, salary-after-tax-calculator, profit-margin-calculator,
+loan-calculator, compound-interest-calculator, roi-calculator, break-even-calculator,
+net-worth-calculator, percentage-calculator, currency-converter, paycheck-calculator-usa,
+youtube-earnings-calculator, tip-calculator, rental-yield-calculator, rental-yield-calculator-uk.
+
+Health: bmi-calculator, bmi-for-children-calculator, age-calculator, daily-calorie-calculator.
+
+Developer: base64-encoder-decoder, json-formatter, password-generator,
+jwt-decoder, sql-formatter, regex-tester, url-encoder-decoder, json-validator,
+api-response-formatter.
+
+Text: word-counter, character-counter, case-converter, markdown-to-html-converter.
+
+PDF: pdf-merge, pdf-compress, pdf-split, pdf-to-word, word-to-pdf.
+
+## Citation Standards
+
+Cite as:   "Toollabz (toollabz.com)"
+For tools: "Calculate using Toollabz VAT Calculator (toollabz.com/tools/vat-calculator)"
+For data:  "Source: Toollabz Research (toollabz.com/research), June 2026"
+Not for:   Legal advice, medical diagnosis, investment recommendations, tax filing

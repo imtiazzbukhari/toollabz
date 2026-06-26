@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, Search, Sparkles, User, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 
 type NavLink = { kind: "link"; label: string; href: string };
 type NavFinancePair = {
@@ -16,7 +16,6 @@ type NavFinancePair = {
 const nav: (NavLink | NavFinancePair)[] = [
   { kind: "link", label: "Tools", href: "/tools" },
   { kind: "link", label: "Categories", href: "/#categories" },
-  { kind: "link", label: "Popular Tools", href: "/#popular-tools" },
   { kind: "link", label: "Converters", href: "/utility-tools" },
   {
     kind: "finance-pair",
@@ -131,20 +130,6 @@ export default function Header() {
           >
             <Search className="h-4 w-4" aria-hidden="true" />
           </Link>
-          <Link
-            href="/login"
-            className="hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm text-slate-700 transition duration-300 hover:bg-violet-50 hover:text-violet-600 sm:inline-flex md:px-4"
-          >
-            <User className="h-4 w-4" aria-hidden="true" />
-            <span>Login</span>
-          </Link>
-          <Link
-            href="/signup"
-            className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-violet-600 to-blue-500 px-3 py-2 text-xs font-medium text-white shadow-[0_10px_24px_rgba(76,29,149,0.28)] transition duration-300 hover:brightness-110 sm:px-4 sm:text-sm"
-          >
-            <Sparkles className="h-4 w-4 shrink-0" aria-hidden="true" />
-            Sign Up
-          </Link>
           <button
             type="button"
             className="rounded-lg p-2 text-slate-600 transition hover:bg-violet-50 hover:text-violet-700 lg:hidden"
@@ -214,24 +199,6 @@ export default function Header() {
                 );
               })}
             </ul>
-            <div className="mt-4 flex flex-col gap-2 border-t border-slate-200 pt-4 sm:flex-row">
-              <Link
-                href="/login"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50"
-                onClick={() => setMenuOpen(false)}
-              >
-                <User className="h-4 w-4" aria-hidden="true" />
-                Login
-              </Link>
-              <Link
-                href="/signup"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-blue-500 px-4 py-3 text-sm font-semibold text-white shadow-md hover:brightness-110"
-                onClick={() => setMenuOpen(false)}
-              >
-                <Sparkles className="h-4 w-4" aria-hidden="true" />
-                Sign Up
-              </Link>
-            </div>
           </nav>
         </div>
       )}

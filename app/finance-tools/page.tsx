@@ -20,7 +20,7 @@ export const metadata: Metadata = categoryLandingMetadata({
   path: "/finance-tools",
   title: "Free Finance Calculators, Loans & Paycheck Tools",
   description:
-    "Free online finance calculators for loans, paychecks, taxes, savings, and debt payoff. Model what-if scenarios, compare related tools, and plan with HTTPS Toollabz pages - no signup required.",
+    "Finance calculators for loans, paychecks, taxes, savings, and debt payoff. Model what-if scenarios, compare related tools, and plan with clear formulas.",
 });
 
 export default function FinanceToolsPage() {

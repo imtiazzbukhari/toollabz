@@ -105,8 +105,8 @@ export default function TermsPage() {
         <section className={`p-6 sm:p-8 ${toolGlassCard}`}>
           <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Governing law</h2>
           <p className="mt-4 leading-7 text-slate-700">
-            These terms are governed by the laws applicable in your jurisdiction as we may specify in future versions, without
-            regard to conflict-of-law principles. If any provision is unenforceable, the remaining provisions stay in effect.
+            These terms are governed by the laws of England and Wales, except where mandatory consumer protection law in your
+            country gives you additional rights. If any provision is unenforceable, the remaining provisions stay in effect.
           </p>
         </section>
 

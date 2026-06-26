@@ -5,13 +5,14 @@ import { ChevronRight } from "lucide-react";
 import { capStaticParams } from "@/lib/build/static-generation";
 import { blogPostBySlug, blogPostSlugs } from "@/lib/blog/registry";
 import { getRelatedToolsForBlogPost } from "@/lib/blog/related-tools";
-import { absoluteUrl, breadcrumbJsonLd, siteUrl } from "@/lib/seo";
+import { absoluteUrl, generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo";
 import { toolGlassCard, toolGlassPanel } from "@/lib/tool-ui";
 import BlogAuthorBio from "@/components/BlogAuthorBio";
 import BlogSocialShare from "@/components/BlogSocialShare";
 import BlogReadingProgress from "@/components/BlogReadingProgress";
 import { getRelatedBlogPostsForPost } from "@/lib/blog/related-posts";
 import { formatSiteLastUpdatedForDisplay, SITE_LAST_UPDATED_ISO } from "@/lib/site-freshness";
+import { BLOG_PHASE3_UPGRADES, expandBlogFaqAnswer } from "@/lib/blog/phase3-upgrades";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -25,6 +26,14 @@ type Props = { params: Promise<{ slug: string }> };
 
 const ogImage = absoluteUrl("/logo-toollabz.webp");
 
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = blogPostBySlug(slug);
@@ -34,7 +43,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.seoTitle,
     description: post.description,
-    alternates: { canonical: path },
+    alternates: {
+      canonical: url,
+      languages: {
+        "en-GB": url,
+        "en-US": url,
+        "en-AU": url,
+        "x-default": url,
+      },
+    },
     openGraph: {
       title: post.seoTitle,
       description: post.description,
@@ -60,38 +77,29 @@ export default async function BlogArticlePage({ params }: Props) {
   if (!post) notFound();
 
   const Body = post.Article;
+  const phase3Upgrade = BLOG_PHASE3_UPGRADES[post.slug];
+  const faqPairs = post.faqSchema?.map((faq) => ({
+    question: faq.question,
+    answer: expandBlogFaqAnswer(post.slug, faq.answer),
+  }));
   const relatedTools = getRelatedToolsForBlogPost(post, 6);
   const path = `/blog/${post.slug}`;
-  const authorUrl = absoluteUrl(post.author.profilePath ?? "/about");
+  const postUrl = absoluteUrl(path);
 
-  const articleJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: post.title,
+  const articleJsonLd = generateArticleSchema({
+    title: post.title,
     description: post.description,
-    datePublished: post.publishedAt,
-    dateModified: post.dateModified,
-    author: {
-      "@type": "Person",
-      name: post.author.name,
-      jobTitle: post.author.jobTitle,
-      description: post.author.bio,
-      url: authorUrl,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Toollabz",
-      url: siteUrl,
-      logo: { "@type": "ImageObject", url: absoluteUrl("/logo-toollabz.webp") },
-    },
-    mainEntityOfPage: { "@type": "WebPage", "@id": absoluteUrl(path) },
-  };
+    url: postUrl,
+    publishedDate: post.publishedAt,
+    modifiedDate: post.dateModified,
+    authorName: post.author.name,
+  });
   const faqJsonLd =
-    post.faqSchema && post.faqSchema.length > 0
+    faqPairs && faqPairs.length > 0
       ? {
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          mainEntity: post.faqSchema.map((f) => ({
+          mainEntity: faqPairs.map((f) => ({
             "@type": "Question",
             name: f.question,
             acceptedAnswer: {
@@ -102,17 +110,17 @@ export default async function BlogArticlePage({ params }: Props) {
         }
       : null;
 
-  const breadcrumbLd = breadcrumbJsonLd([
-    { name: "Home", path: "/" },
-    { name: "Blog", path: "/blog" },
-    { name: post.title, path },
+  const breadcrumbLd = generateBreadcrumbSchema([
+    { name: "Home", url: absoluteUrl("/") },
+    { name: "Blog", url: absoluteUrl("/blog") },
+    { name: post.title, url: postUrl },
   ]);
 
   const relatedPosts = getRelatedBlogPostsForPost(post, 5);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-      <BlogReadingProgress />
+      <BlogReadingProgress postSlug={post.slug} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       {faqJsonLd ? (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
@@ -134,7 +142,7 @@ export default async function BlogArticlePage({ params }: Props) {
         <p className="text-xs font-medium uppercase tracking-wider text-violet-600">Blog</p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 text-balance sm:text-4xl">{post.title}</h1>
         <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-sm text-slate-500">
-          <span>Published {post.publishedAt}</span>
+          <span>Published {formatDate(post.publishedAt)}</span>
           <span aria-hidden>·</span>
           <span>{post.readingTimeMinutes} min read</span>
           <span aria-hidden>·</span>
@@ -197,7 +205,61 @@ export default async function BlogArticlePage({ params }: Props) {
       ) : null}
 
       <article className="max-w-3xl" data-content-section="body">
+        <div className="mb-6 text-sm text-slate-500">
+          <span>By {post.author.name ?? "Toollabz Editorial Team"}</span>
+          <span> · Published {formatDate(post.publishedAt)}</span>
+          {post.dateModified && post.dateModified.slice(0, 10) !== post.publishedAt ? (
+            <span> · Updated {formatDate(post.dateModified)}</span>
+          ) : null}
+        </div>
+        {phase3Upgrade ? (
+          <section className="mb-8 rounded-xl border border-sky-200 bg-sky-50 px-5 py-4 text-slate-800">
+            <p className="font-semibold text-slate-950">Quick Answer</p>
+            <p className="mt-2 leading-7">{phase3Upgrade.quickAnswer}</p>
+            <p className="mt-3 text-sm">
+              Source:{" "}
+              <a href={phase3Upgrade.source.href} className="font-medium text-violet-800 underline-offset-2 hover:underline" rel="noreferrer">
+                {phase3Upgrade.source.label}
+              </a>
+            </p>
+          </section>
+        ) : null}
         <Body />
+        {phase3Upgrade ? (
+          <section className="mt-8 space-y-5">
+            <div className="overflow-x-auto rounded-xl border border-violet-100 bg-white/90">
+              <table className="min-w-full text-left text-sm text-slate-700">
+                <caption className="border-b border-violet-100 px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-violet-700">
+                  Comparison table
+                </caption>
+                <thead className="bg-slate-50 text-slate-900">
+                  <tr>
+                    {phase3Upgrade.table.headers.map((header) => (
+                      <th key={header} className="px-4 py-3 font-semibold">
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {phase3Upgrade.table.rows.map((row) => (
+                    <tr key={row.join("-")} className="border-t border-violet-100">
+                      {row.map((cell) => (
+                        <td key={cell} className="px-4 py-3">
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <aside className="rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-amber-950">
+              <p className="text-sm font-bold uppercase tracking-wide">Key Takeaway</p>
+              <p className="mt-2 leading-7">{phase3Upgrade.takeaway}</p>
+            </aside>
+          </section>
+        ) : null}
       </article>
 
       {post.whenToUseTools && post.whenToUseTools.length > 0 ? (
@@ -250,13 +312,13 @@ export default async function BlogArticlePage({ params }: Props) {
         </section>
       ) : null}
 
-      {post.faqSchema && post.faqSchema.length > 0 ? (
+      {faqPairs && faqPairs.length > 0 ? (
         <section className="mx-auto mt-12 max-w-3xl" aria-labelledby="post-faq" data-content-section="faq">
           <h2 id="post-faq" className="text-xl font-bold text-slate-900 sm:text-2xl">
             Frequently asked questions
           </h2>
           <dl className="mt-5 space-y-6">
-            {post.faqSchema.map((f) => (
+            {faqPairs.map((f) => (
               <div key={f.question} className={`rounded-xl border border-violet-200/50 p-4 sm:p-5 ${toolGlassCard}`}>
                 <dt className="text-base font-semibold text-slate-900">{f.question}</dt>
                 <dd className="mt-2 text-sm leading-relaxed text-slate-700">{f.answer}</dd>

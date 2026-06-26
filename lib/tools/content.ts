@@ -6,6 +6,7 @@ import { expansionPhase2Profiles } from "./phase2-seo-expansion-batch2";
 import { TOOL_SEO_CONTENT_LEAD } from "./tool-seo-content-lead";
 import { pickBySlug, slugContentVariant } from "./content-variation";
 import { augmentToolFaqsForIntent } from "./faq-expansion";
+import { PHASE2_PRIORITY_TOOL_SLUGS } from "./priority-tool-content";
 
 const phase1Profiles: Record<string, Phase1Profile> = {
   ...phase1ProfilesCore,
@@ -118,6 +119,20 @@ function dedupeToolFaqs(items: ToolFAQ[]): ToolFAQ[] {
   return out;
 }
 
+function wordCount(text: string): number {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function expandPriorityFaqAnswer(tool: ToolDefinition, faq: ToolFAQ, formula: string): ToolFAQ {
+  if (!PHASE2_PRIORITY_TOOL_SLUGS.has(tool.slug) || wordCount(faq.answer) >= 50) return faq;
+  const keyword = tool.keywords[0] ?? tool.name.toLowerCase();
+  const suffix = ` For ${tool.name}, keep the inputs you used beside the result so the number can be checked later. The documented formula is ${formula}, and small changes to rates, rounding, dates, tax rules, regional assumptions, or percentage bases can change the final ${keyword} result. Treat the output as a planning reference and confirm high-stakes decisions against official guidance or source systems.`;
+  return {
+    question: faq.question,
+    answer: `${faq.answer}${suffix}`,
+  };
+}
+
 function categoryLabelSeo(slug: string): string {
   return slug
     .split("-")
@@ -142,6 +157,8 @@ const formulas: Record<string, string> = {
   "loan-calculator": "EMI = P × r × (1+r)^n / ((1+r)^n - 1)",
   "emi-calculator": "EMI = P × r × (1+r)^n / ((1+r)^n - 1)",
   "compound-interest-calculator": "A = P × (1 + r/n)^(n×t)",
+  "percentage-calculator": "Percentage = (part ÷ whole) × 100; Change% = ((new − old) ÷ old) × 100",
+  "bmi-calculator": "BMI = weight_kg ÷ height_m²",
   "salary-after-tax-calculator": "Net Salary = Gross Salary × (1 - Tax Rate)",
   "stock-profit-calculator": "Profit = (Sell - Buy) × Quantity - Fees",
   "roi-calculator": "ROI% = (Gain / Cost) × 100",
@@ -303,6 +320,7 @@ const formulas: Record<string, string> = {
   "inflation-impact-calculator": "Future real equivalent = PV×(1+π)^n; purchasing power loss vs nominal hold",
   "vat-calculator": "VAT = Net × (Rate/100); Gross = Net + VAT",
   "tip-calculator-split-bill": "Tip = Bill × (Tip%/100); Per person = (Bill + Tip) ÷ Party size",
+  "tip-calculator": "Tip = Bill × (Tip%/100); Per person = (Bill + Tip) ÷ Party size",
   "net-worth-tracker": "Projected NW = Current NW + (Monthly change × Months)",
   "retirement-age-calculator": "Monthly balance = Prior × (1 + annual/12) + contribution until target; age = start age + months/12",
   "currency-converter": "Converted = Amount × Exchange rate (target per 1 source)",
@@ -380,6 +398,8 @@ const formulas: Record<string, string> = {
   "working-days-calculator-uk": "Weekdays Mon–Fri UTC inclusive minus user bank holiday count",
   "business-days-calculator": "Weekdays Mon–Fri UTC inclusive between ISO dates",
   "random-team-generator": "Fisher–Yates shuffle then round-robin into N buckets",
+  "word-counter": "Words = whitespace-separated tokens; characters = text length; lines = newline count",
+  "character-counter": "Characters = total text length; without spaces = text after whitespace removal",
   "lbs-to-kg-converter": "kg = lb × 0.45359237",
   "feet-to-cm-converter": "cm = ft × 30.48 (international foot)",
   "pace-calculator": "pace sec/km = elapsed ÷ km; km/h = km ÷ (elapsed/3600)",
@@ -487,7 +507,7 @@ export function getToolFaqs(tool: ToolDefinition): ToolFAQ[] {
   ];
 
   const out = dedupeToolFaqs([...merged, ...pad]);
-  return augmentToolFaqsForIntent(tool, out, formula);
+  return augmentToolFaqsForIntent(tool, out, formula).map((faq) => expandPriorityFaqAnswer(tool, faq, formula));
 }
 
 export function getToolSeoContent(tool: ToolDefinition): string[] {
@@ -507,7 +527,7 @@ export function getToolSeoContent(tool: ToolDefinition): string[] {
   const pack = slugContentVariant(`${tool.slug}-seopack`, 4);
   const introByPack = [
     `${tool.name} is built for people who want fast, reliable results without opening a spreadsheet or installing desktop software. The page centers on practical use around ${keyword}: personal planning, business analysis, development work, or everyday tasks. The flow is simple: enter values, run the tool, and read the output with enough context to act. Logic is deterministic and inputs are validated so you can trust a first-pass answer before you dig deeper.`,
-    `If your search intent is ${keyword}, this page is meant to be a calm workspace: ${tool.name} focuses on the fields that matter, explains what each output means in plain language, and avoids burying the interactive area under marketing fluff. You still bring the real-world assumptions; the tool keeps the arithmetic and formatting consistent so you can iterate quickly.`,
+    `${tool.name} focuses on the fields that matter for ${keyword}, explains what each output means in plain language, and keeps the arithmetic consistent so you can iterate quickly.`,
     `${tool.name} exists so you can answer ${keyword} questions in one sitting - whether you are comparing two scenarios, validating a figure someone sent you, or teaching someone else the relationship between inputs and results. Everything runs in the browser with deterministic logic, so the same typed values yield the same outputs every time you return.`,
     `Toollabz frames ${tool.name} around ${keyword} because that is how people actually work: they need a credible baseline before they invest time in a heavier model. The intro you are reading is unique to this URL; scroll to the live tool, run a conservative case first, then widen the range once the outputs match your expectations.`,
   ];
@@ -519,15 +539,15 @@ export function getToolSeoContent(tool: ToolDefinition): string[] {
   ];
   const navByPack = [
     `Most people looking for ${keyword} want speed, accuracy, and a straight explanation. The \"How to use\" section gives a quick path in; the FAQs cover edge cases and common misunderstandings. When one tool is not enough, related tools point to converters, calculators, or validators that often sit in the same workflow so you can finish the job without starting over elsewhere.`,
-    `Navigation on this page is structured for scanning: jump links in the hero move you to explanations, examples, and FAQs without losing your place. Related tools are not random promos - they are clustered for ${keyword} follow-ups such as unit checks, tax sketches, or formatting helpers that frequently appear in the same session.`,
+    `The page groups the live tool with explanations, examples, and FAQs so you can check the result before sharing it. Related tools are chosen for ${keyword} follow-ups such as unit checks, tax sketches, or formatting helpers that frequently appear in the same session.`,
     `If you are new to ${keyword}, read the short sections first, then return to the calculator with one concrete scenario. If you are experienced, you can skip straight to inputs; the deep guide still documents edge cases that trip people up when they export numbers into slides or tickets.`,
     `Beyond ${tool.name.toLowerCase()}, Toollabz links outward to category hubs and blog guides so you can move from a single number to a narrative your stakeholders will accept. That internal linking also signals topical depth to search systems evaluating whether this URL is a thin utility page.`,
   ];
   const benchByPack = [
-    `If you are benchmarking, run several inputs and compare outputs side by side. That helps with planning, estimation, and what-if checks. Always confirm assumptions (tax rate, interest, baselines, time horizon) against your country, employer, or business rules before you finalize a decision. This ${tool.name.toLowerCase()} stays free and responsive on desktop and mobile. Bookmark it if ${keyword} shows up often in your week, and use related tools when the next step is a different calculation or format.`,
-    `When stakes are moderate, treat ${tool.name} as a triage step: capture min, mid, and max cases for ${keyword}, note the deltas, then escalate to licensed advice or audited systems if required. The page stays fast on mobile so you can rerun scenarios during a commute or between meetings without losing your train of thought.`,
+    `If you are benchmarking, run several inputs and compare outputs side by side. That helps with planning, estimation, and what-if checks. Always confirm assumptions (tax rate, interest, baselines, time horizon) against your country, employer, or business rules before you finalize a decision.`,
+    `When stakes are moderate, capture min, mid, and max cases for ${keyword}, note the deltas, then escalate to licensed advice or audited systems if required.`,
     `For documentation habits, paste the canonical URL next to exported figures so future-you knows which version of ${tool.name.toLowerCase()} produced them. Pair that habit with the Guides section when you need prose context that a calculator field cannot carry alone.`,
-    `Finally, remember that ${keyword} searches vary by region and product rules; this tool does not read your contracts or tax returns. Use it to structure thinking, then validate externally when regulations apply. The combination of clear formulas, FAQs, and related tools is what keeps the experience substantive rather than repetitive across Toollabz URLs.`,
+    `Finally, remember that ${keyword} searches vary by region and product rules; this tool does not read your contracts or tax returns. Use it to structure thinking, then validate externally when regulations apply.`,
   ];
 
   return mergeSeoLead(tool, [

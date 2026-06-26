@@ -3,9 +3,22 @@ import type { ToolListingPreview } from "@/lib/tools/tool-listing";
 import { getToolCardIcon } from "@/utils/icons";
 import { getToolCategoryIconGradient } from "@/utils/tool-category-visual";
 
+const subtitleOverrides: Record<string, string> = {
+  "vat-calculator": "Add or remove UK VAT — 20%, 5%, or 0%",
+  "salary-after-tax-calculator": "UK take-home pay for 2026/27",
+  "profit-margin-calculator": "Calculate margin and markup %",
+  "loan-calculator": "Monthly payments + total interest",
+  "compound-interest-calculator": "See how savings grow over time",
+  "roi-calculator": "Return on investment instantly",
+  "bmi-calculator": "NHS healthy weight range",
+  "json-formatter": "Format and validate JSON errors",
+  "password-generator": "Cryptographically secure passwords",
+};
+
 export default function ToolCard({ tool }: { tool: ToolListingPreview }) {
   const Icon = getToolCardIcon(tool);
   const iconTone = getToolCategoryIconGradient(tool.category);
+  const subtitle = subtitleOverrides[tool.slug] ?? tool.shortDescription;
 
   return (
     <Link
@@ -19,7 +32,7 @@ export default function ToolCard({ tool }: { tool: ToolListingPreview }) {
       </div>
       <div className="mt-3 flex min-h-0 flex-1 flex-col">
         <span className="line-clamp-2 text-sm font-semibold leading-snug text-slate-900">{tool.name}</span>
-        <p className="mt-2 line-clamp-3 flex-1 text-sm leading-snug text-slate-600">{tool.shortDescription}</p>
+        <p className="mt-2 line-clamp-3 flex-1 text-sm leading-snug text-slate-600">{subtitle}</p>
       </div>
     </Link>
   );

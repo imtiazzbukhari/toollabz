@@ -4,9 +4,8 @@ import { ToolDefinition } from "@/lib/tools/types";
 import { tools } from "@/lib/tools/data";
 import { getRelatedToolsForLayout } from "@/lib/tools/related";
 import { getMarketingHubForTool } from "@/lib/tools/directory-groups";
-import { getToolFaqs, getToolSeoContent } from "@/lib/tools/content";
+import { getToolFaqs, getToolFormula, getToolSeoContent } from "@/lib/tools/content";
 import {
-  countWords,
   getToolCommonMistakesParagraphs,
   getToolDepthFormulaSection,
   getToolDepthHowToNarrative,
@@ -23,10 +22,12 @@ import ToolHeroVisual from "@/components/ToolHeroVisual";
 import { slugContentVariant } from "@/lib/tools/content-variation";
 import { getGuideLinksForTool } from "@/lib/blog/guides-for-tool";
 import BookmarkToolButtonDeferred from "./BookmarkToolButtonDeferred";
+import EmbedCalculatorButton from "./EmbedCalculatorButton";
 import PageLastUpdated from "./PageLastUpdated";
 import PopularCalculationsBlock from "./PopularCalculationsBlock";
 import ExpertDisclaimer from "./ExpertDisclaimer";
 import ToolPageTocStrip from "./ToolPageTocStrip";
+import AuthorBadge from "./AuthorBadge";
 import { toolIsFinanceCategory, toolNeedsEditorialReviewLine, toolNeedsExpertDisclaimer } from "@/lib/tools/ymyl";
 import {
   getEntityTopicalSnippet,
@@ -34,6 +35,7 @@ import {
   getToolComparisonBlock,
   getWhenToUseThisToolBullets,
 } from "@/lib/tools/tool-longtail-blocks";
+import { getPriorityQuickAnswer, getPriorityWhoUses, getRelatedArticlesForTool } from "@/lib/tools/priority-tool-content";
 
 function categoryLabel(slug: string) {
   return slug
@@ -97,11 +99,10 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
   const comparisonBlock = getToolComparisonBlock(tool, related);
   const whenToUseBullets = getWhenToUseThisToolBullets(tool);
   const formulaTableRows = getRelatedFormulasList(tool);
-  const editorialWordCount =
-    countWords([...depthIntro, ...seoParagraphs, ...deepParagraphs, ...depthHow, ...depthFormula, logicParagraph].join(" ")) +
-    countWords(exampleBullets.join(" ")) +
-    countWords(commonMistakes.join(" ")) +
-    countWords(faqs.map((x) => `${x.question} ${x.answer}`).join(" "));
+  const formula = getToolFormula(tool.slug);
+  const quickAnswer = getPriorityQuickAnswer(tool);
+  const priorityWhoUses = getPriorityWhoUses(tool);
+  const relatedArticles = getRelatedArticlesForTool(tool);
   const guideLinks = getGuideLinksForTool(tool.slug, 4);
   const CategoryIcon = getCategoryIcon(tool.category);
   const useCaseVariant = slugContentVariant(`${tool.slug}-usecases`, 3);
@@ -212,9 +213,6 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
             Related tools
           </Link>
         </div>
-        <p className="mt-2 text-[11px] text-slate-500" aria-live="polite">
-          Editorial depth (excl. nav/footer): ~{editorialWordCount} words of explainer + FAQs on this URL.
-        </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {heroBadges.map(({ label, Icon }) => (
             <span
@@ -227,6 +225,23 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
           ))}
         </div>
       </header>
+
+      {quickAnswer ? (
+        <section
+          className="quick-answer-box mb-6 rounded-xl border border-sky-200 bg-sky-50 px-5 py-4 text-slate-800 shadow-sm"
+          itemScope
+          itemType="https://schema.org/Answer"
+          aria-label="Quick answer"
+        >
+          <p className="font-semibold text-slate-950">{quickAnswer.title ?? `Quick Answer: ${tool.name}`}</p>
+          <p className="mt-2 leading-7" itemProp="text">
+            {quickAnswer.answer}
+          </p>
+          <p className="mt-2 leading-7">
+            <span className="font-semibold">Example:</span> {quickAnswer.example}
+          </p>
+        </section>
+      ) : null}
 
       <div className="min-w-0" data-content-section="calculator">
         {children}
@@ -249,15 +264,6 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
             {paragraph}
           </p>
         ))}
-        {related[0] ? (
-          <p className="leading-7 text-slate-700">
-            For a complementary angle on{" "}
-            <Link href={`/tools/${related[0].slug}`} className="font-medium text-violet-800 underline-offset-2 hover:underline">
-              {related[0].name}
-            </Link>
-            , open it in a new tab and compare outputs with {tool.name} before you finalize assumptions.
-          </p>
-        ) : null}
         {seoParagraphs.map((paragraph, idx) => (
           <p key={`seo-${idx}`} className="leading-7 text-slate-700">
             {paragraph}
@@ -322,6 +328,20 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
             View all posts
           </Link>
         </p>
+        {relatedArticles.length > 0 ? (
+          <div className="mt-5 rounded-xl border border-violet-100 bg-white/75 p-4">
+            <h3 className="font-semibold text-slate-900">Related Guides</h3>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+              {relatedArticles.map((article) => (
+                <li key={article.url}>
+                  <Link href={article.url} className="font-medium text-violet-800 underline-offset-2 hover:underline">
+                    {article.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </section>
 
       <section
@@ -359,8 +379,22 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}
         data-content-section="logic"
       >
-        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Formula explanation</h2>
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Key formula explained</h2>
         <h3 className="text-lg font-semibold text-slate-800">How the calculation works</h3>
+        <div className="rounded-xl border border-violet-100 bg-white/90 p-4">
+          <p className="text-xs font-bold uppercase tracking-wide text-violet-700">The Formula</p>
+          <code className="mt-2 block overflow-x-auto whitespace-pre-wrap rounded-lg bg-slate-950 px-3 py-2 text-sm text-white">
+            {formula}
+          </code>
+          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm leading-relaxed text-slate-700">
+            {tool.fields.slice(0, 6).map((field) => (
+              <li key={field.name}>
+                <span className="font-medium text-slate-900">{field.label}</span>: the value you enter for{" "}
+                {field.name.replace(/([A-Z])/g, " $1").toLowerCase()}.
+              </li>
+            ))}
+          </ul>
+        </div>
         <div className="overflow-x-auto rounded-lg border border-violet-100 bg-white/90">
           <table className="min-w-full text-left text-sm text-slate-700">
             <caption className="border-b border-violet-100 px-3 py-2 text-left text-xs font-semibold text-slate-600">
@@ -437,39 +471,32 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}
         data-content-section="use_cases"
       >
-        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Benefits and use cases</h2>
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Who uses this tool?</h2>
+        {priorityWhoUses ? <p className="leading-7 text-slate-700">{priorityWhoUses}</p> : null}
         <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
           {useCaseVariant === 0 ? (
             <>
               <li>
-                Run a quick {tool.name.toLowerCase()} pass before you paste figures into email, a slide deck, or a
-                spreadsheet workflow.
+                Freelancers and operators checking one calculation before it goes into an invoice, email, or spreadsheet.
               </li>
-              <li>Line up two realistic inputs when you are weighing options, rates, or different time horizons.</li>
+              <li>Students and trainees learning how the formula behaves with realistic inputs.</li>
             </>
           ) : useCaseVariant === 1 ? (
             <>
               <li>
-                Use {tool.name} as a checkpoint after someone sends you a screenshot so you can reproduce their math
-                independently.
+                Small business owners comparing two scenarios before they commit to pricing, borrowing, or budgeting.
               </li>
-              <li>Capture outputs during a live call so everyone agrees on the baseline before commitments move forward.</li>
+              <li>Analysts reproducing a figure from a screenshot or report so assumptions can be checked independently.</li>
             </>
           ) : (
             <>
               <li>
-                Drop {tool.name.toLowerCase()} into a weekly review ritual when the same metric shows up across multiple
-                documents.
+                Households and founders reviewing the same metric during a weekly planning routine.
               </li>
-              <li>Pair this page with the related utilities below when one number is never the whole story.</li>
+              <li>Support and finance teams sharing a plain-language reference when teammates need the same field labels.</li>
             </>
           )}
-          <li>Share the canonical Toollabz HTTPS URL so collaborators inherit the same field labels and assumptions.</li>
-          {tool.keywords.slice(0, 2).map((kw) => (
-            <li key={kw}>
-              Explore searches around &quot;{kw}&quot; using this page together with the related tools listed below.
-            </li>
-          ))}
+          <li>Reviewers who need a repeatable calculation path before moving final figures into controlled systems.</li>
         </ul>
       </section>
 
@@ -565,7 +592,7 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
       <section id="you-might-also-like" className="mt-12" data-content-section="suggested">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">You might also like</h2>
         <p className="mt-1 text-sm text-slate-600">
-          Same-category picks first, then high-intent neighbors  -  lightweight internal linking for topic clusters on Toollabz.
+          Same-category picks first, then high-intent neighbors that often answer the next calculation question.
         </p>
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           {youMightAlsoLike.map((item) => {
@@ -618,8 +645,16 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
             Guides
           </Link>
           <BookmarkToolButtonDeferred slug={tool.slug} />
+          <EmbedCalculatorButton slug={tool.slug} name={tool.name} />
         </div>
       </section>
+
+      <AuthorBadge
+        name="Toollabz Finance Team"
+        role={showFinanceDisclaimer ? "Finance & Tools" : "Editorial & Tools"}
+        lastReviewed="June 2026"
+        className="mb-6"
+      />
     </div>
   );
 }

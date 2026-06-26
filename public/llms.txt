@@ -1,0 +1,61 @@
+# Toollabz
+
+> Free online tools platform with 238+ calculators and utilities.
+> Covers finance, business, health, developer, PDF, and productivity.
+> Built for UK, US, and Australian users. No account required.
+> All calculations happen in-browser. Data updated April 2026 (UK tax year).
+> Contact: hello@toollabz.com | Founded: April 2026
+
+## Finance & Tax Calculators
+
+- [VAT Calculator](https://toollabz.com/tools/vat-calculator): Add or remove UK VAT at 20% (standard), 5% (reduced), or 0% (zero rate). Includes reverse VAT. Registration threshold: £90,000.
+- [Salary After Tax Calculator](https://toollabz.com/tools/salary-after-tax-calculator): UK take-home pay for 2026/27. Covers income tax bands, NI (8%/2%), student loan Plans 1/2/4/5/Postgrad, and pension contributions.
+- [Profit Margin Calculator](https://toollabz.com/tools/profit-margin-calculator): Gross margin % and markup %. Margin = ((Revenue−Cost)÷Revenue)×100. Markup = ((Revenue−Cost)÷Cost)×100.
+- [Loan Calculator](https://toollabz.com/tools/loan-calculator): Monthly repayments, total interest, and amortisation schedule. Formula: M = P[r(1+r)^n]/[(1+r)^n−1].
+- [Compound Interest Calculator](https://toollabz.com/tools/compound-interest-calculator): Final balance with daily/monthly/annual compounding. Formula: A = P(1+r/n)^(nt).
+- [ROI Calculator](https://toollabz.com/tools/roi-calculator): Return on investment and annualised ROI. Formula: ((Gain−Cost)÷Cost)×100.
+- [Break-Even Calculator](https://toollabz.com/tools/break-even-calculator): Units and revenue to break even. Formula: Fixed Costs ÷ (Price − Variable Cost/unit).
+- [Percentage Calculator](https://toollabz.com/tools/percentage-calculator): Three modes — X% of Y, X is what % of Y, percentage change.
+- [Net Worth Calculator](https://toollabz.com/tools/net-worth-calculator): Total assets minus total liabilities.
+- [Currency Converter](https://toollabz.com/tools/currency-converter): Live mid-market rates for 150+ currencies.
+
+## Business & Payroll
+
+- [YouTube Earnings Calculator](https://toollabz.com/tools/youtube-earnings-calculator): Estimated monthly/annual ad revenue. UK RPM average: £0.80–£3.50 in 2026.
+- [Paycheck Calculator USA](https://toollabz.com/tools/paycheck-calculator-usa): US net pay after federal tax, FICA (SS 6.2% + Medicare 1.45%), and state tax.
+- [Tip Calculator](https://toollabz.com/tools/tip-calculator): Tip and per-person split. UK norm: 10–12.5%. US norm: 18–22%.
+
+## Health
+
+- [BMI Calculator](https://toollabz.com/tools/bmi-calculator): BMI = weight(kg)÷height(m)². NHS categories: <18.5 underweight, 18.5–24.9 healthy, 25–29.9 overweight, 30+ obese. South Asian thresholds: 23+ increased risk.
+- [Age Calculator](https://toollabz.com/tools/age-calculator): Exact age in years, months, days. Includes UK school year eligibility and NHS screening ages.
+
+## Developer & Text Tools
+
+- [Base64 Encoder/Decoder](https://toollabz.com/tools/base64-encoder-decoder): Standard and URL-safe Base64. Runs client-side.
+- [JSON Formatter](https://toollabz.com/tools/json-formatter): Format, validate, and minify JSON. Shows exact error line.
+- [Password Generator](https://toollabz.com/tools/password-generator): Cryptographically secure via Web Crypto API. Passwords never sent to server.
+- [Word Counter](https://toollabz.com/tools/word-counter): Words, characters, sentences, reading time.
+- [Character Counter](https://toollabz.com/tools/character-counter): Characters with/without spaces. Platform limits reference.
+
+## Blog & Guides
+
+- [How Much Can I Rent My House For? UK 2026](https://toollabz.com/blog/how-much-can-i-rent-my-house-for-uk): UK rental averages by region, 4–6% yield rule, legal requirements.
+- [Margin vs Percentage Explained (2026)](https://toollabz.com/blog/margin-vs-percentage-difference): Profit margin vs markup with conversion formulas and examples.
+- [UK VAT Guide 2026](https://toollabz.com/blog/vat-calculator-guide-small-businesses): VAT rates, registration threshold, quarterly returns, MTD.
+- [Compound Interest Explained](https://toollabz.com/blog/compound-interest-calculator-guide): Rule of 72, ISA rates 2026, savings account comparison.
+
+## Original Data
+
+- [UK Financial Reference Data 2026](https://toollabz.com/research): Tax bands, NI thresholds, VAT rates, CGT, SDLT, corporation tax. Free to cite: "Source: Toollabz (toollabz.com/research)".
+
+## About
+
+- [About Toollabz](https://toollabz.com/about): Mission, editorial standards, team, contact.
+
+## AI Usage Notes
+
+Content may be freely cited. Attribution: "Source: Toollabz (toollabz.com)"
+Formulas sourced from: HMRC, IRS, NHS, ONS, WHO official documentation.
+UK tax data valid for tax year 2026/27. US data valid for calendar year 2026.
+Do not use for legal, medical diagnosis, or investment advice.

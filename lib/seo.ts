@@ -84,72 +84,104 @@ export function absoluteUrl(path = "/") {
   return `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-function hashSlug(s: string): number {
-  let h = 5381;
-  for (let i = 0; i < s.length; i += 1) h = (h * 33) ^ s.charCodeAt(i);
-  return h >>> 0;
+export function sanitizeMetaDescription(raw: string, maxLen = 155): string {
+  const normalized = raw.trim().replace(/\s+/g, " ");
+  if (normalized.length <= maxLen) return normalized;
+  const truncated = normalized.slice(0, maxLen);
+  const lastPeriod = truncated.lastIndexOf(".");
+  const lastSpace = truncated.lastIndexOf(" ");
+  const cutAt = lastPeriod > 100 ? lastPeriod + 1 : lastSpace;
+  return truncated.slice(0, cutAt > 0 ? cutAt : maxLen).trim();
 }
 
-/** SERP meta description: 140–160 chars, keyword + CTA, starts with description lead-in (SEO test compatibility). */
+/** SERP meta description: <=155 chars and ends cleanly. */
 export function buildToolMetaDescription(tool: ToolDefinition): string {
-  const minLen = 140;
-  const maxLen = 160;
-  const brand = "Toollabz";
-  const desc = (tool.description.trim() || `${tool.name} | free online tool.`).replace(/\s+/g, " ");
-  const kw = (tool.keywords[0] ?? tool.name).trim().replace(/\s+/g, " ");
-  const variant = hashSlug(tool.slug) % 4;
-  const closers = [
-    ` Try it free on ${brand} | instant online ${kw}, no signup.`,
-    ` Open it free on ${brand} for fast ${kw} results | HTTPS, no account.`,
-    ` Use this free ${brand} tool online for instant ${kw} | no signup required.`,
-    ` Run ${kw} free on ${brand} now | online, instant, no registration.`,
-  ];
-  const closer = closers[variant] ?? closers[0];
-  const headBudget = Math.max(48, maxLen - closer.length - 2);
-  const head = desc.slice(0, Math.min(headBudget, desc.length));
-  const bridge = desc.length > head.length ? "…" : "";
-  let body = `${head}${bridge}${closer}`.replace(/\s+/g, " ").trim();
-  if (body.length > maxLen) {
-    body = `${desc.slice(0, Math.max(48, maxLen - closer.length - 2)).trim()}…${closer}`.replace(/\s+/g, " ").trim();
-  }
-  if (body.length < minLen) {
-    const pad = ` ${tool.shortDescription.trim()}`.replace(/\s+/g, " ");
-    body = `${body}${pad}`.replace(/\s+/g, " ").trim().slice(0, maxLen);
-  }
-  if (body.length < minLen) {
-    body = `${body} Browse related free tools on ${brand}.`.replace(/\s+/g, " ").trim().slice(0, maxLen);
-  }
-  if (body.length < minLen) {
-    body = `${desc} ${tool.shortDescription} ${closer}`.replace(/\s+/g, " ").trim().slice(0, maxLen);
-  }
-  return body.slice(0, maxLen);
+  const keyword = tool.keywords[0] ?? tool.name.toLowerCase();
+  const action = /calculator/i.test(tool.name) ? "Calculate" : /converter/i.test(tool.name) ? "Convert" : "Use";
+  const benefit = (tool.shortDescription || tool.description || "Get a clear, instant result")
+    .replace(/\bfree\b/gi, "")
+    .trim()
+    .replace(/\s+/g, " ");
+  const raw = `${action} ${keyword} instantly. ${benefit}. Reviewed by Toollabz editors. Free, no account needed.`;
+  return sanitizeMetaDescription(raw, 155);
 }
 
-const META_DESC_MIN = 140;
-const META_DESC_MAX = 160;
+const META_DESC_MAX = 155;
+
+const TOOL_TITLE_OVERRIDES: Record<string, string> = {
+  "vat-calculator": "VAT Calculator UK 2026 — Add or Remove VAT Instantly | Toollabz",
+  "salary-after-tax-calculator": "Salary After Tax Calculator 2026/27 — UK Take-Home Pay | Toollabz",
+  "profit-margin-calculator": "Profit Margin Calculator — Margin & Markup in Seconds | Toollabz",
+  "loan-calculator": "Loan Calculator — Monthly Payments + Full Amortisation | Toollabz",
+  "compound-interest-calculator": "Compound Interest Calculator — See How Money Grows | Toollabz",
+  "roi-calculator": "ROI Calculator — Return on Investment Instantly | Toollabz",
+  "break-even-calculator": "Break-Even Calculator — Units & Revenue to Break Even | Toollabz",
+  "net-worth-calculator": "Net Worth Calculator — Assets Minus Liabilities | Toollabz",
+  "percentage-calculator": "Percentage Calculator — 3 Calculation Modes, Instant | Toollabz",
+  "currency-converter": "Currency Converter — Live Rates, 150+ Currencies | Toollabz",
+  "youtube-earnings-calculator": "YouTube Earnings Calculator 2026 — Estimate Your Revenue | Toollabz",
+  "paycheck-calculator-usa": "US Paycheck Calculator 2026 — Federal + State Take-Home | Toollabz",
+  "tip-calculator": "Tip Calculator — Split Bills + Tip Per Person | Toollabz",
+  "bmi-calculator": "BMI Calculator UK — Healthy Weight Range Instantly | Toollabz",
+  "age-calculator": "Age Calculator — Exact Age in Years, Months & Days | Toollabz",
+  "word-counter": "Word Counter — Words, Characters & Reading Time | Toollabz",
+  "character-counter": "Character Counter — With & Without Spaces | Toollabz",
+  "base64-encoder-decoder": "Base64 Encoder Decoder — Encode & Decode Instantly | Toollabz",
+  "json-formatter": "JSON Formatter & Validator — Format + Fix Errors | Toollabz",
+  "password-generator": "Password Generator — Secure & Random, 1 Click | Toollabz",
+};
+
+const TOOL_META_OVERRIDES: Record<string, string> = {
+  "vat-calculator":
+    "Add or remove UK VAT instantly — 20% standard, 5% reduced, or 0% zero rate. Includes reverse VAT and 2026/27 registration threshold guide. Free, no login required.",
+  "salary-after-tax-calculator":
+    "Calculate UK take-home pay for 2026/27 in seconds. Covers income tax, National Insurance, student loan (Plans 1/2/4/5/Postgrad), and pension auto-enrolment.",
+  "profit-margin-calculator":
+    "Calculate gross profit margin and markup % instantly. Includes margin vs markup comparison table and worked examples. A 40% margin = 66.7% markup. Free forever.",
+  "loan-calculator":
+    "Work out monthly repayments, total interest cost, and full amortisation schedule. Covers personal loans, car finance, and mortgages. No signup, instant results.",
+  "compound-interest-calculator":
+    "£10,000 at 5% for 20 years = £26,533. See how compound interest grows money over time. Choose daily, monthly, or annual compounding. Includes Rule of 72.",
+  "roi-calculator":
+    "Calculate ROI, annualised return, and payback period instantly. Includes worked examples for marketing spend, property, and investment portfolios. 100% free.",
+  "break-even-calculator":
+    "Find the exact units and revenue needed to break even. Enter fixed costs, variable costs, and selling price — get results in under 3 seconds. No account needed.",
+  "net-worth-calculator":
+    "Add your assets and liabilities to calculate your exact net worth. Separate breakdown by category (property, savings, debts, pensions). Free net worth tracker.",
+  "percentage-calculator":
+    "3 calculators in 1: find X% of Y, find what % X is of Y, or calculate % change. Instant results with worked examples. The fastest free percentage calculator.",
+  "currency-converter":
+    "Convert 150+ currencies using live mid-market exchange rates. Includes travel money tips — airport bureaux de change charge 8–12% more than mid-market rate.",
+  "youtube-earnings-calculator":
+    "Estimate YouTube ad revenue by monthly views, RPM, and content niche. UK creators average £0.80–£3.50 RPM in 2026. See monthly and annual income projection.",
+  "paycheck-calculator-usa":
+    "Calculate US take-home pay after federal income tax, Social Security (6.2%), Medicare (1.45%), and state tax. All 50 states supported. 2026 tax brackets included.",
+  "tip-calculator":
+    "Calculate tip amount and split the total per person. UK guide: 10–12.5%. US guide: 18–22%. Works for restaurants, taxis, hotels, and hairdressers. Instant.",
+  "bmi-calculator":
+    "Calculate BMI using NHS and WHO thresholds instantly. 175cm, 75kg = BMI 24.5 (healthy). Includes South Asian risk thresholds and children's BMI guidance.",
+  "age-calculator":
+    "Find your exact age in years, months, and days. Includes UK school year eligibility by birthday, NHS screening ages, and State Pension age 2026. Free.",
+  "word-counter":
+    "Count words, characters, sentences, paragraphs, and reading time instantly. Includes university word count rules and 2026 social media character limits guide.",
+  "character-counter":
+    "Count characters with and without spaces in real time. Includes character limits for Twitter/X (280), LinkedIn (3,000), Instagram (2,200), and all major platforms.",
+  "base64-encoder-decoder":
+    "Encode or decode Base64 and Base64URL strings instantly. Explains padding, standard vs URL-safe variants, JWT tokens, and common developer mistakes. Client-side only.",
+  "json-formatter":
+    "Format, validate, and minify JSON in one click. Pinpoints exact error line for invalid JSON — trailing commas, single quotes, missing brackets. No data uploaded.",
+  "password-generator":
+    "Generate cryptographically secure passwords using Web Crypto API. Set 8–64 char length, toggle uppercase/numbers/symbols. Passwords generated locally — never sent online.",
+};
 
 /** Pad or trim editorial / override copy into Google-friendly snippet length. */
 export function normalizeToolMetaDescription(raw: string, tool: ToolDefinition): string {
-  let d = raw.trim().replace(/\s+/g, " ");
-  if (d.length > META_DESC_MAX) return d.slice(0, META_DESC_MAX);
-  const fillers = [
-    ` Try it free on Toollabz | HTTPS, instant ${(tool.keywords[0] ?? tool.name).trim()}, no signup.`,
-    ` Open this online tool anytime for repeatable ${(tool.keywords[1] ?? tool.category).replace(/-/g, " ")} workflows.`,
-    ` Compare scenarios, then explore related calculators from the same Toollabz directory.`,
-  ];
-  let i = 0;
-  while (d.length < META_DESC_MIN && i < fillers.length) {
-    d = `${d}${fillers[i]}`.replace(/\s+/g, " ").trim();
-    i += 1;
-  }
-  if (d.length < META_DESC_MIN) {
-    d = `${d} ${tool.shortDescription.trim()}`.replace(/\s+/g, " ").trim().slice(0, META_DESC_MAX);
-  }
-  if (d.length < META_DESC_MIN) {
-    const tail = (tool.description.trim() || tool.name).replace(/\s+/g, " ");
-    d = `${d} ${tail}`.replace(/\s+/g, " ").trim().slice(0, META_DESC_MAX);
-  }
-  return d.slice(0, META_DESC_MAX);
+  const cleaned = raw
+    .replace(/\|\s*HTTPS,\s*in.*$/i, "")
+    .replace(/\|\s*HTTPS.*$/i, "")
+    .trim();
+  const candidate = cleaned.length > 0 ? cleaned : buildToolMetaDescription(tool);
+  return sanitizeMetaDescription(candidate, META_DESC_MAX);
 }
 
 const SERP_TITLE_MAX = 60;
@@ -182,10 +214,8 @@ const CTR_TITLE_MAX = 78;
  */
 export function buildSerpToolTitle(tool: ToolDefinition): string {
   const primary = getSerpPrimaryLine(tool).trim();
-  const suffix = TOOL_PAGE_TITLE_SUFFIX;
-  const full = `${primary}${suffix}`;
-  if (full.length <= CTR_TITLE_MAX) return full;
-  const fallback = `${tool.name.trim()}${suffix}`;
+  if (primary.length <= CTR_TITLE_MAX) return primary;
+  const fallback = `${tool.name.trim()} - Free Online Tool`;
   if (fallback.length <= CTR_TITLE_MAX) return fallback;
   return clampSerpTitle(fallback, CTR_TITLE_MAX);
 }
@@ -201,24 +231,32 @@ function ensureToolPageTitleFormat(raw: string): string {
   return `${base}${TOOL_PAGE_TITLE_SUFFIX}`;
 }
 
+function toToolTitleBase(raw: string): string {
+  const withoutBrand = raw.replace(/\s*\|\s*Toollabz(\s*-\s*Free Online Tools)?\s*$/i, "").trim();
+  return withoutBrand.replace(/\s*\(Free\)\s*$/i, "").trim();
+}
+
 export function toolMetadata(tool: ToolDefinition) {
   const path = `/tools/${tool.slug}`;
+  const absolutePath = absoluteUrl(path);
   const override = TOOL_SEO_OVERRIDES[tool.slug];
   let title: string;
-  if (override?.title) {
+  if (TOOL_TITLE_OVERRIDES[tool.slug]) {
+    title = TOOL_TITLE_OVERRIDES[tool.slug]!;
+  } else if (override?.title) {
     const formatted = ensureToolPageTitleFormat(override.title);
     const candidate = clampSerpTitle(formatted, 78);
     title = candidate.includes(tool.name) ? candidate : buildSerpToolTitle(tool);
   } else {
     title = buildSerpToolTitle(tool);
   }
-  const description = override?.description
+  const titleBase = toToolTitleBase(title);
+  const description = TOOL_META_OVERRIDES[tool.slug] ?? (override?.description
     ? normalizeToolMetaDescription(override.description, tool)
-    : buildToolMetaDescription(tool);
-  const url = absoluteUrl(path);
-  const ogImage = absoluteUrl("/logo-toollabz.webp");
+    : buildToolMetaDescription(tool));
+  const ogImage = `${siteUrl}/api/og?title=${encodeURIComponent(tool.name)}&category=${encodeURIComponent(tool.category)}`;
   return {
-    title,
+    title: titleBase,
     description,
     keywords: [
       ...tool.keywords,
@@ -226,18 +264,27 @@ export function toolMetadata(tool: ToolDefinition) {
       `${tool.name.toLowerCase()} free`,
       `toollabz ${tool.name.toLowerCase()}`,
     ],
-    alternates: { canonical: path },
+    alternates: {
+      canonical: absolutePath,
+      languages: {
+        "en-GB": absolutePath,
+        "en-US": absolutePath,
+        "en-AU": absolutePath,
+        "x-default": absolutePath,
+      },
+    },
     openGraph: {
-      title,
+      title: `${titleBase}${TOOL_PAGE_TITLE_SUFFIX}`,
       description,
-      url,
+      url: absolutePath,
       type: "website",
       siteName: "Toollabz",
-      images: [{ url: ogImage, width: 512, height: 512, alt: "Toollabz" }],
+      locale: "en_GB",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${tool.name} — Toollabz` }],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: `${titleBase}${TOOL_PAGE_TITLE_SUFFIX}`,
       description,
       images: [ogImage],
     },
@@ -249,11 +296,23 @@ export function toolSchema(tool: ToolDefinition, pagePath?: string) {
   const path = pagePath ?? `/tools/${tool.slug}`;
   return {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": "WebApplication",
     name: tool.name,
     description: tool.description,
     url: absoluteUrl(path),
-    applicationCategory: "UtilityApplication",
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Web Browser",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    featureList: ["Free to use", "No account required", "Mobile responsive", "Instant results"],
+    publisher: {
+      "@type": "Organization",
+      name: "Toollabz",
+      url: siteUrl,
+    },
   };
 }
 
@@ -267,6 +326,10 @@ export function faqPageSchemaFromPairs(faqs: readonly { question: string; answer
       acceptedAnswer: { "@type": "Answer", text: faq.answer },
     })),
   };
+}
+
+export function generateFAQSchema(faqs: Array<{ question: string; answer: string }>) {
+  return faqPageSchemaFromPairs(faqs);
 }
 
 export function faqSchema(tool: ToolDefinition) {
@@ -372,6 +435,55 @@ export function breadcrumbJsonLd(items: readonly { name: string; path: string }[
   };
 }
 
+export function generateBreadcrumbSchema(items: Array<{ name: string; url: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+export function generateArticleSchema(post: {
+  title: string;
+  description: string;
+  url: string;
+  publishedDate: string;
+  modifiedDate: string;
+  authorName: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.description,
+    url: post.url,
+    datePublished: post.publishedDate,
+    dateModified: post.modifiedDate,
+    author: {
+      "@type": "Person",
+      name: post.authorName,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Toollabz",
+      url: siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: absoluteUrl("/logo-toollabz.webp"),
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": post.url,
+    },
+  };
+}
+
 /** Sitelinks search box: matches `/tools?q=` in ToolsDirectoryClient. */
 export function websiteSearchActionSchema() {
   return {
@@ -404,26 +516,25 @@ export function organizationSchema() {
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
-  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
+  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "hello@toollabz.com";
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Toollabz",
     url: siteUrl,
     logo: absoluteUrl("/logo-toollabz.webp"),
+    foundingDate: "2026-04",
+    description:
+      "Free online tools for finance, business, PDF, developer, and utility tasks. 238+ tools, no account required.",
     dateModified: SITE_LAST_UPDATED_DATE_TIME,
-    ...(contactEmail
-      ? {
-          contactPoint: [
-            {
-              "@type": "ContactPoint",
-              contactType: "customer support",
-              email: contactEmail,
-              url: absoluteUrl("/contact"),
-            },
-          ],
-        }
-      : {}),
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: contactEmail,
+        url: absoluteUrl("/contact"),
+      },
+    ],
     ...(sameAs.length ? { sameAs } : {}),
   };
 }
