@@ -27,18 +27,18 @@ import PageLastUpdated from "@/components/PageLastUpdated";
 import PopularCalculationsBlock from "@/components/PopularCalculationsBlock";
 
 const guideCount = blogPosts.length;
+const toolCount = tools.length;
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Toollabz — 238+ Free Online Tools, Calculators & Utilities",
+    absolute: `Toollabz — ${toolCount}+ Free Online Tools, Calculators & Utilities`,
   },
-  description:
-    "Free online calculators and tools for finance, tax, business, health, developer, and productivity. VAT calculator, salary after tax, loan calculator, BMI, JSON formatter, Base64, and 230+ more. No account needed.",
+  description: `Free online calculators and tools for finance, tax, business, health, developer, and productivity. VAT calculator, salary after tax, loan calculator, BMI, JSON formatter, Base64, and ${toolCount}+ utilities. No account needed.`,
   alternates: {
     canonical: "https://toollabz.com",
   },
   openGraph: {
-    title: "Toollabz — 238+ Free Online Tools & Calculators",
+    title: `Toollabz — ${toolCount}+ Free Online Tools & Calculators`,
     description: `Calculators, developer utilities, UK finance hub, SaaS metrics, GST tools, PDF workflows, and ${guideCount}+ articles. Structured pages with internal links between related tools.`,
     url: siteUrl,
     type: "website",
@@ -48,8 +48,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Toollabz — 238+ Free Online Tools",
-    description: "Free VAT, salary, loan, BMI, JSON tools and 230+ more. No account needed.",
+    title: `Toollabz — ${toolCount}+ Free Online Tools`,
+    description: `Free VAT, salary, loan, BMI, JSON tools and ${toolCount}+ more. No account needed.`,
     images: [absoluteUrl("/api/og?title=Toollabz&category=Free%20Online%20Tools")],
   },
 };
@@ -71,8 +71,7 @@ const homeWebsiteLd = {
   name: "Toollabz",
   alternateName: "Toollabz.com",
   url: "https://toollabz.com",
-  description:
-    "238+ free online tools for finance, tax, business, health, developer, and productivity. No account required.",
+  description: `${toolCount}+ free online tools for finance, tax, business, health, developer, and productivity. No account required.`,
   potentialAction: {
     "@type": "SearchAction",
     target: {

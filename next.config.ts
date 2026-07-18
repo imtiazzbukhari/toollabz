@@ -12,7 +12,8 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   typescript: {
-    ignoreBuildErrors: true,
+    // Enforce type safety in production builds (tsc is clean as of readiness review).
+    ignoreBuildErrors: false,
   },
   eslint: {
     ignoreDuringBuilds: true,
@@ -31,6 +32,14 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Host-level www → apex (belt-and-suspenders; middleware also enforces this).
+      // Live evidence (2026-07-18): https://www.toollabz.com returned 200 without redirect.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.toollabz.com" }],
+        destination: "https://toollabz.com/:path*",
+        permanent: true,
+      },
       {
         source: "/loan-calculator-:amount(\\d+)",
         destination: "/loan-calculator/p/:amount",
@@ -95,6 +104,11 @@ const nextConfig: NextConfig = {
           { key: "X-DNS-Prefetch-Control", value: "on" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          {
+            // Security header (not a ranking factor). Omit `preload` until every subdomain is HTTPS-verified.
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains",
+          },
           { key: "X-Frame-Options", value: "DENY" },
           {
             key: "Permissions-Policy",

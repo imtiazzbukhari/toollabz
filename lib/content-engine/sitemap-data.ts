@@ -3,6 +3,9 @@ import path from "node:path";
 import { blogPosts } from "@/lib/blog/registry";
 import { categories, tools } from "@/lib/tools/data";
 import { siteUrl as configuredSiteUrl } from "@/lib/seo";
+import { SITEMAP_CM_TO_FEET_SLUGS, SITEMAP_LOAN_PRINCIPALS, SITEMAP_SALARY_GROSS } from "@/lib/sitemap-programmatic";
+import { GLOSSARY_TERMS } from "@/lib/glossary/terms";
+import { SITE_LAST_UPDATED_DATE_TIME } from "@/lib/site-freshness";
 
 /** Never emit raw IPs or non-public hosts in sitemap `<loc>` URLs. */
 export function sitemapPublicOrigin(): string {
@@ -32,7 +35,6 @@ export function sitemapPublicOrigin(): string {
 }
 
 const siteUrl = sitemapPublicOrigin();
-import { SITEMAP_CM_TO_FEET_SLUGS, SITEMAP_LOAN_PRINCIPALS, SITEMAP_SALARY_GROSS } from "@/lib/sitemap-programmatic";
 
 export type SitemapEntry = {
   loc: string;
@@ -113,52 +115,82 @@ function generatedPaths(): string[] {
   }
 }
 
-export function buildSitemapEntries(now = new Date()): SitemapEntry[] {
+/**
+ * Page sitemap (hubs, legal, EEAT, categories, glossary, high-tier programmatic).
+ * Tools and blog posts are intentionally omitted — they live in sharded sitemaps
+ * advertised separately in robots.txt (avoids duplicate URLs across sitemap files).
+ */
+export function buildPageSitemapEntries(): SitemapEntry[] {
   const entries: SitemapEntry[] = [];
   const seen = new Set<string>();
-  const nowIso = now.toISOString();
-  [
-    "/",
-    "/tools",
-    "/blog",
-    "/pricing",
-    "/about",
-    "/privacy",
-    "/terms",
-    "/disclaimer",
-    "/contact",
-    "/research",
-    "/finance-tools",
-    "/business-tools",
-    "/real-estate-tools",
-    "/ai-tools",
-    "/utility-tools",
-    "/pdf-tools",
-    "/developer-tools",
-    "/marketing-tools",
-    "/uk-finance-tax",
-  ].forEach((p) =>
-    add(
-      entries,
-      seen,
-      p,
-      p === "/" ? 1.0 : p === "/research" ? 0.7 : 0.6,
-      p === "/" ? "weekly" : p === "/research" ? "yearly" : "monthly",
-      nowIso,
-    ),
-  );
+  // Prefer the editorial freshness stamp over request-time "now" (more honest lastmod).
+  const contentStamp = SITE_LAST_UPDATED_DATE_TIME;
+  const stableLegal = "2026-06-01T00:00:00.000Z";
 
-  categories.forEach((category) => add(entries, seen, `/category/${category.slug}`, 0.6, "monthly", nowIso));
-  tools.forEach((tool) => add(entries, seen, `/tools/${tool.slug}`, getToolPriority(tool.slug), "monthly", nowIso));
+  const staticPages: Array<{
+    path: string;
+    priority: number;
+    changefreq: NonNullable<SitemapEntry["changefreq"]>;
+    lastmod: string;
+  }> = [
+    { path: "/", priority: 1.0, changefreq: "daily", lastmod: contentStamp },
+    { path: "/tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
+    { path: "/blog", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
+    { path: "/research", priority: 0.7, changefreq: "monthly", lastmod: contentStamp },
+    { path: "/pricing", priority: 0.4, changefreq: "yearly", lastmod: stableLegal },
+    { path: "/finance-tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
+    { path: "/business-tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
+    { path: "/developer-tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
+    { path: "/pdf-tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
+    { path: "/utility-tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
+    { path: "/real-estate-tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
+    { path: "/marketing-tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
+    { path: "/ai-tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
+    { path: "/uk-finance-tax", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
+    { path: "/about", priority: 0.5, changefreq: "yearly", lastmod: stableLegal },
+    { path: "/contact", priority: 0.4, changefreq: "yearly", lastmod: stableLegal },
+    { path: "/methodology", priority: 0.55, changefreq: "monthly", lastmod: contentStamp },
+    { path: "/editorial-policy", priority: 0.5, changefreq: "monthly", lastmod: contentStamp },
+    { path: "/glossary", priority: 0.6, changefreq: "monthly", lastmod: contentStamp },
+    { path: "/team/imtiaz-ahmad", priority: 0.45, changefreq: "yearly", lastmod: contentStamp },
+    { path: "/team/editorial", priority: 0.45, changefreq: "yearly", lastmod: contentStamp },
+    { path: "/privacy", priority: 0.4, changefreq: "yearly", lastmod: stableLegal },
+    { path: "/terms", priority: 0.4, changefreq: "yearly", lastmod: stableLegal },
+    { path: "/disclaimer", priority: 0.4, changefreq: "yearly", lastmod: stableLegal },
+  ];
+
+  for (const page of staticPages) {
+    add(entries, seen, page.path, page.priority, page.changefreq, page.lastmod);
+  }
+  categories.forEach((category) => add(entries, seen, `/category/${category.slug}`, 0.7, "weekly", contentStamp));
+  GLOSSARY_TERMS.forEach((term) => add(entries, seen, `/glossary/${term.slug}`, 0.55, "monthly", contentStamp));
+  // High-tier programmatic only — never include noindex stubs here.
+  SITEMAP_CM_TO_FEET_SLUGS.forEach((cm) =>
+    add(entries, seen, `/cm-to-feet/${cm}-cm-to-feet`, 0.65, "monthly", contentStamp),
+  );
+  SITEMAP_LOAN_PRINCIPALS.forEach((amount) =>
+    add(entries, seen, `/loan-calculator/p/${amount}`, 0.65, "monthly", contentStamp),
+  );
+  SITEMAP_SALARY_GROSS.forEach((amount) =>
+    add(entries, seen, `/salary-after-tax/p/${amount}`, 0.65, "monthly", contentStamp),
+  );
+  return entries;
+}
+
+/** Full inventory for tests/dashboard: page sitemap + tool URLs + blog URLs (deduped). */
+// Optional Date arg retained for call-site compatibility; lastmod uses SITE_LAST_UPDATED.
+export function buildSitemapEntries(_now?: Date): SitemapEntry[] {
+  void _now;
+  const entries = buildPageSitemapEntries();
+  const seen = new Set(entries.map((e) => e.loc));
+  const contentStamp = SITE_LAST_UPDATED_DATE_TIME;
+
+  tools.forEach((tool) => add(entries, seen, `/tools/${tool.slug}`, getToolPriority(tool.slug), "monthly", contentStamp));
   blogPosts.forEach((post) => {
     const m = blogPostSitemapLastMod(post);
     add(entries, seen, `/blog/${post.slug}`, 0.7, "yearly", m);
   });
-
-  SITEMAP_CM_TO_FEET_SLUGS.forEach((cm) => add(entries, seen, `/cm-to-feet/${cm}-cm-to-feet`, 0.72, "monthly", nowIso));
-  SITEMAP_LOAN_PRINCIPALS.forEach((amount) => add(entries, seen, `/loan-calculator/p/${amount}`, 0.72, "monthly", nowIso));
-  SITEMAP_SALARY_GROSS.forEach((amount) => add(entries, seen, `/salary-after-tax/p/${amount}`, 0.72, "monthly", nowIso));
-  generatedPaths().forEach((p) => add(entries, seen, p, 0.7, "weekly", nowIso));
+  generatedPaths().forEach((p) => add(entries, seen, p, 0.7, "weekly", contentStamp));
   return entries;
 }
 

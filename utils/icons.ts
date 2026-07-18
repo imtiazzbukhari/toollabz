@@ -54,7 +54,6 @@ const toolCardIcons: Record<string, LucideIcon> = {
   "salary-after-tax-calculator": BadgeDollarSign,
   "salary-after-tax-calculator-uk": PoundSterling,
   "self-employed-tax-calculator-uk": Receipt,
-  "self-employed-tax-calculator-uk": Receipt,
   "dividend-tax-calculator-uk": PiggyBank,
   "paycheck-calculator-usa": Banknote,
   "loan-calculator": Calculator,

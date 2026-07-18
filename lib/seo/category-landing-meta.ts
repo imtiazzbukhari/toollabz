@@ -7,7 +7,7 @@ function withBrandSuffix(title: string): string {
 }
 
 export function categoryLandingMetadata(opts: {
-  path: `/${string}`;
+  path: string;
   title: string;
   description: string;
 }): Metadata {

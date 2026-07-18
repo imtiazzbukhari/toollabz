@@ -66,8 +66,9 @@ function isTrustedProductionApex(apex: string): boolean {
 }
 
 function withHsts(res: NextResponse, hostForHsts: string, apex: string) {
+  // Match next.config: includeSubDomains only — do not send preload until every subdomain is verified.
   if (isTrustedProductionApex(apex) && hostForHsts === apex) {
-    res.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
+    res.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains");
   }
   return res;
 }
@@ -95,15 +96,16 @@ export function middleware(request: NextRequest) {
     forwardedProto === "https" ||
     (forwardedProto == null && url.protocol === "https:");
 
-  if (enforce && !isHttps) {
+  // Single-hop canonicalization: http/www → https://apex in one 301 when possible.
+  if (enforce && (!isHttps || (apexOk && hostNoPort === `www.${apex}`))) {
     url.protocol = "https:";
-    return redirectOrNext(hostNoPort, url, apex);
-  }
-
-  if (enforce && apexOk && hostNoPort === `www.${apex}`) {
-    url.hostname = apex;
-    url.protocol = "https:";
-    return redirectOrNext(apex, url, apex);
+    if (apexOk && (hostNoPort === `www.${apex}` || hostNoPort === apex)) {
+      url.hostname = apex;
+    }
+    const targetHost = url.hostname.toLowerCase();
+    if (!isHttps || targetHost !== hostNoPort) {
+      return redirectOrNext(apexOk ? apex : hostNoPort, url, apex);
+    }
   }
 
   const pathname = request.nextUrl.pathname;

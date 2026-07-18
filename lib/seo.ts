@@ -251,9 +251,11 @@ export function toolMetadata(tool: ToolDefinition) {
     title = buildSerpToolTitle(tool);
   }
   const titleBase = toToolTitleBase(title);
-  const description = TOOL_META_OVERRIDES[tool.slug] ?? (override?.description
+  const rawDescription = TOOL_META_OVERRIDES[tool.slug] ?? (override?.description
     ? normalizeToolMetaDescription(override.description, tool)
     : buildToolMetaDescription(tool));
+  // Always clamp — hardcoded overrides historically exceeded SERP snippet limits.
+  const description = sanitizeMetaDescription(rawDescription, META_DESC_MAX);
   const ogImage = `${siteUrl}/api/og?title=${encodeURIComponent(tool.name)}&category=${encodeURIComponent(tool.category)}`;
   return {
     title: titleBase,
@@ -265,13 +267,9 @@ export function toolMetadata(tool: ToolDefinition) {
       `toollabz ${tool.name.toLowerCase()}`,
     ],
     alternates: {
+      // Self-canonical only. Do not emit fake hreflang (en-GB/en-US/en-AU → same URL);
+      // Google treats that as invalid alternate annotations.
       canonical: absolutePath,
-      languages: {
-        "en-GB": absolutePath,
-        "en-US": absolutePath,
-        "en-AU": absolutePath,
-        "x-default": absolutePath,
-      },
     },
     openGraph: {
       title: `${titleBase}${TOOL_PAGE_TITLE_SUFFIX}`,
@@ -291,23 +289,35 @@ export function toolMetadata(tool: ToolDefinition) {
   };
 }
 
-/** Minimal SoftwareApplication JSON-LD (stable fields for indexing). */
+/** WebApplication JSON-LD — keep claims honest and matched to visible page content. */
 export function toolSchema(tool: ToolDefinition, pagePath?: string) {
   const path = pagePath ?? `/tools/${tool.slug}`;
+  const applicationCategory =
+    tool.category === "finance" || tool.category === "real-estate"
+      ? "FinanceApplication"
+      : tool.category === "business"
+        ? "BusinessApplication"
+        : "UtilitiesApplication";
   return {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: tool.name,
     description: tool.description,
     url: absoluteUrl(path),
-    applicationCategory: "UtilitiesApplication",
-    operatingSystem: "Web Browser",
+    applicationCategory,
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript. Requires HTML5.",
     offers: {
       "@type": "Offer",
       price: "0",
       priceCurrency: "USD",
     },
-    featureList: ["Free to use", "No account required", "Mobile responsive", "Instant results"],
+    featureList: [
+      "Free to use in the browser",
+      "No account required for core calculation",
+      tool.howToUse?.length ? "On-page how-to steps" : "Interactive browser tool",
+      "Works on mobile and desktop browsers",
+    ].filter(Boolean),
     publisher: {
       "@type": "Organization",
       name: "Toollabz",
@@ -336,15 +346,10 @@ export function faqSchema(tool: ToolDefinition) {
   return faqPageSchemaFromPairs(getToolFaqs(tool));
 }
 
-/** HowTo structured data built from on-page steps (extended for rich results). */
+/** HowTo structured data built from on-page steps only (must match visible content). */
 export function howToSchema(tool: ToolDefinition, pagePath?: string) {
   const path = pagePath ?? `/tools/${tool.slug}`;
-  const tail = [
-    "Run the primary action (Calculate, Convert, or Generate) after inputs validate.",
-    "Read the headline result and any supporting breakdown lines.",
-    "Copy or screenshot the output for your records; open a related tool from the page if the next step needs different math.",
-  ];
-  const steps = [...tool.howToUse, ...tail].slice(0, 10);
+  const steps = tool.howToUse.slice(0, 10);
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -411,8 +416,8 @@ export function webPageSchema({
     name,
     description,
     url: absoluteUrl(path),
+    // Only claim dateModified from the site freshness stamp; avoid inventing per-page publish dates.
     dateModified: dm,
-    datePublished: dm,
     isPartOf: {
       "@type": "WebSite",
       name: "Toollabz",
@@ -525,7 +530,7 @@ export function organizationSchema() {
     logo: absoluteUrl("/logo-toollabz.webp"),
     foundingDate: "2026-04",
     description:
-      "Free online tools for finance, business, PDF, developer, and utility tasks. 238+ tools, no account required.",
+      "Free online tools for finance, business, PDF, developer, and utility tasks. Transparent formulas, no account required for core tools.",
     dateModified: SITE_LAST_UPDATED_DATE_TIME,
     contactPoint: [
       {

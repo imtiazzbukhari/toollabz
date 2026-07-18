@@ -4,12 +4,51 @@ export function loanPrincipalCanonicalPath(amount: number): string {
   return `/loan-calculator/p/${amount}`;
 }
 
+/** Standard amortizing payment: M = P * r(1+r)^n / ((1+r)^n - 1) */
+export function monthlyPayment(principal: number, annualRatePct: number, termYears: number): number {
+  const r = annualRatePct / 100 / 12;
+  const n = termYears * 12;
+  if (r === 0) return principal / n;
+  const factor = Math.pow(1 + r, n);
+  return (principal * r * factor) / (factor - 1);
+}
+
+export type LoanScenarioRow = {
+  apr: number;
+  termYears: number;
+  monthly: number;
+  totalPaid: number;
+  totalInterest: number;
+};
+
+/** Unique numeric table for this principal (information gain vs template-only copy). */
+export function loanPrincipalScenarios(amount: number): LoanScenarioRow[] {
+  const combos: Array<[number, number]> = [
+    [5.99, 3],
+    [7.49, 5],
+    [9.99, 5],
+    [6.5, 7],
+  ];
+  return combos.map(([apr, termYears]) => {
+    const monthly = monthlyPayment(amount, apr, termYears);
+    const totalPaid = monthly * termYears * 12;
+    return {
+      apr,
+      termYears,
+      monthly,
+      totalPaid,
+      totalInterest: totalPaid - amount,
+    };
+  });
+}
+
 export function loanPrincipalMetadata(amount: number) {
   const title = `Loan Calculator $${amount.toLocaleString("en-US")} Principal - Monthly Payments Instantly (Free)`.slice(
     0,
     72,
   );
-  const description = `Estimate monthly loan payments for a $${amount.toLocaleString("en-US")} principal: amortization framing, APR assumptions, and links to the full Toollabz loan calculator.`.slice(
+  const sample = monthlyPayment(amount, 7.49, 5);
+  const description = `$${amount.toLocaleString("en-US")} loan: ~$${Math.round(sample).toLocaleString("en-US")}/mo at 7.49% APR over 5 years (illustrative). Compare APR×term scenarios and open the full calculator.`.slice(
     0,
     158,
   );
@@ -33,47 +72,61 @@ export function loanPrincipalMetadata(amount: number) {
   };
 }
 
+export function loanPrincipalKeyTakeaways(amount: number): string[] {
+  const f = amount.toLocaleString("en-US");
+  const base = monthlyPayment(amount, 7.49, 5);
+  return [
+    `A $${f} principal at 7.49% APR for 5 years is about $${Math.round(base).toLocaleString("en-US")} per month before fees (illustrative).`,
+    "Raising APR by ~2 points usually hurts more than shortening the term by a year on mid-size personal loans—run both levers in the full calculator.",
+    "Total interest is principal × (payment schedule − 1). Escrow, insurance, and origination fees are not in the simple amortization math.",
+    "Use this page for planning anchors; use a lender quote APR for decisions.",
+  ];
+}
+
 export function loanPrincipalParagraphs(amount: number): string[] {
   const f = amount.toLocaleString("en-US");
+  const scenarios = loanPrincipalScenarios(amount);
+  const mid = scenarios[1]!;
   return [
-    `This landing page explains how a $${f} principal fits into a typical installment loan mental model: you choose an APR and term in the full calculator, then read the payment stack (principal and interest) over time. Toollabz keeps the narrative here so searchers who type a dollar amount plus “loan calculator” still get context before they open the interactive tool.`,
-    `Why publish amount-specific pages? People often benchmark round numbers-$${f} is a common planning anchor for vehicles, personal loans, or consolidation scenarios. A dedicated URL with unique copy reduces thin-index risk versus duplicating the same paragraph everywhere, and internal links route you to the canonical calculator experience with the same glass UI as the rest of the site.`,
-    `Important limitations: rates move with markets and credit profiles. This page does not pick a rate for you; it describes how to think about payments once you supply APR, term, and any fees your lender discloses. Always confirm with a licensed loan officer before you commit, especially when DTI, insurance, or escrow layers apply.`,
-    `Next step: open the full loan calculator, enter $${f} as principal, then sweep APR ±1% and term ±12 months to see sensitivity. Pair that run with debt payoff or refinance tools linked from the main calculator page when you are comparing strategies rather than a single quote.`,
+    `If you are sizing a $${f} loan, start with the payment table below. It applies the standard amortizing formula to this exact principal so you can see how APR and term change the monthly bill before you open the interactive calculator.`,
+    `At ${mid.apr}% APR over ${mid.termYears} years, $${f} works out to about $${Math.round(mid.monthly).toLocaleString("en-US")} per month and roughly $${Math.round(mid.totalInterest).toLocaleString("en-US")} in interest (fees excluded). That is a planning benchmark—not a lender offer.`,
+    `When to use a $${f} anchor: auto loans, personal consolidation, and home-improvement quotes often cluster near round principals. Compare your quote’s APR and term against the table, then stress-test ±1% APR in the full Toollabz loan calculator.`,
+    `Common mistakes: ignoring origination fees, treating interest-only quotes as amortizing payments, and forgetting insurance/taxes on secured loans. Confirm material decisions with a licensed lender or advisor.`,
   ];
 }
 
 export function loanPrincipalFaqs(amount: number): { question: string; answer: string }[] {
   const f = amount.toLocaleString("en-US");
+  const sample = monthlyPayment(amount, 7.49, 5);
   return [
     {
-      question: `Does this page calculate my exact payment for $${f}?`,
-      answer:
-        "It explains the framing; the live payment math runs in the full Toollabz loan calculator where you enter APR, term, and optional fees your lender uses.",
+      question: `What is the monthly payment on a $${f} loan?`,
+      answer: `At an illustrative 7.49% APR over 5 years, about $${Math.round(sample).toLocaleString("en-US")} per month using standard amortization (principal and interest only). Enter your real APR and term in the full calculator for a precise figure.`,
     },
     {
-      question: `Why is $${f} highlighted on this URL?`,
+      question: `How is the $${f} payment calculated?`,
       answer:
-        "Searchers often anchor on a principal amount. This page gives unique context for that anchor and links to the interactive tool so you do not have to hunt for the entry field.",
+        "Monthly payment M = P × r(1+r)^n / ((1+r)^n − 1), where P is principal, r is monthly rate (APR÷12), and n is the number of months. That is the same formula banks use for level amortizing loans.",
     },
     {
-      question: "Will my APR match the example rate on country pages?",
+      question: `Why show multiple APR and term scenarios for $${f}?`,
       answer:
-        "Country benchmark pages are illustrative only. Your lender applies risk-based pricing; enter the APR you were quoted when you use the calculator.",
+        "Searchers comparing quotes need sensitivity, not a single magic number. The table shows how the same principal behaves under different rate/term pairs so you can see which lever matters more.",
     },
     {
-      question: "Can I use this for mortgages and auto loans?",
+      question: "Does this include taxes, insurance, or PMI?",
       answer:
-        "Yes for high-level installment intuition, but mortgages add taxes, insurance, PMI, and escrow. Use mortgage-specific Toollabz calculators when those components matter.",
+        "No. Those appear on mortgage stacks. For home loans, use the mortgage payment calculator after you have tax and insurance estimates.",
     },
     {
       question: "Is this financial advice?",
       answer:
-        "No. It is educational copy plus links to calculators. Confirm material decisions with qualified professionals.",
+        "No. It is educational math plus links to calculators. Confirm decisions with qualified professionals.",
     },
     {
-      question: "How do I share this page?",
-      answer: `Copy the canonical HTTPS URL /loan-calculator/p/${amount} so teammates see the same principal-focused context.`,
+      question: `How do I open the interactive calculator with $${f}?`,
+      answer:
+        "Use the full loan calculator link on this page, enter the principal, then set the APR and term from your quote.",
     },
   ];
 }

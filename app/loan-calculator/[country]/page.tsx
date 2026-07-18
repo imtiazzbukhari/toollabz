@@ -27,16 +27,18 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
   if (!rates[country]) return {};
 
   const label = country.toUpperCase();
+  // Thin country stubs: consolidate index signals on the full calculator.
   return {
     title: `Loan Calculator ${label} - Monthly Payment Estimates Instantly (Free)`,
     description: `Estimate monthly loan payments and repayment costs for ${label} with localized benchmark rates.`,
+    robots: { index: false, follow: true },
     alternates: {
-      canonical: `/loan-calculator/${country}`,
+      canonical: "/tools/loan-calculator",
     },
     openGraph: {
       title: `Loan Calculator ${label} - Monthly Payment Estimates Instantly (Free)`,
       description: `Estimate monthly loan payments and repayment costs for ${label}.`,
-      url: `${siteUrl}/loan-calculator/${country}`,
+      url: `${siteUrl}/tools/loan-calculator`,
       type: "article",
     },
   };

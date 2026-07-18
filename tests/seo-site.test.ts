@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { blogPostSlugs } from "../lib/blog/registry";
 import { tools } from "../lib/tools/data";
-import { toolMetadata } from "../lib/seo";
+import { absoluteUrl, toolMetadata } from "../lib/seo";
 import { GET as robotsGet } from "../app/robots.txt/route";
 import { buildSitemapEntries, sitemapPublicOrigin } from "../lib/content-engine/sitemap-data";
 
@@ -19,10 +19,13 @@ describe("site SEO plumbing (sitemap, robots, metadata)", () => {
     expect(text).toContain("User-agent: *");
     expect(text).toContain("Allow: /");
     expect(text).toContain("Disallow: /api/");
+    expect(text).not.toContain("Disallow: /_next/");
+    expect(text).toContain("Disallow: /dashboard/");
+    expect(text).toContain("Disallow: /seo-growth-console/");
   });
 
   it("sitemap contains homepage, tools index, sample tool, blog index, and every blog slug", () => {
-    const entries = buildSitemapEntries(new Date());
+    const entries = buildSitemapEntries();
     const urls = entries.map((e) => e.loc);
 
     expect(urls.length).toBeGreaterThan(100);
@@ -58,7 +61,7 @@ describe("site SEO plumbing (sitemap, robots, metadata)", () => {
   });
 
   it("every tool slug has a sitemap URL", () => {
-    const entries = buildSitemapEntries(new Date());
+    const entries = buildSitemapEntries();
     const urls = new Set(entries.map((e) => e.loc));
     for (const tool of tools) {
       expect(urls.has(sitemapAbs(`/tools/${tool.slug}`))).toBe(true);
@@ -72,7 +75,8 @@ describe("site SEO plumbing (sitemap, robots, metadata)", () => {
       expect(m.title.length).toBeGreaterThan(2);
       expect(m.description.length).toBeGreaterThan(24);
       expect(m.description.length).toBeLessThanOrEqual(160);
-      expect(m.alternates?.canonical).toBe(`/tools/${tool.slug}`);
+      // Canonical must be absolute and match lib/seo origin (localhost in tests, apex in prod).
+      expect(m.alternates?.canonical).toBe(absoluteUrl(`/tools/${tool.slug}`));
     }
   });
 });

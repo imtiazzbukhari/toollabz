@@ -10,8 +10,8 @@ import { toolGlassPanel } from "@/lib/tool-ui";
 import type { ToolHistoryEntry } from "./tool-workspace-types";
 import ToolHistoryList from "./ToolHistoryList";
 
+// SSR the form shell so LCP/INP users see real inputs immediately (PDF stays client-only).
 const CalculatorForm = dynamic(() => import("@/components/CalculatorForm"), {
-  ssr: false,
   loading: () => (
     <div
       className={`space-y-5 p-6 sm:p-7 ${toolGlassPanel} animate-pulse`}

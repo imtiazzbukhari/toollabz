@@ -161,20 +161,15 @@ function categoryLongTail(tool: ToolDefinition): ToolFAQ[] {
 
 function scoreFaq(tool: ToolDefinition, f: ToolFAQ): number {
   const q = f.question.trim().toLowerCase();
-  if (tool.faqs.some((b) => b.question.trim().toLowerCase() === q)) return 5;
+  if (tool.faqs.some((b) => b.question.trim().toLowerCase() === q)) return 6;
+  // Prefer insight-style / worked-example FAQs over keyword-stuffed long-tail packs.
+  if (q.includes("plain english") || q.includes("worked example") || q.includes("important tips")) return 5;
+  if (q.includes("substitute for professional") || q.includes("disagrees with another")) return 4;
   const kw = (tool.keywords[0] ?? "").toLowerCase();
-  if (kw && q.includes(kw)) return 4;
-  if (
-    q.includes("difference between") ||
-    q.includes("people also ask") ||
-    q.includes("workflow") ||
-    q.includes("long-tail") ||
-    q.includes("advanced assumption")
-  ) {
-    return 3;
-  }
+  if (kw && q.includes(kw)) return 3;
+  if (q.includes("people also ask") || q.includes("long-tail") || q.includes("search variations")) return 0;
+  if (q.includes("mobile") || q.includes("phone") || q.includes("tablet") || q.includes("free to use")) return 0;
   if (q.includes("accurate") || q.includes("precise") || q.includes("trust")) return 2;
-  if (q.includes("mobile") || q.includes("phone") || q.includes("tablet") || q.includes("free to use")) return 1;
   return 2;
 }
 
@@ -184,17 +179,21 @@ function rankAndCap(tool: ToolDefinition, list: ToolFAQ[], cap: number): ToolFAQ
   return sorted.slice(0, cap);
 }
 
-/** Merge long-tail + topical FAQ intent; cap at FAQ_CAP; ensure minimum depth for high-intent tools. */
+/** Cap FAQs; only inject long-tail packs when the page still lacks enough unique Q&A. */
 export function augmentToolFaqsForIntent(tool: ToolDefinition, merged: ToolFAQ[], formulaLine: string): ToolFAQ[] {
   const important = isHighIntentTool(tool);
-  const injected = dedupeFaqs([...longTailPack(tool, formulaLine), ...categoryLongTail(tool)]);
-  let list = dedupeFaqs([...merged, ...injected]);
+  let list = dedupeFaqs(merged);
 
+  // Skip keyword-stuffed long-tail packs when insight/base FAQs already provide depth.
+  if (list.length < FAQ_MIN_IMPORTANT) {
+    const injected = dedupeFaqs([...longTailPack(tool, formulaLine).slice(0, 2), ...categoryLongTail(tool).slice(0, 1)]);
+    list = dedupeFaqs([...list, ...injected]);
+  }
   if (important && list.length < FAQ_MIN_IMPORTANT) {
     const more = longTailPack(tool, formulaLine).filter((p) => !list.some((x) => x.question === p.question));
-    list = dedupeFaqs([...list, ...more]);
+    list = dedupeFaqs([...list, ...more.slice(0, 2)]);
   } else if (!important && list.length < 5) {
-    list = dedupeFaqs([...list, ...longTailPack(tool, formulaLine).slice(0, 3)]);
+    list = dedupeFaqs([...list, ...longTailPack(tool, formulaLine).slice(0, 2)]);
   }
 
   return rankAndCap(tool, list, FAQ_CAP);

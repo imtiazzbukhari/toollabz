@@ -27,12 +27,14 @@ const team = [
     name: "Imtiaz Ahmad",
     role: "Founder & lead engineer",
     initials: "IA",
+    href: "/team/imtiaz-ahmad",
     bio: "Imtiaz founded Toollabz in April 2026 and leads product engineering, calculator logic, performance, and technical SEO. His focus is building practical tools with visible assumptions, fast pages, and enough explanation for users to check the result instead of blindly trusting a black box.",
   },
   {
     name: "Toollabz Editorial",
     role: "Product editor",
     initials: "TE",
+    href: "/team/editorial",
     bio: "The editorial workflow reviews finance and legal-adjacent pages for formula clarity, source references, and visible disclaimers. Pages are updated when rates, public guidance, or tool behavior changes.",
   },
 ] as const;
@@ -72,13 +74,14 @@ export default function AboutPage() {
     itemListElement: team.map((member, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      item: {
-        "@type": "Person",
-        name: member.name,
-        jobTitle: member.role,
-        description: member.bio,
-        worksFor: { "@type": "Organization", name: "Toollabz", url: siteUrl },
-      },
+        item: {
+          "@type": "Person",
+          name: member.name,
+          jobTitle: member.role,
+          description: member.bio,
+          url: absoluteUrl(member.href),
+          worksFor: { "@type": "Organization", name: "Toollabz", url: siteUrl },
+        },
     })),
   };
 
@@ -140,9 +143,19 @@ export default function AboutPage() {
                   {member.initials}
                 </span>
                 <div>
-                  <p className="text-lg font-semibold text-slate-900">{member.name}</p>
+                  <p className="text-lg font-semibold text-slate-900">
+                    <Link href={member.href} className="underline-offset-2 hover:text-violet-800 hover:underline">
+                      {member.name}
+                    </Link>
+                  </p>
                   <p className="text-sm font-medium text-violet-700">{member.role}</p>
                   <p className="mt-2 leading-7 text-slate-700">{member.bio}</p>
+                  <Link
+                    href={member.href}
+                    className="mt-2 inline-block text-sm font-medium text-violet-800 underline-offset-2 hover:underline"
+                  >
+                    View profile
+                  </Link>
                 </div>
               </li>
             ))}
@@ -175,6 +188,24 @@ export default function AboutPage() {
               className="inline-flex rounded-xl border border-violet-300/60 bg-white/70 px-5 py-2.5 text-sm font-semibold text-violet-700 transition hover:bg-white"
             >
               Browse all tools
+            </Link>
+            <Link
+              href="/methodology"
+              className="inline-flex rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              Methodology
+            </Link>
+            <Link
+              href="/editorial-policy"
+              className="inline-flex rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              Editorial policy
+            </Link>
+            <Link
+              href="/glossary"
+              className="inline-flex rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              Glossary
             </Link>
             <Link
               href="/blog"

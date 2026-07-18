@@ -1,13 +1,31 @@
+import { tools } from "@/lib/tools/data";
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+const BASE_URL = "https://toollabz.com";
+const TOOLS_PER_SITEMAP = 200;
+
+function toolSitemapLines(): string {
+  const toolCount = tools.filter((tool) => !tool.slug.startsWith("embed")).length;
+  const shardCount = Math.max(1, Math.ceil(toolCount / TOOLS_PER_SITEMAP));
+  return Array.from({ length: shardCount }, (_, id) => `Sitemap: ${BASE_URL}/tools/sitemap/${id}.xml`).join(
+    "\n",
+  );
+}
+
 export async function GET() {
+  // Do NOT Disallow /_next/ — Google needs CSS/JS to render Next.js pages correctly.
+  // Blocking /_next is a common cause of "Crawled - currently not indexed" and resource warnings in GSC.
   const body = `User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /_next/
 Disallow: /embed/
 Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /seo-growth-console/
+Disallow: /login
+Disallow: /signup
 
 # AI Crawlers - all allowed
 User-agent: GPTBot
@@ -46,10 +64,9 @@ Allow: /
 User-agent: YouBot
 Allow: /
 
-Sitemap: https://toollabz.com/sitemap.xml
-Sitemap: https://toollabz.com/tools/sitemap/0.xml
-Sitemap: https://toollabz.com/tools/sitemap/1.xml
-Sitemap: https://toollabz.com/blog/sitemap.xml
+Sitemap: ${BASE_URL}/sitemap.xml
+${toolSitemapLines()}
+Sitemap: ${BASE_URL}/blog/sitemap.xml
 `;
   return new Response(body, {
     headers: {

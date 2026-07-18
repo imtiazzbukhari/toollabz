@@ -2,7 +2,8 @@
  * Site-wide content refresh stamp for visible "Last updated" copy and JSON-LD dates.
  * Override in production with NEXT_PUBLIC_SITE_LAST_UPDATED=YYYY-MM-DD when you ship content changes.
  */
-const DEFAULT_SITE_LAST_UPDATED = "2026-05-15";
+/** Bump when shipping a content/SEO wave so lastmod + on-page stamps stay honest. */
+const DEFAULT_SITE_LAST_UPDATED = "2026-07-18";
 
 const RAW = process.env.NEXT_PUBLIC_SITE_LAST_UPDATED?.trim() ?? DEFAULT_SITE_LAST_UPDATED;
 

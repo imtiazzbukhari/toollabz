@@ -19,7 +19,7 @@ const TOC_ITEMS: readonly { id: string; label: string }[] = [
 export default function ToolPageTocStrip() {
   return (
     <nav
-      className="sticky top-0 z-10 -mx-4 mb-6 border-y border-violet-200/50 bg-[#f5f6ff]/95 px-3 py-2 backdrop-blur-sm sm:-mx-6 sm:px-4 lg:top-4"
+      className="no-print sticky top-0 z-10 -mx-4 mb-6 border-y border-violet-200/50 bg-[#f5f6ff]/95 px-3 py-2 backdrop-blur-sm sm:-mx-6 sm:px-4 lg:top-4"
       aria-label="On this page"
     >
       <p className="mb-1.5 hidden text-[11px] font-semibold uppercase tracking-wide text-violet-800/90 sm:block">On this page</p>

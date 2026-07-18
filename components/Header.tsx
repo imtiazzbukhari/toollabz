@@ -47,8 +47,13 @@ export default function Header() {
     if (!menuOpen) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
     };
   }, [menuOpen]);
 
@@ -147,7 +152,12 @@ export default function Header() {
       </div>
 
       {menuOpen && (
-        <div className="fixed inset-x-0 bottom-0 top-[60px] z-40 lg:hidden sm:top-[70px]">
+        <div
+          className="fixed inset-x-0 bottom-0 top-[60px] z-40 lg:hidden sm:top-[70px]"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site menu"
+        >
           <button
             type="button"
             className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px]"

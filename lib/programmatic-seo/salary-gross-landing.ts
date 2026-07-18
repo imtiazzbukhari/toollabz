@@ -4,14 +4,45 @@ export function salaryGrossCanonicalPath(amount: number): string {
   return `/salary-after-tax/p/${amount}`;
 }
 
+/** Illustrative effective rate scenarios (not jurisdiction-specific tax law). */
+export function takeHomeEstimate(gross: number, effectiveRatePct: number): number {
+  return gross * (1 - effectiveRatePct / 100);
+}
+
+export type SalaryScenarioRow = {
+  label: string;
+  effectiveRatePct: number;
+  annualNet: number;
+  monthlyNet: number;
+};
+
+export function salaryGrossScenarios(amount: number): SalaryScenarioRow[] {
+  const rows: Array<[string, number]> = [
+    ["Lower effective rate (illustrative)", 18],
+    ["Mid effective rate (illustrative)", 28],
+    ["Higher effective rate (illustrative)", 38],
+  ];
+  return rows.map(([label, effectiveRatePct]) => {
+    const annualNet = takeHomeEstimate(amount, effectiveRatePct);
+    return {
+      label,
+      effectiveRatePct,
+      annualNet,
+      monthlyNet: annualNet / 12,
+    };
+  });
+}
+
 export function salaryGrossMetadata(amount: number) {
+  const mid = takeHomeEstimate(amount, 28);
   const title = `Salary After Tax $${amount.toLocaleString("en-US")} Gross - Take-Home Estimate Instantly (Free)`.slice(
     0,
     72,
   );
-  const description = `Plan take-home pay from a $${amount.toLocaleString(
-    "en-US",
-  )} gross salary: tax-rate intuition, links to regional salary-after-tax calculators, and FAQs.`.slice(0, 158);
+  const description = `$${amount.toLocaleString("en-US")} gross: ~$${Math.round(mid).toLocaleString("en-US")}/yr take-home at an illustrative 28% effective rate. Compare rate bands and open regional calculators.`.slice(
+    0,
+    158,
+  );
   const path = salaryGrossCanonicalPath(amount);
   return {
     title,
@@ -32,48 +63,59 @@ export function salaryGrossMetadata(amount: number) {
   };
 }
 
+export function salaryGrossKeyTakeaways(amount: number): string[] {
+  const f = amount.toLocaleString("en-US");
+  const mid = takeHomeEstimate(amount, 28);
+  return [
+    `At an illustrative 28% effective rate, $${f} gross is about $${Math.round(mid).toLocaleString("en-US")} net per year (~$${Math.round(mid / 12).toLocaleString("en-US")}/month).`,
+    "Real UK/US take-home uses bands, allowances, NI/Social Security, pensions, and student loans—not one flat rate.",
+    "Convert offer letters and rent to the same monthly basis before judging affordability.",
+    "Open a regional salary-after-tax calculator when you know the country or US state.",
+  ];
+}
+
 export function salaryGrossParagraphs(amount: number): string[] {
   const f = amount.toLocaleString("en-US");
+  const mid = salaryGrossScenarios(amount)[1]!;
   return [
-    `This page targets people who search gross salaries like $${f} alongside “after tax” or “take home.” Toollabz separates two layers: (1) a quick mental model using an effective tax rate you supply, and (2) regional calculators when you need US state, UK, or other localized tables linked from the main directory.`,
-    `Why $${f} specifically? Round and semi-round salaries cluster in real job posts and offer letters. Unique copy per amount helps search systems distinguish pages instead of recycling one paragraph, while internal links push you to the interactive salary-after-tax calculator and related finance utilities without changing the site's visual system.`,
-    `What you should still enter manually: pre-tax deductions, retirement deferrals, HSA contributions, and local taxes when they apply. The base calculator on Toollabz is a sandbox - excellent for comparisons, not a substitute for payroll software or employer withholdings.`,
-    `Recommended workflow: start with the general salary-after-tax calculator using $${f} gross and your best guess at a blended rate, then open a regional variant (for example California or UK) if you need a closer approximation. Finish with budgeting or net-worth tools when you are translating take-home into monthly cash flow.`,
+    `Planning around a $${f} gross salary usually starts with a rough effective-rate band, then a jurisdiction-specific calculator. The table on this page shows three illustrative effective rates so you can see how sensitive take-home is before you model HMRC or IRS detail.`,
+    `At ${mid.effectiveRatePct}% effective, $${f} lands near $${Math.round(mid.annualNet).toLocaleString("en-US")} net annually (about $${Math.round(mid.monthlyNet).toLocaleString("en-US")} per month). That is a planning scaffold—not a payslip.`,
+    `When to use this page: comparing job offers, checking whether a raise clears a rent increase, or briefing a household budget. When not to: filing taxes, setting payroll, or signing contracts without local rules.`,
+    `Common mistakes: treating UK/US progressive tax as a single flat %, forgetting pension and student loan deductions, and mixing annual gross with monthly rent without converting periods.`,
   ];
 }
 
 export function salaryGrossFaqs(amount: number): { question: string; answer: string }[] {
   const f = amount.toLocaleString("en-US");
+  const mid = takeHomeEstimate(amount, 28);
   return [
     {
-      question: `How accurate is take-home for $${f} gross?`,
-      answer:
-        "Accuracy depends on the tax rate and deductions you enter. Use regional calculators when locality matters; this landing page orients you rather than guessing your jurisdiction.",
+      question: `What is take-home pay on $${f} gross?`,
+      answer: `Using an illustrative 28% effective rate, about $${Math.round(mid).toLocaleString("en-US")} per year. Your real figure depends on tax bands, NI/FICA, pensions, and other deductions—use the full salary-after-tax calculator for your region.`,
     },
     {
-      question: `Why create a page for $${f} specifically?`,
+      question: `Why show multiple effective rates for $${f}?`,
       answer:
-        "Searchers often type an exact gross amount. Unique explanations per amount improve content depth and reduce duplicate indexing signals.",
+        "Effective rates vary by country, filing status, and deductions. The scenario table shows sensitivity so you do not treat one percentage as destiny.",
     },
     {
-      question: "Does Toollabz store my salary?",
+      question: "Is this UK or US tax law?",
       answer:
-        "Design favors client-side flows without persisting inputs on our servers; avoid entering secrets on shared machines regardless.",
+        "Neither in full. It is educational framing. Open UK or US-specific Toollabz calculators (and confirm with HMRC/IRS/payroll) for filing-grade numbers.",
+    },
+    {
+      question: "Does this include student loans or pensions?",
+      answer:
+        "No. Add those deductions in a regional calculator or subtract them manually from the illustrative net.",
+    },
+    {
+      question: "How should I budget from this page?",
+      answer: `Convert the monthly net estimate to the same period as your rent and bills. For $${f} gross at 28% effective, monthly net is roughly $${Math.round(takeHomeEstimate(amount, 28) / 12).toLocaleString("en-US")}.`,
     },
     {
       question: "Where is the interactive calculator?",
       answer:
-        "Use the primary Toollabz salary-after-tax calculator linked from this page, then branch to state or country variants as needed.",
-    },
-    {
-      question: "Can I compare two offers with different gross amounts?",
-      answer:
-        "Yes - run each gross separately, record take-home under identical deduction assumptions, and compare side by side.",
-    },
-    {
-      question: "Is this tax advice?",
-      answer:
-        "No. It is educational guidance and calculator links. Confirm withholding with payroll or a tax professional.",
+        "Use the salary after tax calculator linked on this page, then pick a regional variant if you need state or UK bands.",
     },
   ];
 }

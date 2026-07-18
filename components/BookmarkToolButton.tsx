@@ -19,10 +19,10 @@ export default function BookmarkToolButton({ slug }: { slug: string }) {
     <button
       type="button"
       onClick={onCopy}
-      className="inline-flex rounded-xl border border-violet-300/60 bg-white/70 px-5 py-2.5 text-sm font-semibold text-violet-700 transition hover:bg-white"
+      className="inline-flex rounded-xl border border-violet-300/60 bg-white/70 px-5 py-2.5 text-sm font-semibold text-violet-700 transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-200 focus-visible:ring-offset-2"
       aria-live="polite"
     >
-      {copied ? "Link copied" : "Bookmark this tool"}
+      {copied ? "Link copied" : "Copy link"}
     </button>
   );
 }

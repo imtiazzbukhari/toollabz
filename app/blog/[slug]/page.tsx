@@ -45,12 +45,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: post.description,
     alternates: {
       canonical: url,
-      languages: {
-        "en-GB": url,
-        "en-US": url,
-        "en-AU": url,
-        "x-default": url,
-      },
     },
     openGraph: {
       title: post.seoTitle,

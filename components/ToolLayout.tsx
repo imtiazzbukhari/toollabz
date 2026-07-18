@@ -4,22 +4,10 @@ import { ToolDefinition } from "@/lib/tools/types";
 import { tools } from "@/lib/tools/data";
 import { getRelatedToolsForLayout } from "@/lib/tools/related";
 import { getMarketingHubForTool } from "@/lib/tools/directory-groups";
-import { getToolFaqs, getToolFormula, getToolSeoContent } from "@/lib/tools/content";
-import {
-  getToolCommonMistakesParagraphs,
-  getToolDepthFormulaSection,
-  getToolDepthHowToNarrative,
-  getToolDepthIntroParagraphs,
-} from "@/lib/tools/tool-page-depth";
-import {
-  getToolDeepGuideParagraphs,
-  getToolLogicExplanationParagraph,
-  getToolRealWorldExampleBullets,
-} from "@/lib/tools/tool-deep-seo";
+import { getToolFaqs, getToolFormula } from "@/lib/tools/content";
 import { getCategoryIcon } from "@/utils/icons";
 import { toolGlassCard, toolGlassPanel } from "@/lib/tool-ui";
 import ToolHeroVisual from "@/components/ToolHeroVisual";
-import { slugContentVariant } from "@/lib/tools/content-variation";
 import { getGuideLinksForTool } from "@/lib/blog/guides-for-tool";
 import BookmarkToolButtonDeferred from "./BookmarkToolButtonDeferred";
 import EmbedCalculatorButton from "./EmbedCalculatorButton";
@@ -29,13 +17,13 @@ import ExpertDisclaimer from "./ExpertDisclaimer";
 import ToolPageTocStrip from "./ToolPageTocStrip";
 import AuthorBadge from "./AuthorBadge";
 import { toolIsFinanceCategory, toolNeedsEditorialReviewLine, toolNeedsExpertDisclaimer } from "@/lib/tools/ymyl";
-import {
-  getEntityTopicalSnippet,
-  getRelatedFormulasList,
-  getToolComparisonBlock,
-  getWhenToUseThisToolBullets,
-} from "@/lib/tools/tool-longtail-blocks";
-import { getPriorityQuickAnswer, getPriorityWhoUses, getRelatedArticlesForTool } from "@/lib/tools/priority-tool-content";
+import { getRelatedFormulasList } from "@/lib/tools/tool-longtail-blocks";
+import { getRelatedArticlesForTool } from "@/lib/tools/priority-tool-content";
+import { getToolEditorial } from "@/lib/tools/tool-editorial";
+import FormulaFlowDiagram from "@/components/FormulaFlowDiagram";
+import ToolSessionActions from "@/components/ToolSessionActions";
+import RecentlyUsedTools from "@/components/RecentlyUsedTools";
+import { getGlossaryTermsForTool } from "@/lib/glossary/terms";
 
 function categoryLabel(slug: string) {
   return slug
@@ -47,7 +35,7 @@ function categoryLabel(slug: string) {
 const heroBadges = [
   { label: "100% Free", Icon: Sparkles },
   { label: "No Sign Up", Icon: CheckCircle2 },
-  { label: "Accurate Results", Icon: Sparkles },
+  { label: "Transparent formulas", Icon: BadgeCheck },
   { label: "Mobile Friendly", Icon: Smartphone },
 ] as const;
 
@@ -86,45 +74,34 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
   const primaryKeyword = tool.keywords[0] ?? "free online tool";
   const showFinanceDisclaimer = toolIsFinanceCategory(tool) || toolNeedsExpertDisclaimer(tool);
   const hub = getMarketingHubForTool(tool);
-  const seoParagraphs = getToolSeoContent(tool);
-  const deepParagraphs = getToolDeepGuideParagraphs(tool);
-  const exampleBullets = getToolRealWorldExampleBullets(tool);
-  const logicParagraph = getToolLogicExplanationParagraph(tool);
+  const editorial = getToolEditorial(tool);
+  const glossaryTerms = getGlossaryTermsForTool(tool.slug);
   const faqs = getToolFaqs(tool);
-  const depthIntro = getToolDepthIntroParagraphs(tool);
-  const depthHow = getToolDepthHowToNarrative(tool);
-  const depthFormula = getToolDepthFormulaSection(tool);
-  const commonMistakes = getToolCommonMistakesParagraphs(tool);
-  const topicalAuthority = getEntityTopicalSnippet(tool);
-  const comparisonBlock = getToolComparisonBlock(tool, related);
-  const whenToUseBullets = getWhenToUseThisToolBullets(tool);
   const formulaTableRows = getRelatedFormulasList(tool);
   const formula = getToolFormula(tool.slug);
-  const quickAnswer = getPriorityQuickAnswer(tool);
-  const priorityWhoUses = getPriorityWhoUses(tool);
+  const quickAnswer = editorial.quickAnswer;
   const relatedArticles = getRelatedArticlesForTool(tool);
   const guideLinks = getGuideLinksForTool(tool.slug, 4);
   const CategoryIcon = getCategoryIcon(tool.category);
-  const useCaseVariant = slugContentVariant(`${tool.slug}-usecases`, 3);
   const featurePoints = [
     {
       title: "Instant response",
-      description: "Get output immediately with clean, readable breakdowns.",
+      description: `Run ${tool.name} in the browser and read the breakdown beside the form.`,
       icon: Zap,
     },
     {
-      title: "Accurate logic",
-      description: "Validated inputs and deterministic formulas for consistency.",
+      title: "Transparent formula",
+      description: "The formula and worked example on this page match what the calculator uses.",
       icon: BadgeCheck,
     },
     {
       title: "Privacy friendly",
-      description: "Run calculations without sign-up or personal profile storage.",
+      description: "No account required; inputs stay in your session unless you choose to share them.",
       icon: ShieldCheck,
     },
     {
       title: "Cross-device ready",
-      description: "Optimized layout for mobile, tablet, and desktop workflows.",
+      description: "Layout works on mobile, tablet, and desktop for the same field labels.",
       icon: Smartphone,
     },
   ];
@@ -226,22 +203,16 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         </div>
       </header>
 
-      {quickAnswer ? (
-        <section
-          className="quick-answer-box mb-6 rounded-xl border border-sky-200 bg-sky-50 px-5 py-4 text-slate-800 shadow-sm"
-          itemScope
-          itemType="https://schema.org/Answer"
-          aria-label="Quick answer"
-        >
-          <p className="font-semibold text-slate-950">{quickAnswer.title ?? `Quick Answer: ${tool.name}`}</p>
-          <p className="mt-2 leading-7" itemProp="text">
-            {quickAnswer.answer}
-          </p>
-          <p className="mt-2 leading-7">
-            <span className="font-semibold">Example:</span> {quickAnswer.example}
-          </p>
-        </section>
-      ) : null}
+      <section
+        className="quick-answer-box mb-6 rounded-xl border border-sky-200 bg-sky-50 px-5 py-4 text-slate-800 shadow-sm"
+        aria-label="Quick answer"
+      >
+        <p className="font-semibold text-slate-950">{quickAnswer.title}</p>
+        <p className="mt-2 leading-7">{quickAnswer.answer}</p>
+        <p className="mt-2 leading-7">
+          <span className="font-semibold">Example:</span> {quickAnswer.example}
+        </p>
+      </section>
 
       <div className="min-w-0" data-content-section="calculator">
         {children}
@@ -254,31 +225,33 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}
         data-content-section="explainer"
       >
-        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">What is this tool?</h2>
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">What this calculator does</h2>
         <dl className="rounded-xl border border-violet-100 bg-white/85 px-4 py-3 text-sm leading-relaxed text-slate-700">
-          <dt className="font-semibold text-slate-900">{tool.name} (quick definition)</dt>
+          <dt className="font-semibold text-slate-900">{tool.name}</dt>
           <dd className="mt-1">{tool.shortDescription}</dd>
         </dl>
-        {depthIntro.map((paragraph, idx) => (
-          <p key={`depth-intro-${idx}`} className="leading-7 text-slate-700">
+        {editorial.definition.map((paragraph, idx) => (
+          <p key={`def-${idx}`} className="leading-7 text-slate-700">
             {paragraph}
           </p>
         ))}
-        {seoParagraphs.map((paragraph, idx) => (
-          <p key={`seo-${idx}`} className="leading-7 text-slate-700">
-            {paragraph}
-          </p>
-        ))}
+        <h3 className="text-lg font-semibold text-slate-800">When to use it</h3>
+        <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
+          {editorial.whenToUse.map((line) => (
+            <li key={line.slice(0, 40)}>{line}</li>
+          ))}
+        </ul>
+        <h3 className="text-lg font-semibold text-slate-800">Key takeaways</h3>
+        <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
+          {editorial.takeaways.map((line) => (
+            <li key={line.slice(0, 40)}>{line}</li>
+          ))}
+        </ul>
       </section>
 
       <section id="how-to-use" className="mt-12 space-y-4" data-content-section="howto">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">How to use this tool</h2>
         <div className={`space-y-3 p-6 sm:space-y-4 sm:p-8 ${toolGlassCard}`}>
-          {depthHow.map((paragraph, idx) => (
-            <p key={`depth-how-${idx}`} className="text-sm leading-7 text-slate-700 sm:text-base">
-              {paragraph}
-            </p>
-          ))}
           <ol className="grid gap-3 sm:gap-4">
             {tool.howToUse.map((step, idx) => (
               <li key={step} className="flex items-start gap-3 rounded-xl border border-violet-200/55 bg-white/75 p-4">
@@ -349,19 +322,22 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}
         data-content-section="deep_guide"
       >
-        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Detailed guide</h2>
-        {deepParagraphs.map((paragraph, idx) => (
-          <p key={`deep-${idx}`} className="leading-7 text-slate-700">
-            {paragraph}
-          </p>
-        ))}
-        {topicalAuthority ? <p className="leading-7 text-slate-700">{topicalAuthority}</p> : null}
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Practical scenarios</h2>
+        <p className="leading-7 text-slate-700">{editorial.whoUses}</p>
         <p className="leading-7 text-slate-700">
           Continue in the{" "}
           <Link href={`/category/${tool.category}`} className="font-medium text-violet-800 underline-offset-2 hover:underline">
             {categoryLabel(tool.category)} category hub
+          </Link>
+          , the{" "}
+          <Link href={hub.href} className="font-medium text-violet-800 underline-offset-2 hover:underline">
+            {hub.title}
           </Link>{" "}
-          or open these related tools in the same session:{" "}
+          collection, or the{" "}
+          <Link href="/glossary" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+            glossary
+          </Link>
+          . Related calculators in this session:{" "}
           {related.slice(0, 6).map((rt, i) => (
             <span key={rt.slug}>
               {i > 0 ? ", " : null}
@@ -372,6 +348,23 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
           ))}
           .
         </p>
+        {glossaryTerms.length > 0 ? (
+          <div className="rounded-xl border border-violet-100 bg-white/75 p-4">
+            <h3 className="font-semibold text-slate-900">Related definitions</h3>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+              {glossaryTerms.map((term) => (
+                <li key={term.slug}>
+                  <Link
+                    href={`/glossary/${term.slug}`}
+                    className="font-medium text-violet-800 underline-offset-2 hover:underline"
+                  >
+                    {term.term}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </section>
 
       <section
@@ -381,6 +374,11 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
       >
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Key formula explained</h2>
         <h3 className="text-lg font-semibold text-slate-800">How the calculation works</h3>
+        <FormulaFlowDiagram
+          toolName={tool.name}
+          inputs={tool.fields.map((f) => f.label)}
+          formula={formula}
+        />
         <div className="rounded-xl border border-violet-100 bg-white/90 p-4">
           <p className="text-xs font-bold uppercase tracking-wide text-violet-700">The Formula</p>
           <code className="mt-2 block overflow-x-auto whitespace-pre-wrap rounded-lg bg-slate-950 px-3 py-2 text-sm text-white">
@@ -412,12 +410,29 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
             </tbody>
           </table>
         </div>
-        {depthFormula.map((paragraph, idx) => (
-          <p key={`depth-formula-${idx}`} className="leading-7 text-slate-700">
+        {editorial.formulaExplanation.map((paragraph, idx) => (
+          <p key={`formula-x-${idx}`} className="leading-7 text-slate-700">
             {paragraph}
           </p>
         ))}
-        <p className="leading-7 text-slate-700">{logicParagraph}</p>
+        {editorial.benchmark ? (
+          <aside className="rounded-xl border border-amber-200/80 bg-amber-50/80 p-4 text-sm text-slate-800">
+            <p className="font-semibold text-slate-900">Useful fact (cited)</p>
+            <p className="mt-2 leading-6">{editorial.benchmark.fact}</p>
+            <p className="mt-2 text-xs text-slate-600">
+              Source:{" "}
+              <a
+                href={editorial.benchmark.sourceHref}
+                className="font-medium text-violet-800 underline-offset-2 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {editorial.benchmark.sourceLabel}
+              </a>
+            </p>
+            <p className="mt-2 text-xs text-slate-600">Limitation: {editorial.benchmark.limitation}</p>
+          </aside>
+        ) : null}
       </section>
 
       <section
@@ -425,27 +440,10 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}
         data-content-section="comparison_longtail"
       >
-        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Compare, timing, and related formulas</h2>
-        {comparisonBlock ? (
-          <>
-            <h3 className="text-lg font-semibold text-slate-800">{comparisonBlock.title}</h3>
-            {comparisonBlock.paragraphs.map((p, i) => (
-              <p key={`cmp-${i}`} className="leading-7 text-slate-700">
-                {p}
-              </p>
-            ))}
-          </>
-        ) : null}
-        <h3 className="text-lg font-semibold text-slate-800">When to use this calculator</h3>
-        <ol className="list-decimal space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
-          {whenToUseBullets.map((line) => (
-            <li key={line}>{line}</li>
-          ))}
-        </ol>
-        <h3 className="text-lg font-semibold text-slate-800">Alternative calculations you might run next</h3>
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Related calculations</h2>
         <p className="text-sm leading-relaxed text-slate-700">
-          If your scenario branches, keep assumptions identical and open{" "}
-          {related.slice(0, 3).map((rt, i) => (
+          Keep the same assumptions and open a neighbor calculator when your question branches:{" "}
+          {related.slice(0, 4).map((rt, i) => (
             <span key={rt.slug}>
               {i > 0 ? ", " : null}
               <Link href={`/tools/${rt.slug}`} className="font-medium text-violet-800 underline-offset-2 hover:underline">
@@ -453,17 +451,30 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
               </Link>
             </span>
           ))}
-           - each page documents its own formula beside the fields.
+          . Each page documents its own formula beside the fields.
+        </p>
+        <p className="text-sm text-slate-600">
+          Learning links:{" "}
+          <Link href="/methodology" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+            Methodology
+          </Link>
+          {" · "}
+          <Link href="/editorial-policy" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+            Editorial policy
+          </Link>
+          {" · "}
+          <Link href="/glossary" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+            Glossary
+          </Link>
         </p>
       </section>
 
       <section id="example-usage" className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`} data-content-section="examples">
-        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Example calculation</h2>
-        <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
-          {exampleBullets.map((line, idx) => (
-            <li key={`ex-${tool.slug}-${idx}`}>{line}</li>
-          ))}
-        </ul>
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Worked real-world example</h2>
+        <p className="leading-7 text-slate-700">{editorial.workedExample}</p>
+        <p className="text-sm text-slate-600">
+          Re-enter the same numbers in the calculator above to confirm the page math matches the interactive result.
+        </p>
       </section>
 
       <section
@@ -472,32 +483,7 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         data-content-section="use_cases"
       >
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Who uses this tool?</h2>
-        {priorityWhoUses ? <p className="leading-7 text-slate-700">{priorityWhoUses}</p> : null}
-        <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
-          {useCaseVariant === 0 ? (
-            <>
-              <li>
-                Freelancers and operators checking one calculation before it goes into an invoice, email, or spreadsheet.
-              </li>
-              <li>Students and trainees learning how the formula behaves with realistic inputs.</li>
-            </>
-          ) : useCaseVariant === 1 ? (
-            <>
-              <li>
-                Small business owners comparing two scenarios before they commit to pricing, borrowing, or budgeting.
-              </li>
-              <li>Analysts reproducing a figure from a screenshot or report so assumptions can be checked independently.</li>
-            </>
-          ) : (
-            <>
-              <li>
-                Households and founders reviewing the same metric during a weekly planning routine.
-              </li>
-              <li>Support and finance teams sharing a plain-language reference when teammates need the same field labels.</li>
-            </>
-          )}
-          <li>Reviewers who need a repeatable calculation path before moving final figures into controlled systems.</li>
-        </ul>
+        <p className="leading-7 text-slate-700">{editorial.whoUses}</p>
       </section>
 
       <section id="tool-features" className="mt-12 space-y-4" data-content-section="features">
@@ -527,11 +513,44 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
 
       <section id="common-mistakes" className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`} data-content-section="mistakes">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Common mistakes</h2>
-        {commonMistakes.map((paragraph, idx) => (
-          <p key={`mist-${idx}`} className="leading-7 text-slate-700">
-            {paragraph}
-          </p>
-        ))}
+        <ul className="list-disc space-y-3 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
+          {editorial.mistakes.map((paragraph, idx) => (
+            <li key={`mist-${idx}`}>{paragraph}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section id="tool-sources" className={`mt-12 space-y-4 p-6 sm:p-8 ${toolGlassCard}`} data-content-section="sources">
+        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">References &amp; sources</h2>
+        <p className="text-sm text-slate-600">
+          Official references for context. Calculator outputs are planning estimates—confirm material decisions with the
+          primary authority or a qualified professional. See our{" "}
+          <Link href="/methodology" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+            methodology
+          </Link>{" "}
+          and{" "}
+          <Link href="/editorial-policy" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+            editorial policy
+          </Link>
+          .
+        </p>
+        <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
+          {editorial.sources.map((src) => (
+            <li key={src.href}>
+              <a
+                href={src.href}
+                className="font-medium text-violet-800 underline-offset-2 hover:underline"
+                {...(src.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
+                {src.label}
+              </a>
+              {src.note ? <span className="text-slate-500"> — {src.note}</span> : null}
+            </li>
+          ))}
+        </ul>
+        <p className="text-xs text-slate-500">
+          Reviewed {editorial.lastReviewedLabel} · Content stamp {editorial.lastUpdatedLabel}
+        </p>
       </section>
 
       <section id="tool-faqs" className="mt-12 space-y-4" data-content-section="faq">
@@ -644,15 +663,18 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
           >
             Guides
           </Link>
+          <ToolSessionActions slug={tool.slug} name={tool.name} />
           <BookmarkToolButtonDeferred slug={tool.slug} />
           <EmbedCalculatorButton slug={tool.slug} name={tool.name} />
         </div>
+        <RecentlyUsedTools currentSlug={tool.slug} />
       </section>
 
       <AuthorBadge
-        name="Toollabz Finance Team"
-        role={showFinanceDisclaimer ? "Finance & Tools" : "Editorial & Tools"}
-        lastReviewed="June 2026"
+        name={editorial.reviewer.name}
+        role={editorial.reviewer.role}
+        lastReviewed={editorial.lastReviewedLabel}
+        profileHref={editorial.reviewer.profileHref}
         className="mb-6"
       />
     </div>

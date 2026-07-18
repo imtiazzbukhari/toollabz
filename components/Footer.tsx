@@ -89,6 +89,10 @@ export default function Footer() {
             <li><Link href="/privacy" className="transition duration-300 hover:text-violet-600">Privacy Policy</Link></li>
             <li><Link href="/terms" className="transition duration-300 hover:text-violet-600">Terms & Conditions</Link></li>
             <li><Link href="/disclaimer" className="transition duration-300 hover:text-violet-600">Disclaimer</Link></li>
+            <li><Link href="/methodology" className="transition duration-300 hover:text-violet-600">Methodology</Link></li>
+            <li><Link href="/editorial-policy" className="transition duration-300 hover:text-violet-600">Editorial policy</Link></li>
+            <li><Link href="/glossary" className="transition duration-300 hover:text-violet-600">Glossary</Link></li>
+            <li><Link href="/research" className="transition duration-300 hover:text-violet-600">Research</Link></li>
             <li><Link href="/sitemap.xml" className="transition duration-300 hover:text-violet-600">Sitemap</Link></li>
           </ul>
         </div>

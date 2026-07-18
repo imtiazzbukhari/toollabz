@@ -7,6 +7,7 @@ import { TOOL_SEO_CONTENT_LEAD } from "./tool-seo-content-lead";
 import { pickBySlug, slugContentVariant } from "./content-variation";
 import { augmentToolFaqsForIntent } from "./faq-expansion";
 import { PHASE2_PRIORITY_TOOL_SLUGS } from "./priority-tool-content";
+import { getToolInsight } from "./tool-insights";
 
 const phase1Profiles: Record<string, Phase1Profile> = {
   ...phase1ProfilesCore,
@@ -414,100 +415,54 @@ export function getToolFormula(slug: string) {
 export function getToolFaqs(tool: ToolDefinition): ToolFAQ[] {
   const base = [...tool.faqs];
   const keyword = tool.keywords[0] ?? tool.name.toLowerCase();
-  const kw2 = tool.keywords[1] ?? tool.category;
   const formula = getToolFormula(tool.slug);
   const profileFaq = phase1Profiles[tool.slug]?.faq ?? [];
-  const vi = slugContentVariant(tool.slug, 5);
-  const fq = slugContentVariant(`${tool.slug}-faqtone`, 4);
-  const lineage = [
-    `Outputs should be stable for the same ${keyword} inputs unless Toollabz documents a formula change; bookmark the page to notice release notes in the site changelog when they exist.`,
-    `If results look surprising, re-check units and percentage bases - many ${keyword} discrepancies come from basis mistakes rather than the calculator itself.`,
-    `Copy results into your notes alongside the inputs you typed so teammates can reproduce the ${tool.name.toLowerCase()} trail during reviews.`,
-    `Jurisdiction-specific tables are not silently guessed: enter the rates and rules you need for ${keyword} so the tool reflects what you intend to model.`,
-    `In governed environments, treat this page as a planning scratchpad and move finalized figures into controlled systems after human review.`,
-  ];
+  const insight = getToolInsight(tool.slug);
 
-  const accuracyQuestions = [
-    `How accurate is this ${tool.name.toLowerCase()}?`,
-    `Should I trust ${tool.name} for a first-pass ${keyword} estimate?`,
-    `How precise is ${tool.name} compared with a spreadsheet?`,
-    `What does “accurate” mean for ${tool.name.toLowerCase()} here?`,
-  ] as const;
-  const formatQuestions = [
-    `What input format should I use for ${keyword}?`,
-    `How should I type ${keyword} values so ${tool.name} parses them correctly?`,
-    `Which separators and units work for ${keyword} in this tool?`,
-    `Do I need commas, symbols, or plain numbers for ${keyword}?`,
-  ] as const;
-  const mobileQuestions = [
-    `Can I use this ${tool.name.toLowerCase()} on mobile devices?`,
-    `Does ${tool.name} work on phones and tablets?`,
-    `Is ${tool.name} usable on a small screen?`,
-    `Will ${tool.name.toLowerCase()} behave the same on iOS and Android browsers?`,
-  ] as const;
+  /** Unique, quotable FAQs from the per-tool insight (preferred over template packs). */
+  const insightFaqs: ToolFAQ[] = insight
+    ? [
+        {
+          question: `What does ${tool.name} calculate in plain English?`,
+          answer: insight.quickAnswer,
+        },
+        {
+          question: `Can you show a worked example for ${tool.name}?`,
+          answer: insight.example,
+        },
+        {
+          question: `What are the most important tips when using ${tool.name}?`,
+          answer: insight.insights.filter(Boolean).join(" "),
+        },
+        {
+          question: `How does ${tool.name} arrive at the result?`,
+          answer: `${insight.explain} Formula reference: ${formula}`,
+        },
+      ]
+    : [];
 
-  const extra: ToolFAQ[] = [
+  const trustFaqs: ToolFAQ[] = [
     {
-      question: accuracyQuestions[fq % accuracyQuestions.length]!,
-      answer: `This ${tool.name.toLowerCase()} uses a deterministic formula (${formula}) and validates invalid or out-of-range input before calculation.`,
-    },
-    {
-      question: formatQuestions[fq % formatQuestions.length]!,
+      question: `Is ${tool.name} a substitute for professional advice on ${keyword}?`,
       answer:
-        "Enter plain numeric values without commas for amounts and percentages. Use decimal points where required for precise output.",
+        tool.category === "finance" || tool.category === "real-estate" || /bmi|health|medical/i.test(tool.slug)
+          ? "No. Treat this as a planning estimate. Confirm material decisions with HMRC, IRS, a licensed advisor, or a clinician as appropriate."
+          : "No. Use it as a transparent planning check, then verify critical outcomes in your own systems or with a qualified professional when stakes are high.",
     },
     {
-      question: mobileQuestions[fq % mobileQuestions.length]!,
-      answer:
-        "Yes. The calculator is responsive and optimized for mobile, tablet, and desktop with consistent output and UI behavior.",
-    },
-    {
-      question: `Is ${tool.name} appropriate for regulated reporting about ${keyword}?`,
-      answer: lineage[vi] ?? lineage[0]!,
-    },
-    {
-      question: pickBySlug(`${tool.slug}-mismatch`, [
-        `What if ${tool.name} disagrees with another app for ${keyword}?`,
-        `Why might ${tool.name} show a different ${keyword} result than another calculator?`,
-        `Another site gave a different ${keyword} number - what should I check here?`,
-      ] as const),
-      answer: `Compare rounding, compounding, date boundaries, and tax basis. Toollabz documents behavior relative to: ${formula}`,
-    },
-    {
-      question: pickBySlug(`${tool.slug}-share`, [
-        `How should I share ${tool.name} for a ${keyword} review?`,
-        `What is the cleanest way to pass ${tool.name} results to a teammate?`,
-        `Can I send ${tool.name.toLowerCase()} output without losing context?`,
-      ] as const),
-      answer:
-        "Share the canonical HTTPS tool page link so reviewers inherit the same field labels and assumptions, not only a screenshot.",
-    },
-    {
-      question: `Where does ${tool.name} fit with other ${categoryLabelSeo(tool.category)} tools?`,
-      answer: `Use Related tools on this page - links are chosen for topical proximity to ${keyword}, ${kw2}, and common follow-on tasks in one session.`,
-    },
-    {
-      question: `Does Toollabz log my ${keyword} inputs for ${tool.slug}?`,
-      answer:
-        "Toollabz designs these flows for client-side interaction without persisting your entries on our servers; still avoid highly sensitive secrets on shared devices.",
+      question: `What if ${tool.name} disagrees with another calculator for ${keyword}?`,
+      answer: `Compare units, rounding, compounding, and tax basis side by side. This page documents: ${formula}`,
     },
   ];
 
-  const merged = dedupeToolFaqs([...categoryTemplateFaqs(tool), ...base, ...profileFaq, ...extra]);
-  const pad: ToolFAQ[] = [
-    {
-      question: `Can I cite ${tool.name} in documentation about ${keyword}?`,
-      answer: `Cite it as a planning reference, not an authority: include the date, URL, and the inputs you used so readers can reproduce the ${tool.name.toLowerCase()} scenario.`,
-    },
-    {
-      question: `What is the fastest way to learn ${tool.name} if ${keyword} is new to me?`,
-      answer:
-        "Read the How to use steps, run the example-style inputs suggested in the guide paragraphs, then open a related tool linked below to extend the workflow.",
-    },
-  ];
+  // Prefer tool-authored + phase1 + insight FAQs; keep light category context only for finance/YMYL.
+  const categoryFaqs =
+    tool.category === "finance" || tool.category === "real-estate" || tool.category === "business"
+      ? categoryTemplateFaqs(tool).slice(0, 2)
+      : [];
 
-  const out = dedupeToolFaqs([...merged, ...pad]);
-  return augmentToolFaqsForIntent(tool, out, formula).map((faq) => expandPriorityFaqAnswer(tool, faq, formula));
+  const merged = dedupeToolFaqs([...base, ...profileFaq, ...insightFaqs, ...trustFaqs, ...categoryFaqs]);
+  return augmentToolFaqsForIntent(tool, merged, formula).map((faq) => expandPriorityFaqAnswer(tool, faq, formula));
 }
 
 export function getToolSeoContent(tool: ToolDefinition): string[] {

@@ -241,4 +241,54 @@ export const TOOL_INSIGHTS_J: Record<string, ToolPageInsight> = {
       "Large parcels often switch to acres ↔ hectares for land context.",
     ],
   },
+  "character-counter": {
+    quickAnswer:
+      "Count every character—including spaces—when a platform limit is character-based rather than word-based.",
+    explain:
+      "Meta descriptions, tweets, SMS, and many form fields enforce hard character caps. Counting words alone can still fail those limits.",
+    example:
+      "A 155-character SEO description fits typical Google snippets better than a 230-character draft that gets truncated with an ellipsis.",
+    insights: [
+      "Spaces and punctuation count toward most platform limits.",
+      "Paste only the final string you will publish—hidden formatting can inflate the count.",
+      "Some systems count grapheme clusters differently for emoji; verify on the live platform.",
+    ],
+  },
+  "percentage-calculator": {
+    quickAnswer:
+      "Percentage of a number is (part ÷ whole) × 100; percentage change divides the difference by the original value.",
+    explain:
+      "People confuse “percentage of,” “percentage change,” and “percentage points.” This tool keeps those modes separate so the base value stays correct.",
+    example:
+      "45 out of 180 is 25%. A price rise from £80 to £96 is a 20% increase: ((96 − 80) / 80) × 100.",
+    insights: [
+      "Reversing a 20% decrease is not “add 20% back”—you need divide by 0.8.",
+      "Percentage points ≠ percent change (2% → 3% is +1 point, +50% relative).",
+      "Always confirm which value is the denominator before quoting a result.",
+    ],
+  },
+  "bmi-calculator": {
+    quickAnswer: "Adult BMI = weight(kg) ÷ height(m)²; it is a screening number, not a full health diagnosis.",
+    explain:
+      "BMI classifies weight relative to height using WHO/NHS adult bands. It does not measure body fat, muscle, or fat distribution, so athletes and older adults need extra context.",
+    example: "75 kg at 175 cm → BMI = 75 / (1.75²) = 24.5 (standard healthy range 18.5–24.9).",
+    insights: [
+      "Enter height in metres (1.75), not feet-and-inches typed as 5.10.",
+      "Children need age/sex percentiles—not adult BMI bands.",
+      "Pair BMI with waist measure and clinical advice for decisions.",
+    ],
+  },
+  "tip-calculator": {
+    quickAnswer:
+      "Tip = bill × tip%; UK tipping is often optional (~10–12.5%), while US restaurants commonly expect ~18–22%.",
+    explain:
+      "Check whether service charge is already included before adding more. Split bills after adding tip when the group shares evenly.",
+    example:
+      "On an £85 bill for 4 people, 12.5% tip is £10.63 total (~£23.91 per person including tip).",
+    insights: [
+      "Do not double-tip when a discretionary service charge is already on the bill.",
+      "US vs UK norms differ—match the local expectation, not a single global %.",
+      "For uneven splits, allocate tip proportional to each person’s share of the food total.",
+    ],
+  },
 };

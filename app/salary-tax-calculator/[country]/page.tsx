@@ -25,16 +25,18 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
   if (taxRates[country] === undefined) return {};
 
   const label = country.toUpperCase();
+  // Thin country stubs: consolidate index signals on the full calculator.
   return {
     title: `Salary Tax Calculator ${label}`,
     description: `Estimate net salary and tax deductions for ${label} using benchmark regional rates.`,
+    robots: { index: false, follow: true },
     alternates: {
-      canonical: `/salary-tax-calculator/${country}`,
+      canonical: "/tools/salary-after-tax-calculator",
     },
     openGraph: {
       title: `Salary Tax Calculator ${label}`,
       description: `Estimate net salary and tax deductions for ${label}.`,
-      url: `${siteUrl}/salary-tax-calculator/${country}`,
+      url: `${siteUrl}/tools/salary-after-tax-calculator`,
       type: "article",
     },
   };

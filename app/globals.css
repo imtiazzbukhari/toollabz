@@ -27,6 +27,45 @@
     @apply overflow-x-hidden bg-white text-slate-900 antialiased font-sans;
     touch-action: manipulation;
   }
+  /* Keyboard focus must remain visible after Tailwind preflight removes outlines. */
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:not([tabindex="-1"]):focus-visible {
+    outline: 2px solid #7c3aed;
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .section-fade,
+  .float-soft {
+    animation: none !important;
+  }
+}
+
+@media print {
+  header,
+  footer,
+  nav[aria-label="On this page"],
+  [data-content-section="related"],
+  [data-content-section="suggested"],
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  main {
+    max-width: 100% !important;
+  }
 }
 
 @layer utilities {

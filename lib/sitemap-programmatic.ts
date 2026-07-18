@@ -1,9 +1,25 @@
 /**
- * Curated programmatic routes for sitemap.xml only.
- * Full landing sets stay in amount-routes for on-site validation; sitemap lists top canonical examples.
+ * High-tier programmatic URLs for sitemap inclusion.
+ * Medium-tier pages stay indexable via internal links (see value-tier.ts).
+ * Low-tier stubs (thin country pages / tool mirrors) stay noindex.
  */
-export const SITEMAP_CM_TO_FEET_SLUGS = [100, 150, 160, 170, 180, 50, 200] as const;
+import {
+  loanPrincipalValueTier,
+  salaryGrossValueTier,
+  shouldSitemapProgrammatic,
+} from "@/lib/programmatic-seo/value-tier";
+import { PROGRAMMATIC_LOAN_PRINCIPALS, PROGRAMMATIC_SALARY_GROSS } from "@/lib/programmatic-seo/amount-routes";
 
-export const SITEMAP_LOAN_PRINCIPALS = [25_000, 100_000, 250_000, 500_000, 750_000, 1_000_000] as const;
+/** High-demand cm→feet conversions (human heights + common round values). */
+export const SITEMAP_CM_TO_FEET_SLUGS = [
+  50, 100, 120, 140, 145, 150, 152, 155, 157, 160, 163, 165, 168, 170, 173, 175, 178, 180, 183, 185,
+  188, 190, 193, 195, 198, 200,
+] as const;
 
-export const SITEMAP_SALARY_GROSS = [50_000, 75_000, 100_000, 125_000, 150_000, 200_000] as const;
+export const SITEMAP_LOAN_PRINCIPALS = PROGRAMMATIC_LOAN_PRINCIPALS.filter((n) =>
+  shouldSitemapProgrammatic(loanPrincipalValueTier(n)),
+);
+
+export const SITEMAP_SALARY_GROSS = PROGRAMMATIC_SALARY_GROSS.filter((n) =>
+  shouldSitemapProgrammatic(salaryGrossValueTier(n)),
+);

@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import SkipToMainLink from "@/components/SkipToMainLink";
 import DeferredClientObservers from "@/components/DeferredClientObservers";
 import { GA_TRACKING_ID } from "@/lib/analytics/gtag";
-import { ADSENSE_PUBLISHER_ID } from "@/lib/analytics/env";
+import { ADSENSE_ENABLED, ADSENSE_PUBLISHER_ID } from "@/lib/analytics/env";
 import { organizationSchema, websiteSearchActionSchema } from "@/lib/seo";
 
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
@@ -25,11 +25,10 @@ export const metadata: Metadata = {
     default: "Toollabz - Free Online Tools: Calculators, Converters & PDF Hub",
     template: "%s | Toollabz",
   },
-  alternates: {
-    canonical: "/",
-  },
+  // Do not set a root canonical here — child pages that omit alternates.canonical
+  // would inherit the homepage URL and create "Google chose different canonical" issues.
   description:
-    "Free calculators, converters, and PDF tools in one secure hub. Fast results, clear guides, and 238+ practical utilities on Toollabz.",
+    "Free calculators, converters, and PDF tools in one secure hub. Fast results, clear guides, and practical utilities on Toollabz.",
   metadataBase: new URL("https://toollabz.com"),
   applicationName: "Toollabz",
   authors: [{ name: "Toollabz", url: "https://toollabz.com" }],
@@ -87,8 +86,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex min-h-screen flex-col overflow-x-hidden">
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* System font stack in globals.css — no Google Fonts stylesheet (avoids extra LCP/connection work). */}
         <link rel="preload" href="/logo-toollabz.webp" as="image" />
         <link rel="dns-prefetch" href="https://api.frankfurter.app" />
         <link rel="preconnect" href="https://api.frankfurter.app" crossOrigin="anonymous" />
@@ -100,9 +98,12 @@ export default function RootLayout({
             <link rel="preconnect" href="https://www.google-analytics.com" crossOrigin="anonymous" />
           </>
         ) : null}
-        {/* AdSense: warm connection before the main script (afterInteractive). */}
-        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
+        {ADSENSE_ENABLED ? (
+          <>
+            <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+            <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
+          </>
+        ) : null}
         {GA_TRACKING_ID ? (
           <>
             <Script
@@ -120,17 +121,18 @@ gtag('config', '${GA_TRACKING_ID}', { send_page_view: false });
           </>
         ) : null}
         {/*
-          Global AdSense loader (single instance — do not add adsbygoogle.js elsewhere).
-          Future display units: place <AdsenseUnit adSlot="…" variant="…" /> in page bodies
-          (e.g. app/page.tsx between sections, tool pages sidebar, blog article mid-content).
+          AdSense loader only when NEXT_PUBLIC_ADSENSE_ENABLED=true and slots are live.
+          Place <AdsenseUnit adSlot="…" /> in page bodies before enabling.
         */}
-        <Script
-          id="adsense-global-loader"
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
+        {ADSENSE_ENABLED ? (
+          <Script
+            id="adsense-global-loader"
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        ) : null}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: websiteJsonLd }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: orgJsonLd }} />
         <DeferredClientObservers />

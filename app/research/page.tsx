@@ -3,52 +3,53 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { absoluteUrl, breadcrumbJsonLd } from "@/lib/seo";
 import { toolGlassCard, toolGlassPanel } from "@/lib/tool-ui";
+import PageLastUpdated from "@/components/PageLastUpdated";
 
 export const metadata: Metadata = {
   title: "UK Financial Data Reference 2026 | Toollabz Research",
   description:
-    "Free reference data on UK tax rates, salary benchmarks, and financial thresholds for 2026/27. Updated annually. Free to cite with attribution to Toollabz.",
+    "Free reference tables for UK tax thresholds and sector salary context, plus links to Toollabz calculators. Cite with attribution. Verify live figures on GOV.UK and ONS.",
   alternates: { canonical: "/research" },
   openGraph: {
     title: "UK Financial Data Reference 2026 | Toollabz Research",
     description:
-      "Original reference data on UK calculators, tax thresholds, and salary benchmarks for journalists, bloggers, and researchers.",
+      "Original reference tables for UK tax thresholds and calculator workflows journalists and bloggers can cite with attribution.",
     url: absoluteUrl("/research"),
     type: "website",
   },
 };
 
-const calculatorRows = [
-  ["VAT Calculator", "22,000", "Freelancers, ecommerce sellers, accountants"],
-  ["Salary After Tax Calculator", "18,000", "Employees, recruiters, HR teams"],
-  ["Mortgage Calculator", "14,000", "Home buyers, brokers, estate agents"],
-  ["Loan Calculator", "12,000", "Borrowers, car buyers, finance teams"],
-  ["Profit Margin Calculator", "9,000", "Retailers, Amazon sellers, operators"],
-  ["Rental Yield Calculator", "6,500", "Landlords, property investors"],
+/** Workflow map only — no fabricated search volumes. */
+const calculatorWorkflows = [
+  ["VAT Calculator", "/tools/vat-calculator", "Net/gross VAT splits for freelancers and sellers"],
+  ["Salary After Tax Calculator", "/tools/salary-after-tax-calculator", "Take-home planning before regional detail"],
+  ["Loan Calculator", "/tools/loan-calculator", "Amortizing payment and interest scenarios"],
+  ["Mortgage Affordability Calculator", "/tools/mortgage-affordability-calculator", "Income vs debt housing checks"],
+  ["Profit Margin Calculator", "/tools/profit-margin-calculator", "Margin vs markup clarity for operators"],
+  ["Compound Interest Calculator", "/tools/compound-interest-calculator", "Savings growth illustrations"],
 ] as const;
 
+/**
+ * Thresholds commonly cited for 2026/27 planning. Always re-check GOV.UK before publishing —
+ * rates and bands can change mid-cycle.
+ */
 const taxRows = [
-  ["Income tax personal allowance", "GBP 12,570", "HMRC 2026/27"],
-  ["Basic rate income tax", "20% from GBP 12,571 to GBP 50,270", "HMRC 2026/27"],
-  ["Higher rate income tax", "40% from GBP 50,271 to GBP 125,140", "HMRC 2026/27"],
-  ["Additional rate income tax", "45% above GBP 125,140", "HMRC 2026/27"],
-  ["VAT standard rate", "20%", "HMRC VAT rates"],
-  ["VAT reduced rate", "5%", "HMRC VAT rates"],
-  ["VAT registration threshold", "GBP 90,000 taxable turnover", "HMRC VAT guidance"],
-  ["Corporation tax main rate", "25%", "HMRC corporation tax"],
-  ["Corporation tax small profits rate", "19%", "HMRC corporation tax"],
-  ["Capital Gains Tax basic rate", "18% residential property, 10% other assets", "HMRC CGT guidance"],
-  ["Stamp Duty first-time buyer relief", "0% up to GBP 425,000, subject to limits", "HMRC SDLT guidance"],
+  ["Income tax personal allowance", "GBP 12,570", "https://www.gov.uk/income-tax-rates"],
+  ["Basic rate income tax band (typical)", "20% up to higher-rate threshold", "https://www.gov.uk/income-tax-rates"],
+  ["VAT standard rate", "20%", "https://www.gov.uk/vat-rates"],
+  ["VAT reduced rate", "5%", "https://www.gov.uk/vat-rates"],
+  ["VAT registration threshold", "Confirm live figure on GOV.UK", "https://www.gov.uk/vat-registration-thresholds"],
+  ["Corporation tax main rate", "25% (confirm bands on GOV.UK)", "https://www.gov.uk/corporation-tax-rates"],
 ] as const;
 
 const salaryRows = [
-  ["Information and communication", "GBP 46,000", "ONS ASHE"],
-  ["Finance and insurance", "GBP 44,000", "ONS ASHE"],
-  ["Professional, scientific, technical", "GBP 41,000", "ONS ASHE"],
-  ["Construction", "GBP 37,000", "ONS ASHE"],
-  ["Education", "GBP 35,000", "ONS ASHE"],
-  ["Health and social work", "GBP 33,000", "ONS ASHE"],
-  ["Retail and wholesale", "GBP 28,000", "ONS ASHE"],
+  ["Information and communication", "See latest ASHE table", "https://www.ons.gov.uk/"],
+  ["Finance and insurance", "See latest ASHE table", "https://www.ons.gov.uk/"],
+  ["Professional, scientific, technical", "See latest ASHE table", "https://www.ons.gov.uk/"],
+  ["Construction", "See latest ASHE table", "https://www.ons.gov.uk/"],
+  ["Education", "See latest ASHE table", "https://www.ons.gov.uk/"],
+  ["Health and social work", "See latest ASHE table", "https://www.ons.gov.uk/"],
+  ["Retail and wholesale", "See latest ASHE table", "https://www.ons.gov.uk/"],
 ] as const;
 
 function DataTable({
@@ -78,9 +79,20 @@ function DataTable({
         <tbody>
           {rows.map((row) => (
             <tr key={row.join("-")} className="border-t border-violet-100">
-              {row.map((cell) => (
-                <td key={cell} className="px-4 py-3">
-                  {cell}
+              {row.map((cell, idx) => (
+                <td key={`${row[0]}-${idx}`} className="px-4 py-3">
+                  {cell.startsWith("http") ? (
+                    <a
+                      href={cell}
+                      className="font-medium text-violet-800 underline-offset-2 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Source
+                    </a>
+                  ) : (
+                    cell
+                  )}
                 </td>
               ))}
             </tr>
@@ -109,53 +121,104 @@ export default function ResearchPage() {
       </nav>
 
       <header className={`mb-8 p-6 sm:p-8 ${toolGlassPanel}`}>
+        <PageLastUpdated className="mb-3" />
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-violet-600">Toollabz Research</p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-          UK Online Tool Usage Data 2026
+          UK financial reference tables
         </h1>
         <p className="mt-4 max-w-3xl leading-7 text-slate-600">
-          Reference data for journalists, bloggers, and researchers covering online calculators, UK tax thresholds, and salary
-          benchmarks. Figures are compiled from Toollabz usage patterns, public search demand estimates, HMRC guidance, and ONS
-          salary datasets.
+          Linkable reference for journalists, bloggers, and researchers: calculator workflows on Toollabz, plus tax
+          thresholds with primary GOV.UK sources. We do not invent keyword volumes. Confirm every statutory figure on the
+          linked authority page before you publish.
         </p>
       </header>
 
       <div className="space-y-8">
         <section className={`p-6 sm:p-8 ${toolGlassCard}`}>
-          <h2 className="text-2xl font-bold text-slate-900">Most Used Online Calculators in the UK (2026)</h2>
+          <h2 className="text-2xl font-bold text-slate-900">High-intent calculator workflows</h2>
           <p className="mt-3 leading-7 text-slate-700">
-            The table below combines public keyword-demand estimates with Toollabz category engagement. It is intended as a
-            directional editorial reference, not audited market research.
+            These are the calculators we maintain as topical hubs—not a claim about third-party search volume.
           </p>
-          <DataTable caption="Calculator demand estimates" headers={["Tool Name", "Monthly Searches", "Primary Users"]} rows={calculatorRows} />
+          <div className="mt-4 overflow-x-auto rounded-xl border border-violet-100 bg-white/90">
+            <table className="min-w-full text-left text-sm text-slate-700">
+              <caption className="border-b border-violet-100 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-violet-700">
+                Calculator workflows
+              </caption>
+              <thead className="bg-slate-50 text-slate-900">
+                <tr>
+                  <th scope="col" className="px-4 py-3 font-semibold">
+                    Tool
+                  </th>
+                  <th scope="col" className="px-4 py-3 font-semibold">
+                    Typical use
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {calculatorWorkflows.map(([name, href, use]) => (
+                  <tr key={href} className="border-t border-violet-100">
+                    <td className="px-4 py-3">
+                      <Link href={href} className="font-medium text-violet-800 underline-offset-2 hover:underline">
+                        {name}
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3">{use}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
 
         <section className={`p-6 sm:p-8 ${toolGlassCard}`}>
-          <h2 className="text-2xl font-bold text-slate-900">UK Financial Calculation Benchmarks 2026</h2>
+          <h2 className="text-2xl font-bold text-slate-900">UK tax &amp; VAT checkpoints</h2>
           <p className="mt-3 leading-7 text-slate-700">
-            These figures are commonly needed when writing about salary, VAT, business tax, capital gains, and property
-            transactions. Always verify live policy changes with HMRC before publication.
+            Planning checkpoints only. Band edges and thresholds change—use the Source links for the live HMRC/GOV.UK
+            figure before citing in print.
           </p>
-          <DataTable caption="UK tax and threshold reference" headers={["Benchmark", "2026/27 figure", "Source"]} rows={taxRows} />
+          <DataTable
+            caption="UK tax and VAT reference (verify live)"
+            headers={["Benchmark", "Planning note", "Source"]}
+            rows={taxRows}
+          />
         </section>
 
         <section className={`p-6 sm:p-8 ${toolGlassCard}`}>
-          <h2 className="text-2xl font-bold text-slate-900">Average UK Salary by Sector 2026</h2>
+          <h2 className="text-2xl font-bold text-slate-900">UK salary by sector</h2>
           <p className="mt-3 leading-7 text-slate-700">
-            Salary rows are rounded median annual pay estimates by sector. For official tables, use the{" "}
-            <a href="https://www.ons.gov.uk/" className="font-medium text-violet-800 underline-offset-2 hover:underline" rel="noreferrer">
-              Office for National Statistics
-            </a>
-            .
+            We do not republish rounded medians that can go stale. Use the Office for National Statistics Annual Survey of
+            Hours and Earnings (ASHE) tables for citable figures.
           </p>
-          <DataTable caption="Rounded salary benchmarks" headers={["Sector", "Median salary", "Source"]} rows={salaryRows} />
+          <DataTable
+            caption="Where to find official sector pay"
+            headers={["Sector", "Where to look", "Source"]}
+            rows={salaryRows}
+          />
         </section>
 
         <section className={`p-6 sm:p-8 ${toolGlassPanel}`}>
-          <h2 className="text-2xl font-bold text-slate-900">How to cite this data</h2>
+          <h2 className="text-2xl font-bold text-slate-900">How to cite this page</h2>
           <p className="mt-3 leading-7 text-slate-700">
-            Source: Toollabz Research (toollabz.com/research), June 2026. You may cite short extracts with attribution and a link
-            back to this page.
+            Source: Toollabz Research (
+            <Link href="/research" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+              toollabz.com/research
+            </Link>
+            ). You may cite short extracts with attribution and a link back. For tax numbers, cite GOV.UK/HMRC directly;
+            for pay, cite ONS ASHE.
+          </p>
+          <p className="mt-3 text-sm text-slate-600">
+            Related:{" "}
+            <Link href="/methodology" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+              Methodology
+            </Link>
+            {" · "}
+            <Link href="/editorial-policy" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+              Editorial policy
+            </Link>
+            {" · "}
+            <Link href="/glossary" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+              Glossary
+            </Link>
           </p>
         </section>
       </div>

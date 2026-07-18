@@ -48,18 +48,21 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
   const countryLabel = country.replace(/-/g, " ").toUpperCase();
   const title = `${salary} Salary After Tax Calculator ${countryLabel}`;
   const description = `Estimate take-home pay for salary ${salary} in ${countryLabel} with fast after-tax planning output and related salary tools.`;
+  const parentPath = `/tools/${tool.slug}`;
+  // Amount×country variants are thin vs the regional tool page — noindex + parent canonical.
   return {
     ...base,
     title,
     description,
+    robots: { index: false, follow: true },
     alternates: {
-      canonical: `/salary-after-tax-calculator/${country}/${amount}`,
+      canonical: parentPath,
     },
     openGraph: {
       ...base.openGraph,
       title,
       description,
-      url: `${siteUrl}/salary-after-tax-calculator/${country}/${amount}`,
+      url: `${siteUrl}${parentPath}`,
     },
     twitter: {
       ...base.twitter,

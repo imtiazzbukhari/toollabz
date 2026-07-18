@@ -33,6 +33,8 @@ export async function generateMetadata({
   const { category } = await params;
   const t = humanizeCategory(category);
   const metaTitle = `${t} Tools - Free Online Toollabz Hub`.slice(0, 60);
+  // Self-canonical: category listings are unique tool directories. Differentiate hub longform
+  // in content work rather than consolidating away the category URL.
   return categoryLandingMetadata({
     path: `/category/${category}`,
     title: metaTitle,
