@@ -29,13 +29,13 @@ function canonicalApexHostname(): string {
   return "toollabz.com";
 }
 
-/** Dev / loopback: skip HTTPS/www canonicalization only (SEO console auth still runs below). */
+/** Dev / loopback: skip host canonicalization only (SEO console auth still runs below). */
 function isLocalDevHost(hostNoPort: string): boolean {
   const h = hostNoPort.toLowerCase();
   return h === "localhost" || h === "127.0.0.1" || h === "[::1]" || h.endsWith(".local");
 }
 
-/** IP literals and non-domain hosts: no HTTPS / www canonicalization (VPS by IP, bind addresses). */
+/** IP literals and non-domain hosts: no www/apex enforcement (VPS by IP, bind addresses). */
 function isIpOrNonDomainHost(hostNoPort: string): boolean {
   if (!hostNoPort) return true;
   if (hostNoPort === "0.0.0.0") return true;
@@ -44,10 +44,7 @@ function isIpOrNonDomainHost(hostNoPort: string): boolean {
   return false;
 }
 
-/**
- * Hostnames that should receive HTTPS + apex/www enforcement (public site on a real FQDN).
- */
-function shouldEnforceHttpsAndWww(hostNoPort: string): boolean {
+function shouldEnforceHostCanonicalization(hostNoPort: string): boolean {
   return !isLocalDevHost(hostNoPort) && !isIpOrNonDomainHost(hostNoPort);
 }
 
@@ -65,6 +62,34 @@ function isTrustedProductionApex(apex: string): boolean {
   return Boolean(apex) && apex.includes(".") && !isUnsafeRedirectTargetHostname(apex);
 }
 
+/**
+ * Public HTTPS detection behind nginx.
+ * Prefer forwarded headers — Next's internal URL is almost always `http://…:3000`.
+ */
+export function requestIsHttps(request: NextRequest): boolean {
+  const forwardedProto = request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim().toLowerCase();
+  if (forwardedProto === "https") return true;
+  if (forwardedProto === "http") return false;
+  if (request.headers.get("x-forwarded-ssl")?.toLowerCase() === "on") return true;
+  const forwarded = request.headers.get("forwarded");
+  if (forwarded && /(?:^|[;,]\s*)proto=https(?:[;,]|$)/i.test(forwarded)) return true;
+  return request.nextUrl.protocol === "https:";
+}
+
+/**
+ * Build a public absolute URL for redirects.
+ * CRITICAL: clear `port` — `request.nextUrl` behind Node often carries `:3000`,
+ * which produces `https://toollabz.com:3000/` → browser ERR_SSL_PROTOCOL_ERROR
+ * (TLS handshake against plain HTTP on the Node port).
+ */
+export function buildPublicHttpsUrl(request: NextRequest, hostname: string): URL {
+  const url = request.nextUrl.clone();
+  url.protocol = "https:";
+  url.hostname = hostname;
+  url.port = "";
+  return url;
+}
+
 function withHsts(res: NextResponse, hostForHsts: string, apex: string) {
   // Match next.config: includeSubDomains only — do not send preload until every subdomain is verified.
   if (isTrustedProductionApex(apex) && hostForHsts === apex) {
@@ -73,11 +98,12 @@ function withHsts(res: NextResponse, hostForHsts: string, apex: string) {
   return res;
 }
 
-/** 301 redirect unless target host is unsafe; `hostForHsts` matches original HSTS placement (request host vs apex after www strip). */
 function redirectOrNext(hostForHsts: string, target: URL, apex: string): NextResponse {
   if (isUnsafeRedirectTargetHostname(target.hostname)) {
     return NextResponse.next();
   }
+  // Belt-and-suspenders: never leak the Node listen port into Location.
+  target.port = "";
   const res = NextResponse.redirect(target, 301);
   return withHsts(res, hostForHsts, apex);
 }
@@ -88,24 +114,17 @@ export function middleware(request: NextRequest) {
 
   const apex = canonicalApexHostname();
   const apexOk = isTrustedProductionApex(apex);
-  const enforce = shouldEnforceHttpsAndWww(hostNoPort);
+  const enforceHost = shouldEnforceHostCanonicalization(hostNoPort);
 
-  const forwardedProto = request.headers.get("x-forwarded-proto");
-  const url = request.nextUrl.clone();
-  const isHttps =
-    forwardedProto === "https" ||
-    (forwardedProto == null && url.protocol === "https:");
-
-  // Single-hop canonicalization: http/www → https://apex in one 301 when possible.
-  if (enforce && (!isHttps || (apexOk && hostNoPort === `www.${apex}`))) {
-    url.protocol = "https:";
-    if (apexOk && (hostNoPort === `www.${apex}` || hostNoPort === apex)) {
-      url.hostname = apex;
-    }
-    const targetHost = url.hostname.toLowerCase();
-    if (!isHttps || targetHost !== hostNoPort) {
-      return redirectOrNext(apexOk ? apex : hostNoPort, url, apex);
-    }
+  /**
+   * HTTP → HTTPS is owned by nginx (listen 80 → 443).
+   * Middleware must NOT invent https://host:3000 redirects when X-Forwarded-Proto is missing —
+   * that is the proven production outage (ERR_SSL_PROTOCOL_ERROR).
+   *
+   * Only canonicalize www → apex on the public hostname, with port stripped.
+   */
+  if (enforceHost && apexOk && hostNoPort === `www.${apex}`) {
+    return redirectOrNext(apex, buildPublicHttpsUrl(request, apex), apex);
   }
 
   const pathname = request.nextUrl.pathname;
@@ -131,18 +150,14 @@ export function middleware(request: NextRequest) {
     }
     const secret = getSeoConsoleSecret();
     if (!secret) {
-      const u = request.nextUrl.clone();
-      u.pathname = loginPath;
-      u.searchParams.set("error", "not_configured");
-      const res = NextResponse.redirect(u);
+      // Path-only Location (no host/port) — safe behind nginx; avoids :3000 absolute URLs.
+      const res = NextResponse.redirect(new URL(`${loginPath}?error=not_configured`, request.url));
       return withHsts(res, hostNoPort, apex);
     }
-    /* Auth: tlz_seo_console cookie or x-seo-console-secret (see seo-console-auth). */
     if (!isSeoConsoleAuthenticated(request)) {
-      const u = request.nextUrl.clone();
-      u.pathname = loginPath;
-      u.searchParams.set("next", pathname);
-      const res = NextResponse.redirect(u);
+      const res = NextResponse.redirect(
+        new URL(`${loginPath}?next=${encodeURIComponent(pathname)}`, request.url),
+      );
       return withHsts(res, hostNoPort, apex);
     }
     const res = NextResponse.next();
