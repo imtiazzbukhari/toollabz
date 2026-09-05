@@ -21,6 +21,7 @@ import { HOMEPAGE_MAJOR_SHOWCASE_SLUGS, POPULAR_TOOL_SLUGS } from "@/lib/tools/p
 import { blogPosts } from "@/lib/blog/registry";
 import { TOOLLABZ_HERO_IMAGE } from "@/lib/tools/tool-illustration";
 import { absoluteUrl, breadcrumbJsonLd, siteUrl } from "@/lib/seo";
+import { hreflangLanguages } from "@/lib/i18n/metadata";
 import { getHomepageFeaturedGuidePins, getHomepageRecentlyUpdatedTools } from "@/lib/homepage-content-surface";
 import HomeSeoDeepSection from "@/components/HomeSeoDeepSection";
 import PageLastUpdated from "@/components/PageLastUpdated";
@@ -36,6 +37,7 @@ export const metadata: Metadata = {
   description: `Free online calculators and tools for finance, tax, business, health, developer, and productivity. VAT calculator, salary after tax, loan calculator, BMI, JSON formatter, Base64, and ${toolCount}+ utilities. No account needed.`,
   alternates: {
     canonical: "https://toollabz.com",
+    languages: hreflangLanguages("/"),
   },
   openGraph: {
     title: `Toollabz — ${toolCount}+ Free Online Tools & Calculators`,

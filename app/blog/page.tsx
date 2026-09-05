@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { blogPosts } from "@/lib/blog/registry";
 import { siteUrl } from "@/lib/seo";
+import { hreflangLanguages } from "@/lib/i18n/metadata";
 import { toolGlassCard } from "@/lib/tool-ui";
 
 export const revalidate = 3600;
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title: { absolute: "Blog | Toollabz - Free Online Tools" },
   description:
     "Practical guides on take-home pay, loans & EMI, VAT, PDF workflows, and ROI - written for people who actually use Toollabz calculators.",
-  alternates: { canonical: "/blog" },
+  alternates: { canonical: "/blog", languages: hreflangLanguages("/blog") },
   openGraph: {
     title: "Blog | Toollabz - Free Online Tools",
     description: "Guides that pair with our free tools: salary, EMI, VAT, PDF merge, housing, ROI, and more.",

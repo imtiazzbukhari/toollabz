@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { absoluteUrl, breadcrumbJsonLd, siteUrl } from "@/lib/seo";
+import { hreflangLanguages } from "@/lib/i18n/metadata";
 import { toolGlassCard, toolGlassPanel } from "@/lib/tool-ui";
 import PageLastUpdated from "@/components/PageLastUpdated";
 
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   title: { absolute: "Methodology — How Toollabz Calculations Work" },
   description:
     "How Toollabz documents formulas, verifies calculator logic, cites sources, and updates pages when rates or guidance change.",
-  alternates: { canonical: "/methodology" },
+  alternates: { canonical: "/methodology", languages: hreflangLanguages("/methodology") },
   openGraph: {
     title: "Toollabz methodology",
     description: "Formula documentation, verification, sources, and update process for free online calculators.",

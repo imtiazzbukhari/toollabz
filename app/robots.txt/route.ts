@@ -1,4 +1,5 @@
 import { tools } from "@/lib/tools/data";
+import { NON_DEFAULT_LOCALES } from "@/lib/i18n/locales";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -67,6 +68,7 @@ Allow: /
 Sitemap: ${BASE_URL}/sitemap.xml
 ${toolSitemapLines()}
 Sitemap: ${BASE_URL}/blog/sitemap.xml
+${NON_DEFAULT_LOCALES.map((locale) => `Sitemap: ${BASE_URL}/${locale}/sitemap.xml`).join("\n")}
 `;
   return new Response(body, {
     headers: {

@@ -49,6 +49,10 @@
 
 - [UK Financial Reference Data 2026](https://toollabz.com/research): Tax bands, NI thresholds, VAT rates, CGT, SDLT, corporation tax. Free to cite: "Source: Toollabz (toollabz.com/research)".
 
+## Languages
+
+English is the default (unprefixed). Curated translations exist at `/fr/`, `/pt/`, `/es/`, `/da/`, `/sv/`, `/fi/`, `/cs/`, `/ro/`, `/hu/`, `/el/`, `/uk/`, `/bg/`, `/sk/`, `/hr/`, `/lt/`, `/lv/`, `/et/`, `/sl/` for the homepage, hubs, trust pages, and a quality-gated set of calculators. Each translation keeps the same calculation engine. Country-specific tax tools stay labelled as UK or US law — they are not rewritten as local tax engines.
+
 ## About
 
 - [About Toollabz](https://toollabz.com/about): Mission, editorial standards, team, contact.

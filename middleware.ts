@@ -2,6 +2,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getSeoConsoleSecret, isSeoConsoleAuthenticated } from "@/lib/content-engine/seo-console-auth";
 import { checkRateLimit, rateLimitKey } from "@/lib/api-rate-limit";
+import { LOCALE_HEADER } from "@/lib/i18n/locales";
+import { isPrefixedEnglishPath, parseLocalizedPathname, stripEnglishPrefix } from "@/lib/i18n/paths";
 
 /** Valid IPv4 in Host header (no port). */
 const IPV4_HOST =
@@ -128,6 +130,22 @@ export function middleware(request: NextRequest) {
   }
 
   const pathname = request.nextUrl.pathname;
+
+  // Never create /en/… duplicates of the unprefixed English site.
+  if (isPrefixedEnglishPath(pathname)) {
+    const dest = stripEnglishPrefix(pathname);
+    if (enforceHost && apexOk && requestIsHttps(request)) {
+      const publicHost = hostNoPort === `www.${apex}` ? apex : apex;
+      const target = buildPublicHttpsUrl(request, publicHost);
+      target.pathname = dest;
+      return redirectOrNext(publicHost, target, apex);
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = dest;
+    url.port = "";
+    return NextResponse.redirect(url, 301);
+  }
+
   if (pathname.startsWith("/api/")) {
     const xf = request.headers.get("x-forwarded-for");
     const ip = xf ? xf.split(",")[0]!.trim() : (request.headers.get("x-real-ip") ?? "local");
@@ -164,7 +182,9 @@ export function middleware(request: NextRequest) {
     return withHsts(res, hostNoPort, apex);
   }
 
-  const res = NextResponse.next();
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(LOCALE_HEADER, parseLocalizedPathname(pathname).locale);
+  const res = NextResponse.next({ request: { headers: requestHeaders } });
   return withHsts(res, hostNoPort, apex);
 }
 

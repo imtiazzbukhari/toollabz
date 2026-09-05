@@ -43,7 +43,12 @@
     "predeploy": "node scripts/pre-deploy-check.mjs",
     "db:migrate:seo": "tsx scripts/db-migrate-seo.ts",
     "seo:print-gsc-opportunities": "tsx scripts/print-gsc-db-opportunities.ts",
-    "seo:discoverability": "tsx scripts/seo-discoverability-heuristic.ts"
+    "seo:discoverability": "tsx scripts/seo-discoverability-heuristic.ts",
+    "seo:full-audit": "tsx scripts/seo-full-audit.ts",
+    "seo:validate-hreflang": "tsx scripts/validate-hreflang.ts",
+    "seo:validate-sitemaps": "tsx scripts/validate-multilingual-sitemaps.ts",
+    "seo:validate-indexability": "tsx scripts/validate-indexability.ts",
+    "seo:validate-canonical": "tsx scripts/validate-canonical-integrity.ts"
   },
   "dependencies": {
     "@tailwindcss/oxide-linux-x64-gnu": "^4.2.2",

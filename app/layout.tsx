@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { headers } from "next/headers";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,6 +9,8 @@ import DeferredClientObservers from "@/components/DeferredClientObservers";
 import { GA_TRACKING_ID } from "@/lib/analytics/gtag";
 import { ADSENSE_ENABLED, ADSENSE_PUBLISHER_ID } from "@/lib/analytics/env";
 import { organizationSchema, websiteSearchActionSchema } from "@/lib/seo";
+import { DEFAULT_LOCALE, LOCALE_HEADER, isLocale } from "@/lib/i18n/locales";
+import { htmlLangFor } from "@/lib/i18n/hreflang";
 
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
 const gscSiteVerification = process.env.NEXT_PUBLIC_GSC_VERIFICATION?.trim();
@@ -75,16 +78,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const websiteJsonLd = JSON.stringify(websiteSearchActionSchema());
   const orgJsonLd = JSON.stringify(organizationSchema());
+  const localeHeader = (await headers()).get(LOCALE_HEADER);
+  const locale = isLocale(localeHeader) ? localeHeader : DEFAULT_LOCALE;
 
   return (
-    <html lang="en">
+    <html lang={htmlLangFor(locale)}>
       <body className="flex min-h-screen flex-col overflow-x-hidden">
         {/* System font stack in globals.css — no Google Fonts stylesheet (avoids extra LCP/connection work). */}
         <link rel="preload" href="/logo-toollabz.webp" as="image" />
@@ -141,7 +146,7 @@ gtag('config', '${GA_TRACKING_ID}', { send_page_view: false });
         <main id="main-content" tabIndex={-1} className="min-w-0 flex-1 outline-none">
           {children}
         </main>
-        <Footer />
+        <Footer locale={locale} />
       </body>
     </html>
   );

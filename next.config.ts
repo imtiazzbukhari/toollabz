@@ -50,6 +50,47 @@ const nextConfig: NextConfig = {
         destination: "/salary-after-tax/p/:amount",
         permanent: true,
       },
+      // Thin country stubs: consolidate crawl to the real calculator (was 200 + noindex).
+      {
+        source: "/loan-calculator/:country",
+        destination: "/tools/loan-calculator",
+        permanent: true,
+      },
+      {
+        source: "/salary-tax-calculator/:country",
+        destination: "/tools/salary-after-tax-calculator",
+        permanent: true,
+      },
+      {
+        source: "/salary-after-tax-calculator/uk/:amount",
+        destination: "/tools/salary-after-tax-calculator-uk",
+        permanent: true,
+      },
+      {
+        source: "/salary-after-tax-calculator/california/:amount",
+        destination: "/tools/salary-after-tax-calculator-california",
+        permanent: true,
+      },
+      {
+        source: "/salary-after-tax-calculator/texas/:amount",
+        destination: "/tools/salary-after-tax-calculator-texas",
+        permanent: true,
+      },
+      {
+        source: "/salary-after-tax-calculator/new-york/:amount",
+        destination: "/tools/salary-after-tax-calculator-new-york",
+        permanent: true,
+      },
+      {
+        source: "/salary-after-tax-calculator/florida/:amount",
+        destination: "/tools/salary-after-tax-calculator-florida",
+        permanent: true,
+      },
+      {
+        source: "/salary-after-tax-calculator/:country/:amount",
+        destination: "/tools/salary-after-tax-calculator",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {

@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, Search, X } from "lucide-react";
+import LanguageSwitcher from "@/components/i18n/LanguageSwitcher";
+import { getUiMessages } from "@/lib/i18n/ui-messages";
+import { localizePath, parseLocalizedPathname } from "@/lib/i18n/paths";
 
 type NavLink = { kind: "link"; label: string; href: string };
 type NavFinancePair = {
@@ -13,17 +16,21 @@ type NavFinancePair = {
   secondary: { label: string; href: string };
 };
 
-const nav: (NavLink | NavFinancePair)[] = [
-  { kind: "link", label: "Tools", href: "/tools" },
-  { kind: "link", label: "Categories", href: "/#categories" },
-  { kind: "link", label: "Converters", href: "/utility-tools" },
-  {
-    kind: "finance-pair",
-    primary: { label: "Calculators", href: "/finance-tools" },
-    secondary: { label: "UK tax", href: "/uk-finance-tax" },
-  },
-  { kind: "link", label: "Blog", href: "/blog" },
-];
+function buildNav(locale: ReturnType<typeof parseLocalizedPathname>["locale"]): (NavLink | NavFinancePair)[] {
+  const ui = getUiMessages(locale);
+  const L = (href: string) => localizePath(href, locale);
+  return [
+    { kind: "link", label: ui.nav.tools, href: L("/tools") },
+    { kind: "link", label: ui.nav.categories, href: locale === "en" ? "/#categories" : `${L("/")}#categories` },
+    { kind: "link", label: ui.nav.converters, href: L("/utility-tools") },
+    {
+      kind: "finance-pair",
+      primary: { label: ui.nav.calculators, href: L("/finance-tools") },
+      secondary: { label: ui.nav.ukTax, href: "/uk-finance-tax" },
+    },
+    { kind: "link", label: ui.nav.blog, href: L("/blog") },
+  ];
+}
 
 function linkActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";
@@ -37,6 +44,11 @@ function financePairActive(pathname: string, primaryHref: string, secondaryHref:
 
 export default function Header() {
   const pathname = usePathname() ?? "";
+  const { locale } = parseLocalizedPathname(pathname);
+  const ui = getUiMessages(locale);
+  const nav = buildNav(locale);
+  const homeHref = localizePath("/", locale);
+  const toolsHref = localizePath("/tools", locale);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -61,7 +73,7 @@ export default function Header() {
     <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/75 backdrop-blur-xl">
       <div className="mx-auto flex h-[60px] max-w-[1240px] items-center justify-between gap-2 px-3 sm:h-[70px] sm:px-4 lg:px-8">
         <Link
-          href="/"
+          href={homeHref}
           className="flex min-w-0 shrink-0 items-center gap-2.5 text-slate-900"
         >
           <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#0a0a12] p-1 shadow-sm ring-1 ring-slate-200/80 sm:h-10 sm:w-10">
@@ -128,9 +140,10 @@ export default function Header() {
           })}
         </nav>
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+          <LanguageSwitcher pathname={pathname} />
           <Link
-            href="/tools"
-            aria-label="Search tools"
+            href={toolsHref}
+            aria-label={ui.nav.searchTools}
             className="rounded-full p-2 text-slate-500 transition duration-300 hover:bg-violet-50 hover:text-violet-600"
           >
             <Search className="h-4 w-4" aria-hidden="true" />
@@ -139,7 +152,7 @@ export default function Header() {
             type="button"
             className="rounded-lg p-2 text-slate-600 transition hover:bg-violet-50 hover:text-violet-700 lg:hidden"
             aria-expanded={menuOpen}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-label={menuOpen ? ui.nav.closeMenu : ui.nav.openMenu}
             onClick={() => setMenuOpen((o) => !o)}
           >
             {menuOpen ? (

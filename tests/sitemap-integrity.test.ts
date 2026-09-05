@@ -95,6 +95,9 @@ describe("sitemap + indexing integrity", () => {
     expect(text).toContain("Sitemap: https://toollabz.com/sitemap.xml");
     expect(text).toContain("Sitemap: https://toollabz.com/tools/sitemap/0.xml");
     expect(text).toContain("Sitemap: https://toollabz.com/blog/sitemap.xml");
+    expect(text).toContain("Sitemap: https://toollabz.com/fr/sitemap.xml");
+    expect(text).toContain("Sitemap: https://toollabz.com/es/sitemap.xml");
+    expect(text).toContain("User-agent: OAI-SearchBot");
     expect(text).not.toContain("Disallow: /_next/");
   });
 });

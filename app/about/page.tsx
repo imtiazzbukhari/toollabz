@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, Mail } from "lucide-react";
 import { absoluteUrl, breadcrumbJsonLd, siteUrl } from "@/lib/seo";
+import { hreflangLanguages } from "@/lib/i18n/metadata";
 import { toolGlassCard, toolGlassPanel } from "@/lib/tool-ui";
 import { tools } from "@/lib/tools/data";
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   title: { absolute: `About Toollabz | Toollabz - Free Online Tools` },
   description:
     "Meet the Toollabz team, our mission to ship accurate free calculators & PDF tools, founding story, and how to reach us - Toollabz editorial & engineering.",
-  alternates: { canonical: "/about" },
+  alternates: { canonical: "/about", languages: hreflangLanguages("/about") },
   openGraph: {
     title: "About Toollabz",
     description:

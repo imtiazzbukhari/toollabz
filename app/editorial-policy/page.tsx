@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { absoluteUrl, breadcrumbJsonLd, siteUrl } from "@/lib/seo";
+import { hreflangLanguages } from "@/lib/i18n/metadata";
 import { toolGlassCard, toolGlassPanel } from "@/lib/tool-ui";
 import PageLastUpdated from "@/components/PageLastUpdated";
 
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   title: { absolute: "Editorial Policy — Toollabz" },
   description:
     "Toollabz editorial standards: helpful content, EEAT, review process, YMYL disclaimers, and corrections policy for calculators and guides.",
-  alternates: { canonical: "/editorial-policy" },
+  alternates: { canonical: "/editorial-policy", languages: hreflangLanguages("/editorial-policy") },
 };
 
 export default function EditorialPolicyPage() {

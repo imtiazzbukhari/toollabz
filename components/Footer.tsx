@@ -4,6 +4,12 @@ import { Github, Twitter, Linkedin } from "lucide-react";
 import NewsletterFormDeferred from "./NewsletterFormDeferred";
 import { tools } from "@/lib/tools/data";
 import { SITE_LAST_UPDATED_ISO, formatSiteLastUpdatedForDisplay } from "@/lib/site-freshness";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
+import { getUiMessages } from "@/lib/i18n/ui-messages";
+import { getPageCopy } from "@/lib/i18n/page-messages";
+import { getToolCopy, hasToolCopy } from "@/lib/i18n/tool-messages";
+import { isLocalizedEnglishPath } from "@/lib/i18n/catalog";
+import { localizePath } from "@/lib/i18n/paths";
 
 const categoryLinks = [
   { label: "Finance", href: "/finance-tools" },
@@ -25,14 +31,6 @@ const topToolSlugs = [
   "net-worth-calculator",
 ];
 
-const topToolLinks = topToolSlugs
-  .map((slug) => tools.find((tool) => tool.slug === slug))
-  .filter(Boolean)
-  .map((tool) => ({
-    label: tool!.name,
-    href: `/tools/${tool!.slug}`,
-  }));
-
 /** Set true when real social profile URLs are ready. */
 const showFooterSocialIcons = false;
 
@@ -42,7 +40,45 @@ const socialLinks = [
   { href: "/about", label: "About Toollabz", Icon: Linkedin },
 ];
 
-export default function Footer() {
+function hrefFor(path: string, locale: Locale): string {
+  return isLocalizedEnglishPath(path) ? localizePath(path, locale) : path;
+}
+
+export default function Footer({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
+  const ui = getUiMessages(locale);
+  const L = (path: string) => hrefFor(path, locale);
+  const localizedCategoryLinks = categoryLinks.map((link) => ({
+    ...link,
+    href: L(link.href),
+    label: getPageCopy(
+      locale,
+      link.href === "/finance-tools"
+        ? "finance"
+        : link.href === "/business-tools"
+          ? "business"
+          : link.href === "/real-estate-tools"
+            ? "realEstate"
+            : link.href === "/marketing-tools"
+              ? "marketing"
+              : link.href === "/ai-tools"
+                ? "ai"
+                : link.href === "/developer-tools"
+                  ? "developer"
+                  : link.href === "/utility-tools"
+                    ? "utility"
+                    : "pdf",
+    ).h1,
+  }));
+  const localizedTopTools = topToolSlugs
+    .map((slug) => {
+      const tool = tools.find((t) => t.slug === slug);
+      if (!tool) return null;
+      const name = hasToolCopy(slug) ? getToolCopy(locale, slug).name : tool.name;
+      const href = hasToolCopy(slug) ? localizePath(`/tools/${slug}`, locale) : `/tools/${slug}`;
+      return { label: name, href };
+    })
+    .filter(Boolean) as Array<{ label: string; href: string }>;
+
   return (
     <footer className="mt-10 border-t border-violet-200/45 bg-gradient-to-b from-[#eef2ff]/40 via-[#e9edff]/30 to-[#e2e8ff]/24 backdrop-blur-xl md:mt-12">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 pt-6 pb-10 sm:grid-cols-2 sm:gap-12 sm:pt-8 sm:pb-14 md:grid-cols-7 lg:px-8">
@@ -61,7 +97,7 @@ export default function Footer() {
             </span>
             <p className="text-xl font-bold tracking-tight text-slate-900">Toollabz</p>
           </div>
-          <p className="mt-3 max-w-sm text-sm leading-6 text-slate-600">Your all-in-one platform for smart, free online tools built for speed, privacy, and simplicity.</p>
+          <p className="mt-3 max-w-sm text-sm leading-6 text-slate-600">{ui.footer.blurb}</p>
           {showFooterSocialIcons ? (
             <div className="mt-5 flex items-center gap-3">
               {socialLinks.map(({ href, label, Icon }) => (
@@ -78,43 +114,43 @@ export default function Footer() {
           ) : null}
         </div>
         <div>
-          <h3 className="font-semibold text-slate-900">Quick Links</h3>
+          <h3 className="font-semibold text-slate-900">{ui.footer.quickLinks}</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-700">
-            <li><Link href="/tools" className="transition duration-300 hover:text-violet-600">All Tools</Link></li>
-            <li><Link href="/#popular-tools" className="transition duration-300 hover:text-violet-600">Popular Tools</Link></li>
-            <li><Link href="/#categories" className="transition duration-300 hover:text-violet-600">Categories</Link></li>
-            <li><Link href="/blog" className="transition duration-300 hover:text-violet-600">Blog</Link></li>
-            <li><Link href="/about" className="transition duration-300 hover:text-violet-600">About Us</Link></li>
-            <li><Link href="/contact" className="transition duration-300 hover:text-violet-600">Contact</Link></li>
-            <li><Link href="/privacy" className="transition duration-300 hover:text-violet-600">Privacy Policy</Link></li>
-            <li><Link href="/terms" className="transition duration-300 hover:text-violet-600">Terms & Conditions</Link></li>
-            <li><Link href="/disclaimer" className="transition duration-300 hover:text-violet-600">Disclaimer</Link></li>
-            <li><Link href="/methodology" className="transition duration-300 hover:text-violet-600">Methodology</Link></li>
-            <li><Link href="/editorial-policy" className="transition duration-300 hover:text-violet-600">Editorial policy</Link></li>
-            <li><Link href="/glossary" className="transition duration-300 hover:text-violet-600">Glossary</Link></li>
-            <li><Link href="/research" className="transition duration-300 hover:text-violet-600">Research</Link></li>
-            <li><Link href="/sitemap.xml" className="transition duration-300 hover:text-violet-600">Sitemap</Link></li>
+            <li><Link href={L("/tools")} className="transition duration-300 hover:text-violet-600">{ui.footer.allTools}</Link></li>
+            <li><Link href={locale === "en" ? "/#popular-tools" : `${L("/")}#popular-tools`} className="transition duration-300 hover:text-violet-600">{ui.footer.popularTools}</Link></li>
+            <li><Link href={locale === "en" ? "/#categories" : `${L("/")}#categories`} className="transition duration-300 hover:text-violet-600">{ui.nav.categories}</Link></li>
+            <li><Link href={L("/blog")} className="transition duration-300 hover:text-violet-600">{ui.nav.blog}</Link></li>
+            <li><Link href={L("/about")} className="transition duration-300 hover:text-violet-600">{ui.footer.about}</Link></li>
+            <li><Link href={L("/contact")} className="transition duration-300 hover:text-violet-600">{ui.footer.contact}</Link></li>
+            <li><Link href={L("/privacy")} className="transition duration-300 hover:text-violet-600">{ui.footer.privacy}</Link></li>
+            <li><Link href={L("/terms")} className="transition duration-300 hover:text-violet-600">{ui.footer.terms}</Link></li>
+            <li><Link href={L("/disclaimer")} className="transition duration-300 hover:text-violet-600">{ui.footer.disclaimer}</Link></li>
+            <li><Link href={L("/methodology")} className="transition duration-300 hover:text-violet-600">{ui.footer.methodology}</Link></li>
+            <li><Link href={L("/editorial-policy")} className="transition duration-300 hover:text-violet-600">{ui.footer.editorial}</Link></li>
+            <li><Link href={L("/glossary")} className="transition duration-300 hover:text-violet-600">{ui.footer.glossary}</Link></li>
+            <li><Link href={L("/research")} className="transition duration-300 hover:text-violet-600">{ui.footer.research}</Link></li>
+            <li><Link href={locale === "en" ? "/sitemap.xml" : `/${locale}/sitemap.xml`} className="transition duration-300 hover:text-violet-600">{ui.footer.sitemap}</Link></li>
           </ul>
         </div>
         <div>
-          <h3 className="font-semibold text-slate-900">Categories</h3>
+          <h3 className="font-semibold text-slate-900">{ui.footer.categories}</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-700">
-            {categoryLinks.map((link) => (
+            {localizedCategoryLinks.map((link) => (
               <li key={link.href}><Link href={link.href} className="transition duration-300 hover:text-violet-600">{link.label}</Link></li>
             ))}
           </ul>
         </div>
         <div>
-          <h3 className="font-semibold text-slate-900">Top Tools</h3>
+          <h3 className="font-semibold text-slate-900">{ui.footer.topTools}</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-700">
-            {topToolLinks.map((link) => (
+            {localizedTopTools.map((link) => (
               <li key={link.href}><Link href={link.href} className="transition duration-300 hover:text-violet-600">{link.label}</Link></li>
             ))}
           </ul>
         </div>
         <div className="min-w-0 sm:col-span-2 md:col-span-2">
-          <h3 className="font-semibold text-slate-900">Stay Updated</h3>
-          <p className="mt-3 text-sm text-slate-600">Get new tools and updates delivered to your inbox.</p>
+          <h3 className="font-semibold text-slate-900">{ui.footer.stayUpdated}</h3>
+          <p className="mt-3 text-sm text-slate-600">{ui.footer.stayUpdatedBody}</p>
           <div className="mt-3 w-full min-w-0 max-w-md">
             <NewsletterFormDeferred variant="footer" />
           </div>
@@ -122,12 +158,12 @@ export default function Footer() {
       </div>
       <div className="border-t border-violet-200/45 bg-white/20 py-4 text-center text-xs text-slate-600 backdrop-blur">
         <p>
-          <span className="text-slate-500">Last updated </span>
+          <span className="text-slate-500">{ui.footer.lastUpdated} </span>
           <time dateTime={SITE_LAST_UPDATED_ISO} className="font-medium text-slate-700">
             {formatSiteLastUpdatedForDisplay()}
           </time>
         </p>
-        <p className="mt-1">© 2026 Toollabz. All rights reserved.</p>
+        <p className="mt-1">{ui.footer.rights}</p>
       </div>
     </footer>
   );

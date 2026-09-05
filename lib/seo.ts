@@ -3,6 +3,7 @@ import { getToolFaqs } from "./tools/content";
 import { TOOL_SEO_OVERRIDES } from "./tools/tool-seo-overrides";
 import { SITE_LAST_UPDATED_DATE_TIME } from "./site-freshness";
 import { getSerpPrimaryLine } from "./tools/tool-serp-primary-cache";
+import { buildHreflangPaths } from "@/lib/i18n/hreflang";
 
 function normalizeOrigin(raw: string | undefined): string | undefined {
   const s = raw?.trim().replace(/\/$/, "");
@@ -267,9 +268,11 @@ export function toolMetadata(tool: ToolDefinition) {
       `toollabz ${tool.name.toLowerCase()}`,
     ],
     alternates: {
-      // Self-canonical only. Do not emit fake hreflang (en-GB/en-US/en-AU → same URL);
-      // Google treats that as invalid alternate annotations.
+      // Self-canonical. Real language alternates only (see lib/i18n) — never fake en-GB/en-US/en-AU on one URL.
       canonical: absolutePath,
+      languages: Object.fromEntries(
+        Object.entries(buildHreflangPaths(path)).map(([code, locPath]) => [code, absoluteUrl(locPath)]),
+      ),
     },
     openGraph: {
       title: `${titleBase}${TOOL_PAGE_TITLE_SUFFIX}`,
