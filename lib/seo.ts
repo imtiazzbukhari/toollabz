@@ -131,6 +131,8 @@ const TOOL_TITLE_OVERRIDES: Record<string, string> = {
   "base64-encoder-decoder": "Base64 Encoder Decoder — Encode & Decode Instantly | Toollabz",
   "json-formatter": "JSON Formatter & Validator — Format + Fix Errors | Toollabz",
   "password-generator": "Password Generator — Secure & Random, 1 Click | Toollabz",
+  "salary-after-tax-calculator-uk": "Salary After Tax Calculator UK — PAYE Take-Home 2026/27 | Toollabz",
+  "stamp-duty-calculator-uk": "Stamp Duty Calculator UK — SDLT, LBTT and LTT | Toollabz",
 };
 
 const TOOL_META_OVERRIDES: Record<string, string> = {
@@ -176,6 +178,10 @@ const TOOL_META_OVERRIDES: Record<string, string> = {
     "Format, validate, and minify JSON in one click. Pinpoints exact error line for invalid JSON — trailing commas, single quotes, missing brackets. No data uploaded.",
   "password-generator":
     "Generate cryptographically secure passwords using Web Crypto API. Set 8–64 char length, toggle uppercase/numbers/symbols. Passwords generated locally — never sent online.",
+  "salary-after-tax-calculator-uk":
+    "UK take-home pay estimator for the 2026 to 2027 tax year. Applies Income Tax, employee NI, pension, sacrifice and student loan. Estimate, not a payslip.",
+  "stamp-duty-calculator-uk":
+    "One UK stamp duty calculator with nation modes: SDLT, LBTT or LTT. First-time buyer, additional property, cash needed. Published 2026 rates.",
 };
 
 /** Pad or trim editorial / override copy into Google-friendly snippet length. */

@@ -14,6 +14,7 @@ export const revalidate = 3600;
 
 const UK_FINANCE_TOOL_SLUGS = [
   "salary-after-tax-calculator-uk",
+  "stamp-duty-calculator-uk",
   "self-employed-tax-calculator-uk",
   "dividend-tax-calculator-uk",
   "freelance-day-rate-calculator",
@@ -23,6 +24,8 @@ const UK_FINANCE_TOOL_SLUGS = [
 ] as const;
 
 const UK_FINANCE_BLOG_SLUGS = [
+  "uk-take-home-pay-income-tax-national-insurance",
+  "uk-stamp-duty-england-scotland-wales-guide",
   "uk-self-employed-dividend-salary-effective-percent-toollabz",
   "gst-vs-vat-uk-au-cross-border-pricing-toollabz",
   "gst-australia-inclusive-exclusive-10-percent-small-business",
@@ -110,7 +113,16 @@ export default function UkFinanceTaxHubPage() {
                     Salary after tax (UK)
                   </Link>
                 </td>
-                <td className="px-4 py-3">You supply combined income tax, NI, and pension percentages to approximate net pay.</td>
+                <td className="px-4 py-3">Applies published 2026/27 Income Tax bands, employee NI, optional pension, salary sacrifice and student loan.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3">Buying a home in England, Scotland or Wales</td>
+                <td className="px-4 py-3">
+                  <Link href="/tools/stamp-duty-calculator-uk" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+                    Stamp duty (UK)
+                  </Link>
+                </td>
+                <td className="px-4 py-3">One calculator with SDLT, LBTT and LTT modes, first-time and additional-property rules, and cash required.</td>
               </tr>
               <tr>
                 <td className="px-4 py-3">Sole trader profit after blended rates</td>
@@ -165,8 +177,8 @@ export default function UkFinanceTaxHubPage() {
           <div>
             <dt className="font-semibold text-slate-900">Are these HMRC-certified calculators?</dt>
             <dd className="mt-1">
-              No. They apply the percentages and amounts you type. Use official HMRC guidance, payroll software, or a tax agent for filings and edge cases such
-              as Scottish bands, high income child benefit charge, or payments on account.
+              No. The PAYE take-home and stamp duty tools apply published 2026/27 bands as a planning estimate. Use HMRC payroll software, the official SDLT
+              calculator, Revenue Scotland, or Welsh Revenue Authority tools before you file or exchange.
             </dd>
           </div>
           <div>

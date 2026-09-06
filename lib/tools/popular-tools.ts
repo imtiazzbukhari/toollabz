@@ -33,6 +33,7 @@ const HOMEPAGE_AUTHORITY_EXTRA = [
   "credit-card-payoff-calculator",
   "budget-planner-monthly-usa",
   "invoice-generator",
+  "stamp-duty-calculator-uk",
 ] as const satisfies readonly string[];
 
 export const HOMEPAGE_AUTHORITY_SLUGS: readonly string[] = [

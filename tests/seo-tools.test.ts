@@ -28,6 +28,7 @@ const newFinanceSlugs = [
   "salary-after-tax-calculator-new-york",
   "salary-after-tax-calculator-florida",
   "salary-after-tax-calculator-uk",
+  "stamp-duty-calculator-uk",
   "self-employed-tax-calculator-uk",
   "dividend-tax-calculator-uk",
   "roi-calculator-marketing",

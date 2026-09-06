@@ -23,7 +23,10 @@ function CalculatorForm({
 }) {
   const ws = getWorkspaceMessages(locale);
   const [form, setForm] = useState<Record<string, string>>(
-    () => Object.fromEntries(tool.fields.map((f) => [f.name, ""])) as Record<string, string>,
+    () =>
+      Object.fromEntries(
+        tool.fields.map((f) => [f.name, f.type === "select" ? (f.options?.[0]?.value ?? "") : ""]),
+      ) as Record<string, string>,
   );
   const formRef = useRef(form);
   formRef.current = form;

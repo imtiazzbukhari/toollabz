@@ -65,10 +65,12 @@ import * as m59 from "./articles/sql-cron-readability-schedulers-developer-guide
 import * as m60 from "./articles/student-loan-forgiveness-roadmap";
 import * as m61 from "./articles/tool-seo-expansion";
 import * as m62 from "./articles/uk-self-employed-dividend-salary-effective-percent-toollabz";
-import * as m63 from "./articles/vat-calculator-guide-small-businesses";
-import * as m64 from "./articles/vat-calculator-uk-eu-uae-add-remove-guide";
-import * as m65 from "./articles/working-days-uk-timezones-business-slas-toollabz";
-import * as m66 from "./articles/zakat-calculation-nisab-practical-guide-respectful";
+import * as m63 from "./articles/uk-stamp-duty-england-scotland-wales-guide";
+import * as m64 from "./articles/uk-take-home-pay-income-tax-national-insurance";
+import * as m65 from "./articles/vat-calculator-guide-small-businesses";
+import * as m66 from "./articles/vat-calculator-uk-eu-uae-add-remove-guide";
+import * as m67 from "./articles/working-days-uk-timezones-business-slas-toollabz";
+import * as m68 from "./articles/zakat-calculation-nisab-practical-guide-respectful";
 
 export const BLOG_ARTICLE_MODULE_ENTRIES = [
   { sourceFile: "ai-content-humanizer-natural-text-guide.tsx", module: m0 },
@@ -134,8 +136,10 @@ export const BLOG_ARTICLE_MODULE_ENTRIES = [
   { sourceFile: "student-loan-forgiveness-roadmap.tsx", module: m60 },
   { sourceFile: "tool-seo-expansion.tsx", module: m61 },
   { sourceFile: "uk-self-employed-dividend-salary-effective-percent-toollabz.tsx", module: m62 },
-  { sourceFile: "vat-calculator-guide-small-businesses.tsx", module: m63 },
-  { sourceFile: "vat-calculator-uk-eu-uae-add-remove-guide.tsx", module: m64 },
-  { sourceFile: "working-days-uk-timezones-business-slas-toollabz.tsx", module: m65 },
-  { sourceFile: "zakat-calculation-nisab-practical-guide-respectful.tsx", module: m66 },
+  { sourceFile: "uk-stamp-duty-england-scotland-wales-guide.tsx", module: m63 },
+  { sourceFile: "uk-take-home-pay-income-tax-national-insurance.tsx", module: m64 },
+  { sourceFile: "vat-calculator-guide-small-businesses.tsx", module: m65 },
+  { sourceFile: "vat-calculator-uk-eu-uae-add-remove-guide.tsx", module: m66 },
+  { sourceFile: "working-days-uk-timezones-business-slas-toollabz.tsx", module: m67 },
+  { sourceFile: "zakat-calculation-nisab-practical-guide-respectful.tsx", module: m68 },
 ] as const;

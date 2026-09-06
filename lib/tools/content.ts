@@ -194,7 +194,10 @@ const formulas: Record<string, string> = {
   "salary-after-tax-calculator-texas": "Net Salary = Gross Salary × (1 - (Federal + Other Deductions))",
   "salary-after-tax-calculator-new-york": "Net Salary = Gross Salary × (1 - (Federal + New York State + Local + Other Deductions))",
   "salary-after-tax-calculator-florida": "Net Salary = Gross Salary × (1 - (Federal + Other Deductions))",
-  "salary-after-tax-calculator-uk": "Net Salary = Gross Salary × (1 - (Income Tax + NI + Pension))",
+  "salary-after-tax-calculator-uk":
+    "Net = gross − salary sacrifice − Income Tax (2026/27 bands) − employee NI − pension − student loan",
+  "stamp-duty-calculator-uk":
+    "Tax = published residential bands for SDLT, LBTT or LTT + any additional/non-resident surcharge; cash required = deposit + tax",
   "roi-calculator-marketing": "Marketing ROI% = (Net Gain / Campaign Cost) × 100",
   "cac-calculator-saas": "CAC = Sales & Marketing Spend / New Customers",
   "ltv-calculator-saas": "LTV = ARPU × Gross Margin / Churn",

@@ -16,8 +16,15 @@ const TOOL_SOURCES: Record<string, SourceRef[]> = {
     { label: "GOV.UK — Private renting", href: "https://www.gov.uk/private-renting" },
   ],
   "salary-after-tax-calculator-uk": [
-    { label: "GOV.UK — Income Tax rates", href: "https://www.gov.uk/income-tax-rates" },
-    { label: "GOV.UK — National Insurance rates", href: "https://www.gov.uk/national-insurance-rates" },
+    { label: "GOV.UK — Income Tax rates and Personal Allowances", href: "https://www.gov.uk/income-tax-rates" },
+    { label: "GOV.UK — Rates and thresholds for employers 2026 to 2027", href: "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2026-to-2027" },
+    { label: "GOV.UK — Income Tax in Scotland", href: "https://www.gov.uk/scottish-income-tax" },
+  ],
+  "stamp-duty-calculator-uk": [
+    { label: "GOV.UK — SDLT residential rates", href: "https://www.gov.uk/stamp-duty-land-tax/residential-property-rates" },
+    { label: "HMRC — SDLT calculator", href: "https://www.tax.service.gov.uk/calculate-stamp-duty-land-tax/#/intro" },
+    { label: "Scottish Government — LBTT rates (Budget 2026-27)", href: "https://www.gov.scot/publications/scottish-budget-2026-2027/pages/4/" },
+    { label: "GOV.WALES — Land Transaction Tax rates", href: "https://www.gov.wales/land-transaction-tax-rates-and-bands" },
   ],
   "loan-calculator": [
     {

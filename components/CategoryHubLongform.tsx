@@ -57,6 +57,7 @@ const HUB_COPY: Record<DirectoryGroupId, HubCopy> = {
         links: [
           { href: "/uk-finance-tax", label: "UK finance and tax hub" },
           { href: "/tools/salary-after-tax-calculator-uk", label: "Salary after tax (UK)" },
+          { href: "/tools/stamp-duty-calculator-uk", label: "Stamp duty (UK)" },
           { href: "/tools/self-employed-tax-calculator-uk", label: "Self-employed tax (UK)" },
           { href: "/tools/dividend-tax-calculator-uk", label: "Dividend tax (UK)" },
           { href: "/tools/freelance-day-rate-calculator", label: "Freelance day rate" },
@@ -115,6 +116,7 @@ const HUB_COPY: Record<DirectoryGroupId, HubCopy> = {
         title: "UK buy-to-let screening",
         links: [
           { href: "/tools/rental-yield-calculator-uk", label: "UK rental yield (and optional cash flow)" },
+          { href: "/tools/stamp-duty-calculator-uk", label: "Stamp duty (UK)" },
           { href: "/tools/rental-yield-calculator", label: "Generic rental yield" },
           { href: "/tools/property-roi-calculator", label: "Property ROI" },
           { href: "/tools/loan-calculator", label: "Loan payment" },

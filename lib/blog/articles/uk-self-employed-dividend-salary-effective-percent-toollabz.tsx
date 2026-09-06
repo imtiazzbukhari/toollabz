@@ -49,8 +49,9 @@ function Article() {
         <Link href="/tools/salary-after-tax-calculator-uk" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           salary after tax calculator UK
         </Link>{" "}
-        uses gross salary plus income tax, NI, and pension percentages. It is still not a payroll engine, but it is the right shape
-        when someone asks “if I take this PAYE offer, what net hits my bank?” Pair it with the{" "}
+        now applies published 2026/27 Income Tax bands and employee National Insurance, plus optional pension, salary sacrifice
+        and student loan. It is still not a payroll engine, but it is the right shape when someone asks “if I take this PAYE
+        offer, what net hits my bank?” Pair it with the{" "}
         <Link href="/blog/freelance-pricing-hourly-day-rate-mistakes-calculator-guide" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           freelance pricing and day rate guide
         </Link>{" "}
@@ -107,7 +108,7 @@ function Article() {
       <BlogToolCallout
         href="/tools/salary-after-tax-calculator-uk"
         title="Salary after tax calculator UK"
-        body="Estimate take-home from gross with tax, NI, and pension fields you control."
+        body="Estimate 2026/27 PAYE take-home with nation, pension, sacrifice and student loan fields."
       />
 
       <p className="mt-3 leading-7 text-slate-700">
@@ -151,6 +152,7 @@ export const ukTaxSketchesPost: BlogPostDefinition = {
     "invoice-late-fee-calculator",
   ],
   relatedPostsSlugs: [
+    "uk-take-home-pay-income-tax-national-insurance",
     "freelance-pricing-hourly-day-rate-mistakes-calculator-guide",
     "employee-loaded-cost-pricing-seat-economics-toollabz",
     "gst-australia-inclusive-exclusive-10-percent-small-business",

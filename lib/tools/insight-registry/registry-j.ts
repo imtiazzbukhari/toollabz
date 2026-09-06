@@ -278,6 +278,19 @@ export const TOOL_INSIGHTS_J: Record<string, ToolPageInsight> = {
       "Pair BMI with waist measure and clinical advice for decisions.",
     ],
   },
+  "stamp-duty-calculator-uk": {
+    quickAnswer:
+      "UK stamp duty is three taxes: SDLT (England & NI), LBTT (Scotland) and LTT (Wales) — one calculator, nation modes.",
+    explain:
+      "Pick the nation, buyer type and price. First-time and additional-property rules differ by nation. Cash required is deposit plus tax. Shared ownership and companies are out of scope.",
+    example:
+      "£295,000 standard SDLT in England = £4,750 (GOV.UK worked example). Welsh main LTT on £280,000 = £3,300.",
+    insights: [
+      "Do not put stamp duty into UK rental yield annual costs — it is a purchase cost.",
+      "HMRC’s SDLT calculator remains the filing-grade check for England and NI.",
+      "Rates move at fiscal events. This page last reviewed the published 2026 tables on 6 September 2026.",
+    ],
+  },
   "tip-calculator": {
     quickAnswer:
       "Tip = bill × tip%; UK tipping is often optional (~10–12.5%), while US restaurants commonly expect ~18–22%.",

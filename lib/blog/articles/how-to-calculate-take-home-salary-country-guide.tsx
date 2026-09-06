@@ -49,7 +49,15 @@ function Article() {
         <Link href="/tools/salary-after-tax-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           salary after tax calculator
         </Link>{" "}
-        when you want a quick effective-rate sketch, then open region-specific paycheck tools (
+        when you want a quick effective-rate sketch. For UK PAYE offers use the{" "}
+        <Link href="/tools/salary-after-tax-calculator-uk" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+          Salary After Tax Calculator UK
+        </Link>{" "}
+        and the{" "}
+        <Link href="/blog/uk-take-home-pay-income-tax-national-insurance" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+          UK take-home guide
+        </Link>
+        , then open region-specific paycheck tools (
         <Link href="/tools/paycheck-calculator-california" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           California
         </Link>
@@ -90,9 +98,11 @@ export const howToCalculateTakeHomeSalaryCountryGuidePost: BlogPostDefinition = 
   ],
   relatedToolSlugs: [
     "salary-after-tax-calculator",
+    "salary-after-tax-calculator-uk",
     "paycheck-calculator-usa",
     "paycheck-calculator-california",
     "hourly-to-salary-converter-usa",
   ],
+  relatedPostsSlugs: ["uk-take-home-pay-income-tax-national-insurance"],
   Article,
 };

@@ -3,6 +3,8 @@ import { computeExpansionPhase1 } from "./expansion-phase1-compute";
 import { computeExpansionPhase2 } from "./expansion-phase2-compute";
 import { SMALL_CLAIMS_BY_STATE } from "./small-claims-data";
 import type { ToolComputationResult } from "./computation-result";
+import { computeUkStampDutyFromForm } from "./uk-finance/stamp-duty";
+import { computeUkTakeHomeFromForm } from "./uk-finance/take-home";
 
 export type { ToolComputationResult } from "./computation-result";
 
@@ -1116,29 +1118,10 @@ export function computeTool(slug: string, form: Record<string, string>): ToolCom
         ],
       };
     }
-    case "salary-after-tax-calculator-uk": {
-      const errs = [
-        requiredNumber(form.annualSalary, "Annual Salary"),
-        requiredNumber(form.incomeTaxRate, "Income Tax Rate"),
-        requiredNumber(form.niRate, "National Insurance Rate"),
-        requiredNumber(form.pensionRate, "Pension Contribution"),
-      ].filter(Boolean);
-      if (errs.length) return invalid(errs[0] as string);
-      const annualSalary = n(form.annualSalary);
-      const totalRate = (n(form.incomeTaxRate) + n(form.niRate) + n(form.pensionRate)) / 100;
-      if (annualSalary <= 0) return invalid("Annual salary must be greater than zero.");
-      if (totalRate < 0 || totalRate >= 1) return invalid("Combined deduction rate must be between 0 and 100%.");
-      const annualNet = annualSalary * (1 - totalRate);
-      return {
-        title: "Estimated Net Salary (UK)",
-        value: money(annualNet),
-        extra: [
-          `Estimated Monthly Net Salary: ${money(annualNet / 12)}`,
-          `Estimated Total Deductions: ${money(annualSalary - annualNet)}`,
-          `Combined Deduction Rate: ${(totalRate * 100).toFixed(2)}%`,
-        ],
-      };
-    }
+    case "salary-after-tax-calculator-uk":
+      return computeUkTakeHomeFromForm(form);
+    case "stamp-duty-calculator-uk":
+      return computeUkStampDutyFromForm(form);
     case "net-worth-calculator": {
       const fields = [
         { key: "cash", label: "Cash & Bank Balances" },

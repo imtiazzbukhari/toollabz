@@ -388,15 +388,16 @@ export const TOOL_INSIGHTS_C: Record<string, ToolPageInsight> = {
     ],
   },
   "salary-after-tax-calculator-uk": {
-    quickAnswer: "UK income tax + National Insurance bands from gross salary - PAYE flavor.",
+    quickAnswer:
+      "UK 2026/27 take-home applies published Income Tax bands plus 8%/2% employee NI, then pension, sacrifice and student loan.",
     explain:
-      "Scottish rates differ; student loan Plan 1/2/4/postgrad adds another slice. Pension salary sacrifice lowers NI too - sweet if your scheme allows it.",
+      "England, Northern Ireland and Wales share the main Income Tax table. Scotland uses starter-to-top bands. Personal Allowance tapers above £100,000. This is a PAYE-style estimate, not your payroll engine.",
     example:
-      "£58,000 salary outside Scotland → after tax+NI+no pension might be ~£43k net; 5% pension sacrifice nudges NI savings too.",
+      "£60,000 in England, no pension or loan: tax £11,432, employee NI £3,210.60, net about £45,357.40 a year.",
     insights: [
-      "Personal allowance tapers above £100k - effective 60% band exists briefly.",
-      "Benefits in kind hit P11D - your headline salary understates tax.",
-      "Check your tax code on HMRC - wrong codes linger for months.",
+      "Personal Allowance tapers above £100,000 — a short stretch of 60% effective Income Tax.",
+      "Salary sacrifice reduces both tax and NI; a plain employee pension % reduces tax only in this model.",
+      "Confirm your tax code on HMRC. Emergency codes and benefits in kind change the payslip.",
     ],
   },
   "salary-to-hourly-converter-usa": {
