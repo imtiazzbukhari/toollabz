@@ -278,15 +278,16 @@ export const TOOL_INSIGHTS_C: Record<string, ToolPageInsight> = {
     ],
   },
   "rental-yield-calculator-uk": {
-    quickAnswer: "UK-style yield from weekly/monthly rent against purchase price or total money in.",
+    quickAnswer:
+      "Gross UK rental yield = (monthly rent × 12) ÷ purchase price. Net yield subtracts the annual costs you enter, then divides by the same price.",
     explain:
-      "Stamp duty, solicitor fees, and furniture packs change “money in.” London yields look skinny; northern cities often print higher gross but different void risk.",
+      "This is a buy-to-let screening ratio, not a tax computation. Stamp duty and mortgage interest are purchase or financing costs—leave them out of annual costs unless you are deliberately mixing definitions. Section 24 and income tax need a separate model.",
     example:
-      "£1,375 pcm on a £312k buy → ~5.3% gross before letting agent fees (say 10%+VAT) and gas safety certs.",
+      "£1,450 pcm on a £320,000 purchase → £17,400 annual rent → 5.44% gross. £3,600 annual costs → 4.31% net.",
     insights: [
-      "EPC bands gate rentals soon - budget upgrades, not just yield %.",
-      "Interest-only BTL mortgages shift cash flow vs repayment builds equity.",
-      "Section 24 tax rules mean gross yield ≠ landlord net - use post-tax models.",
+      "Compare two listings only if both yields use the same definition (both gross or both net).",
+      "Voids, letting fees, and compliance certificates belong in annual costs if you want a useful net figure.",
+      "Optional monthly mortgage turns the same inputs into a cash-flow check: rent − costs/12 − mortgage. Section 24 is not modelled.",
     ],
   },
   "retirement-calculator": {
@@ -326,15 +327,16 @@ export const TOOL_INSIGHTS_C: Record<string, ToolPageInsight> = {
     ],
   },
   "salary-after-tax-calculator": {
-    quickAnswer: "Gross salary run through federal brackets, FICA, and typical assumptions to approximate net annually or monthly.",
+    quickAnswer:
+      "Net pay = gross salary × (1 − tax rate). Enter the effective rate you want to model. This is not a UK or US tax-code calculator.",
     explain:
-      "State-agnostic versions miss huge swings (NY vs FL). Use this as a baseline, then jump to a state-specific sibling tool before signing.",
+      "The engine multiplies only. It does not apply UK bands, National Insurance, FICA, or another country’s withholding code. Use the dedicated UK or US tools when you need those rules.",
     example:
-      "$112k single, standard deduction vibe → effective federal income might land mid-teens % of gross, FICA ~7.65% on base - net often mid $70s–$80sK (rough).",
+      "Gross 40,000 at a 22% effective rate leaves 31,200 net (tax 8,800). Change the rate to compare scenarios.",
     insights: [
-      "401k traditional vs Roth changes today’s net, not just retirement.",
-      "HSA triple tax win still has payroll quirks - confirm deductions.",
-      "RSUs vesting are supplemental wages - withholding may over- or under-shoot.",
+      "A single flat rate is a planning shortcut, not a payslip.",
+      "Progressive tax systems need the UK or state-specific tools for banded estimates.",
+      "Keep salary and rate on the same period (annual with annual, monthly with monthly).",
     ],
   },
   "salary-after-tax-calculator-california": {

@@ -20,10 +20,16 @@ const BENCHMARKS: Record<string, ToolBenchmark> = {
     limitation: "Always confirm the rate that applies to your supply; this calculator does not classify goods for you.",
   },
   "salary-after-tax-calculator": {
-    fact: "UK Income Tax uses progressive bands and a Personal Allowance; National Insurance is calculated separately on earnings.",
-    sourceLabel: "GOV.UK — Income Tax rates",
-    sourceHref: "https://www.gov.uk/income-tax-rates",
-    limitation: "Payslips also reflect pensions, student loans, and benefits—model those explicitly when comparing offers.",
+    fact: "This page estimates net pay as gross × (1 − a single tax rate). Progressive systems (UK bands + NI, US federal + FICA + state) need the dedicated country tools.",
+    sourceLabel: "Toollabz methodology",
+    sourceHref: "/methodology",
+    limitation: "A flat rate is a planning shortcut. Pensions, student loans, and benefits are not modeled here.",
+  },
+  "rental-yield-calculator-uk": {
+    fact: "Gross rental yield annualises rent and divides by purchase price. Net yield subtracts recurring property costs before the same division. The two percentages are not interchangeable.",
+    sourceLabel: "Toollabz methodology",
+    sourceHref: "/methodology",
+    limitation: "This page does not apply UK income tax, Section 24 finance-cost restriction, or mortgage interest.",
   },
   "loan-calculator": {
     fact: "Amortizing installment loans use a fixed payment formula based on principal, periodic rate, and number of periods.",

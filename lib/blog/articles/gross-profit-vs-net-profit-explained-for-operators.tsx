@@ -113,7 +113,7 @@ function Article() {
       </h2>
       <p className="mt-3 leading-7 text-slate-700">
         The{" "}
-        <Link href="/tools/profit-margin-calculator-business" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/profit-margin-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           profit margin calculator
         </Link>{" "}
         echoes gross-margin thinking when you have revenue and COGS estimates. For portfolio-level gains, the{" "}
@@ -138,7 +138,7 @@ export const grossVsNetProfitPost: BlogPostDefinition = {
   category: "Finance",
   tags: ["P&L", "gross margin", "net income", "unit economics"],
   readingTimeMinutes: 15,
-  relatedToolSlugs: ["profit-margin-calculator-business", "break-even-calculator-business", "roi-calculator", "salary-after-tax-calculator"],
+  relatedToolSlugs: ["profit-margin-calculator", "profit-margin-calculator-business", "break-even-calculator", "salary-after-tax-calculator"],
   relatedPostsSlugs: [
     "markup-vs-margin-formulas-pricing-mistakes",
     "break-even-analysis-formula-examples-calculator",

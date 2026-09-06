@@ -56,6 +56,29 @@ export type LocalizedToolSlug = (typeof LOCALIZED_TOOL_SLUGS)[number];
 
 export const LOCALIZED_TOOL_SLUG_SET = new Set<string>(LOCALIZED_TOOL_SLUGS);
 
+/**
+ * Topical related tools that exist in the localization catalog.
+ * Locale tool pages must not fall back to catalog order (BMI next to JSON).
+ */
+export const LOCALIZED_RELATED_SLUGS: Record<LocalizedToolSlug, readonly LocalizedToolSlug[]> = {
+  "loan-calculator": ["compound-interest-calculator", "salary-after-tax-calculator", "roi-calculator", "vat-calculator"],
+  "salary-after-tax-calculator": ["loan-calculator", "compound-interest-calculator", "percentage-calculator", "roi-calculator"],
+  "vat-calculator": ["profit-margin-calculator", "percentage-calculator", "roi-calculator", "salary-after-tax-calculator"],
+  "compound-interest-calculator": ["loan-calculator", "roi-calculator", "salary-after-tax-calculator", "percentage-calculator"],
+  "roi-calculator": ["profit-margin-calculator", "compound-interest-calculator", "percentage-calculator", "loan-calculator"],
+  "profit-margin-calculator": ["roi-calculator", "percentage-calculator", "vat-calculator", "compound-interest-calculator"],
+  "percentage-calculator": ["profit-margin-calculator", "vat-calculator", "roi-calculator", "compound-interest-calculator"],
+  "currency-converter": ["percentage-calculator", "vat-calculator", "loan-calculator", "salary-after-tax-calculator"],
+  "bmi-calculator": ["percentage-calculator", "currency-converter"],
+  "json-formatter": ["password-generator", "pdf-merge"],
+  "password-generator": ["json-formatter", "pdf-merge"],
+  "pdf-merge": ["json-formatter", "password-generator"],
+};
+
+export function localizedRelatedSlugs(slug: LocalizedToolSlug): LocalizedToolSlug[] {
+  return [...LOCALIZED_RELATED_SLUGS[slug]];
+}
+
 export const LOCALIZED_HUB_PATHS = [
   "/finance-tools",
   "/business-tools",
@@ -66,6 +89,24 @@ export const LOCALIZED_HUB_PATHS = [
   "/marketing-tools",
   "/ai-tools",
 ] as const;
+
+/** Catalog tools shown on each localized hub. Empty hubs still explain the topic and link to English. */
+export const LOCALIZED_HUB_TOOLS: Record<(typeof LOCALIZED_HUB_PATHS)[number], readonly LocalizedToolSlug[]> = {
+  "/finance-tools": [
+    "loan-calculator",
+    "salary-after-tax-calculator",
+    "vat-calculator",
+    "compound-interest-calculator",
+    "currency-converter",
+  ],
+  "/business-tools": ["profit-margin-calculator", "roi-calculator", "percentage-calculator"],
+  "/developer-tools": ["json-formatter", "password-generator"],
+  "/pdf-tools": ["pdf-merge"],
+  "/utility-tools": ["password-generator", "json-formatter", "percentage-calculator", "bmi-calculator"],
+  "/real-estate-tools": ["loan-calculator", "roi-calculator"],
+  "/marketing-tools": ["roi-calculator", "percentage-calculator"],
+  "/ai-tools": ["json-formatter", "password-generator"],
+};
 
 export function isLocalizedStaticPath(path: string): path is LocalizedStaticPath {
   return (LOCALIZED_STATIC_PATHS as readonly string[]).includes(normalizePath(path));

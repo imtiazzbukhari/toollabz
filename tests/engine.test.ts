@@ -255,6 +255,42 @@ describe("computeTool valid cases", () => {
 
     const discount = computeTool("discount-calculator", { originalPrice: "100", discountPercent: "20", taxPercent: "10" });
     expect(discount.value).toBe("$88.00");
+
+    const yieldUk = computeTool("rental-yield-calculator-uk", {
+      monthlyRent: "1450",
+      propertyPrice: "320000",
+      annualCosts: "3600",
+    });
+    expect(yieldUk.value).toBe("5.44%");
+    expect(yieldUk.extra?.join(" ")).toMatch(/Monthly cash flow/);
+    expect(yieldUk.extra?.join(" ")).toMatch(/\$1150\.00/);
+
+    const yieldCash = computeTool("rental-yield-calculator-uk", {
+      monthlyRent: "1450",
+      propertyPrice: "320000",
+      annualCosts: "3600",
+      monthlyMortgage: "800",
+    });
+    expect(yieldCash.value).toBe("5.44%");
+    expect(yieldCash.extra?.join(" ")).toMatch(/\$350\.00/);
+
+    const vatAdd = computeTool("vat-calculator", { netAmount: "100", vatRate: "20" });
+    expect(vatAdd.error).not.toBe(true);
+    expect(vatAdd.extra?.join(" ")).toMatch(/Net \(excluding VAT\): \$100\.00/);
+    expect(vatAdd.extra?.join(" ")).toMatch(/Gross \(including VAT\): \$120\.00/);
+
+    const vatRemove = computeTool("vat-calculator", { mode: "remove", netAmount: "120", vatRate: "20" });
+    expect(vatRemove.error).not.toBe(true);
+    expect(vatRemove.value).toBe("$100.00");
+    expect(vatRemove.extra?.join(" ")).toMatch(/Mode: remove VAT/);
+
+    const margin = computeTool("profit-margin-calculator", { revenue: "100", cost: "60" });
+    expect(margin.value).toBe("40.00%");
+    expect(margin.extra?.[0]).toMatch(/66\.67%/);
+
+    const loanExtras = computeTool("loan-calculator", { principal: "100000", rate: "12", years: "1" });
+    expect(loanExtras.extra?.join(" ")).toMatch(/First month/);
+    expect(loanExtras.extra?.join(" ")).toMatch(/interest: \$1000\.00/);
   });
 });
 

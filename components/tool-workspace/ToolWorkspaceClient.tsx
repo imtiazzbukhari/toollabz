@@ -7,6 +7,8 @@ import type { ToolComputationResult } from "@/lib/tools/computation-result";
 import { trackCalculation, trackGenerate, trackPdfToolUsed, trackToolUsed } from "@/lib/analytics/gtag";
 import ResultBox from "@/components/ResultBox";
 import { toolGlassPanel } from "@/lib/tool-ui";
+import type { Locale } from "@/lib/i18n/locales";
+import { DEFAULT_LOCALE } from "@/lib/i18n/locales";
 import type { ToolHistoryEntry } from "./tool-workspace-types";
 import ToolHistoryList from "./ToolHistoryList";
 
@@ -50,10 +52,12 @@ export default function ToolWorkspaceClient({
   tool,
   asideHeader,
   insightPanel,
+  locale = DEFAULT_LOCALE,
 }: {
   tool: ToolDefinition;
   asideHeader: ReactNode;
   insightPanel: ReactNode;
+  locale?: Locale;
 }) {
   const [result, setResult] = useState<ToolComputationResult | null>(null);
   const [history, setHistory] = useState<ToolHistoryEntry[]>([]);
@@ -117,14 +121,14 @@ export default function ToolWorkspaceClient({
       {tool.category === "pdf" ? (
         <PDFToolPanel slug={tool.slug} onResult={onResult} />
       ) : (
-        <CalculatorForm tool={tool} onResult={onResult} />
+        <CalculatorForm tool={tool} onResult={onResult} locale={locale} />
       )}
 
       <aside className={`p-5 ${toolGlassPanel}`} aria-labelledby="tool-results-heading">
         {asideHeader}
-        <ResultBox ref={resultRegionRef} result={result} />
+        <ResultBox ref={resultRegionRef} result={result} locale={locale} />
         {insightPanel}
-        <ToolHistoryList history={history} onClear={clearHistory} />
+        <ToolHistoryList history={history} onClear={clearHistory} locale={locale} />
       </aside>
     </div>
   );

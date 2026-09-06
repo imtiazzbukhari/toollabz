@@ -4,6 +4,9 @@ import { memo, useCallback, useRef, useState } from "react";
 import { Sparkles } from "lucide-react";
 import type { ToolDefinition } from "@/lib/tools/types";
 import type { ToolComputationResult } from "@/lib/tools/computation-result";
+import type { Locale } from "@/lib/i18n/locales";
+import { DEFAULT_LOCALE } from "@/lib/i18n/locales";
+import { getWorkspaceMessages } from "@/lib/i18n/workspace-messages";
 import { toolGlassPanel, toolInputClass } from "@/lib/tool-ui";
 import LiveExchangeRateBar from "@/components/LiveExchangeRateBar";
 
@@ -12,10 +15,13 @@ const loadEngine = () => import("@/lib/tools/engine");
 function CalculatorForm({
   tool,
   onResult,
+  locale = DEFAULT_LOCALE,
 }: {
   tool: ToolDefinition;
   onResult: (r: ToolComputationResult) => void;
+  locale?: Locale;
 }) {
+  const ws = getWorkspaceMessages(locale);
   const [form, setForm] = useState<Record<string, string>>(
     () => Object.fromEntries(tool.fields.map((f) => [f.name, ""])) as Record<string, string>,
   );
@@ -43,8 +49,8 @@ function CalculatorForm({
           <Sparkles className="h-4 w-4" aria-hidden />
         </span>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-violet-600">Input</p>
-          <p className="text-sm font-medium text-slate-700">Enter your values</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-violet-600">{ws.input}</p>
+          <p className="text-sm font-medium text-slate-700">{ws.enterValues}</p>
         </div>
       </div>
       {tool.fields.map((field) => (
@@ -87,7 +93,7 @@ function CalculatorForm({
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 via-violet-600 to-blue-500 px-4 py-3 text-sm font-semibold text-white shadow-[0_10px_28px_rgba(91,33,182,0.35)] transition hover:brightness-110 active:translate-y-px"
       >
         <Sparkles className="h-4 w-4" aria-hidden />
-        {isGeneratorTool ? (hasGenerated ? "Regenerate" : "Generate") : "Calculate"}
+        {isGeneratorTool ? (hasGenerated ? ws.regenerate : ws.generate) : ws.calculate}
       </button>
     </form>
   );

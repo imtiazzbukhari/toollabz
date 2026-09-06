@@ -1,9 +1,15 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Mail } from "lucide-react";
+import { parseLocalizedPathname } from "@/lib/i18n/paths";
+import { getWorkspaceMessages } from "@/lib/i18n/workspace-messages";
 
 export default function NewsletterForm({ variant = "hero" }: { variant?: "hero" | "footer" }) {
+  const pathname = usePathname() ?? "/";
+  const { locale } = parseLocalizedPathname(pathname);
+  const ws = getWorkspaceMessages(locale);
   const [email, setEmail] = useState("");
   const [companyWebsite, setCompanyWebsite] = useState("");
   const [honey, setHoney] = useState("");
@@ -26,13 +32,13 @@ export default function NewsletterForm({ variant = "hero" }: { variant?: "hero" 
       });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        setError("Could not subscribe right now. Try again later or use the contact page.");
+        setError(ws.subscribeError);
         return;
       }
       setSubmitted(true);
       setEmail("");
     } catch {
-      setError("Network error. Check your connection and retry.");
+      setError(ws.networkError);
     } finally {
       setPending(false);
     }
@@ -79,7 +85,7 @@ export default function NewsletterForm({ variant = "hero" }: { variant?: "hero" 
             ? "glow-ring box-border min-h-10 w-full min-w-0 rounded-xl border border-violet-200/60 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none placeholder:text-slate-400"
             : "glow-ring min-h-10 w-full flex-1 rounded-xl bg-white/75 px-4 py-2.5 text-sm text-slate-700 outline-none sm:min-h-0 sm:rounded-full"
         }
-        placeholder="you@example.com"
+        placeholder={ws.emailPlaceholder}
       />
       <button
         type="submit"
@@ -95,7 +101,7 @@ export default function NewsletterForm({ variant = "hero" }: { variant?: "hero" 
           strokeWidth={variant === "footer" ? 2.25 : 2}
           aria-hidden="true"
         />
-        <span>{pending ? "Sending…" : submitted ? "Subscribed" : "Subscribe"}</span>
+        <span>{pending ? ws.sending : submitted ? ws.subscribed : ws.subscribe}</span>
       </button>
       {error ? <p className="text-xs text-rose-700 sm:col-span-full">{error}</p> : null}
     </form>

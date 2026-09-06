@@ -76,7 +76,7 @@ function Article() {
       </p>
       <p className="mt-3 leading-7 text-slate-700">
         Sanity-check the result with the{" "}
-        <Link href="/tools/profit-margin-calculator-business" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/profit-margin-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           profit margin calculator
         </Link>{" "}
         and, when you are deciding whether a SKU deserves shelf space,{" "}
@@ -150,7 +150,7 @@ export const markupVsMarginPost: BlogPostDefinition = {
   category: "Finance",
   tags: ["pricing", "margin", "markup", "COGS"],
   readingTimeMinutes: 16,
-  relatedToolSlugs: ["profit-margin-calculator-business", "break-even-calculator-business", "roi-calculator", "vat-calculator"],
+  relatedToolSlugs: ["profit-margin-calculator", "profit-margin-calculator-business", "markup-calculator", "break-even-calculator"],
   relatedPostsSlugs: [
     "gross-profit-vs-net-profit-explained-for-operators",
     "roi-vs-roas-when-to-trust-each-metric",

@@ -13,8 +13,16 @@ export const HUB_FEATURED_BLOG_SLUGS: Record<string, readonly string[]> = {
     "gst-vs-vat-uk-au-cross-border-pricing-toollabz",
     "zakat-calculation-nisab-practical-guide-respectful",
   ],
-  "real-estate": ["rent-vs-buy-usa-guide", "how-to-compare-rent-vs-buy-without-hype", "mortgage-payment-usa-piti-escrow-guide"],
+  "real-estate": [
+    "how-much-can-i-rent-my-house-for-uk",
+    "rental-yield-vs-monthly-cash-flow-investment-property",
+    "rent-vs-buy-usa-guide",
+    "how-to-compare-rent-vs-buy-without-hype",
+    "mortgage-payment-usa-piti-escrow-guide",
+  ],
   "business-saas": [
+    "markup-vs-margin-formulas-pricing-mistakes",
+    "gross-profit-vs-net-profit-explained-for-operators",
     "break-even-analysis-formula-examples-calculator",
     "vat-calculator-uk-eu-uae-add-remove-guide",
     "how-to-calculate-roi-business",

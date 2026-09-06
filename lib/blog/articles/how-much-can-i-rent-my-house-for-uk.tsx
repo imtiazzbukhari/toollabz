@@ -119,8 +119,8 @@ function Article() {
         <h2 className="text-2xl font-bold text-slate-900">Use Our Free Rental Yield Calculator</h2>
         <p className="mt-3 leading-7">
           Once you have a monthly rent estimate, convert it into gross yield and compare it with your property value.{" "}
-          <Link href="/tools/rental-yield-calculator" className="font-semibold text-violet-800 underline-offset-2 hover:underline">
-            Calculate your rental yield
+          <Link href="/tools/rental-yield-calculator-uk" className="font-semibold text-violet-800 underline-offset-2 hover:underline">
+            Calculate UK rental yield (gross and net)
           </Link>{" "}
           and then rerun the numbers with a lower rent to account for void periods.
         </p>

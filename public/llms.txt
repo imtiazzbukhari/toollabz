@@ -9,7 +9,7 @@
 ## Finance & Tax Calculators
 
 - [VAT Calculator](https://toollabz.com/tools/vat-calculator): Add or remove UK VAT at 20% (standard), 5% (reduced), or 0% (zero rate). Includes reverse VAT. Registration threshold: £90,000.
-- [Salary After Tax Calculator](https://toollabz.com/tools/salary-after-tax-calculator): UK take-home pay for 2026/27. Covers income tax bands, NI (8%/2%), student loan Plans 1/2/4/5/Postgrad, and pension contributions.
+- [Salary After Tax Calculator](https://toollabz.com/tools/salary-after-tax-calculator): Flat-rate net pay: gross × (1 − tax rate). Not a country tax-code engine. For UK bands and NI use /tools/salary-after-tax-calculator-uk.
 - [Profit Margin Calculator](https://toollabz.com/tools/profit-margin-calculator): Gross margin % and markup %. Margin = ((Revenue−Cost)÷Revenue)×100. Markup = ((Revenue−Cost)÷Cost)×100.
 - [Loan Calculator](https://toollabz.com/tools/loan-calculator): Monthly repayments, total interest, and amortisation schedule. Formula: M = P[r(1+r)^n]/[(1+r)^n−1].
 - [Compound Interest Calculator](https://toollabz.com/tools/compound-interest-calculator): Final balance with daily/monthly/annual compounding. Formula: A = P(1+r/n)^(nt).

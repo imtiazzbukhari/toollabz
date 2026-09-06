@@ -157,7 +157,17 @@ export function computeTool(slug: string, form: Record<string, string>): ToolCom
       if (p <= 0 || m <= 0) return invalid("Loan amount and tenure must be greater than zero.");
       if (r < 0) return invalid("Interest rate cannot be negative.");
       const emi = r === 0 ? p / m : (p * r * (1 + r) ** m) / ((1 + r) ** m - 1);
-      return { title: "Monthly Payment", value: money(emi), extra: [ `Total Payable: ${money(emi * m)}`, `Total Interest: ${money(emi * m - p)}` ] };
+      const firstInterest = r === 0 ? 0 : p * r;
+      const firstPrincipal = emi - firstInterest;
+      return {
+        title: "Monthly Payment",
+        value: money(emi),
+        extra: [
+          `Total Payable: ${money(emi * m)}`,
+          `Total Interest: ${money(emi * m - p)}`,
+          `First month — interest: ${money(firstInterest)}; principal: ${money(firstPrincipal)}`,
+        ],
+      };
     }
     case "emi-calculator": {
       const errs = [
@@ -322,9 +332,15 @@ export function computeTool(slug: string, form: Record<string, string>): ToolCom
       return { title: "Break-even Units", value: units.toFixed(2), extra: [ `Break-even Revenue: ${money(units * n(form.price))}` ] };
     }
     case "profit-margin-calculator":
-    case "profit-margin-calculator-business":
+    case "profit-margin-calculator-business": {
       if (n(form.revenue) <= 0 || n(form.cost) < 0) return invalid("Revenue must be > 0 and cost must be >= 0.");
-      return { title: "Profit Margin", value: `${(((n(form.revenue) - n(form.cost)) / n(form.revenue, 1)) * 100).toFixed(2)}%` };
+      const revenue = n(form.revenue);
+      const cost = n(form.cost);
+      const profit = revenue - cost;
+      const margin = (profit / revenue) * 100;
+      const extra = cost > 0 ? [`Markup on cost: ${((profit / cost) * 100).toFixed(2)}%`] : [];
+      return { title: "Profit Margin", value: `${margin.toFixed(2)}%`, extra };
+    }
     case "cac-calculator":
     case "cac-calculator-saas":
       if (n(form.customers) <= 0 || n(form.salesMarketing) < 0) return invalid("Spend must be >= 0 and new customers must be > 0.");
@@ -964,14 +980,24 @@ export function computeTool(slug: string, form: Record<string, string>): ToolCom
       const annualRent = monthlyRent * 12;
       const grossYield = (annualRent / propertyPrice) * 100;
       const netYield = ((annualRent - annualCosts) / propertyPrice) * 100;
+      const monthlyMortgage = form.monthlyMortgage?.trim() ? n(form.monthlyMortgage) : 0;
+      if (monthlyMortgage < 0) return invalid("Monthly mortgage cannot be negative.");
+      const monthlyCosts = annualCosts / 12;
+      const monthlyCashFlow = monthlyRent - monthlyCosts - monthlyMortgage;
+      const extra = [
+        `Net Rental Yield: ${netYield.toFixed(2)}%`,
+        `Annual Rent: ${money(annualRent)}`,
+        `Annual Costs: ${money(annualCosts)}`,
+        `Monthly cash flow (rent − costs/12 − mortgage): ${money(monthlyCashFlow)}`,
+        `Annual cash flow: ${money(monthlyCashFlow * 12)}`,
+      ];
+      if (monthlyMortgage === 0) {
+        extra.push("Mortgage left blank — cash flow is rent minus operating costs only. Not a Section 24 or SDLT model.");
+      }
       return {
         title: "Gross Rental Yield (UK)",
         value: `${grossYield.toFixed(2)}%`,
-        extra: [
-          `Net Rental Yield: ${netYield.toFixed(2)}%`,
-          `Annual Rent: ${money(annualRent)}`,
-          `Annual Costs: ${money(annualCosts)}`,
-        ],
+        extra,
       };
     }
     case "gas-cost-calculator-road-trip": {
@@ -4639,22 +4665,28 @@ export function computeTool(slug: string, form: Record<string, string>): ToolCom
       };
     }
     case "vat-calculator": {
-      const ne = requiredNumber(form.netAmount, "Amount (excluding VAT)");
+      const amountKey = form.netAmount != null && form.netAmount !== "" ? "netAmount" : "amount";
+      const amountLabel = form.mode === "remove" ? "Amount (including VAT)" : "Amount (excluding VAT)";
+      const ae = requiredNumber(form[amountKey] ?? form.amount, amountLabel);
       const ve = requiredNumber(form.vatRate, "VAT rate (%)");
-      if (ne || ve) return invalid((ne || ve) as string);
-      const net = n(form.netAmount);
+      if (ae || ve) return invalid((ae || ve) as string);
+      const amount = n(form[amountKey] ?? form.amount);
       const rate = n(form.vatRate);
-      if (net < 0) return invalid("Net amount cannot be negative.");
+      if (amount < 0) return invalid("Amount cannot be negative.");
       if (rate < 0) return invalid("VAT rate cannot be negative.");
-      const vat = net * (rate / 100);
-      const gross = net + vat;
+      const factor = 1 + rate / 100;
+      const remove = form.mode === "remove";
+      const net = remove ? amount / factor : amount;
+      const gross = remove ? amount : amount * factor;
+      const vat = gross - net;
       return {
         title: "VAT summary",
-        value: moneyLocale(gross),
+        value: moneyLocale(remove ? net : gross),
         extra: [
           `VAT (${rate.toLocaleString("en-US")}%): ${moneyLocale(vat)}`,
           `Net (excluding VAT): ${moneyLocale(net)}`,
           `Gross (including VAT): ${moneyLocale(gross)}`,
+          remove ? "Mode: remove VAT from a gross amount" : "Mode: add VAT to a net amount",
         ],
       };
     }

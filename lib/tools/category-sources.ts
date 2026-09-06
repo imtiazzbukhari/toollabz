@@ -9,8 +9,11 @@ const TOOL_SOURCES: Record<string, SourceRef[]> = {
     { label: "HMRC — VAT", href: "https://www.gov.uk/topic/business-tax/vat" },
   ],
   "salary-after-tax-calculator": [
-    { label: "GOV.UK — Income Tax rates", href: "https://www.gov.uk/income-tax-rates" },
-    { label: "GOV.UK — National Insurance rates", href: "https://www.gov.uk/national-insurance-rates" },
+    { label: "Toollabz methodology", href: "/methodology", note: "Flat-rate formula only — not a country tax code." },
+  ],
+  "rental-yield-calculator-uk": [
+    { label: "GOV.UK — Renting out your property", href: "https://www.gov.uk/renting-out-a-property" },
+    { label: "GOV.UK — Private renting", href: "https://www.gov.uk/private-renting" },
   ],
   "salary-after-tax-calculator-uk": [
     { label: "GOV.UK — Income Tax rates", href: "https://www.gov.uk/income-tax-rates" },

@@ -21,7 +21,7 @@ export const TOOL_SEO_CONTENT_LEAD: Record<string, string> = {
   "loan-calculator":
     "Straight talk: the number that matters is the payment you can live with every month plus total interest you are willing to burn for convenience. This page is for sketching scenarios before a banker’s worksheet-not for replacing their disclosures. Longer read: /blog/how-to-calculate-emi-for-a-loan",
   "salary-after-tax-calculator":
-    "Nobody lives on gross. If you are comparing offers or budgeting rent, you want the number that actually hits your account after withholding and the stuff you elected (401(k), medical). This tool keeps the math transparent so you can argue with the spreadsheet, not with mystery. Longer read: /blog/how-to-calculate-salary-after-tax-usa",
+    "Quick answer: net = gross × (1 − tax rate). This page is a flat-rate planner, not a UK or US tax-code engine. Use it to compare offers at an effective rate you choose, then open the UK or US tools when you need bands. Longer read: /blog/how-to-estimate-take-home-pay-from-gross-salary",
   "emi-calculator":
     "EMI is just the monthly line item that makes a big principal feel legible. Use this when you are trading tenure for cash flow or comparing two APRs that look close until you see total outflow. Longer read: /blog/emi-calculation-explained",
   "compound-interest-calculator":

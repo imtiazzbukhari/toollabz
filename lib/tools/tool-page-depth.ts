@@ -29,6 +29,11 @@ const priorityMistakes: Record<string, string[]> = {
     "Ignoring pension, benefits, student loans, or local taxes makes the estimate too optimistic. Add those deductions separately when they affect your payslip.",
     "Comparing annual gross salary with monthly net rent without converting periods leads to bad budgeting. Convert both to the same monthly or yearly basis before deciding affordability.",
   ],
+  "rental-yield-calculator-uk": [
+    "Entering weekly rent in the monthly field inflates yield by about 4.3×. Convert weekly × 52 ÷ 12 before you type monthly rent.",
+    "Calling a gross yield “net” because you subtracted a mortgage payment mixes financing with operating return. This form’s net yield is rent minus the annual costs field, divided by price.",
+    "Ignoring voids, letting fees, and certificates makes two postcodes look equally cheap to run. Put those pounds in annual costs when you compare listings.",
+  ],
   "loan-calculator": [
     "Entering APR as a monthly rate instead of annual APR can inflate the payment dramatically. Use the annual percentage rate in the rate field unless the page explicitly asks for monthly rate.",
     "Forgetting origination fees or points can make two loans look equal when they are not. Compare total cost as well as monthly payment before choosing the lower-looking option.",

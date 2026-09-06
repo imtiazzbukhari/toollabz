@@ -30,14 +30,20 @@ export const tools: ToolDefinition[] = [
   { slug: "mb-to-gb", name: "MB to GB Converter", shortDescription: "Convert MB to GB for file sizes.", description: "Simple digital storage conversion utility.", category: "converters", fields: [{ name: "mb", label: "Megabytes", type: "number", min: 0, step: 0.01 }], keywords: ["mb to gb"], howToUse: simpleHowTo, faqs: makeFAQs("MB to GB Converter"), related: ["json-formatter", "url-encoder-decoder"] },
 
   // Phase 1 finance
-  { slug: "loan-calculator", name: "Loan Calculator", shortDescription: "Calculate monthly loan payment.", description: "Estimate EMI using principal, interest, and tenure.", category: "finance", fields: [{ name: "principal", label: "Loan Amount", type: "number", min: 0 }, { name: "rate", label: "Annual Interest (%)", type: "number", min: 0, step: 0.01 }, { name: "years", label: "Tenure (Years)", type: "number", min: 1 }], keywords: ["loan", "emi"], howToUse: simpleHowTo, faqs: makeFAQs("Loan Calculator"), related: ["emi-calculator", "mortgage-affordability-calculator"] },
+  { slug: "loan-calculator", name: "Loan Calculator", shortDescription: "Calculate monthly loan payment.", description: "Estimate EMI using principal, interest, and tenure.", category: "finance", fields: [{ name: "principal", label: "Loan Amount", type: "number", min: 0 }, { name: "rate", label: "Annual Interest (%)", type: "number", min: 0, step: 0.01 }, { name: "years", label: "Tenure (Years)", type: "number", min: 1 }], keywords: ["loan", "emi"], howToUse: simpleHowTo, faqs: makeFAQs("Loan Calculator"), related: ["emi-calculator", "compound-interest-calculator", "mortgage-affordability-calculator"] },
   { slug: "emi-calculator", name: "EMI Calculator", shortDescription: "Compute EMI and total payable.", description: "Find monthly EMI, principal and interest breakdown.", category: "finance", fields: [{ name: "principal", label: "Principal", type: "number" }, { name: "rate", label: "Interest (%)", type: "number", step: 0.01 }, { name: "months", label: "Months", type: "number", min: 1 }], keywords: ["emi"], howToUse: simpleHowTo, faqs: makeFAQs("EMI Calculator"), related: ["loan-calculator", "compound-interest-calculator"] },
   { slug: "compound-interest-calculator", name: "Compound Interest Calculator", shortDescription: "Calculate compound growth over time.", description: "Project maturity amount using compounding.", category: "finance", fields: [{ name: "principal", label: "Principal", type: "number" }, { name: "rate", label: "Annual Rate (%)", type: "number", step: 0.01 }, { name: "years", label: "Years", type: "number" }, { name: "frequency", label: "Compounds / Year", type: "number", min: 1 }], keywords: ["compound interest"], howToUse: simpleHowTo, faqs: makeFAQs("Compound Interest Calculator"), related: ["retirement-calculator", "inflation-calculator"] },
-  { slug: "salary-after-tax-calculator", name: "Salary After Tax Calculator", shortDescription: "Estimate take-home salary after tax.", description: "Simple salary tax estimator based on tax rate.", category: "finance", fields: [{ name: "salary", label: "Gross Salary", type: "number" }, { name: "taxRate", label: "Tax Rate (%)", type: "number", step: 0.01 }], keywords: ["salary tax", "take-home"], howToUse: simpleHowTo, faqs: makeFAQs("Salary After Tax Calculator"), related: ["salary-tax-calculator-pakistan", "cac-calculator"] },
+  { slug: "salary-after-tax-calculator", name: "Salary After Tax Calculator", shortDescription: "Estimate take-home pay from gross salary and a tax rate.", description: "Estimates net pay as gross salary × (1 − tax rate). Not a UK or US tax-code engine.", category: "finance", fields: [{ name: "salary", label: "Gross Salary", type: "number" }, { name: "taxRate", label: "Tax Rate (%)", type: "number", step: 0.01 }], keywords: ["salary tax", "take-home", "salary after tax calculator", "salary tax calculator"], howToUse: simpleHowTo, faqs: [
+      { question: "How does this salary after tax calculator work?", answer: "It multiplies gross salary by (1 − tax rate). Enter an effective rate you want to model. It does not apply UK bands, National Insurance, FICA, or state tax." },
+      { question: "Is this a UK salary tax calculator?", answer: "No. For UK income tax, National Insurance, and pension assumptions use the dedicated UK salary after tax calculator." },
+      { question: "When should I use the US paycheck tools instead?", answer: "When you need federal, FICA, or state withholding rather than one blended rate. Use the US paycheck calculator." },
+      { question: "What rate should I type?", answer: "Use an effective rate from a payslip (tax ÷ gross) or a conservative estimate. Keep salary and rate on the same period." },
+      { question: "Does this include student loans or pensions?", answer: "No. Fold those into the rate you enter, or use a country-specific tool that has those fields." },
+    ], related: ["salary-after-tax-calculator-uk", "paycheck-calculator-usa", "hourly-to-salary-converter-usa"] },
   { slug: "stock-profit-calculator", name: "Stock Profit Calculator", shortDescription: "Calculate stock trade profit/loss.", description: "Estimate returns after buy/sell with quantity and fees.", category: "finance", fields: [{ name: "buy", label: "Buy Price", type: "number" }, { name: "sell", label: "Sell Price", type: "number" }, { name: "qty", label: "Quantity", type: "number", min: 1 }, { name: "fee", label: "Fees", type: "number", min: 0, step: 0.01 }], keywords: ["stock profit"], howToUse: simpleHowTo, faqs: makeFAQs("Stock Profit Calculator"), related: ["roi-calculator", "investment-portfolio-calculator"] },
 
   // Phase 1 utility
-  { slug: "word-counter", name: "Word Counter", shortDescription: "Count words, chars, and lines.", description: "Analyze text length instantly.", category: "utility", fields: [{ name: "text", label: "Text", type: "textarea", placeholder: "Paste your text" }], keywords: ["word count"], howToUse: simpleHowTo, faqs: makeFAQs("Word Counter"), related: ["case-converter", "json-validator"] },
+  { slug: "word-counter", name: "Word Counter", shortDescription: "Count words, chars, and lines.", description: "Analyze text length instantly.", category: "utility", fields: [{ name: "text", label: "Text", type: "textarea", placeholder: "Paste your text" }], keywords: ["word count"], howToUse: simpleHowTo, faqs: makeFAQs("Word Counter"), related: ["character-counter", "case-converter", "json-validator"] },
   { slug: "character-counter", name: "Character Counter", shortDescription: "Count characters, spaces, and lines.", description: "Measure text length for social posts, forms, titles, and metadata.", category: "utility", fields: [{ name: "text", label: "Text", type: "textarea", placeholder: "Paste your text" }], keywords: ["character count", "character counter"], howToUse: simpleHowTo, faqs: makeFAQs("Character Counter"), related: ["word-counter", "case-converter"] },
   { slug: "percentage-calculator", name: "Percentage Calculator", shortDescription: "Calculate percentages, percentage of an amount, and percentage change.", description: "Solve common percentage questions for discounts, grades, taxes, raises, and comparisons.", category: "calculators", fields: [{ name: "mode", label: "Mode", type: "select", options: [{ label: "X is what % of Y", value: "partOf" }, { label: "What is X% of Y", value: "percentOf" }, { label: "Percentage change", value: "change" }] }, { name: "x", label: "X / New Value", type: "number", step: 0.01 }, { name: "y", label: "Y / Original Value", type: "number", step: 0.01 }], keywords: ["percentage calculator", "percentage change"], howToUse: simpleHowTo, faqs: makeFAQs("Percentage Calculator"), related: ["discount-calculator", "profit-margin-calculator"] },
   { slug: "bmi-calculator", name: "BMI Calculator", shortDescription: "Calculate adult body mass index from height and weight.", description: "Estimate BMI and adult BMI category using the standard kg/m² formula.", category: "calculators", fields: [{ name: "weight", label: "Weight (kg)", type: "number", min: 0, step: 0.1 }, { name: "height", label: "Height (cm)", type: "number", min: 0, step: 0.1 }], keywords: ["bmi calculator", "body mass index"], howToUse: simpleHowTo, faqs: makeFAQs("BMI Calculator"), related: ["bmi-for-children-calculator", "daily-calorie-calculator"] },
@@ -55,7 +61,7 @@ export const tools: ToolDefinition[] = [
   { slug: "word-to-pdf", name: "Word to PDF", shortDescription: "Convert text/doc content to PDF.", description: "Create a simple PDF from text input.", category: "pdf", fields: [{ name: "content", label: "Document Content", type: "textarea" }], keywords: ["word to pdf"], howToUse: simpleHowTo, faqs: makeFAQs("Word to PDF"), related: ["pdf-to-word", "pdf-merge"] },
 
   // real estate
-  { slug: "rental-yield-calculator", name: "Rental Yield Calculator", shortDescription: "Calculate annual rental yield.", description: "Quick rental yield based on rent and price.", category: "real-estate", fields: [{name:"annualRent",label:"Annual Rent",type:"number"},{name:"propertyPrice",label:"Property Price",type:"number"}], keywords:["rental yield"], howToUse:simpleHowTo, faqs:makeFAQs("Rental Yield Calculator"), related:["property-roi-calculator","rent-vs-buy-calculator"] },
+  { slug: "rental-yield-calculator", name: "Rental Yield Calculator", shortDescription: "Calculate annual rental yield.", description: "Quick rental yield based on rent and price.", category: "real-estate", fields: [{name:"annualRent",label:"Annual Rent",type:"number"},{name:"propertyPrice",label:"Property Price",type:"number"}], keywords:["rental yield"], howToUse:simpleHowTo, faqs:makeFAQs("Rental Yield Calculator"), related:["rental-yield-calculator-uk","property-roi-calculator","rent-vs-buy-calculator"] },
   {
     slug: "property-roi-calculator",
     name: "Property ROI Calculator",
@@ -77,7 +83,7 @@ export const tools: ToolDefinition[] = [
       { question: "Can ROI be negative?", answer: "Yes, if net gain is negative or below cost basis." },
       { question: "Is this useful for comparing rental deals?", answer: "Yes, it helps quickly compare return efficiency across potential properties." },
     ],
-    related:["rental-yield-calculator","rent-vs-buy-calculator-usa","mortgage-affordability-calculator-usa","car-loan-affordability-calculator","roi-calculator"],
+    related:["rental-yield-calculator","rental-yield-calculator-uk","rent-vs-buy-calculator","loan-calculator","roi-calculator"],
   },
   { slug: "mortgage-affordability-calculator", name: "Mortgage Affordability Calculator", shortDescription: "Find affordable mortgage amount.", description: "Estimate affordability from income and debt.", category: "real-estate", fields:[{name:"income",label:"Monthly Income",type:"number"},{name:"debt",label:"Monthly Debt",type:"number"},{name:"ratio",label:"Max DTI (%)",type:"number",step:0.1}], keywords:["mortgage affordability"], howToUse:simpleHowTo, faqs:makeFAQs("Mortgage Affordability Calculator"), related:["loan-calculator","rent-vs-buy-calculator"] },
   { slug: "rent-vs-buy-calculator", name: "Rent vs Buy Calculator", shortDescription: "Compare renting and buying costs.", description: "Understand long-term housing costs clearly.", category: "real-estate", fields:[{name:"rent",label:"Monthly Rent",type:"number"},{name:"buyCost",label:"Monthly Buy Cost",type:"number"},{name:"years",label:"Years",type:"number"}], keywords:["rent vs buy"], howToUse:simpleHowTo, faqs:makeFAQs("Rent vs Buy Calculator"), related:["mortgage-affordability-calculator","loan-calculator"] },
@@ -154,13 +160,15 @@ export const tools: ToolDefinition[] = [
   {
     slug: "rental-yield-calculator-uk",
     name: "Rental Yield Calculator UK",
-    shortDescription: "Calculate gross rental yield for UK properties.",
-    description: "Estimate UK rental yield using annual rent and purchase price assumptions.",
+    shortDescription: "Calculate UK gross and net rental yield from monthly rent and price.",
+    description:
+      "UK rental yield from monthly rent and purchase price. Gross yield annualises rent; net yield subtracts the costs you enter. Optional mortgage shows cash flow.",
     category: "real-estate",
     fields: [
       { name: "monthlyRent", label: "Monthly Rent (GBP)", type: "number", min: 0.01, step: 0.01 },
       { name: "propertyPrice", label: "Property Price (GBP)", type: "number", min: 0.01, step: 0.01 },
       { name: "annualCosts", label: "Annual Property Costs (GBP)", type: "number", min: 0, step: 0.01 },
+      { name: "monthlyMortgage", label: "Monthly mortgage (GBP, optional)", type: "number", min: 0, step: 0.01 },
     ],
     keywords: [
       "rental yield calculator uk",
@@ -172,17 +180,18 @@ export const tools: ToolDefinition[] = [
     howToUse: [
       "Enter monthly rent and property price in GBP.",
       "Enter annual recurring property costs for net yield estimation.",
-      "Click calculate to view gross and net rental yield percentages.",
-      "Compare multiple UK property scenarios to improve investment selection.",
+      "Optionally enter the monthly mortgage payment you already have to see cash flow as well as yield.",
+      "Compare multiple UK property scenarios using the same yield definition.",
     ],
     faqs: [
-      { question: "What is gross rental yield?", answer: "Gross yield is annual rent divided by property price, shown as a percentage." },
-      { question: "What is net rental yield?", answer: "Net yield subtracts annual costs before dividing by property price." },
-      { question: "Should UK stamp duty be included?", answer: "For deeper ROI analysis, include one-time costs in broader investment modeling." },
-      { question: "Is higher yield always better?", answer: "Not always. Risk, vacancy, location, and long-term appreciation also matter." },
-      { question: "Can I compare multiple UK postcodes with this?", answer: "Yes, run multiple scenarios to benchmark yield potential quickly." },
+      { question: "How do I calculate rental yield in the UK?", answer: "Gross rental yield = (monthly rent × 12) ÷ property price × 100. Example: £1,450 a month on a £320,000 purchase is £17,400 ÷ £320,000 = 5.44%." },
+      { question: "What is the difference between gross and net rental yield?", answer: "Gross uses rent only. Net subtracts the annual costs you type (letting fees, insurance, maintenance, voids). Mortgage interest and Section 24 tax are not modelled here." },
+      { question: "What is a good buy-to-let yield?", answer: "There is no official “good” rate. Many landlords screen on gross yield first, then judge net yield, voids, and location risk. A higher percentage can still lose money after costs." },
+      { question: "Should stamp duty go in annual costs?", answer: "Stamp duty is a purchase cost, not a yearly operating cost. Leave it out of annual costs here and use a property ROI tool if you want total money-in." },
+      { question: "Does yield include house-price growth?", answer: "No. Yield is rental return versus price. Capital appreciation is a separate assumption." },
+      { question: "Can I see monthly cash flow as well as yield?", answer: "Yes. Enter optional monthly mortgage (interest-only or repayment — you type the payment). Cash flow = monthly rent − (annual costs ÷ 12) − mortgage. Section 24 tax and stamp duty are not modelled." },
     ],
-    related: ["property-roi-calculator", "rent-vs-buy-calculator-usa", "mortgage-affordability-calculator-usa", "loan-calculator", "net-worth-calculator"],
+    related: ["rental-yield-calculator", "property-roi-calculator", "rent-vs-buy-calculator", "loan-calculator", "mortgage-affordability-calculator"],
   },
   {
     slug: "gas-cost-calculator-road-trip",
@@ -407,7 +416,7 @@ export const tools: ToolDefinition[] = [
       { question: "How do I know if CAC is healthy?", answer: "Compare CAC against LTV and payback period targets." },
       { question: "Can this be used for startup reporting?", answer: "Yes, it is useful for KPI dashboards and board updates." },
     ],
-    related: ["ltv-calculator-saas", "customer-payback-period-calculator", "roi-calculator-marketing", "break-even-calculator-business", "profit-margin-calculator-business"],
+    related: ["ltv-calculator-saas", "churn-calculator", "roi-calculator-marketing", "break-even-calculator-business", "profit-margin-calculator-business"],
   },
   {
     slug: "ltv-calculator-saas",
@@ -434,7 +443,7 @@ export const tools: ToolDefinition[] = [
       { question: "Can I compare LTV with CAC?", answer: "Yes, LTV:CAC is a core SaaS efficiency metric." },
       { question: "Is this useful for pricing strategy?", answer: "Yes, LTV trends can guide retention and pricing decisions." },
     ],
-    related: ["cac-calculator-saas", "roi-calculator-marketing", "break-even-calculator-business", "profit-margin-calculator-business", "revenue-growth-calculator"],
+    related: ["cac-calculator-saas", "roi-calculator-marketing", "break-even-calculator-business", "profit-margin-calculator-business", "revenue-per-employee-calculator"],
   },
   {
     slug: "break-even-calculator-business",
@@ -461,7 +470,7 @@ export const tools: ToolDefinition[] = [
       { question: "Should fixed costs include salaries and rent?", answer: "Yes, include recurring overhead for realistic break-even planning." },
       { question: "Can this support startup planning?", answer: "Yes, it is useful for forecasting runway and sales targets." },
     ],
-    related: ["profit-margin-calculator-business", "roi-calculator-marketing", "cac-calculator-saas", "ltv-calculator-saas", "revenue-growth-calculator"],
+    related: ["profit-margin-calculator", "profit-margin-calculator-business", "roi-calculator-marketing", "cac-calculator-saas", "ltv-calculator-saas"],
   },
   {
     slug: "profit-margin-calculator-business",
@@ -487,7 +496,7 @@ export const tools: ToolDefinition[] = [
       { question: "Should I use gross or net costs?", answer: "Use consistent definitions for trend analysis and reporting clarity." },
       { question: "Can I pair this with break-even analysis?", answer: "Yes, margin and break-even together improve operating planning." },
     ],
-    related: ["break-even-calculator-business", "roi-calculator-marketing", "cac-calculator-saas", "ltv-calculator-saas", "revenue-growth-calculator"],
+    related: ["break-even-calculator", "profit-margin-calculator", "roi-calculator-marketing", "cac-calculator-saas", "ltv-calculator-saas"],
   },
   {
     slug: "ai-email-subject-line-generator",
@@ -514,7 +523,7 @@ export const tools: ToolDefinition[] = [
       { question: "Is this suitable for newsletters and outbound?", answer: "Yes, it works for lifecycle, promo, and outreach email workflows." },
       { question: "How many ideas should I test?", answer: "Testing 2-4 quality variants is a practical baseline for most campaigns." },
     ],
-    related: ["ai-cold-email-generator", "ai-linkedin-post-generator", "email-open-rate-calculator", "email-click-rate-calculator", "roi-calculator-marketing"],
+    related: ["ai-cold-email-generator", "ai-linkedin-post-generator", "conversion-rate-calculator", "roi-calculator-marketing", "cpc-calculator"],
   },
   {
     slug: "ai-cold-email-generator",
@@ -570,7 +579,7 @@ export const tools: ToolDefinition[] = [
       { question: "Does this include CTA suggestions?", answer: "Yes, generated drafts include contextual closing CTA patterns." },
       { question: "Can this support personal brand growth?", answer: "Yes, consistent posting with audience-focused messaging can improve reach and engagement." },
     ],
-    related: ["ai-email-subject-line-generator", "ai-cold-email-generator", "engagement-rate-calculator-instagram", "landing-page-conversion-calculator", "roi-calculator-marketing"],
+    related: ["ai-email-subject-line-generator", "ai-cold-email-generator", "instagram-engagement-calculator", "conversion-rate-calculator", "roi-calculator-marketing"],
   },
   {
     slug: "ai-resume-summary-generator",
@@ -626,7 +635,7 @@ export const tools: ToolDefinition[] = [
       { question: "Does tone selection affect copy style?", answer: "Yes, tone changes language, structure, and persuasion emphasis." },
       { question: "Can this generate SEO-friendly product copy?", answer: "Yes, include relevant product keywords naturally in your inputs and final edits." },
     ],
-    related: ["ai-email-subject-line-generator", "ai-linkedin-post-generator", "landing-page-conversion-calculator", "roi-calculator-marketing", "profit-margin-calculator-business"],
+    related: ["ai-email-subject-line-generator", "ai-linkedin-post-generator", "conversion-rate-calculator", "roi-calculator-marketing", "profit-margin-calculator-business"],
   },
 
   // advanced finance rollout
@@ -1306,7 +1315,13 @@ export const tools: ToolDefinition[] = [
   // business
   { slug: "roi-calculator", name: "ROI Calculator", shortDescription: "Return on investment in seconds.", description: "Calculate ROI percentage from gain and cost.", category: "business", fields:[{name:"gain",label:"Gain",type:"number"},{name:"cost",label:"Cost",type:"number"}], keywords:["roi calculator"], howToUse:simpleHowTo, faqs:makeFAQs("ROI Calculator"), related:["profit-margin-calculator","break-even-calculator"] },
   { slug: "break-even-calculator", name: "Break-even Calculator", shortDescription: "Find break-even units and revenue.", description: "Business planning tool for pricing strategy.", category: "business", fields:[{name:"fixed",label:"Fixed Cost",type:"number"},{name:"price",label:"Price per Unit",type:"number"},{name:"variable",label:"Variable Cost/Unit",type:"number"}], keywords:["break even"], howToUse:simpleHowTo, faqs:makeFAQs("Break-even Calculator"), related:["roi-calculator","profit-margin-calculator"] },
-  { slug: "profit-margin-calculator", name: "Profit Margin Calculator", shortDescription: "Calculate margin from revenue and cost.", description: "Instant gross margin percentage.", category: "business", fields:[{name:"revenue",label:"Revenue",type:"number"},{name:"cost",label:"Cost",type:"number"}], keywords:["profit margin"], howToUse:simpleHowTo, faqs:makeFAQs("Profit Margin Calculator"), related:["roi-calculator","ltv-calculator"] },
+  { slug: "profit-margin-calculator", name: "Profit Margin Calculator", shortDescription: "Calculate margin from revenue and cost.", description: "Gross profit margin from revenue and cost: (revenue − cost) ÷ revenue. Markup uses cost as the denominator.", category: "business", fields:[{name:"revenue",label:"Revenue",type:"number"},{name:"cost",label:"Cost",type:"number"}], keywords:["profit margin", "profit margin calculator", "gross profit margin", "calculate profit margin"], howToUse:simpleHowTo, faqs: [
+      { question: "What is the profit margin formula?", answer: "Profit margin = (revenue − cost) ÷ revenue, shown as a percentage. A sale of 100 with cost 60 is a 40% margin." },
+      { question: "What is the difference between margin and markup?", answer: "Margin divides profit by revenue. Markup divides the same profit by cost. 40% margin on those numbers is 66.7% markup." },
+      { question: "Is this gross or net profit margin?", answer: "This calculator uses the two fields on the form: revenue and cost. If cost is only COGS, the result is a gross-style margin. Add operating costs to cost if you want a closer net-style figure." },
+      { question: "Can I use this as a product margin calculator?", answer: "Yes. Enter the selling price as revenue and the unit cost as cost for a single product, or totals for a batch." },
+      { question: "Does this replace accounting software?", answer: "No. It is a planning formula. Confirm inventory costing and tax treatment in your books." },
+    ], related:["markup-calculator","profit-margin-calculator-business","break-even-calculator","roi-calculator"] },
   { slug: "cac-calculator", name: "CAC Calculator", shortDescription: "Customer acquisition cost calculator.", description: "Know how much it costs to acquire one customer.", category: "business", fields:[{name:"salesMarketing",label:"Sales + Marketing Spend",type:"number"},{name:"customers",label:"New Customers",type:"number"}], keywords:["cac"], howToUse:simpleHowTo, faqs:makeFAQs("CAC Calculator"), related:["ltv-calculator","conversion-rate-calculator"] },
   { slug: "ltv-calculator", name: "LTV Calculator", shortDescription: "Estimate lifetime value per customer.", description: "Compute customer LTV for growth planning.", category: "business", fields:[{name:"arpu",label:"Average Revenue Per User",type:"number"},{name:"grossMargin",label:"Gross Margin (%)",type:"number"},{name:"churn",label:"Monthly Churn (%)",type:"number"}], keywords:["ltv"], howToUse:simpleHowTo, faqs:makeFAQs("LTV Calculator"), related:["cac-calculator","profit-margin-calculator"] },
 
@@ -1815,7 +1830,7 @@ export const tools: ToolDefinition[] = [
       { question: "Is this a medical recommendation?", answer: "No, this is a general estimate and not medical nutrition advice." },
       { question: "Can athletes use this calculator?", answer: "Yes for baseline planning, though sport-specific coaching may refine targets further." },
     ],
-    related: ["cm-to-feet", "kg-to-lbs", "budget-planner-monthly-usa", "emergency-fund-calculator", "hourly-to-salary-converter-usa"],
+    related: ["bmi-calculator", "bmi-for-children-calculator", "cm-to-feet", "kg-to-lbs", "percentage-calculator"],
   },
   {
     slug: "ai-content-humanizer",
@@ -5288,7 +5303,16 @@ export const tools: ToolDefinition[] = [
     description: "Calculate VAT amount and gross price from a net amount and VAT rate percentage.",
     category: "finance",
     fields: [
-      { name: "netAmount", label: "Amount (excluding VAT)", type: "number", min: 0, step: 0.01 },
+      {
+        name: "mode",
+        label: "Calculation",
+        type: "select",
+        options: [
+          { label: "Add VAT to a net amount", value: "add" },
+          { label: "Remove VAT from a gross amount", value: "remove" },
+        ],
+      },
+      { name: "netAmount", label: "Amount (net or gross, matching the mode)", type: "number", min: 0, step: 0.01 },
       { name: "vatRate", label: "VAT rate (%)", type: "number", min: 0, step: 0.01, placeholder: "e.g. 20" },
     ],
     keywords: [
@@ -5317,7 +5341,7 @@ export const tools: ToolDefinition[] = [
       },
       {
         question: "Can I work backwards from a gross price?",
-        answer: "This version starts from net; use a dedicated reverse-VAT tool or divide gross by (1 + rate/100) manually.",
+        answer: "Yes. Choose “Remove VAT from a gross amount”, enter the VAT-inclusive figure, and the same rate. Net = gross ÷ (1 + rate/100).",
       },
       {
         question: "Does it support multiple VAT bands?",
@@ -5376,7 +5400,7 @@ export const tools: ToolDefinition[] = [
         answer: "Numbers only - use your own currency symbol mentally.",
       },
     ],
-    related: ["unit-price-calculator", "discount-calculator", "budget-planner-monthly-usa", "paycheck-calculator-usa", "gas-cost-calculator-road-trip"],
+    related: ["tip-calculator", "percentage-calculator", "unit-price-calculator", "discount-calculator", "budget-planner-monthly-usa"],
   },
   {
     slug: "net-worth-tracker",
@@ -5990,7 +6014,7 @@ export const tools: ToolDefinition[] = [
         answer: "Percentile charts are sex-specific; we remind you to use the matching CDC or WHO chart with your clinician.",
       },
     ],
-    related: ["life-expectancy-calculator", "daily-calorie-calculator", "anxiety-level-self-assessment", "burnout-score-calculator", "age-calculator"],
+    related: ["bmi-calculator", "daily-calorie-calculator", "life-expectancy-calculator", "age-calculator", "percentage-calculator"],
   },
   {
     slug: "medication-dosage-calculator",

@@ -1,7 +1,11 @@
 import { Clock3 } from "lucide-react";
+import type { Locale } from "@/lib/i18n/locales";
+import { DEFAULT_LOCALE } from "@/lib/i18n/locales";
+import { getWorkspaceMessages } from "@/lib/i18n/workspace-messages";
 
 /** Static aside chrome for tool results - server-rendered (no client JS). */
-export default function ToolResultsAsideHeader() {
+export default function ToolResultsAsideHeader({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
+  const ws = getWorkspaceMessages(locale);
   return (
     <div className="mb-4 flex items-center justify-between border-b border-violet-200/40 pb-3">
       <div className="flex items-center gap-2">
@@ -10,12 +14,12 @@ export default function ToolResultsAsideHeader() {
         </span>
         <div>
           <p id="tool-results-heading" className="text-sm font-semibold text-slate-900">
-            Your results
+            {ws.yourResults}
           </p>
-          <p className="text-xs text-slate-500">Latest output + history</p>
+          <p className="text-xs text-slate-500">{ws.latestOutput}</p>
         </div>
       </div>
-      <span className="text-xs text-slate-500">History</span>
+      <span className="text-xs text-slate-500">{ws.history}</span>
     </div>
   );
 }

@@ -6,10 +6,9 @@ import type { Locale } from "@/lib/i18n/locales";
 import { getUiMessages } from "@/lib/i18n/ui-messages";
 import { getToolCopy } from "@/lib/i18n/tool-messages";
 import { localizePath } from "@/lib/i18n/paths";
-import { isLocalizedToolSlug, LOCALIZED_TOOL_SLUGS, type LocalizedToolSlug } from "@/lib/i18n/catalog";
+import { isLocalizedToolSlug, localizedRelatedSlugs, type LocalizedToolSlug } from "@/lib/i18n/catalog";
 import { localizeToolDefinition } from "@/lib/i18n/localize-tool";
 import { toolMap } from "@/lib/tools/data";
-import { getToolInsight } from "@/lib/tools/tool-insights";
 import {
   breadcrumbJsonLd,
   faqPageSchemaFromPairs,
@@ -24,7 +23,7 @@ export default function LocalizedToolView({ locale, slug }: { locale: Locale; sl
   const copy = getToolCopy(locale, slug);
   const ui = getUiMessages(locale);
   const localized = localizeToolDefinition(tool, locale);
-  const insight = getToolInsight(tool.slug);
+  const insight = null;
   const path = localizePath(`/tools/${slug}`, locale);
   const faqs = copy.faqs;
 
@@ -34,7 +33,7 @@ export default function LocalizedToolView({ locale, slug }: { locale: Locale; sl
     { name: copy.name, path },
   ]);
 
-  const related = LOCALIZED_TOOL_SLUGS.filter((s) => s !== slug).slice(0, 6);
+  const related = localizedRelatedSlugs(slug);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
@@ -70,7 +69,7 @@ export default function LocalizedToolView({ locale, slug }: { locale: Locale; sl
       </section>
 
       <div className="min-w-0">
-        <ToolWorkspaceShell tool={localized} insight={insight} />
+        <ToolWorkspaceShell tool={localized} insight={insight} locale={locale} />
       </div>
 
       <section className={`mt-10 space-y-4 p-6 sm:p-8 ${toolGlassCard}`}>

@@ -5,8 +5,9 @@ import { getToolCategoryIconGradient } from "@/utils/tool-category-visual";
 
 const subtitleOverrides: Record<string, string> = {
   "vat-calculator": "Add or remove UK VAT — 20%, 5%, or 0%",
-  "salary-after-tax-calculator": "UK take-home pay for 2026/27",
-  "profit-margin-calculator": "Calculate margin and markup %",
+  "salary-after-tax-calculator": "Net pay from gross and a tax rate",
+  "rental-yield-calculator-uk": "UK gross and net rental yield",
+  "profit-margin-calculator": "Margin % from revenue and cost",
   "loan-calculator": "Monthly payments + total interest",
   "compound-interest-calculator": "See how savings grow over time",
   "roi-calculator": "Return on investment instantly",

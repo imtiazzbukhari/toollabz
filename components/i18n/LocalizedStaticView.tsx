@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { toolGlassPanel } from "@/lib/tool-ui";
-import { LOCALIZED_HUB_PATHS, LOCALIZED_TOOL_SLUGS, isLocalizedToolSlug } from "@/lib/i18n/catalog";
+import { LOCALIZED_HUB_PATHS, LOCALIZED_HUB_TOOLS, LOCALIZED_TOOL_SLUGS, isLocalizedToolSlug } from "@/lib/i18n/catalog";
 import { getPageCopy, pathToPageKey, type StaticPageKey } from "@/lib/i18n/page-messages";
 import { getToolCopy } from "@/lib/i18n/tool-messages";
 import { getUiMessages } from "@/lib/i18n/ui-messages";
@@ -71,13 +71,26 @@ export default function LocalizedStaticView({
         <p className="mt-4 text-lg leading-relaxed text-slate-700">{copy.intro}</p>
         <p className="mt-3 text-sm text-slate-500">{ui.common.languageNote}</p>
 
-        {englishPath === "/" || englishPath === "/tools" ? (
+        {englishPath === "/" || englishPath === "/tools" || englishPath in LOCALIZED_HUB_TOOLS ? (
           <section className="mt-8" aria-labelledby="loc-tools-heading">
             <h2 id="loc-tools-heading" className="text-xl font-bold text-slate-900">
               {ui.nav.tools}
             </h2>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-              {toolCards.map((t) => (
+              {(englishPath === "/" || englishPath === "/tools"
+                ? toolCards
+                : (LOCALIZED_HUB_TOOLS[englishPath as (typeof LOCALIZED_HUB_PATHS)[number]] ?? []).map((slug) => {
+                    const base = tools.find((t) => t.slug === slug);
+                    const tcopy = getToolCopy(locale, slug);
+                    return {
+                      slug,
+                      name: tcopy.name,
+                      description: tcopy.intro,
+                      href: localizePath(`/tools/${slug}`, locale),
+                      category: base?.category ?? "finance",
+                    };
+                  })
+              ).map((t) => (
                 <li key={t.slug}>
                   <Link
                     href={t.href}
@@ -89,6 +102,13 @@ export default function LocalizedStaticView({
                 </li>
               ))}
             </ul>
+            {englishPath === "/real-estate-tools" ? (
+              <p className="mt-4 text-sm leading-relaxed text-slate-600">
+                <Link href="/tools/rental-yield-calculator-uk" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+                  {ui.tool.seeAlsoEnglish}
+                </Link>
+              </p>
+            ) : null}
           </section>
         ) : null}
 

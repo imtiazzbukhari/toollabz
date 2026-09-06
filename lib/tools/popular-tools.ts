@@ -18,7 +18,7 @@ export const POPULAR_TOOL_SLUGS = [
   "ai-content-humanizer",
   "ai-resume-summary-generator",
   "ai-linkedin-post-generator",
-  "ai-prompt-optimizer",
+  "rental-yield-calculator-uk",
 ] as const satisfies readonly string[];
 
 /** Extra high-authority slugs for homepage internal linking (deduped with popular). */

@@ -2,6 +2,7 @@ import type { ToolDefinition } from "./types";
 
 export const PHASE2_PRIORITY_TOOL_SLUGS = new Set([
   "profit-margin-calculator",
+  "rental-yield-calculator-uk",
   "vat-calculator",
   "salary-after-tax-calculator",
   "loan-calculator",
@@ -38,11 +39,18 @@ type RelatedArticle = {
 
 const quickAnswers: Record<string, QuickAnswer> = {
   "profit-margin-calculator": {
-    title: "Margin vs Percentage: What's the difference?",
+    title: "Profit margin formula",
     answer:
-      "Profit margin is a specific type of percentage: it measures profit as a percentage of revenue. General percentages can measure any ratio, while margin always uses selling price or revenue as the denominator.",
+      "Profit margin = (revenue − cost) ÷ revenue. A £100 sale that cost £60 is a 40% margin. Markup on the same numbers is 66.7% because markup divides by cost, not revenue.",
     example:
-      "Selling a GBP 100 item that cost GBP 60 gives a 40% profit margin (GBP 40 / GBP 100). Markup on the same item is 66.7% (GBP 40 / GBP 60), because markup uses cost as the denominator.",
+      "Product price £80, unit cost £50 → profit £30, margin 37.5%, markup 60%. Use the same VAT basis on both inputs.",
+  },
+  "rental-yield-calculator-uk": {
+    title: "UK rental yield formula",
+    answer:
+      "Gross rental yield = (monthly rent × 12) ÷ purchase price. Net yield = (annual rent − annual costs) ÷ purchase price. Optional monthly mortgage shows cash flow. Not a tax or Section 24 model.",
+    example:
+      "£1,450 a month on a £320,000 purchase is £17,400 annual rent and 5.44% gross yield. £3,600 annual costs drops net yield to 4.31%.",
   },
   "vat-calculator": {
     answer: "To add 20% UK VAT, multiply the net price by 1.20. To remove VAT from a gross price, divide by 1.20 instead of subtracting 20%.",
@@ -50,9 +58,9 @@ const quickAnswers: Record<string, QuickAnswer> = {
   },
   "salary-after-tax-calculator": {
     answer:
-      "Salary after tax estimates take-home pay after income tax, National Insurance, and any deductions you model. UK tax years and bands change, so treat this as planning math and confirm with HMRC or payroll.",
+      "Net pay = gross salary × (1 − tax rate). Enter the effective rate you want to model. This is not a UK or US tax-code calculator — use the dedicated UK or state tools for local bands.",
     example:
-      "A GBP 40,000 UK salary in 2026/27 takes home approximately GBP 31,200 after 20% income tax and 8% National Insurance assumptions.",
+      "Gross 40,000 at a 22% effective rate leaves 31,200 net (tax 8,800). Change the rate to compare scenarios.",
   },
   "loan-calculator": {
     answer: "Monthly payment = P x [r(1+r)^n] / [(1+r)^n - 1], where P is principal, r is monthly rate, and n is the number of payments.",
@@ -147,7 +155,9 @@ const quickAnswers: Record<string, QuickAnswer> = {
 
 const whoUses: Record<string, string> = {
   "profit-margin-calculator":
-    "Retail business owners use this to price products, Amazon FBA sellers check net margins after fees, restaurant owners monitor food cost ratios, and finance students use it to learn unit economics. The key audience is anyone who needs to separate margin from markup before making a pricing decision.",
+    "Retailers, product sellers, and operators use this to turn a price and a cost into a margin percentage before they quote. It is also the page to check when someone says “we need 40%” and you need to know whether they mean margin or markup.",
+  "rental-yield-calculator-uk":
+    "UK landlords and buy-to-let buyers use this to screen a listing from monthly rent and asking price, then again with realistic annual costs. It is a first-pass yield check, not a full investment appraisal.",
   "vat-calculator":
     "UK freelancers use this before quarterly VAT checks, small business owners use it when creating invoices, accountants use it for client bookkeeping, and ecommerce sellers use it when setting Shopify or Etsy prices. It is most useful when you need net, VAT, and gross figures to agree before a receipt or return is prepared.",
   "salary-after-tax-calculator":
@@ -191,7 +201,13 @@ const relatedArticles: Record<string, RelatedArticle[]> = {
     { title: "UK VAT Guide 2026: Rates, Registration & Returns", url: "/blog/vat-calculator-guide-small-businesses" },
   ],
   "profit-margin-calculator": [
-    { title: "Margin vs Percentage: Key Differences (2026)", url: "/blog/margin-vs-percentage-difference" },
+    { title: "Markup vs margin formulas", url: "/blog/markup-vs-margin-formulas-pricing-mistakes" },
+    { title: "Gross profit vs net profit", url: "/blog/gross-profit-vs-net-profit-explained-for-operators" },
+    { title: "Margin vs percentage", url: "/blog/margin-vs-percentage-difference" },
+  ],
+  "rental-yield-calculator-uk": [
+    { title: "How much can I rent my house for? (UK)", url: "/blog/how-much-can-i-rent-my-house-for-uk" },
+    { title: "Rental yield vs monthly cash flow", url: "/blog/rental-yield-vs-monthly-cash-flow-investment-property" },
   ],
   "compound-interest-calculator": [
     { title: "Compound Interest Explained (2026)", url: "/blog/compound-interest-calculator-guide" },
@@ -200,7 +216,9 @@ const relatedArticles: Record<string, RelatedArticle[]> = {
     { title: "Loan Calculator Guide 2026", url: "/blog/loan-calculator-guide" },
   ],
   "salary-after-tax-calculator": [
-    { title: "UK Salary After Tax: Complete Guide (2026)", url: "/blog/salary-after-tax-explained-withholdings-deductions-net-pay" },
+    { title: "How to estimate take-home pay from gross", url: "/blog/how-to-estimate-take-home-pay-from-gross-salary" },
+    { title: "Salary after tax: withholdings and net pay", url: "/blog/salary-after-tax-explained-withholdings-deductions-net-pay" },
+    { title: "Take-home pay by country (guide)", url: "/blog/how-to-calculate-take-home-salary-country-guide" },
   ],
 };
 

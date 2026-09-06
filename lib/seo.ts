@@ -111,8 +111,9 @@ const META_DESC_MAX = 155;
 
 const TOOL_TITLE_OVERRIDES: Record<string, string> = {
   "vat-calculator": "VAT Calculator UK 2026 — Add or Remove VAT Instantly | Toollabz",
-  "salary-after-tax-calculator": "Salary After Tax Calculator 2026/27 — UK Take-Home Pay | Toollabz",
-  "profit-margin-calculator": "Profit Margin Calculator — Margin & Markup in Seconds | Toollabz",
+  "salary-after-tax-calculator": "Salary After Tax Calculator — Net Pay From Gross and a Tax Rate | Toollabz",
+  "profit-margin-calculator": "Profit Margin Calculator — Gross Margin vs Markup | Toollabz",
+  "rental-yield-calculator-uk": "Rental Yield Calculator UK — Gross & Net Buy-to-Let | Toollabz",
   "loan-calculator": "Loan Calculator — Monthly Payments + Full Amortisation | Toollabz",
   "compound-interest-calculator": "Compound Interest Calculator — See How Money Grows | Toollabz",
   "roi-calculator": "ROI Calculator — Return on Investment Instantly | Toollabz",
@@ -136,9 +137,11 @@ const TOOL_META_OVERRIDES: Record<string, string> = {
   "vat-calculator":
     "Add or remove UK VAT instantly — 20% standard, 5% reduced, or 0% zero rate. Includes reverse VAT and 2026/27 registration threshold guide. Free, no login required.",
   "salary-after-tax-calculator":
-    "Calculate UK take-home pay for 2026/27 in seconds. Covers income tax, National Insurance, student loan (Plans 1/2/4/5/Postgrad), and pension auto-enrolment.",
+    "Estimate take-home pay as gross salary × (1 − tax rate). A flat-rate planner, not a UK or US tax-code engine. Use the UK or state tools when you need local bands.",
   "profit-margin-calculator":
-    "Calculate gross profit margin and markup % instantly. Includes margin vs markup comparison table and worked examples. A 40% margin = 66.7% markup. Free forever.",
+    "Profit margin = (revenue − cost) ÷ revenue. See gross margin, markup on the same numbers, and a worked product example. Planning math, not accounting software.",
+  "rental-yield-calculator-uk":
+    "UK rental yield from monthly rent and purchase price. Gross yield annualises rent; net yield subtracts the costs you enter. Optional mortgage shows cash flow.",
   "loan-calculator":
     "Work out monthly repayments, total interest cost, and full amortisation schedule. Covers personal loans, car finance, and mortgages. No signup, instant results.",
   "compound-interest-calculator":

@@ -187,7 +187,8 @@ const formulas: Record<string, string> = {
   "mortgage-affordability-calculator-usa": "Affordable Payment = Income × DTI - Debt; Loan derived by amortization",
   "rent-vs-buy-calculator-usa": "Total Rent = sum of rent with annual increase; Total Buy = Monthly Buy Cost × Months",
   "property-roi-calculator": "ROI% = (Net Gain / Total Cost) × 100",
-  "rental-yield-calculator-uk": "Gross Yield% = ((Monthly Rent × 12) / Property Price) × 100",
+  "rental-yield-calculator-uk":
+    "Gross yield % = (monthly rent × 12) ÷ price × 100; Net yield % = (annual rent − annual costs) ÷ price × 100",
   "gas-cost-calculator-road-trip": "Fuel Cost = (Distance / MPG) × Fuel Price",
   "salary-after-tax-calculator-california": "Net Salary = Gross Salary × (1 - (Federal + California + Other Deductions))",
   "salary-after-tax-calculator-texas": "Net Salary = Gross Salary × (1 - (Federal + Other Deductions))",

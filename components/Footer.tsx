@@ -22,13 +22,23 @@ const categoryLinks = [
   { label: "PDF", href: "/pdf-tools" },
 ];
 
-const topToolSlugs = [
+const ENGLISH_TOP_TOOL_SLUGS = [
   "salary-after-tax-calculator",
   "loan-calculator",
   "vat-calculator",
   "roi-calculator",
   "paycheck-calculator-usa",
   "net-worth-calculator",
+];
+
+/** Locale footers must point at catalog tools so names and URLs stay in-language. */
+const LOCALIZED_TOP_TOOL_SLUGS = [
+  "salary-after-tax-calculator",
+  "loan-calculator",
+  "vat-calculator",
+  "profit-margin-calculator",
+  "compound-interest-calculator",
+  "roi-calculator",
 ];
 
 /** Set true when real social profile URLs are ready. */
@@ -69,7 +79,7 @@ export default function Footer({ locale = DEFAULT_LOCALE }: { locale?: Locale })
                     : "pdf",
     ).h1,
   }));
-  const localizedTopTools = topToolSlugs
+  const localizedTopTools = (locale === DEFAULT_LOCALE ? ENGLISH_TOP_TOOL_SLUGS : LOCALIZED_TOP_TOOL_SLUGS)
     .map((slug) => {
       const tool = tools.find((t) => t.slug === slug);
       if (!tool) return null;

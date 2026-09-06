@@ -70,7 +70,11 @@ function Article() {
         <Link href="/tools/rental-yield-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           rental yield calculator
         </Link>{" "}
-        for headline ratios, then layer{" "}
+        for headline ratios, or the{" "}
+        <Link href="/tools/rental-yield-calculator-uk" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+          UK rental yield calculator
+        </Link>{" "}
+        when rent is monthly in GBP. That UK tool also shows monthly cash flow if you enter the mortgage payment you already have — it is not a Section 24 or stamp-duty model. Then layer{" "}
         <Link href="/tools/property-roi-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           property ROI
         </Link>{" "}
@@ -130,7 +134,7 @@ export const rentalYieldVsCashFlowPost: BlogPostDefinition = {
   category: "Real estate",
   tags: ["rental yield", "cash flow", "leverage", "landlording"],
   readingTimeMinutes: 17,
-  relatedToolSlugs: ["rental-yield-calculator", "property-roi-calculator", "rent-vs-buy-calculator", "loan-calculator", "mortgage-affordability-calculator"],
+  relatedToolSlugs: ["rental-yield-calculator-uk", "rental-yield-calculator", "property-roi-calculator", "rent-vs-buy-calculator", "loan-calculator"],
   relatedPostsSlugs: [
     "rent-vs-buy-usa-guide",
     "how-to-compare-rent-vs-buy-without-hype",

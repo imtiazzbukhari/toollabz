@@ -110,6 +110,19 @@ const HUB_COPY: Record<DirectoryGroupId, HubCopy> = {
           "Clustered linking helps visitors complete multi-step research and signals topical depth to crawlers without changing the visual layout of the directory.",
       },
     ],
+    clusterNav: [
+      {
+        title: "UK buy-to-let screening",
+        links: [
+          { href: "/tools/rental-yield-calculator-uk", label: "UK rental yield (and optional cash flow)" },
+          { href: "/tools/rental-yield-calculator", label: "Generic rental yield" },
+          { href: "/tools/property-roi-calculator", label: "Property ROI" },
+          { href: "/tools/loan-calculator", label: "Loan payment" },
+          { href: "/blog/rental-yield-vs-monthly-cash-flow-investment-property", label: "Yield vs monthly cash flow" },
+          { href: "/blog/how-much-can-i-rent-my-house-for-uk", label: "How much can I rent my house for (UK)" },
+        ],
+      },
+    ],
   },
   "business-saas": {
     h2: "Business and SaaS metrics you can run in the browser",

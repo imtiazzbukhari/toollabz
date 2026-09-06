@@ -16,6 +16,10 @@ export function localizeToolDefinition(tool: ToolDefinition, locale: Locale): To
     fields: tool.fields.map((field) => ({
       ...field,
       label: copy.fields[field.name] ?? field.label,
+      options: field.options?.map((option) => ({
+        ...option,
+        label: copy.fields[`${field.name}.${option.value}`] ?? option.label,
+      })),
     })),
   };
 }

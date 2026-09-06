@@ -1,19 +1,25 @@
 "use client";
 
 import { Trash2 } from "lucide-react";
+import type { Locale } from "@/lib/i18n/locales";
+import { DEFAULT_LOCALE } from "@/lib/i18n/locales";
+import { getWorkspaceMessages } from "@/lib/i18n/workspace-messages";
 import type { ToolHistoryEntry } from "./tool-workspace-types";
 
 export default function ToolHistoryList({
   history,
   onClear,
+  locale = DEFAULT_LOCALE,
 }: {
   history: ToolHistoryEntry[];
   onClear: () => void;
+  locale?: Locale;
 }) {
+  const ws = getWorkspaceMessages(locale);
   return (
     <div className="mt-4 border-t border-violet-200/50 pt-3">
       <div className="mb-2 flex items-center justify-between">
-        <p className="text-xs font-semibold uppercase tracking-wider text-violet-600">Recent actions</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-violet-600">{ws.recentActions}</p>
         {history.length > 0 && (
           <button
             type="button"
@@ -21,12 +27,12 @@ export default function ToolHistoryList({
             className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-slate-500 transition hover:bg-white/70 hover:text-slate-700"
           >
             <Trash2 className="h-3.5 w-3.5" aria-hidden />
-            Clear
+            {ws.clearHistory}
           </button>
         )}
       </div>
       {history.length === 0 ? (
-        <p className="text-sm text-slate-500">No history yet.</p>
+        <p className="text-sm text-slate-500">{ws.noHistory}</p>
       ) : (
         <ul className="space-y-2">
           {history.map((item) => (
