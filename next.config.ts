@@ -5,6 +5,12 @@ import type { NextConfig } from "next";
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
+  /**
+   * C-01: keep metadata inside <head> for every user agent, including Googlebot.
+   * Next 15.5 streams metadata into <body> unless the UA matches htmlLimitedBots.
+   * `/.*/` disables streaming metadata entirely (belt-and-braces with a static root layout).
+   */
+  htmlLimitedBots: /.*/,
   /** Single-package root: stabilizes output file tracing when multiple lockfiles exist up-tree. */
   outputFileTracingRoot: projectRoot,
   output: "standalone",
