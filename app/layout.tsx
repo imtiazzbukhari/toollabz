@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { headers } from "next/headers";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,8 +8,7 @@ import DeferredClientObservers from "@/components/DeferredClientObservers";
 import { GA_TRACKING_ID } from "@/lib/analytics/gtag";
 import { ADSENSE_ENABLED, ADSENSE_PUBLISHER_ID } from "@/lib/analytics/env";
 import { organizationSchema, websiteSearchActionSchema } from "@/lib/seo";
-import { DEFAULT_LOCALE, LOCALE_HEADER, isLocale } from "@/lib/i18n/locales";
-import { htmlLangFor } from "@/lib/i18n/hreflang";
+import { DEFAULT_LOCALE } from "@/lib/i18n/locales";
 
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
 const gscSiteVerification = process.env.NEXT_PUBLIC_GSC_VERIFICATION?.trim();
@@ -78,18 +76,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const websiteJsonLd = JSON.stringify(websiteSearchActionSchema());
   const orgJsonLd = JSON.stringify(organizationSchema());
-  const localeHeader = (await headers()).get(LOCALE_HEADER);
-  const locale = isLocale(localeHeader) ? localeHeader : DEFAULT_LOCALE;
+  // C-01 / H-11: do not call headers() here. A dynamic root layout makes Next 15.5
+  // stream title, canonical, robots and hreflang into <body> for Googlebot.
+  // English is unprefixed; locale URLs are consolidated separately (C-02).
+  const locale = DEFAULT_LOCALE;
 
   return (
-    <html lang={htmlLangFor(locale)}>
+    <html lang="en">
       <body className="flex min-h-screen flex-col overflow-x-hidden">
         {/* System font stack in globals.css — no Google Fonts stylesheet (avoids extra LCP/connection work). */}
         <link rel="preload" href="/logo-toollabz.webp" as="image" />
