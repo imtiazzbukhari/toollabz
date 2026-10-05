@@ -112,7 +112,7 @@ function Article() {
       </h2>
       <p className="mt-3 leading-7 text-slate-700">
         After drafting, move to{" "}
-        <Link href="/blog/ai-text-humanization-editorial-workflow-beyond-spinning" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/ai-content-humanizer-natural-text-guide" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           editorial humanization
         </Link>{" "}
         and the{" "}

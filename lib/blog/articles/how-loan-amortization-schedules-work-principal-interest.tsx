@@ -93,7 +93,7 @@ function Article() {
           the PITI escrow guide
         </Link>{" "}
         and{" "}
-        <Link href="/blog/how-to-calculate-mortgage-payment-with-taxes-and-insurance" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/mortgage-payment-usa-piti-escrow-guide" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           mortgage payment with taxes and insurance
         </Link>
         .
@@ -131,7 +131,7 @@ function Article() {
           EMI calculator
         </Link>{" "}
         to echo payments against your own note terms, then read{" "}
-        <Link href="/blog/loan-calculator-how-banks-calculate-your-emi" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/how-to-calculate-emi-formula-examples-free-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           how banks calculate EMI
         </Link>{" "}
         for the narrative behind lender disclosures.

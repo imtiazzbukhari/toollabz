@@ -3,7 +3,7 @@
  * High-intent finance + business + AI + PDF; max 16 cards (homepage CTR + internal linking).
  */
 export const POPULAR_TOOL_SLUGS = [
-  "salary-after-tax-calculator",
+  "salary-after-tax-calculator-uk",
   "loan-calculator",
   "vat-calculator",
   "paycheck-calculator-usa",
@@ -29,7 +29,7 @@ const HOMEPAGE_AUTHORITY_EXTRA = [
   "currency-converter",
   "json-validator",
   "markup-calculator",
-  "tip-calculator-split-bill",
+  "tip-calculator",
   "credit-card-payoff-calculator",
   "budget-planner-monthly-usa",
   "invoice-generator",

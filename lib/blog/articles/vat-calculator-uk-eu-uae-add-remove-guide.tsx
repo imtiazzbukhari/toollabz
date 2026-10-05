@@ -60,11 +60,7 @@ function Article() {
 
       <p className="mt-4 leading-7 text-slate-700">
         When you model a proposal, pick the rate that matches your customer jurisdiction and invoice type, then document it beside
-        the number. For deeper SMB context, see our{" "}
-        <Link href="/blog/vat-calculator-guide-small-businesses" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-          VAT guide for small businesses
-        </Link>
-        , the{" "}
+        the number. For cross-border context, see the{" "}
         <Link href="/blog/gst-vs-vat-uk-au-cross-border-pricing-toollabz" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           GST vs VAT (Australia vs UK) comparison
         </Link>

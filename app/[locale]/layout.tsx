@@ -1,13 +1,19 @@
 import { notFound } from "next/navigation";
-import { isNonDefaultLocale, NON_DEFAULT_LOCALES } from "@/lib/i18n/locales";
+import "../(site)/globals.css";
+import RootDocument from "@/components/layout/RootDocument";
+import { rootMetadata, rootViewport } from "@/lib/seo/root-metadata";
+import { isActiveLocale, ACTIVE_NON_DEFAULT_LOCALES } from "@/lib/i18n/locales";
 
 export const dynamicParams = false;
+export const viewport = rootViewport;
+export const metadata = rootMetadata;
 
 export function generateStaticParams() {
-  return NON_DEFAULT_LOCALES.map((locale) => ({ locale }));
+  return ACTIVE_NON_DEFAULT_LOCALES.map((locale) => ({ locale }));
 }
 
-export default async function LocaleLayout({
+/** Locale root layout: `<html lang>` is derived from the route param, not a request header. */
+export default async function LocaleRootLayout({
   children,
   params,
 }: {
@@ -15,6 +21,6 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  if (!isNonDefaultLocale(locale)) notFound();
-  return children;
+  if (!isActiveLocale(locale) || locale === "en") notFound();
+  return <RootDocument locale={locale}>{children}</RootDocument>;
 }

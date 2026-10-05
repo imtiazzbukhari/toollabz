@@ -35,7 +35,7 @@ describe("related slug integrity", () => {
   it("localized BMI and tip tools have inbound English related links", () => {
     const inbound = (target: string) => tools.filter((t) => t.related.includes(target)).map((t) => t.slug);
     expect(inbound("bmi-calculator").length).toBeGreaterThanOrEqual(2);
-    expect(inbound("tip-calculator")).toContain("tip-calculator-split-bill");
+    expect(inbound("tip-calculator").length).toBeGreaterThanOrEqual(1);
     expect(inbound("character-counter")).toContain("word-counter");
   });
 });

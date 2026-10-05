@@ -23,7 +23,7 @@ describe("salary-after-tax generic tool honesty", () => {
     expect(String(schema.description)).toMatch(/tax rate/i);
     expect(String(schema.description)).not.toMatch(/National Insurance|student loan/i);
     expect(schema.url).toMatch(/\/tools\/salary-after-tax-calculator$/);
-    const insight = getToolInsight("salary-after-tax-calculator");
+    const insight = getToolInsight("salary-after-tax-calculator")!;
     expect(insight.quickAnswer).toMatch(/1\s*[−-]/);
     expect(insight.quickAnswer).not.toMatch(/federal brackets|PAYE flavor|UK Take-Home/i);
     const faq = faqSchema(tool);

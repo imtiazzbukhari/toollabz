@@ -80,7 +80,7 @@ function Article() {
           profit margin calculator
         </Link>{" "}
         and, when you are deciding whether a SKU deserves shelf space,{" "}
-        <Link href="/tools/break-even-calculator-business" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/break-even-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           break-even units
         </Link>{" "}
         after you fold in fixed costs.
@@ -102,7 +102,7 @@ function Article() {
       </p>
       <p className="mt-3 leading-7 text-slate-700">
         For tax-inclusive markets, VAT sits between list price and what you remit - start at the{" "}
-        <Link href="/blog/vat-calculator-guide-small-businesses" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/vat-calculator-uk-eu-uae-add-remove-guide" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           VAT guide for small businesses
         </Link>{" "}
         when your shelf label includes tax consumers pay but not tax you keep.

@@ -1,7 +1,7 @@
 import { tools } from "../lib/tools/data";
 import { absoluteUrl, toolMetadata } from "../lib/seo";
 import { buildHreflangPaths } from "../lib/i18n/hreflang";
-import { LOCALIZED_TOOL_SLUGS } from "../lib/i18n/catalog";
+import { LOCALE_SERVED_TOOL_SLUGS } from "../lib/i18n/catalog";
 import { localizePath } from "../lib/i18n/paths";
 
 export type CheckResult = { name: string; pass: boolean; detail: string };
@@ -24,7 +24,7 @@ export function validateCanonicalIntegrity(): CheckResult[] {
     });
   }
 
-  for (const slug of LOCALIZED_TOOL_SLUGS) {
+  for (const slug of LOCALE_SERVED_TOOL_SLUGS) {
     const map = buildHreflangPaths(`/tools/${slug}`);
     results.push({
       name: `hreflang-canonical-en-${slug}`,

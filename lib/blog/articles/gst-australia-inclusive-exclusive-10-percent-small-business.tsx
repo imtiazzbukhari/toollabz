@@ -54,7 +54,7 @@ function Article() {
       <p className="mt-3 leading-7 text-slate-700">
         If you already think in VAT from UK/EU business, GST-inclusive math rhymes with “gross price contains tax” habits - but rates,
         exemptions, and invoice rules differ. Our{" "}
-        <Link href="/blog/vat-calculator-guide-small-businesses" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/vat-calculator-uk-eu-uae-add-remove-guide" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           VAT guide for small businesses
         </Link>{" "}
         and{" "}

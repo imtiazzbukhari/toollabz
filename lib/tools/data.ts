@@ -3,6 +3,7 @@ import { cpcHighToolDefinitions } from "./cpc-high-tools-definitions";
 import { expansionPhase1ToolDefinitions } from "./expansion-phase1-tool-definitions";
 import { expansionPhase2ToolDefinitions } from "./expansion-phase2-tool-definitions";
 import { SMALL_CLAIMS_STATE_OPTIONS } from "./small-claims-data";
+import { CONSOLIDATED_TOOLS, YMYL_NOINDEX_TOOLS } from "@/lib/seo/indexing-policy";
 
 const makeFAQs = (name: string) => [
   {
@@ -21,7 +22,7 @@ const simpleHowTo = [
   "Copy or use the result instantly.",
 ];
 
-export const tools: ToolDefinition[] = [
+const allToolDefinitions: ToolDefinition[] = [
   // Phase 1 converters
   { slug: "cm-to-feet", name: "CM to Feet Converter", shortDescription: "Convert centimeters to feet instantly.", description: "Fast centimeter to feet conversion with precision output.", category: "converters", fields: [{ name: "cm", label: "Centimeters", type: "number", placeholder: "e.g. 170", min: 0, step: 0.01 }], keywords: ["cm to feet", "height converter"], howToUse: simpleHowTo, faqs: makeFAQs("CM to Feet Converter"), related: ["kg-to-lbs", "km-to-miles"] },
   { slug: "kg-to-lbs", name: "KG to LBS Converter", shortDescription: "Convert kilograms to pounds.", description: "Instant and accurate weight unit conversion.", category: "converters", fields: [{ name: "kg", label: "Kilograms", type: "number", min: 0, step: 0.01 }], keywords: ["kg to lbs", "weight converter"], howToUse: simpleHowTo, faqs: makeFAQs("KG to LBS Converter"), related: ["cm-to-feet", "km-to-miles"] },
@@ -45,7 +46,7 @@ export const tools: ToolDefinition[] = [
   // Phase 1 utility
   { slug: "word-counter", name: "Word Counter", shortDescription: "Count words, chars, and lines.", description: "Analyze text length instantly.", category: "utility", fields: [{ name: "text", label: "Text", type: "textarea", placeholder: "Paste your text" }], keywords: ["word count"], howToUse: simpleHowTo, faqs: makeFAQs("Word Counter"), related: ["character-counter", "case-converter", "json-validator"] },
   { slug: "character-counter", name: "Character Counter", shortDescription: "Count characters, spaces, and lines.", description: "Measure text length for social posts, forms, titles, and metadata.", category: "utility", fields: [{ name: "text", label: "Text", type: "textarea", placeholder: "Paste your text" }], keywords: ["character count", "character counter"], howToUse: simpleHowTo, faqs: makeFAQs("Character Counter"), related: ["word-counter", "case-converter"] },
-  { slug: "percentage-calculator", name: "Percentage Calculator", shortDescription: "Calculate percentages, percentage of an amount, and percentage change.", description: "Solve common percentage questions for discounts, grades, taxes, raises, and comparisons.", category: "calculators", fields: [{ name: "mode", label: "Mode", type: "select", options: [{ label: "X is what % of Y", value: "partOf" }, { label: "What is X% of Y", value: "percentOf" }, { label: "Percentage change", value: "change" }] }, { name: "x", label: "X / New Value", type: "number", step: 0.01 }, { name: "y", label: "Y / Original Value", type: "number", step: 0.01 }], keywords: ["percentage calculator", "percentage change"], howToUse: simpleHowTo, faqs: makeFAQs("Percentage Calculator"), related: ["discount-calculator", "profit-margin-calculator"] },
+  { slug: "percentage-calculator", name: "Percentage Calculator", shortDescription: "Calculate percentages, percentage of an amount, and percentage change.", description: "Solve common percentage questions for discounts, grades, taxes, raises, and comparisons.", category: "calculators", fields: [{ name: "mode", label: "Mode", type: "select", options: [{ label: "X is what % of Y", value: "partOf" }, { label: "What is X% of Y", value: "percentOf" }, { label: "Percentage change", value: "change" }] }, { name: "x", label: "X / New Value", type: "number", step: 0.01 }, { name: "y", label: "Y / Original Value", type: "number", step: 0.01 }], keywords: ["percentage calculator", "percentage change"], howToUse: simpleHowTo, faqs: makeFAQs("Percentage Calculator"), related: ["discount-calculator", "profit-margin-calculator", "tip-calculator"] },
   { slug: "bmi-calculator", name: "BMI Calculator", shortDescription: "Calculate adult body mass index from height and weight.", description: "Estimate BMI and adult BMI category using the standard kg/m² formula.", category: "calculators", fields: [{ name: "weight", label: "Weight (kg)", type: "number", min: 0, step: 0.1 }, { name: "height", label: "Height (cm)", type: "number", min: 0, step: 0.1 }], keywords: ["bmi calculator", "body mass index"], howToUse: simpleHowTo, faqs: makeFAQs("BMI Calculator"), related: ["bmi-for-children-calculator", "daily-calorie-calculator"] },
   { slug: "tip-calculator", name: "Tip Calculator", shortDescription: "Calculate tip, total bill, and per-person split.", description: "Work out restaurant tips and split the total fairly across a group.", category: "calculators", fields: [{ name: "bill", label: "Bill Amount", type: "number", min: 0, step: 0.01 }, { name: "tip", label: "Tip (%)", type: "number", min: 0, step: 0.1 }, { name: "people", label: "People", type: "number", min: 1 }], keywords: ["tip calculator", "split bill"], howToUse: simpleHowTo, faqs: makeFAQs("Tip Calculator"), related: ["tip-calculator-split-bill", "percentage-calculator"] },
   { slug: "case-converter", name: "Case Converter", shortDescription: "Convert text between cases.", description: "Transform to upper, lower, title, and sentence case.", category: "utility", fields: [{ name: "text", label: "Text", type: "textarea" }, { name: "mode", label: "Case", type: "select", options: [{label:"UPPER",value:"upper"},{label:"lower",value:"lower"},{label:"Title Case",value:"title"},{label:"Sentence case",value:"sentence"}] }], keywords: ["case converter"], howToUse: simpleHowTo, faqs: makeFAQs("Case Converter"), related: ["word-counter", "username-generator"] },
@@ -6800,7 +6801,32 @@ export const tools: ToolDefinition[] = [
   ...cpcHighToolDefinitions,
 ];
 
-export const toolMap = new Map(tools.map((tool) => [tool.slug, tool]));
+/** Rewrites `related` so it never points at a consolidated (301) or noindex slug and never repeats or self-links. */
+function normalizeRelated(tool: ToolDefinition): string[] {
+  const out: string[] = [];
+  for (const slug of tool.related) {
+    const target = CONSOLIDATED_TOOLS[slug] ?? slug;
+    if (target === tool.slug || out.includes(target) || YMYL_NOINDEX_TOOLS.has(target)) continue;
+    out.push(target);
+  }
+  return out;
+}
+
+/** Every definition, including consolidated duplicates (kept in code so a merge can be reverted). */
+export const allTools: ToolDefinition[] = allToolDefinitions;
+
+/** Tools whose URL answers HTTP 200 (consolidated duplicates 301 instead). */
+const servedTools: ToolDefinition[] = allToolDefinitions
+  .filter((tool) => !(tool.slug in CONSOLIDATED_TOOLS))
+  .map((tool) => ({ ...tool, related: normalizeRelated(tool) }));
+
+/**
+ * Publicly listed tools: used by hubs, directory, sitemaps and related-tool blocks.
+ * High-risk YMYL estimators stay reachable via `toolMap` (noindex) but are not listed.
+ */
+export const tools: ToolDefinition[] = servedTools.filter((tool) => !YMYL_NOINDEX_TOOLS.has(tool.slug));
+
+export const toolMap = new Map(servedTools.map((tool) => [tool.slug, tool]));
 
 const categoryLabels: Record<ToolCategory, string> = {
   converters: "Converters",

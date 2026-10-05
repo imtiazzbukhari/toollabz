@@ -77,7 +77,7 @@ function Article() {
           safe compression
         </Link>
         . Foundational posts{" "}
-        <Link href="/blog/how-to-merge-pdf-files-for-free" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/merge-pdf-files-free-five-methods-compared" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           merge PDFs for free
         </Link>{" "}
         and{" "}

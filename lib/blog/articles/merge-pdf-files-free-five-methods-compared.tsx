@@ -64,9 +64,9 @@ function Article() {
       </ol>
 
       <p className="mt-6 leading-7 text-slate-700">
-        For more narrative walkthroughs, revisit{" "}
-        <Link href="/blog/how-to-merge-pdf-files-for-free" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-          our earlier merge guide
+        For more walkthroughs, see{" "}
+        <Link href="/blog/merge-pdf-without-losing-quality-metadata-fonts" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+          merging without losing quality
         </Link>{" "}
         and the{" "}
         <Link href="/pdf-tools" className="font-medium text-violet-700 underline-offset-2 hover:underline">

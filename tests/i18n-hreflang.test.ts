@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { LOCALES, NON_DEFAULT_LOCALES } from "../lib/i18n/locales";
+import { ACTIVE_LOCALES, NON_DEFAULT_LOCALES } from "../lib/i18n/locales";
 import { localizePath, parseLocalizedPathname, stripEnglishPrefix } from "../lib/i18n/paths";
 import { isLocalizedEnglishPath, localesForEnglishPath } from "../lib/i18n/catalog";
 import { buildHreflangPaths, isHreflangReciprocal } from "../lib/i18n/hreflang";
@@ -23,7 +23,9 @@ describe("i18n paths and hreflang", () => {
     expect(isLocalizedEnglishPath("/tools/loan-calculator")).toBe(true);
     expect(isLocalizedEnglishPath("/tools/paycheck-calculator-usa")).toBe(false);
     expect(localesForEnglishPath("/tools/paycheck-calculator-usa")).toEqual(["en"]);
-    expect(localesForEnglishPath("/")).toEqual([...LOCALES]);
+    expect(localesForEnglishPath("/")).toEqual([...ACTIVE_LOCALES]);
+    expect(isLocalizedEnglishPath("/tools/vat-calculator")).toBe(false);
+    expect(isLocalizedEnglishPath("/about")).toBe(false);
   });
 
   it("emits reciprocal hreflang including x-default on catalog pages", () => {
@@ -32,14 +34,14 @@ describe("i18n paths and hreflang", () => {
     expect(map.fr).toBe("/fr/tools/loan-calculator");
     expect(map["x-default"]).toBe("/tools/loan-calculator");
     expect(isHreflangReciprocal("/tools/loan-calculator")).toBe(true);
-    expect(Object.keys(map).filter((k) => k !== "x-default").sort()).toEqual([...LOCALES].sort());
+    expect(Object.keys(map).filter((k) => k !== "x-default").sort()).toEqual([...ACTIVE_LOCALES].sort());
   });
 
   it("does not invent hreflang for untranslated blog posts", () => {
-    const map = buildHreflangPaths("/blog/vat-calculator-guide-small-businesses");
+    const map = buildHreflangPaths("/blog/vat-calculator-uk-eu-uae-add-remove-guide");
     expect(map).toEqual({
-      en: "/blog/vat-calculator-guide-small-businesses",
-      "x-default": "/blog/vat-calculator-guide-small-businesses",
+      en: "/blog/vat-calculator-uk-eu-uae-add-remove-guide",
+      "x-default": "/blog/vat-calculator-uk-eu-uae-add-remove-guide",
     });
   });
 

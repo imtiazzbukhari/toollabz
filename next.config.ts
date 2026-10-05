@@ -1,10 +1,18 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
+import { buildRedirectRules } from "./lib/seo/redirect-rules";
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
+  /**
+   * Audit C-01: Next 15.5 streams <title>, canonical, robots and hreflang into <body> for any
+   * user agent that is not on its built-in "HTML-limited bots" list (Googlebot is not on it).
+   * Prerendered pages are unaffected, but this guarantees blocking, in-<head> metadata for every
+   * UA on any route that does render on demand. Layouts also no longer call headers().
+   */
+  htmlLimitedBots: /.*/,
   /** Single-package root: stabilizes output file tracing when multiple lockfiles exist up-tree. */
   outputFileTracingRoot: projectRoot,
   output: "standalone",
@@ -40,57 +48,7 @@ const nextConfig: NextConfig = {
         destination: "https://toollabz.com/:path*",
         permanent: true,
       },
-      {
-        source: "/loan-calculator-:amount(\\d+)",
-        destination: "/loan-calculator/p/:amount",
-        permanent: true,
-      },
-      {
-        source: "/salary-after-tax-:amount(\\d+)",
-        destination: "/salary-after-tax/p/:amount",
-        permanent: true,
-      },
-      // Thin country stubs: consolidate crawl to the real calculator (was 200 + noindex).
-      {
-        source: "/loan-calculator/:country",
-        destination: "/tools/loan-calculator",
-        permanent: true,
-      },
-      {
-        source: "/salary-tax-calculator/:country",
-        destination: "/tools/salary-after-tax-calculator",
-        permanent: true,
-      },
-      {
-        source: "/salary-after-tax-calculator/uk/:amount",
-        destination: "/tools/salary-after-tax-calculator-uk",
-        permanent: true,
-      },
-      {
-        source: "/salary-after-tax-calculator/california/:amount",
-        destination: "/tools/salary-after-tax-calculator-california",
-        permanent: true,
-      },
-      {
-        source: "/salary-after-tax-calculator/texas/:amount",
-        destination: "/tools/salary-after-tax-calculator-texas",
-        permanent: true,
-      },
-      {
-        source: "/salary-after-tax-calculator/new-york/:amount",
-        destination: "/tools/salary-after-tax-calculator-new-york",
-        permanent: true,
-      },
-      {
-        source: "/salary-after-tax-calculator/florida/:amount",
-        destination: "/tools/salary-after-tax-calculator-florida",
-        permanent: true,
-      },
-      {
-        source: "/salary-after-tax-calculator/:country/:amount",
-        destination: "/tools/salary-after-tax-calculator",
-        permanent: true,
-      },
+      ...buildRedirectRules(),
     ];
   },
   async rewrites() {

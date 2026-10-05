@@ -6,7 +6,7 @@ import { GET as robotsGet } from "../app/robots.txt/route";
 import { buildPageSitemapEntries, renderSitemapXml, sitemapPublicOrigin } from "../lib/content-engine/sitemap-data";
 import { assertPageCoverage } from "../lib/i18n/page-messages";
 import { assertToolCoverage } from "../lib/i18n/tool-messages";
-import { NON_DEFAULT_LOCALES } from "../lib/i18n/locales";
+import { ACTIVE_NON_DEFAULT_LOCALES, NON_DEFAULT_LOCALES } from "../lib/i18n/locales";
 import { classifyUrl } from "../lib/seo/url-classification";
 
 export type AuditRow = { name: string; pass: boolean; detail: string };
@@ -22,8 +22,12 @@ export async function runSeoFullAudit(): Promise<{ rows: AuditRow[]; failed: num
   });
   rows.push({
     name: "robots-lists-locale-sitemaps",
-    pass: NON_DEFAULT_LOCALES.every((l) => robots.includes(`Sitemap: https://toollabz.com/${l}/sitemap.xml`)),
-    detail: `${NON_DEFAULT_LOCALES.length} locale sitemaps`,
+    pass:
+      ACTIVE_NON_DEFAULT_LOCALES.every((l) => robots.includes(`Sitemap: https://toollabz.com/${l}/sitemap.xml`)) &&
+      NON_DEFAULT_LOCALES.filter((l) => !(ACTIVE_NON_DEFAULT_LOCALES as readonly string[]).includes(l)).every(
+        (l) => !robots.includes(`/${l}/sitemap.xml`),
+      ),
+    detail: `${ACTIVE_NON_DEFAULT_LOCALES.length} active locale sitemaps, retired locales not advertised`,
   });
   rows.push({
     name: "robots-ai-crawlers",

@@ -78,7 +78,7 @@ const EN: Record<StaticPageKey, PageCopy> = {
     description: "Who builds Toollabz, why formulas are published, and how to contact the editorial and engineering team.",
     h1: "About Toollabz",
     intro:
-      "Toollabz launched in April 2026 to ship accurate free calculators with visible assumptions. Founder Imtiaz Ahmad leads engineering and technical SEO. Editorial reviews finance pages when rates or public guidance change.",
+      "Toollabz launched in April 2026 to ship accurate free calculators with visible assumptions. Founder Imtiaz Ahmad leads engineering and technical SEO. Finance pages are updated when rates or public guidance change.",
   },
   contact: {
     title: "Contact Toollabz",

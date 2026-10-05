@@ -14,7 +14,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
     definition:
       "The yearly cost of borrowing expressed as a percentage, including interest and certain fees depending on jurisdiction. Loan calculators usually take APR as an annual rate and convert it to a monthly rate internally.",
     relatedTools: ["loan-calculator", "mortgage-payment-calculator", "emi-calculator"],
-    relatedGuides: ["loan-calculator-how-banks-calculate-your-emi"],
+    relatedGuides: ["how-to-calculate-emi-formula-examples-free-calculator"],
   },
   {
     slug: "amortization",
@@ -29,7 +29,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
     definition:
       "A consumption tax charged on most goods and services in the UK and many other countries. Standard UK VAT is commonly 20%; reverse VAT divides a gross price by 1.20 to find net.",
     relatedTools: ["vat-calculator"],
-    relatedGuides: ["vat-calculator-guide-small-businesses"],
+    relatedGuides: ["vat-calculator-uk-eu-uae-add-remove-guide"],
   },
   {
     slug: "profit-margin",
@@ -95,7 +95,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
     definition:
       "A fixed monthly loan payment covering interest and principal, usually computed from the standard amortization formula used by banks for personal and home loans.",
     relatedTools: ["emi-calculator", "loan-calculator", "mortgage-payment-calculator"],
-    relatedGuides: ["loan-calculator-how-banks-calculate-your-emi"],
+    relatedGuides: ["how-to-calculate-emi-formula-examples-free-calculator"],
   },
   {
     slug: "personal-allowance",

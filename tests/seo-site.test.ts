@@ -55,8 +55,8 @@ describe("site SEO plumbing (sitemap, robots, metadata)", () => {
     });
     expect(blogArticleUrls.length).toBe(blogPostSlugs.length);
     for (const row of blogArticleUrls) {
-      expect(row.lastmod).toBeTruthy();
-      expect(Number.isNaN(Date.parse(String(row.lastmod)))).toBe(false);
+      // lastmod is only emitted for posts that declare a real dateModified (never file mtime).
+      if (row.lastmod) expect(Number.isNaN(Date.parse(String(row.lastmod)))).toBe(false);
     }
   });
 

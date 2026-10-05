@@ -75,7 +75,7 @@ function Article() {
           end-to-end PDF workflows
         </Link>{" "}
         for split/merge/compress sequencing. Older guides on{" "}
-        <Link href="/blog/how-to-merge-pdf-files-for-free" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/merge-pdf-files-free-five-methods-compared" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           merging PDFs for free
         </Link>{" "}
         and{" "}

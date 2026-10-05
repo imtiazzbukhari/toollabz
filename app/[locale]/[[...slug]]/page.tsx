@@ -2,13 +2,13 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import LocalizedStaticView from "@/components/i18n/LocalizedStaticView";
 import LocalizedToolView from "@/components/i18n/LocalizedToolView";
-import { isNonDefaultLocale, NON_DEFAULT_LOCALES, type Locale } from "@/lib/i18n/locales";
-import { isLocalizedEnglishPath, isLocalizedToolSlug } from "@/lib/i18n/catalog";
+import { ACTIVE_NON_DEFAULT_LOCALES, isActiveNonDefaultLocale, type Locale } from "@/lib/i18n/locales";
+import { isLocalizedEnglishPath, isLocalizedToolSlug, LOCALE_SERVED_TOOL_SLUGS } from "@/lib/i18n/catalog";
 import { localizedMetadata } from "@/lib/i18n/metadata";
 import { getPageCopy, pathToPageKey } from "@/lib/i18n/page-messages";
 import { getToolCopy } from "@/lib/i18n/tool-messages";
 
-export const dynamicParams = true;
+export const dynamicParams = false;
 export const revalidate = 86400;
 
 function englishPathFromSlug(slug: string[] | undefined): string {
@@ -16,14 +16,15 @@ function englishPathFromSlug(slug: string[] | undefined): string {
   return `/${slug.join("/")}`;
 }
 
-/** Pre-render locale homes plus a few hubs; remaining catalog URLs SSR on demand. */
+/** Every served locale URL is pre-rendered (3 locales x home, tools directory, 10 tools). */
 export function generateStaticParams() {
   const out: Array<{ locale: string; slug: string[] }> = [];
-  for (const locale of NON_DEFAULT_LOCALES) {
+  for (const locale of ACTIVE_NON_DEFAULT_LOCALES) {
     out.push({ locale, slug: [] });
     out.push({ locale, slug: ["tools"] });
-    out.push({ locale, slug: ["about"] });
-    out.push({ locale, slug: ["tools", "loan-calculator"] });
+    for (const tool of LOCALE_SERVED_TOOL_SLUGS) {
+      out.push({ locale, slug: ["tools", tool] });
+    }
   }
   return out;
 }
@@ -34,7 +35,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug?: string[] }>;
 }): Promise<Metadata> {
   const { locale: raw, slug } = await params;
-  if (!isNonDefaultLocale(raw)) return {};
+  if (!isActiveNonDefaultLocale(raw)) return {};
   const locale = raw as Locale;
   const englishPath = englishPathFromSlug(slug);
   if (!isLocalizedEnglishPath(englishPath)) return {};
@@ -66,7 +67,7 @@ export default async function LocalizedPage({
   params: Promise<{ locale: string; slug?: string[] }>;
 }) {
   const { locale: raw, slug } = await params;
-  if (!isNonDefaultLocale(raw)) notFound();
+  if (!isActiveNonDefaultLocale(raw)) notFound();
   const locale = raw as Locale;
   const englishPath = englishPathFromSlug(slug);
   if (!isLocalizedEnglishPath(englishPath)) notFound();

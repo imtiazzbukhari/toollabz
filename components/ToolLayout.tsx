@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BadgeCheck, CheckCircle2, ChevronRight, HelpCircle, ShieldCheck, Smartphone, Sparkles, Zap } from "lucide-react";
+import { BadgeCheck, CheckCircle2, ChevronRight, HelpCircle, Smartphone, Sparkles } from "lucide-react";
 import { ToolDefinition } from "@/lib/tools/types";
 import { tools } from "@/lib/tools/data";
 import { getRelatedToolsForLayout } from "@/lib/tools/related";
@@ -41,36 +41,6 @@ const heroBadges = [
 
 export default function ToolLayout({ tool, children }: { tool: ToolDefinition; children: React.ReactNode }) {
   const related = getRelatedToolsForLayout(tool, tools);
-  const relatedWithFallback = (() => {
-    const out = [...related];
-    if (out.length >= 4) return out;
-    const existing = new Set<string>([tool.slug, ...out.map((t) => t.slug)]);
-    for (const t of tools) {
-      if (existing.has(t.slug)) continue;
-      out.push(t);
-      existing.add(t.slug);
-      if (out.length >= 6) break;
-    }
-    return out;
-  })();
-  const youMightAlsoLike = (() => {
-    const sameCat = tools.filter((t) => t.slug !== tool.slug && t.category === tool.category);
-    const out: ToolDefinition[] = [];
-    const seen = new Set<string>([tool.slug]);
-    for (const t of sameCat) {
-      if (out.length >= 6) break;
-      if (seen.has(t.slug)) continue;
-      out.push(t);
-      seen.add(t.slug);
-    }
-    for (const t of relatedWithFallback) {
-      if (out.length >= 6) break;
-      if (seen.has(t.slug)) continue;
-      out.push(t);
-      seen.add(t.slug);
-    }
-    return out;
-  })();
   const primaryKeyword = tool.keywords[0] ?? "free online tool";
   const showFinanceDisclaimer = toolIsFinanceCategory(tool) || toolNeedsExpertDisclaimer(tool);
   const hub = getMarketingHubForTool(tool);
@@ -83,29 +53,6 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
   const relatedArticles = getRelatedArticlesForTool(tool);
   const guideLinks = getGuideLinksForTool(tool.slug, 4);
   const CategoryIcon = getCategoryIcon(tool.category);
-  const featurePoints = [
-    {
-      title: "Instant response",
-      description: `Run ${tool.name} in the browser and read the breakdown beside the form.`,
-      icon: Zap,
-    },
-    {
-      title: "Transparent formula",
-      description: "The formula and worked example on this page match what the calculator uses.",
-      icon: BadgeCheck,
-    },
-    {
-      title: "Privacy friendly",
-      description: "No account required; inputs stay in your session unless you choose to share them.",
-      icon: ShieldCheck,
-    },
-    {
-      title: "Cross-device ready",
-      description: "Layout works on mobile, tablet, and desktop for the same field labels.",
-      icon: Smartphone,
-    },
-  ];
-
   return (
     <div className="mx-auto max-w-6xl px-4 pt-8 pb-0 sm:px-6 sm:pt-10 sm:pb-1 lg:px-8">
       <header className={`mb-6 overflow-hidden p-6 sm:mb-8 sm:p-8 ${toolGlassPanel}`} data-content-section="hero">
@@ -114,8 +61,8 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
             Home
           </Link>
           <ChevronRight className="h-3.5 w-3.5 shrink-0 opacity-40" aria-hidden />
-          <Link href={`/category/${tool.category}`} className="transition hover:text-violet-600">
-            {categoryLabel(tool.category)}
+          <Link href={hub.href} className="transition hover:text-violet-600">
+            {hub.title}
           </Link>
           <ChevronRight className="h-3.5 w-3.5 shrink-0 opacity-40" aria-hidden />
           <span className="font-medium text-slate-700">{tool.name}</span>
@@ -130,10 +77,10 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
             </span>
             <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 text-balance sm:text-5xl">
               {tool.name}
-              <span className="mt-2 block text-lg font-bold leading-snug text-violet-900/90 sm:text-2xl">
-                {primaryKeyword.charAt(0).toUpperCase() + primaryKeyword.slice(1)}
-              </span>
             </h1>
+            <p className="mt-2 text-lg font-bold leading-snug text-violet-900/90 sm:text-2xl">
+              {primaryKeyword.charAt(0).toUpperCase() + primaryKeyword.slice(1)}
+            </p>
             <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">{tool.description}</p>
           </div>
           <ToolHeroVisual tool={tool} />
@@ -213,6 +160,23 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
           <span className="font-semibold">Example:</span> {quickAnswer.example}
         </p>
       </section>
+
+      {tool.slug === "salary-after-tax-calculator" ? (
+        <aside className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-6 text-slate-800">
+          <p className="font-semibold text-slate-900">This is a flat-rate estimator, not a tax-code calculator.</p>
+          <p className="mt-1">
+            You enter a single effective tax rate. For real PAYE and National Insurance use the{" "}
+            <Link href="/tools/salary-after-tax-calculator-uk" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+              UK salary after tax calculator
+            </Link>
+            ; for US federal and FICA withholding use the{" "}
+            <Link href="/tools/paycheck-calculator-usa" className="font-medium text-violet-800 underline-offset-2 hover:underline">
+              US paycheck calculator
+            </Link>
+            .
+          </p>
+        </aside>
+      ) : null}
 
       <div className="min-w-0" data-content-section="calculator">
         {children}
@@ -326,14 +290,10 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         <p className="leading-7 text-slate-700">{editorial.whoUses}</p>
         <p className="leading-7 text-slate-700">
           Continue in the{" "}
-          <Link href={`/category/${tool.category}`} className="font-medium text-violet-800 underline-offset-2 hover:underline">
-            {categoryLabel(tool.category)} category hub
-          </Link>
-          , the{" "}
           <Link href={hub.href} className="font-medium text-violet-800 underline-offset-2 hover:underline">
             {hub.title}
           </Link>{" "}
-          collection, or the{" "}
+          collection or the{" "}
           <Link href="/glossary" className="font-medium text-violet-800 underline-offset-2 hover:underline">
             glossary
           </Link>
@@ -486,28 +446,6 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
         <p className="leading-7 text-slate-700">{editorial.whoUses}</p>
       </section>
 
-      <section id="tool-features" className="mt-12 space-y-4" data-content-section="features">
-        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Features</h2>
-        <div className={`p-6 sm:p-8 ${toolGlassCard}`}>
-          <ul className="grid gap-4 sm:grid-cols-2">
-            {featurePoints.map((point) => {
-              const Icon = point.icon;
-              return (
-                <li key={point.title} className="rounded-xl border border-violet-200/55 bg-white/75 p-4 shadow-sm">
-                  <p className="inline-flex items-center gap-2 text-sm font-semibold text-slate-900">
-                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-violet-100 text-violet-700">
-                      <Icon className="h-4 w-4" aria-hidden />
-                    </span>
-                    {point.title}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{point.description}</p>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
-
       {tool.slug === "loan-calculator" ? <PopularCalculationsBlock variant="loan" /> : null}
       {tool.slug === "salary-after-tax-calculator" ? <PopularCalculationsBlock variant="salary" /> : null}
 
@@ -549,7 +487,7 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
           ))}
         </ul>
         <p className="text-xs text-slate-500">
-          Reviewed {editorial.lastReviewedLabel} · Content stamp {editorial.lastUpdatedLabel}
+          Content last updated {editorial.lastUpdatedLabel}
         </p>
       </section>
 
@@ -585,40 +523,14 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
       <section id="related-tools" className="mt-12" data-content-section="related">
         <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Related tools</h2>
         <p className="mt-1 text-sm text-slate-600">
-          Same-session utilities we surface for {primaryKeyword}; open a few tabs and compare outputs before you commit to a
-          number.
+          Calculators that answer the next question after {primaryKeyword}, ordered by how closely they connect.
         </p>
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          {relatedWithFallback.map((item) => {
+          {related.map((item) => {
             const RelatedIcon = getCategoryIcon(item.category);
             return (
               <Link
                 key={item.slug}
-                href={`/tools/${item.slug}`}
-                className={`group block p-5 transition duration-300 hover:-translate-y-0.5 ${toolGlassCard} hover:border-violet-300/60 hover:shadow-[0_12px_32px_rgba(99,102,241,0.12)]`}
-              >
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-violet-100 text-violet-700">
-                  <RelatedIcon className="h-4 w-4" aria-hidden />
-                </span>
-                <p className="font-semibold text-slate-900 group-hover:text-violet-800">{item.name}</p>
-                <p className="mt-1 text-sm text-slate-600">{item.shortDescription}</p>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      <section id="you-might-also-like" className="mt-12" data-content-section="suggested">
-        <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">You might also like</h2>
-        <p className="mt-1 text-sm text-slate-600">
-          Same-category picks first, then high-intent neighbors that often answer the next calculation question.
-        </p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          {youMightAlsoLike.map((item) => {
-            const RelatedIcon = getCategoryIcon(item.category);
-            return (
-              <Link
-                key={`you-${item.slug}`}
                 href={`/tools/${item.slug}`}
                 className={`group block p-5 transition duration-300 hover:-translate-y-0.5 ${toolGlassCard} hover:border-violet-300/60 hover:shadow-[0_12px_32px_rgba(99,102,241,0.12)]`}
               >
@@ -647,15 +559,9 @@ export default function ToolLayout({ tool, children }: { tool: ToolDefinition; c
           </Link>
           <Link
             href={hub.href}
-            className="inline-flex rounded-xl border border-violet-200 bg-white px-5 py-2.5 text-sm font-semibold text-violet-800 shadow-sm transition hover:border-violet-300 hover:bg-violet-50"
-          >
-            {hub.title}
-          </Link>
-          <Link
-            href={`/category/${tool.category}`}
             className="inline-flex rounded-xl bg-gradient-to-r from-violet-600 to-blue-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:brightness-110"
           >
-            {categoryLabel(tool.category)} category
+            {hub.title}
           </Link>
           <Link
             href="/blog"

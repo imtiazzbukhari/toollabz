@@ -28,7 +28,7 @@ function Article() {
       <h3 className="mt-6 text-lg font-semibold text-slate-900">3) Calculate ROI and compare across channels</h3>
       <p className="mt-2 leading-7 text-slate-700">
         Use the{" "}
-        <Link href="/tools/roi-calculator-marketing" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/roi-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           ROI calculator marketing
         </Link>{" "}
         for campaign-level analysis, then cross-check broader investment decisions with the{" "}
@@ -62,7 +62,7 @@ function Article() {
       <h2 className="mt-10 text-xl font-bold text-slate-900 sm:text-2xl">A simple quality check before publishing numbers</h2>
       <p className="mt-3 leading-7 text-slate-700">
         If ROI looks excellent, also check margin durability with the{" "}
-        <Link href="/tools/profit-margin-calculator-business" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/profit-margin-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           profit margin calculator business
         </Link>
         . High ROI on thin margins can still be fragile if costs move.

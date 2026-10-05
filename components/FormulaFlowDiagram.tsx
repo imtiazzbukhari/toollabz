@@ -15,8 +15,12 @@ export default function FormulaFlowDiagram({
       aria-label={`Calculation flow for ${toolName}`}
       aria-describedby="formula-flow-caption"
     >
-      <svg viewBox="0 0 640 140" className="mx-auto h-auto w-full max-w-2xl text-slate-700" role="img">
-        <title>{`${toolName}: inputs to formula to result`}</title>
+      <svg
+        viewBox="0 0 640 140"
+        className="mx-auto h-auto w-full max-w-2xl text-slate-700"
+        role="img"
+        aria-label={`${toolName}: inputs to formula to result`}
+      >
         <rect x="8" y="32" width="170" height="76" rx="12" className="fill-violet-50 stroke-violet-300" strokeWidth="2" />
         <text x="93" y="62" textAnchor="middle" className="fill-slate-800 text-[14px] font-semibold">
           Inputs

@@ -1,11 +1,11 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { blogPosts } from "@/lib/blog/registry";
-import { categories, tools } from "@/lib/tools/data";
+import { tools } from "@/lib/tools/data";
+import { SITEMAP_EXCLUDED_PATHS } from "@/lib/seo/indexing-policy";
 import { siteUrl as configuredSiteUrl } from "@/lib/seo";
-import { SITEMAP_CM_TO_FEET_SLUGS, SITEMAP_LOAN_PRINCIPALS, SITEMAP_SALARY_GROSS } from "@/lib/sitemap-programmatic";
+import { SITEMAP_CM_TO_FEET_SLUGS, SITEMAP_LOAN_PRINCIPALS } from "@/lib/sitemap-programmatic";
 import { GLOSSARY_TERMS } from "@/lib/glossary/terms";
-import { SITE_LAST_UPDATED_DATE_TIME } from "@/lib/site-freshness";
 
 /** Never emit raw IPs or non-public hosts in sitemap `<loc>` URLs. */
 export function sitemapPublicOrigin(): string {
@@ -45,7 +45,7 @@ export type SitemapEntry = {
 
 const TOP_TOOLS = new Set([
   "loan-calculator",
-  "salary-after-tax-calculator",
+  "salary-after-tax-calculator-uk",
   "vat-calculator",
   "paycheck-calculator-usa",
   "roi-calculator",
@@ -74,20 +74,19 @@ function escapeXml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
 
-/** Stable ISO-8601 lastmod for blog URLs (falls back to published date). */
-export function blogPostSitemapLastMod(post: { publishedAt: string; dateModified: string }): string {
+/**
+ * lastmod for blog URLs: only when the article declares a real modification date. File mtimes
+ * reflect checkout/build time, not editing time, so they are not used.
+ */
+export function blogPostSitemapLastMod(post: { dateModified: string; hasExplicitDateModified?: boolean }): string | undefined {
+  if (!post.hasExplicitDateModified) return undefined;
   const dm = post.dateModified?.trim();
-  if (dm && !Number.isNaN(Date.parse(dm))) return new Date(dm).toISOString();
-  const pub = post.publishedAt?.trim();
-  if (pub) {
-    const t = Date.parse(pub);
-    if (!Number.isNaN(t)) return new Date(t).toISOString();
-  }
-  return new Date().toISOString();
+  return dm && !Number.isNaN(Date.parse(dm)) ? new Date(dm).toISOString() : undefined;
 }
 
 function add(entries: SitemapEntry[], seen: Set<string>, pathName: string, priority: number, changefreq: SitemapEntry["changefreq"] = "weekly", lastmod?: string) {
   const cleanPath = pathName.startsWith("/") ? pathName : `/${pathName}`;
+  if (SITEMAP_EXCLUDED_PATHS.has(cleanPath)) return;
   const loc = `${siteUrl}${cleanPath}`;
   if (seen.has(loc)) return;
   seen.add(loc);
@@ -109,7 +108,10 @@ function generatedPaths(): string[] {
       if (blogSlug) out.push(`/blog/${blogSlug.replace(/^\/+/, "")}`);
       if (toolSlug) out.push(`/tools/${toolSlug.replace(/^\/+/, "")}`);
     }
-    return out;
+    const blogSlugs = new Set(blogPosts.map((p) => p.slug));
+    return out.filter((p) =>
+      p.startsWith("/tools/") ? tools.some((t) => t.slug === p.slice(7)) : blogSlugs.has(p.slice(6)),
+    );
   } catch {
     return [];
   }
@@ -123,21 +125,21 @@ function generatedPaths(): string[] {
 export function buildPageSitemapEntries(): SitemapEntry[] {
   const entries: SitemapEntry[] = [];
   const seen = new Set<string>();
-  // Prefer the editorial freshness stamp over request-time "now" (more honest lastmod).
-  const contentStamp = SITE_LAST_UPDATED_DATE_TIME;
-  const stableLegal = "2026-06-01T00:00:00.000Z";
+  // No per-URL modification dates exist for hubs/legal/glossary pages. A single site-wide stamp
+  // on every URL teaches crawlers to ignore <lastmod>, so it is omitted (audit M-05).
+  const contentStamp: string | undefined = undefined;
+  const stableLegal: string | undefined = undefined;
 
   const staticPages: Array<{
     path: string;
     priority: number;
     changefreq: NonNullable<SitemapEntry["changefreq"]>;
-    lastmod: string;
+    lastmod?: string;
   }> = [
     { path: "/", priority: 1.0, changefreq: "daily", lastmod: contentStamp },
     { path: "/tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
     { path: "/blog", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
     { path: "/research", priority: 0.7, changefreq: "monthly", lastmod: contentStamp },
-    { path: "/pricing", priority: 0.4, changefreq: "yearly", lastmod: stableLegal },
     { path: "/finance-tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
     { path: "/business-tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
     { path: "/developer-tools", priority: 0.8, changefreq: "weekly", lastmod: contentStamp },
@@ -153,7 +155,6 @@ export function buildPageSitemapEntries(): SitemapEntry[] {
     { path: "/editorial-policy", priority: 0.5, changefreq: "monthly", lastmod: contentStamp },
     { path: "/glossary", priority: 0.6, changefreq: "monthly", lastmod: contentStamp },
     { path: "/team/imtiaz-ahmad", priority: 0.45, changefreq: "yearly", lastmod: contentStamp },
-    { path: "/team/editorial", priority: 0.45, changefreq: "yearly", lastmod: contentStamp },
     { path: "/privacy", priority: 0.4, changefreq: "yearly", lastmod: stableLegal },
     { path: "/terms", priority: 0.4, changefreq: "yearly", lastmod: stableLegal },
     { path: "/disclaimer", priority: 0.4, changefreq: "yearly", lastmod: stableLegal },
@@ -162,7 +163,6 @@ export function buildPageSitemapEntries(): SitemapEntry[] {
   for (const page of staticPages) {
     add(entries, seen, page.path, page.priority, page.changefreq, page.lastmod);
   }
-  categories.forEach((category) => add(entries, seen, `/category/${category.slug}`, 0.7, "weekly", contentStamp));
   GLOSSARY_TERMS.forEach((term) => add(entries, seen, `/glossary/${term.slug}`, 0.55, "monthly", contentStamp));
   // High-tier programmatic only — never include noindex stubs here.
   SITEMAP_CM_TO_FEET_SLUGS.forEach((cm) =>
@@ -170,9 +170,6 @@ export function buildPageSitemapEntries(): SitemapEntry[] {
   );
   SITEMAP_LOAN_PRINCIPALS.forEach((amount) =>
     add(entries, seen, `/loan-calculator/p/${amount}`, 0.65, "monthly", contentStamp),
-  );
-  SITEMAP_SALARY_GROSS.forEach((amount) =>
-    add(entries, seen, `/salary-after-tax/p/${amount}`, 0.65, "monthly", contentStamp),
   );
   return entries;
 }
@@ -183,7 +180,7 @@ export function buildSitemapEntries(_now?: Date): SitemapEntry[] {
   void _now;
   const entries = buildPageSitemapEntries();
   const seen = new Set(entries.map((e) => e.loc));
-  const contentStamp = SITE_LAST_UPDATED_DATE_TIME;
+  const contentStamp: string | undefined = undefined;
 
   tools.forEach((tool) => add(entries, seen, `/tools/${tool.slug}`, getToolPriority(tool.slug), "monthly", contentStamp));
   blogPosts.forEach((post) => {

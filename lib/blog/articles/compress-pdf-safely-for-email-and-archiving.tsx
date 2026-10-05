@@ -83,7 +83,7 @@ function Article() {
           full merge/split/compress workflows
         </Link>{" "}
         for repeatability. Older walkthroughs like{" "}
-        <Link href="/blog/how-to-merge-pdf-files-for-free" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/merge-pdf-files-free-five-methods-compared" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           free merge basics
         </Link>{" "}
         still anchor terminology.

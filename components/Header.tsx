@@ -8,6 +8,7 @@ import { Menu, Search, X } from "lucide-react";
 import LanguageSwitcher from "@/components/i18n/LanguageSwitcher";
 import { getUiMessages } from "@/lib/i18n/ui-messages";
 import { localizePath, parseLocalizedPathname } from "@/lib/i18n/paths";
+import { isLocalizedEnglishPath } from "@/lib/i18n/catalog";
 
 type NavLink = { kind: "link"; label: string; href: string };
 type NavFinancePair = {
@@ -18,7 +19,8 @@ type NavFinancePair = {
 
 function buildNav(locale: ReturnType<typeof parseLocalizedPathname>["locale"]): (NavLink | NavFinancePair)[] {
   const ui = getUiMessages(locale);
-  const L = (href: string) => localizePath(href, locale);
+  // Only paths with a served translation get a locale prefix; everything else links to English.
+  const L = (href: string) => (isLocalizedEnglishPath(href) ? localizePath(href, locale) : href);
   return [
     { kind: "link", label: ui.nav.tools, href: L("/tools") },
     { kind: "link", label: ui.nav.categories, href: locale === "en" ? "/#categories" : `${L("/")}#categories` },

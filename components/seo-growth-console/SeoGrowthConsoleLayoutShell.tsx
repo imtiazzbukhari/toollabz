@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bell, ChevronLeft, ChevronRight, Moon, RefreshCw, Search, Sun } from "lucide-react";
 import useSWR from "swr";
-import SignOutButton from "@/app/seo-growth-console/SignOutButton";
+import SignOutButton from "@/app/(site)/seo-growth-console/SignOutButton";
 import { seoConsoleNavItems } from "./nav";
 
 const fetcher = async (url: string) => {

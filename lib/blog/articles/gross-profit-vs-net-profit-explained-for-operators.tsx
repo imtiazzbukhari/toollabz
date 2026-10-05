@@ -44,7 +44,7 @@ function Article() {
           markup vs margin
         </Link>{" "}
         math, then stress-test whether new volume still clears fixed costs using{" "}
-        <Link href="/tools/break-even-calculator-business" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/break-even-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           break-even tooling
         </Link>
         .

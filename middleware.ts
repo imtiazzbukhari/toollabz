@@ -2,8 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getSeoConsoleSecret, isSeoConsoleAuthenticated } from "@/lib/content-engine/seo-console-auth";
 import { checkRateLimit, rateLimitKey } from "@/lib/api-rate-limit";
-import { LOCALE_HEADER } from "@/lib/i18n/locales";
-import { isPrefixedEnglishPath, parseLocalizedPathname, stripEnglishPrefix } from "@/lib/i18n/paths";
+import { isPrefixedEnglishPath, stripEnglishPrefix } from "@/lib/i18n/paths";
 
 /** Valid IPv4 in Host header (no port). */
 const IPV4_HOST =
@@ -146,7 +145,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
-  if (pathname.startsWith("/api/")) {
+  if (pathname.startsWith("/api/") && pathname !== "/api/og") {
     const xf = request.headers.get("x-forwarded-for");
     const ip = xf ? xf.split(",")[0]!.trim() : (request.headers.get("x-real-ip") ?? "local");
     const rl = checkRateLimit(rateLimitKey("api", ip), 240, 60_000);
@@ -182,10 +181,7 @@ export function middleware(request: NextRequest) {
     return withHsts(res, hostNoPort, apex);
   }
 
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set(LOCALE_HEADER, parseLocalizedPathname(pathname).locale);
-  const res = NextResponse.next({ request: { headers: requestHeaders } });
-  return withHsts(res, hostNoPort, apex);
+  return withHsts(NextResponse.next(), hostNoPort, apex);
 }
 
 /**

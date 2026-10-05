@@ -121,12 +121,11 @@ export function getCategorySources(tool: ToolDefinition): SourceRef[] {
   }
 }
 
+/**
+ * Who stands behind a tool page. Toollabz has one named maintainer, so every page credits him as
+ * builder/maintainer. No independent human reviewer is claimed (audit H-08).
+ */
 export function getReviewerForTool(tool: ToolDefinition): { name: string; role: string; profileHref: string } {
-  if (tool.category === "finance" || tool.category === "real-estate") {
-    return { name: "Toollabz Editorial", role: "Finance & tools editor", profileHref: "/team/editorial" };
-  }
-  if (tool.category === "developer" || tool.category === "pdf") {
-    return { name: "Imtiaz Ahmad", role: "Founder & lead engineer", profileHref: "/team/imtiaz-ahmad" };
-  }
-  return { name: "Toollabz Editorial", role: "Product editor", profileHref: "/team/editorial" };
+  void tool;
+  return { name: "Imtiaz Ahmad", role: "Founder and lead engineer", profileHref: "/team/imtiaz-ahmad" };
 }
