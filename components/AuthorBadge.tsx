@@ -20,7 +20,7 @@ export default function AuthorBadge({
       className={`rounded-2xl border border-violet-200/70 bg-white/80 p-4 text-sm text-slate-700 shadow-sm ${className}`}
     >
       <p className="font-semibold text-slate-900">
-        Reviewed by{" "}
+        Built and maintained by{" "}
         {profileHref ? (
           <Link href={profileHref} className="text-violet-800 underline-offset-2 hover:underline">
             {name}
@@ -30,7 +30,7 @@ export default function AuthorBadge({
         )}
       </p>
       <p className="mt-1">
-        {role} | Last reviewed {lastReviewed}
+        {role} | Content updated {lastReviewed}
       </p>
       <p className="mt-2 text-xs text-slate-500">
         See{" "}

@@ -77,7 +77,7 @@ export const TRAFFIC_PHASE_BLOG_IDEAS: readonly TrafficBlogIdea[] = [
     slugSuggestion: "roi-calculator-explained-for-marketing-campaigns",
     title: "ROI calculator explained for marketing campaigns (net vs gross)",
     targetKeyword: "ROI calculator explained marketing",
-    linkTools: ["roi-calculator-marketing", "roi-calculator"],
+    linkTools: ["roi-calculator", "roi-calculator"],
     angle: "calculator explained",
   },
   {
@@ -112,7 +112,7 @@ export const TRAFFIC_PHASE_BLOG_IDEAS: readonly TrafficBlogIdea[] = [
     slugSuggestion: "best-tools-for-small-business-pricing-decisions",
     title: "Best tools for small business pricing decisions (margin, break-even, ROI)",
     targetKeyword: "best tools for small business pricing",
-    linkTools: ["profit-margin-calculator-business", "break-even-calculator-business", "roi-calculator"],
+    linkTools: ["profit-margin-calculator", "break-even-calculator", "roi-calculator"],
     angle: "best tools for",
   },
 ];

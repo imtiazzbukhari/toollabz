@@ -1,11 +1,15 @@
 import Link from "next/link";
-import {
-  TOP_LOAN_PRINCIPAL_LINKS,
-  TOP_SALARY_GROSS_LINKS,
-  loanPrincipalPublicPath,
-  salaryGrossPublicPath,
-} from "@/lib/programmatic-seo/popular-numeric";
+import { TOP_LOAN_PRINCIPAL_LINKS, loanPrincipalPublicPath } from "@/lib/programmatic-seo/popular-numeric";
 import { toolGlassCard } from "@/lib/tool-ui";
+
+const SALARY_COUNTRY_TOOLS = [
+  { href: "/tools/salary-after-tax-calculator-uk", label: "UK (PAYE, National Insurance)" },
+  { href: "/tools/paycheck-calculator-usa", label: "USA (federal + FICA)" },
+  { href: "/tools/paycheck-calculator-california", label: "California" },
+  { href: "/tools/paycheck-calculator-texas", label: "Texas" },
+  { href: "/tools/salary-after-tax-calculator-new-york", label: "New York" },
+  { href: "/tools/salary-after-tax-calculator-florida", label: "Florida" },
+] as const;
 
 type Variant = "loan" | "salary" | "both";
 
@@ -30,8 +34,7 @@ export default function PopularCalculationsBlock({
       </h2>
       <div className={`p-6 sm:p-8 ${toolGlassCard}`}>
         <p className="text-sm leading-relaxed text-slate-600">
-          Jump to amount-specific landing pages (canonical HTTPS URLs) when you already know the principal or gross
-          salary you want to benchmark.
+          Jump straight to the calculator that matches your situation.
         </p>
         {showLoan ? (
           <div className="mt-4">
@@ -52,15 +55,15 @@ export default function PopularCalculationsBlock({
         ) : null}
         {showSalary ? (
           <div className={showLoan ? "mt-5" : "mt-0"}>
-            <h3 className="text-sm font-semibold text-slate-900">Salary (gross) benchmarks</h3>
+            <h3 className="text-sm font-semibold text-slate-900">Take-home pay by country or state</h3>
             <ul className="mt-2 flex flex-wrap gap-2 text-sm">
-              {TOP_SALARY_GROSS_LINKS.map((n) => (
-                <li key={n}>
+              {SALARY_COUNTRY_TOOLS.map((t) => (
+                <li key={t.href}>
                   <Link
-                    href={salaryGrossPublicPath(n)}
+                    href={t.href}
                     className="rounded-lg border border-violet-200/70 bg-white/80 px-3 py-1.5 font-medium text-violet-800 transition hover:border-violet-300 hover:bg-violet-50"
                   >
-                    ${n.toLocaleString("en-US")} gross
+                    {t.label}
                   </Link>
                 </li>
               ))}

@@ -4,6 +4,8 @@ import { TOOL_SEO_OVERRIDES } from "./tools/tool-seo-overrides";
 import { SITE_LAST_UPDATED_DATE_TIME } from "./site-freshness";
 import { getSerpPrimaryLine } from "./tools/tool-serp-primary-cache";
 import { buildHreflangPaths } from "@/lib/i18n/hreflang";
+import { getMarketingHubForTool } from "./tools/directory-groups";
+import { isToolIndexable } from "./seo/indexing-policy";
 
 function normalizeOrigin(raw: string | undefined): string | undefined {
   const s = raw?.trim().replace(/\/$/, "");
@@ -103,7 +105,7 @@ export function buildToolMetaDescription(tool: ToolDefinition): string {
     .replace(/\bfree\b/gi, "")
     .trim()
     .replace(/\s+/g, " ");
-  const raw = `${action} ${keyword} instantly. ${benefit}. Reviewed by Toollabz editors. Free, no account needed.`;
+  const raw = `${action} ${keyword} instantly. ${benefit}. Free, no account needed.`;
   return sanitizeMetaDescription(raw, 155);
 }
 
@@ -267,8 +269,10 @@ export function toolMetadata(tool: ToolDefinition) {
   // Always clamp — hardcoded overrides historically exceeded SERP snippet limits.
   const description = sanitizeMetaDescription(rawDescription, META_DESC_MAX);
   const ogImage = `${siteUrl}/api/og?title=${encodeURIComponent(tool.name)}&category=${encodeURIComponent(tool.category)}`;
+  const indexable = isToolIndexable(tool.slug);
   return {
     title: titleBase,
+    ...(indexable ? {} : { robots: { index: false, follow: true } }),
     description,
     keywords: [
       ...tool.keywords,
@@ -279,9 +283,13 @@ export function toolMetadata(tool: ToolDefinition) {
     alternates: {
       // Self-canonical. Real language alternates only (see lib/i18n) — never fake en-GB/en-US/en-AU on one URL.
       canonical: absolutePath,
-      languages: Object.fromEntries(
-        Object.entries(buildHreflangPaths(path)).map(([code, locPath]) => [code, absoluteUrl(locPath)]),
-      ),
+      ...(indexable
+        ? {
+            languages: Object.fromEntries(
+              Object.entries(buildHreflangPaths(path)).map(([code, locPath]) => [code, absoluteUrl(locPath)]),
+            ),
+          }
+        : {}),
     },
     openGraph: {
       title: `${titleBase}${TOOL_PAGE_TITLE_SUFFIX}`,
@@ -324,12 +332,6 @@ export function toolSchema(tool: ToolDefinition, pagePath?: string) {
       price: "0",
       priceCurrency: "USD",
     },
-    featureList: [
-      "Free to use in the browser",
-      "No account required for core calculation",
-      tool.howToUse?.length ? "On-page how-to steps" : "Interactive browser tool",
-      "Works on mobile and desktop browsers",
-    ].filter(Boolean),
     publisher: {
       "@type": "Organization",
       name: "Toollabz",
@@ -379,7 +381,7 @@ export function howToSchema(tool: ToolDefinition, pagePath?: string) {
 
 export function breadcrumbSchema(tool: ToolDefinition, pagePath?: string) {
   const path = pagePath ?? `/tools/${tool.slug}`;
-  const categoryPath = `/category/${tool.category}`;
+  const hub = getMarketingHubForTool(tool);
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -393,11 +395,8 @@ export function breadcrumbSchema(tool: ToolDefinition, pagePath?: string) {
       {
         "@type": "ListItem",
         position: 2,
-        name: tool.category
-          .split("-")
-          .map((word) => `${word[0]?.toUpperCase() ?? ""}${word.slice(1)}`)
-          .join(" "),
-        item: absoluteUrl(categoryPath),
+        name: hub.title,
+        item: absoluteUrl(hub.href),
       },
       {
         "@type": "ListItem",
@@ -482,7 +481,7 @@ export function generateArticleSchema(post: {
     datePublished: post.publishedDate,
     dateModified: post.modifiedDate,
     author: {
-      "@type": "Person",
+      "@type": /^toollabz(\s|$)/i.test(post.authorName) ? "Organization" : "Person",
       name: post.authorName,
     },
     publisher: {

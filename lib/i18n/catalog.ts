@@ -1,15 +1,20 @@
-import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locales";
+import { ACTIVE_LOCALES, ACTIVE_NON_DEFAULT_LOCALES, DEFAULT_LOCALE, type Locale } from "./locales";
 import { localizePath, normalizePath } from "./paths";
 
 /**
  * Quality-gated localization catalog.
- * Only these English paths have real translated pages. Do not emit hreflang,
+ * Only these English paths have served, indexable translated pages. Do not emit hreflang,
  * locale sitemap entries, or locale URLs for anything else.
+ *
+ * Audit C-02: legal/about/blog/glossary/research/methodology/hub locale pages were 27-177 word
+ * stubs ("this page translates the English version"), so they are retired and 301 to English.
+ * The translated copy is kept in page-messages.ts so a page can be re-enabled by moving its path
+ * from RETIRED_LOCALIZED_STATIC_PATHS back into LOCALIZED_STATIC_PATHS.
  */
+export const LOCALIZED_STATIC_PATHS = ["/", "/tools"] as const;
 
-export const LOCALIZED_STATIC_PATHS = [
-  "/",
-  "/tools",
+/** English paths whose locale variants 301 to the English page (see lib/seo/redirect-rules.ts). */
+export const RETIRED_LOCALIZED_STATIC_PATHS = [
   "/blog",
   "/about",
   "/contact",
@@ -54,7 +59,21 @@ export const LOCALIZED_TOOL_SLUGS = [
 
 export type LocalizedToolSlug = (typeof LOCALIZED_TOOL_SLUGS)[number];
 
-export const LOCALIZED_TOOL_SLUG_SET = new Set<string>(LOCALIZED_TOOL_SLUGS);
+/**
+ * Translated tools that are NOT served under locale prefixes because the tool is UK-specific
+ * (VAT) or is a flat-rate estimator that the English site de-prioritises in favour of the UK PAYE
+ * engine (audit H-10). Their locale URLs 301 to the English tool.
+ */
+export const LOCALE_EXCLUDED_TOOL_SLUGS = ["vat-calculator", "salary-after-tax-calculator"] as const;
+
+const LOCALE_EXCLUDED_SET = new Set<string>(LOCALE_EXCLUDED_TOOL_SLUGS);
+
+/** Tools that have served, indexable locale pages. */
+export const LOCALE_SERVED_TOOL_SLUGS: readonly LocalizedToolSlug[] = LOCALIZED_TOOL_SLUGS.filter(
+  (slug) => !LOCALE_EXCLUDED_SET.has(slug),
+);
+
+export const LOCALIZED_TOOL_SLUG_SET = new Set<string>(LOCALE_SERVED_TOOL_SLUGS);
 
 /**
  * Topical related tools that exist in the localization catalog.
@@ -126,7 +145,7 @@ export function isLocalizedEnglishPath(englishPath: string): boolean {
 
 export function localesForEnglishPath(englishPath: string): Locale[] {
   if (!isLocalizedEnglishPath(englishPath)) return [DEFAULT_LOCALE];
-  return [...LOCALES];
+  return [...ACTIVE_LOCALES];
 }
 
 export function localizedUrlPath(englishPath: string, locale: Locale): string | null {
@@ -136,12 +155,11 @@ export function localizedUrlPath(englishPath: string, locale: Locale): string | 
 
 export function allLocalizedSitemapPaths(): Array<{ englishPath: string; locale: Locale; path: string }> {
   const out: Array<{ englishPath: string; locale: Locale; path: string }> = [];
-  for (const locale of LOCALES) {
-    if (locale === DEFAULT_LOCALE) continue;
+  for (const locale of ACTIVE_NON_DEFAULT_LOCALES) {
     for (const englishPath of LOCALIZED_STATIC_PATHS) {
       out.push({ englishPath, locale, path: localizePath(englishPath, locale) });
     }
-    for (const slug of LOCALIZED_TOOL_SLUGS) {
+    for (const slug of LOCALE_SERVED_TOOL_SLUGS) {
       const englishPath = `/tools/${slug}`;
       out.push({ englishPath, locale, path: localizePath(englishPath, locale) });
     }

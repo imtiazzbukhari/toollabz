@@ -41,7 +41,7 @@ function Article() {
       </h2>
       <p className="mt-3 leading-7 text-slate-700">
         Use{" "}
-        <Link href="/tools/profit-margin-calculator-business" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/profit-margin-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           profit margin calculator (business)
         </Link>{" "}
         when you need revenue-cost framing, and{" "}
@@ -80,7 +80,7 @@ function Article() {
       </ul>
 
       <BlogToolCallout
-        href="/tools/break-even-calculator-business"
+        href="/tools/break-even-calculator"
         title="Break-even calculator (business)"
         description="Model fixed costs, price, and variable cost per unit when SKUs and contribution framing matter in meetings."
       />

@@ -34,6 +34,33 @@ export const NON_DEFAULT_LOCALES = LOCALES.filter((l): l is Exclude<Locale, "en"
 
 export const LOCALE_SET = new Set<string>(LOCALES);
 
+/**
+ * Locales that are actually served and indexed.
+ *
+ * `LOCALES` is the full translation inventory kept in the repo (message catalogs are preserved so
+ * a locale can be re-enabled by adding it here). Locales not listed here are 301-redirected to the
+ * English equivalent (see lib/seo/redirect-rules.ts), are absent from hreflang and have no sitemap.
+ * Audit C-02: 576 thin locale URLs were 52% of the indexable inventory.
+ */
+export const ACTIVE_NON_DEFAULT_LOCALES = ["fr", "es", "pt"] as const;
+
+export type ActiveNonDefaultLocale = (typeof ACTIVE_NON_DEFAULT_LOCALES)[number];
+
+export const ACTIVE_LOCALES = [DEFAULT_LOCALE, ...ACTIVE_NON_DEFAULT_LOCALES] as const;
+
+/** Translated but currently retired locales (301 to English). */
+export const RETIRED_LOCALES = NON_DEFAULT_LOCALES.filter(
+  (l) => !(ACTIVE_NON_DEFAULT_LOCALES as readonly string[]).includes(l),
+);
+
+export function isActiveLocale(value: string | undefined | null): value is Locale {
+  return Boolean(value && (ACTIVE_LOCALES as readonly string[]).includes(value));
+}
+
+export function isActiveNonDefaultLocale(value: string | undefined | null): value is ActiveNonDefaultLocale {
+  return Boolean(value && (ACTIVE_NON_DEFAULT_LOCALES as readonly string[]).includes(value));
+}
+
 export function isLocale(value: string | undefined | null): value is Locale {
   return Boolean(value && LOCALE_SET.has(value));
 }
@@ -66,5 +93,3 @@ export const LOCALE_META: Record<
   et: { htmlLang: "et", ogLocale: "et_EE", englishName: "Estonian", nativeName: "Eesti", dir: "ltr" },
   sl: { htmlLang: "sl", ogLocale: "sl_SI", englishName: "Slovenian", nativeName: "Slovenščina", dir: "ltr" },
 };
-
-export const LOCALE_HEADER = "x-toollabz-locale";

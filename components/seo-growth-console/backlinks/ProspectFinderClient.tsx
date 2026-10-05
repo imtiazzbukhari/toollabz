@@ -137,6 +137,8 @@ export default function ProspectFinderClient() {
           {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
           Run discovery
         </button>
+        {/* CSV download served by a route handler, not a page. */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a
           href="/api/backlinks/export"
           className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-800 dark:border-slate-600 dark:text-slate-100"

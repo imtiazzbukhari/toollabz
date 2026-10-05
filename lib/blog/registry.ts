@@ -3,6 +3,7 @@ import path from "node:path";
 import type { BlogAuthor, BlogPostDefinition } from "./types";
 import { BLOG_ARTICLE_MODULE_ENTRIES } from "./articles.manifest";
 import { DEFAULT_BLOG_AUTHOR } from "./default-author";
+import { BLOG_REDIRECTS, CONSOLIDATED_TOOLS } from "../seo/indexing-policy";
 
 export type BlogPostResolved = Omit<
   BlogPostDefinition,
@@ -13,6 +14,7 @@ export type BlogPostResolved = Omit<
   excerpt: string;
   publishedAt: string;
   dateModified: string;
+  hasExplicitDateModified: boolean;
   relatedToolSlugs: string[];
   sourceFile: string;
   author: BlogAuthor;
@@ -65,7 +67,8 @@ function normalizePost(raw: BlogPostDefinition, sourceFile: string): BlogPostRes
   const description = (raw.description ?? raw.excerpt ?? `${title} on Toollabz.`).trim();
   const excerpt = (raw.excerpt ?? description).trim();
   const baseSeo = ensureTitleYear((raw.seoTitle ?? title).trim());
-  const seoTitle = baseSeo.includes("Toollabz") ? baseSeo : `${baseSeo} | Toollabz - Free Online Tools`;
+  // The root title template appends " | Toollabz"; adding the brand here produced doubled titles.
+  const seoTitle = baseSeo.replace(/\s*[|\-–]\s*Toollabz.*$/i, "").trim();
   const publishedAt = (raw.publishedAt ?? filePublishedAt).trim();
   const rawDm = raw.dateModified?.trim();
   const dateModified =
@@ -82,7 +85,10 @@ function normalizePost(raw: BlogPostDefinition, sourceFile: string): BlogPostRes
     excerpt,
     publishedAt,
     dateModified,
-    relatedToolSlugs: [...(raw.relatedToolSlugs ?? [])],
+    hasExplicitDateModified: Boolean(rawDm && !Number.isNaN(Date.parse(rawDm))),
+    relatedToolSlugs: [
+      ...new Set((raw.relatedToolSlugs ?? []).map((slug) => CONSOLIDATED_TOOLS[slug] ?? slug)),
+    ],
     relatedPostsSlugs: [...(raw.relatedPostsSlugs ?? [])],
     keyTakeaways: [...(raw.keyTakeaways ?? [])],
     editorialNote: [...(raw.editorialNote ?? [])],
@@ -97,7 +103,9 @@ function normalizePost(raw: BlogPostDefinition, sourceFile: string): BlogPostRes
 }
 
 const collected = BLOG_ARTICLE_MODULE_ENTRIES.flatMap(({ sourceFile, module }) =>
-  extractPostsFromModule(module as Record<string, unknown>).map((p) => normalizePost(p, sourceFile)),
+  extractPostsFromModule(module as Record<string, unknown>)
+    .filter((p) => !(p.slug in BLOG_REDIRECTS))
+    .map((p) => normalizePost(p, sourceFile)),
 );
 
 const deduped = new Map<string, BlogPostResolved>();

@@ -50,7 +50,7 @@ function Article() {
 
       <p className="mt-4 leading-7 text-slate-700">
         Always model <em>your</em> payslip components. For US readers comparing states, pair this article with{" "}
-        <Link href="/blog/how-to-calculate-take-home-salary-country-guide" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/salary-after-tax-explained-withholdings-deductions-net-pay" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           our take-home salary country guide
         </Link>{" "}
         and state-specific calculators where available in the directory.

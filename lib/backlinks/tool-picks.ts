@@ -5,7 +5,7 @@ const SLUG_HINTS: Record<string, string[]> = {
   pdf: ["pdf-merge", "pdf-split", "pdf-compress"],
   ai: ["ai-content-humanizer", "ai-email-subject-generator"],
   business: ["roi-calculator", "break-even-calculator"],
-  marketing: ["roi-calculator-marketing", "cpm-calculator"],
+  marketing: ["roi-calculator", "cpm-calculator"],
   "real-estate": ["mortgage-calculator", "rent-vs-buy-calculator"],
   developer: ["json-formatter", "base64-encoder"],
   utility: ["unit-converter", "percentage-calculator"],

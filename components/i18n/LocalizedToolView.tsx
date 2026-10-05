@@ -12,7 +12,6 @@ import { toolMap } from "@/lib/tools/data";
 import {
   breadcrumbJsonLd,
   faqPageSchemaFromPairs,
-  howToSchema,
   toolSchema,
   webPageSchema,
 } from "@/lib/seo";
@@ -142,7 +141,6 @@ export default function LocalizedToolView({ locale, slug }: { locale: Locale; sl
       </section>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(toolSchema(localized, path)) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema(localized, path)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchemaFromPairs(faqs)) }} />
       <script
         type="application/ld+json"

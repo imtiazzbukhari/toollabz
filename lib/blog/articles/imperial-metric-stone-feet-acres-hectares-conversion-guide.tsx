@@ -122,7 +122,7 @@ function Article() {
           gross vs net profit for operators
         </Link>{" "}
         and{" "}
-        <Link href="/blog/how-to-calculate-roi" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/roi-calculator-measure-return-on-investment" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           simple ROI framing
         </Link>{" "}
         when the same spreadsheet mixes hectares with revenue assumptions.

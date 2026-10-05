@@ -33,7 +33,8 @@ export type AdsenseReadinessReport = {
 };
 
 function policyPageExists(slug: string): boolean {
-  return existsSync(path.join(process.cwd(), "app", slug, "page.tsx"));
+  const root = path.join(process.cwd(), "app");
+  return existsSync(path.join(root, slug, "page.tsx")) || existsSync(path.join(root, "(site)", slug, "page.tsx"));
 }
 
 function avgDescriptionWords(): number {

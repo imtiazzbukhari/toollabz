@@ -43,7 +43,7 @@ function Article() {
       </p>
       <p className="mt-3 leading-7 text-slate-700">
         For funnel-shaped spend, the{" "}
-        <Link href="/tools/roi-calculator-marketing" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/roi-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           marketing ROI calculator
         </Link>{" "}
         and the business ROI write-up on this blog use vocabulary closer to ad dashboards - same muscle, different costume.

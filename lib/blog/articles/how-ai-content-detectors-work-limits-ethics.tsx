@@ -70,7 +70,7 @@ function Article() {
       <p className="mt-3 leading-7 text-slate-700">
         If a draft is machine-assisted but factually yours, rewrite for specificity: named metrics, dated observations, and
         first-party anecdotes beat synonym-spinning. Read{" "}
-        <Link href="/blog/ai-text-humanization-editorial-workflow-beyond-spinning" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/ai-content-humanizer-natural-text-guide" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           editorial humanization workflow
         </Link>{" "}
         and the longer{" "}

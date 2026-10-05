@@ -82,11 +82,11 @@ function Article() {
       <p className="mt-3 leading-7 text-slate-700">
         High ROAS with skinny margins is the classic trap: you are optimizing a numerator (revenue) that your CFO cannot deposit in
         the bank. Pair ad dashboards with a{" "}
-        <Link href="/tools/profit-margin-calculator-business" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/profit-margin-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           margin sanity check
         </Link>{" "}
         and, when acquisition is the game, a{" "}
-        <Link href="/tools/cac-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/cac-calculator-saas" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           CAC view
         </Link>{" "}
         so you see spend per customer - not only per impression block.
@@ -104,7 +104,7 @@ function Article() {
         A 40% ROI in 90 days annualizes very differently from 40% over five years. Marketing teams sometimes compare blended ROAS
         windows (7-day click) to annual finance ROI targets - align horizons before you pick a hero chart. If you need annualization
         assumptions spelled out with tool support, revisit{" "}
-        <Link href="/blog/how-to-calculate-roi" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/roi-calculator-measure-return-on-investment" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           the simple ROI article
         </Link>{" "}
         and the{" "}
@@ -119,15 +119,15 @@ function Article() {
       </h2>
       <p className="mt-3 leading-7 text-slate-700">
         If you are calibrating paid social or search, start from the{" "}
-        <Link href="/blog/roi-calculator-explained-for-marketing-campaigns" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/roi-calculator-measure-return-on-investment" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           marketing ROI calculator narrative
         </Link>{" "}
         and cross-check unit economics with the{" "}
-        <Link href="/blog/how-to-calculate-roi-business" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/roi-calculator-measure-return-on-investment" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           business ROI framing
         </Link>
         . For spreadsheet purists, the{" "}
-        <Link href="/blog/how-to-calculate-roi" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/roi-calculator-measure-return-on-investment" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           simple ROI worked example
         </Link>{" "}
         keeps the denominator honest.
@@ -145,7 +145,7 @@ function Article() {
       </h2>
       <p className="mt-3 leading-7 text-slate-700">
         Use the{" "}
-        <Link href="/tools/roi-calculator-marketing" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/roi-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           marketing ROI calculator
         </Link>{" "}
         when you have spend and revenue lines from a campaign, and the general{" "}
@@ -153,7 +153,7 @@ function Article() {
           ROI calculator
         </Link>{" "}
         when you have net gain and fully-loaded cost. If you are stress-testing whether a channel scales, combine with{" "}
-        <Link href="/tools/break-even-calculator-business" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/break-even-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           break-even units
         </Link>{" "}
         so you know how thin your cushion is if CPMs drift up.
@@ -246,7 +246,7 @@ export const roiVsRoasPost: BlogPostDefinition = {
   ],
   sources: [
     { label: "IAB / MRC attribution terminology (industry glossary context)", href: "https://www.iab.com/" },
-    { label: "Toollabz: marketing ROI calculator explained (companion article)", href: "/blog/roi-calculator-explained-for-marketing-campaigns" },
+    { label: "Toollabz: marketing ROI calculator explained (companion article)", href: "/blog/roi-calculator-measure-return-on-investment" },
   ],
   faqSchema: [
     {

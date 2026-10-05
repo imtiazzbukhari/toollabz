@@ -4,8 +4,7 @@ import { phase1Profiles as phase1ProfilesCore } from "./phase1-seo";
 import { expansionPhase1Profiles } from "./phase1-seo-expansion-batch1";
 import { expansionPhase2Profiles } from "./phase2-seo-expansion-batch2";
 import { TOOL_SEO_CONTENT_LEAD } from "./tool-seo-content-lead";
-import { pickBySlug, slugContentVariant } from "./content-variation";
-import { augmentToolFaqsForIntent } from "./faq-expansion";
+import { slugContentVariant } from "./content-variation";
 import { PHASE2_PRIORITY_TOOL_SLUGS } from "./priority-tool-content";
 import { getToolInsight } from "./tool-insights";
 
@@ -14,99 +13,6 @@ const phase1Profiles: Record<string, Phase1Profile> = {
   ...expansionPhase1Profiles,
   ...expansionPhase2Profiles,
 };
-
-/** Category-specific FAQs merged early so finance/PDF/AI pages hit common intent queries. */
-function categoryTemplateFaqs(tool: ToolDefinition): ToolFAQ[] {
-  const cat = tool.category;
-  if (cat === "finance") {
-    return [
-      {
-        question: "How accurate is this calculator?",
-        answer:
-          "Outputs follow the documented formula with deterministic rounding. Accuracy depends on the rates and assumptions you enter-always confirm tax, FX, and lending rules with a qualified professional for regulated decisions.",
-      },
-      {
-        question: "Does this include tax?",
-        answer:
-          "Only when the fields explicitly model tax, withholding, or VAT. Otherwise amounts are neutral numerics-label currency and tax treatment yourself.",
-      },
-      {
-        question: "What currency does this use?",
-        answer:
-          "Numbers are unitless unless the tool labels a currency. Keep one currency per run and convert externally when needed.",
-      },
-      {
-        question: "Can I use this for business planning?",
-        answer:
-          "Yes for orientation and what-if sketches. For filings, audits, or investor materials, reconcile with source systems and licensed advisors.",
-      },
-      {
-        question: "How often is the data updated?",
-        answer:
-          "Core formulas update when Toollabz ships a release; live FX (where offered) refreshes on a scheduled cadence noted near the control. Site-wide freshness is stamped on each page.",
-      },
-    ];
-  }
-  if (cat === "pdf") {
-    return [
-      {
-        question: "Is my file secure when I upload it?",
-        answer:
-          "PDF utilities run client-side in your browser for merge/split/compress flows-files are not uploaded to Toollabz servers for those paths. Avoid sensitive documents on shared devices.",
-      },
-      {
-        question: "What is the maximum file size?",
-        answer:
-          "Practical limits depend on your device RAM and browser. Very large PDFs may be slow; compress first when possible.",
-      },
-      {
-        question: "Will merging reduce quality?",
-        answer:
-          "Merge copies pages as-is; it does not re-rasterize unless you run a separate compression step.",
-      },
-      {
-        question: "Can I merge password-protected PDFs?",
-        answer:
-          "You generally need to unlock locally first-passworded inputs often fail in browser libraries until decrypted.",
-      },
-      {
-        question: "Do you store my files after processing?",
-        answer:
-          "Client-side PDF flows do not persist your files on our servers. Clear downloads from your device when finished.",
-      },
-    ];
-  }
-  if (cat === "generators" || tool.slug.startsWith("ai-")) {
-    return [
-      {
-        question: "Is the output copyright free?",
-        answer:
-          "You own how you use your inputs, but AI text can resemble public sources. Review, edit, and clear rights for commercial use as your counsel advises.",
-      },
-      {
-        question: "How do I get better results?",
-        answer:
-          "Add constraints: audience, tone, length, format, and facts to include. Iterate with smaller prompts before asking for long drafts.",
-      },
-      {
-        question: "Can I use this for commercial projects?",
-        answer:
-          "Toollabz does not provide legal clearance. Treat drafts as starting points and run compliance review before publishing or selling.",
-      },
-      {
-        question: "What AI model powers this tool?",
-        answer:
-          "Generators use templated and heuristic transforms in-browser unless otherwise noted; they are not a live subscription to a third-party chat API unless explicitly stated on the tool.",
-      },
-      {
-        question: "How many times can I use this for free?",
-        answer:
-          "There is no metered credit on Toollabz for these flows-stay reasonable so shared infrastructure stays fast for everyone.",
-      },
-    ];
-  }
-  return [];
-}
 
 function dedupeToolFaqs(items: ToolFAQ[]): ToolFAQ[] {
   const seen = new Set<string>();
@@ -132,13 +38,6 @@ function expandPriorityFaqAnswer(tool: ToolDefinition, faq: ToolFAQ, formula: st
     question: faq.question,
     answer: `${faq.answer}${suffix}`,
   };
-}
-
-function categoryLabelSeo(slug: string): string {
-  return slug
-    .split("-")
-    .map((w) => `${w.charAt(0).toUpperCase()}${w.slice(1)}`)
-    .join(" ");
 }
 
 function mergeSeoLead(tool: ToolDefinition, paragraphs: string[]): string[] {
@@ -445,28 +344,33 @@ export function getToolFaqs(tool: ToolDefinition): ToolFAQ[] {
       ]
     : [];
 
-  const trustFaqs: ToolFAQ[] = [
+  // Keep only tool-specific FAQs. The previous generic packs ("what if it disagrees with another
+  // calculator", "long-tail intent", category templates) repeated the same questions on every page
+  // and were removed from both the page and FAQPage JSON-LD (audit H-10 / M-04).
+  const needsDisclaimer =
+    tool.category === "finance" || tool.category === "real-estate" || /bmi|health|medical/i.test(tool.slug);
+  const disclaimerFaq: ToolFAQ[] = needsDisclaimer
+    ? [
+        {
+          question: `Is ${tool.name} a substitute for professional advice on ${keyword}?`,
+          answer:
+            "No. Treat this as a planning estimate. Confirm material decisions with HMRC, the IRS, a licensed adviser, or a clinician as appropriate.",
+        },
+      ]
+    : [];
+
+  const specific = dedupeToolFaqs([...base, ...profileFaq, ...insightFaqs]);
+  const withFallback = specific.length >= 3 ? specific : [...specific, ...fallbackFaqs(tool, formula)];
+  return dedupeToolFaqs([...withFallback.slice(0, 8 - disclaimerFaq.length), ...disclaimerFaq]).map((faq) => expandPriorityFaqAnswer(tool, faq, formula));
+}
+
+function fallbackFaqs(tool: ToolDefinition, formula: string): ToolFAQ[] {
+  return [
     {
-      question: `Is ${tool.name} a substitute for professional advice on ${keyword}?`,
-      answer:
-        tool.category === "finance" || tool.category === "real-estate" || /bmi|health|medical/i.test(tool.slug)
-          ? "No. Treat this as a planning estimate. Confirm material decisions with HMRC, IRS, a licensed advisor, or a clinician as appropriate."
-          : "No. Use it as a transparent planning check, then verify critical outcomes in your own systems or with a qualified professional when stakes are high.",
-    },
-    {
-      question: `What if ${tool.name} disagrees with another calculator for ${keyword}?`,
-      answer: `Compare units, rounding, compounding, and tax basis side by side. This page documents: ${formula}`,
+      question: `How does ${tool.name} calculate its result?`,
+      answer: `It applies this relationship to the values you enter: ${formula}`,
     },
   ];
-
-  // Prefer tool-authored + phase1 + insight FAQs; keep light category context only for finance/YMYL.
-  const categoryFaqs =
-    tool.category === "finance" || tool.category === "real-estate" || tool.category === "business"
-      ? categoryTemplateFaqs(tool).slice(0, 2)
-      : [];
-
-  const merged = dedupeToolFaqs([...base, ...profileFaq, ...insightFaqs, ...trustFaqs, ...categoryFaqs]);
-  return augmentToolFaqsForIntent(tool, merged, formula).map((faq) => expandPriorityFaqAnswer(tool, faq, formula));
 }
 
 export function getToolSeoContent(tool: ToolDefinition): string[] {

@@ -45,7 +45,7 @@ function Article() {
           ROI calculator
         </Link>{" "}
         is enough. Living in marketing-English? The{" "}
-        <Link href="/tools/roi-calculator-marketing" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/roi-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           marketing ROI calculator
         </Link>{" "}
         matches how media teams talk about campaign gain vs spend.

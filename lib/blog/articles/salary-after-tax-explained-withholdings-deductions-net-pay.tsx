@@ -102,21 +102,13 @@ function Article() {
         <Link href="/blog/how-to-calculate-salary-after-tax-usa" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           salary after tax USA
         </Link>
-        ,{" "}
-        <Link href="/blog/how-to-estimate-take-home-pay-from-gross-salary" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-          estimating take-home from gross
-        </Link>
-        , and{" "}
-        <Link href="/blog/best-tools-for-paycheck-planning-usa" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-          paycheck planning tools
-        </Link>
-        . International readers should start with{" "}
-        <Link href="/blog/how-to-calculate-take-home-salary-country-guide" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-          the country guide
+        . For a country-specific estimate, open the{" "}
+        <Link href="/tools/salary-after-tax-calculator-uk" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+          UK take-home pay calculator
         </Link>{" "}
-        and{" "}
-        <Link href="/blog/salary-after-tax-take-home-country-comparison-guide" className="font-medium text-violet-700 underline-offset-2 hover:underline">
-          country comparison framing
+        or the{" "}
+        <Link href="/tools/paycheck-calculator-usa" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+          US paycheck calculator
         </Link>
         .
       </p>

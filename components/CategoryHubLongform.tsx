@@ -117,7 +117,7 @@ const HUB_COPY: Record<DirectoryGroupId, HubCopy> = {
         links: [
           { href: "/tools/rental-yield-calculator-uk", label: "UK rental yield (and optional cash flow)" },
           { href: "/tools/stamp-duty-calculator-uk", label: "Stamp duty (UK)" },
-          { href: "/tools/rental-yield-calculator", label: "Generic rental yield" },
+          { href: "/tools/rental-yield-calculator-uk", label: "Generic rental yield" },
           { href: "/tools/property-roi-calculator", label: "Property ROI" },
           { href: "/tools/loan-calculator", label: "Loan payment" },
           { href: "/blog/rental-yield-vs-monthly-cash-flow-investment-property", label: "Yield vs monthly cash flow" },
@@ -169,7 +169,7 @@ const HUB_COPY: Record<DirectoryGroupId, HubCopy> = {
           { href: "/tools/stripe-fee-calculator", label: "Stripe fee calculator" },
           { href: "/tools/churn-calculator", label: "Churn calculator" },
           { href: "/tools/cac-calculator-saas", label: "CAC calculator (SaaS)" },
-          { href: "/tools/break-even-calculator-business", label: "Break-even calculator" },
+          { href: "/tools/break-even-calculator", label: "Break-even calculator" },
           { href: "/tools/employee-cost-calculator", label: "Employee loaded cost" },
         ],
       },

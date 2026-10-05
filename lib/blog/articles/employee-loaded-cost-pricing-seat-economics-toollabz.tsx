@@ -46,7 +46,7 @@ function Article() {
           contribution margin after break-even
         </Link>{" "}
         when you move from “cover fixed” to “fund growth.” Use{" "}
-        <Link href="/tools/break-even-calculator-business" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/break-even-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           break-even calculator (business)
         </Link>{" "}
         when SKU-style unit economics apply.

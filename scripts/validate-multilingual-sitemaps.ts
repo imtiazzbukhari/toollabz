@@ -1,5 +1,5 @@
-import { allLocalizedSitemapPaths, LOCALIZED_STATIC_PATHS, LOCALIZED_TOOL_SLUGS } from "../lib/i18n/catalog";
-import { NON_DEFAULT_LOCALES } from "../lib/i18n/locales";
+import { allLocalizedSitemapPaths, LOCALIZED_STATIC_PATHS, LOCALE_SERVED_TOOL_SLUGS } from "../lib/i18n/catalog";
+import { ACTIVE_NON_DEFAULT_LOCALES, NON_DEFAULT_LOCALES } from "../lib/i18n/locales";
 import { localizePath } from "../lib/i18n/paths";
 import { buildPageSitemapEntries, sitemapPublicOrigin } from "../lib/content-engine/sitemap-data";
 
@@ -24,8 +24,8 @@ export function validateMultilingualSitemaps(): CheckResult[] {
     detail: dupes.length ? dupes.slice(0, 5).join(",") : `${localized.length} unique locale paths`,
   });
 
-  for (const locale of NON_DEFAULT_LOCALES) {
-    const expected = LOCALIZED_STATIC_PATHS.length + LOCALIZED_TOOL_SLUGS.length;
+  for (const locale of ACTIVE_NON_DEFAULT_LOCALES) {
+    const expected = LOCALIZED_STATIC_PATHS.length + LOCALE_SERVED_TOOL_SLUGS.length;
     const got = localized.filter((r) => r.locale === locale).length;
     results.push({
       name: `locale-sitemap-count-${locale}`,
@@ -38,6 +38,12 @@ export function validateMultilingualSitemaps(): CheckResult[] {
       detail: localizePath("/", locale),
     });
   }
+
+  results.push({
+    name: "retired-locales-absent-from-locale-sitemaps",
+    pass: localized.every((r) => (ACTIVE_NON_DEFAULT_LOCALES as readonly string[]).includes(r.locale)),
+    detail: `${ACTIVE_NON_DEFAULT_LOCALES.join(",")} active`,
+  });
 
   results.push({
     name: "sitemap-origin-no-port-3000",

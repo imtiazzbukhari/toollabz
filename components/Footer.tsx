@@ -83,8 +83,9 @@ export default function Footer({ locale = DEFAULT_LOCALE }: { locale?: Locale })
     .map((slug) => {
       const tool = tools.find((t) => t.slug === slug);
       if (!tool) return null;
-      const name = hasToolCopy(slug) ? getToolCopy(locale, slug).name : tool.name;
-      const href = hasToolCopy(slug) ? localizePath(`/tools/${slug}`, locale) : `/tools/${slug}`;
+      const served = hasToolCopy(slug) && isLocalizedEnglishPath(`/tools/${slug}`);
+      const name = served ? getToolCopy(locale, slug).name : tool.name;
+      const href = served ? localizePath(`/tools/${slug}`, locale) : `/tools/${slug}`;
       return { label: name, href };
     })
     .filter(Boolean) as Array<{ label: string; href: string }>;

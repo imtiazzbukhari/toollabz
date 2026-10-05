@@ -198,7 +198,7 @@ const whoUses: Record<string, string> = {
 
 const relatedArticles: Record<string, RelatedArticle[]> = {
   "vat-calculator": [
-    { title: "UK VAT Guide 2026: Rates, Registration & Returns", url: "/blog/vat-calculator-guide-small-businesses" },
+    { title: "UK VAT Guide 2026: Rates, Registration & Returns", url: "/blog/vat-calculator-uk-eu-uae-add-remove-guide" },
   ],
   "profit-margin-calculator": [
     { title: "Markup vs margin formulas", url: "/blog/markup-vs-margin-formulas-pricing-mistakes" },
@@ -210,15 +210,15 @@ const relatedArticles: Record<string, RelatedArticle[]> = {
     { title: "Rental yield vs monthly cash flow", url: "/blog/rental-yield-vs-monthly-cash-flow-investment-property" },
   ],
   "compound-interest-calculator": [
-    { title: "Compound Interest Explained (2026)", url: "/blog/compound-interest-calculator-guide" },
+    { title: "Compound Interest Explained (2026)", url: "/tools/compound-interest-calculator" },
   ],
   "loan-calculator": [
-    { title: "Loan Calculator Guide 2026", url: "/blog/loan-calculator-guide" },
+    { title: "Loan Calculator Guide 2026", url: "/tools/loan-calculator" },
   ],
   "salary-after-tax-calculator": [
-    { title: "How to estimate take-home pay from gross", url: "/blog/how-to-estimate-take-home-pay-from-gross-salary" },
+    { title: "How to estimate take-home pay from gross", url: "/blog/salary-after-tax-explained-withholdings-deductions-net-pay" },
     { title: "Salary after tax: withholdings and net pay", url: "/blog/salary-after-tax-explained-withholdings-deductions-net-pay" },
-    { title: "Take-home pay by country (guide)", url: "/blog/how-to-calculate-take-home-salary-country-guide" },
+    { title: "Take-home pay by country (guide)", url: "/blog/salary-after-tax-explained-withholdings-deductions-net-pay" },
   ],
 };
 

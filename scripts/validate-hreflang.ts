@@ -1,4 +1,4 @@
-import { LOCALIZED_STATIC_PATHS, LOCALIZED_TOOL_SLUGS, localesForEnglishPath } from "../lib/i18n/catalog";
+import { LOCALIZED_STATIC_PATHS, LOCALE_SERVED_TOOL_SLUGS, localesForEnglishPath } from "../lib/i18n/catalog";
 import { buildHreflangPaths, isHreflangReciprocal } from "../lib/i18n/hreflang";
 import { DEFAULT_LOCALE } from "../lib/i18n/locales";
 
@@ -6,7 +6,7 @@ export type CheckResult = { name: string; pass: boolean; detail: string };
 
 export function validateHreflang(): CheckResult[] {
   const results: CheckResult[] = [];
-  const paths = [...LOCALIZED_STATIC_PATHS, ...LOCALIZED_TOOL_SLUGS.map((s) => `/tools/${s}`)];
+  const paths = [...LOCALIZED_STATIC_PATHS, ...LOCALE_SERVED_TOOL_SLUGS.map((s) => `/tools/${s}`)];
 
   for (const path of paths) {
     const map = buildHreflangPaths(path);

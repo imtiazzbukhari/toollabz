@@ -67,7 +67,7 @@ function Article() {
       </h2>
       <p className="mt-3 leading-7 text-slate-700">
         Start with the{" "}
-        <Link href="/tools/rental-yield-calculator" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/tools/rental-yield-calculator-uk" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           rental yield calculator
         </Link>{" "}
         for headline ratios, or the{" "}
@@ -94,7 +94,7 @@ function Article() {
           rent vs buy USA
         </Link>
         ,{" "}
-        <Link href="/blog/how-to-compare-rent-vs-buy-without-hype" className="font-medium text-violet-700 underline-offset-2 hover:underline">
+        <Link href="/blog/rent-vs-buy-usa-guide" className="font-medium text-violet-700 underline-offset-2 hover:underline">
           comparing rent vs buy without hype
         </Link>
         , and loan literacy in{" "}

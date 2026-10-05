@@ -5,19 +5,9 @@ import {
   renderSitemapXml,
   sitemapPublicOrigin,
 } from "../lib/content-engine/sitemap-data";
-import {
-  SITEMAP_CM_TO_FEET_SLUGS,
-  SITEMAP_LOAN_PRINCIPALS,
-  SITEMAP_SALARY_GROSS,
-} from "../lib/sitemap-programmatic";
-import {
-  cmToFeetValueTier,
-  loanPrincipalValueTier,
-  salaryGrossValueTier,
-  shouldIndexProgrammatic,
-  shouldSitemapProgrammatic,
-} from "../lib/programmatic-seo/value-tier";
-import { PROGRAMMATIC_LOAN_PRINCIPALS, PROGRAMMATIC_SALARY_GROSS } from "../lib/programmatic-seo/amount-routes";
+import { SITEMAP_CM_TO_FEET_SLUGS, SITEMAP_LOAN_PRINCIPALS } from "../lib/sitemap-programmatic";
+import { isValidLoanPrincipal } from "../lib/programmatic-seo/amount-routes";
+import { SITEMAP_EXCLUDED_PATHS } from "../lib/seo/indexing-policy";
 import { GLOSSARY_TERMS } from "../lib/glossary/terms";
 import { GET as robotsGet } from "../app/robots.txt/route";
 
@@ -37,7 +27,10 @@ describe("sitemap + indexing integrity", () => {
     expect(urls).toContain(`${origin}/methodology`);
     expect(urls).toContain(`${origin}/editorial-policy`);
     expect(urls).toContain(`${origin}/glossary`);
-    expect(urls).toContain(`${origin}/team/editorial`);
+    expect(urls).not.toContain(`${origin}/team/editorial`);
+    expect(urls).not.toContain(`${origin}/pricing`);
+    expect(urls.some((u) => new URL(u).pathname.startsWith("/category/"))).toBe(false);
+    expect(urls.some((u) => new URL(u).pathname.startsWith("/salary-after-tax/"))).toBe(false);
     expect(urls).toContain(`${origin}/research`);
 
     for (const term of GLOSSARY_TERMS) {
@@ -45,13 +38,9 @@ describe("sitemap + indexing integrity", () => {
     }
     for (const cm of SITEMAP_CM_TO_FEET_SLUGS) {
       expect(urls).toContain(`${origin}/cm-to-feet/${cm}-cm-to-feet`);
-      expect(shouldSitemapProgrammatic(cmToFeetValueTier(cm))).toBe(true);
     }
     for (const amount of SITEMAP_LOAN_PRINCIPALS) {
       expect(urls).toContain(`${origin}/loan-calculator/p/${amount}`);
-    }
-    for (const amount of SITEMAP_SALARY_GROSS) {
-      expect(urls).toContain(`${origin}/salary-after-tax/p/${amount}`);
     }
 
     // Page sitemap must NOT duplicate tool/blog article URLs (those are sharded).
@@ -69,18 +58,13 @@ describe("sitemap + indexing integrity", () => {
     expect(new Set(locs).size).toBe(locs.length);
   });
 
-  it("medium programmatic amounts stay indexable; only high enter sitemap lists", () => {
-    const mediumLoan = PROGRAMMATIC_LOAN_PRINCIPALS.find((n) => loanPrincipalValueTier(n) === "medium");
-    expect(mediumLoan).toBeTruthy();
-    expect(shouldIndexProgrammatic(loanPrincipalValueTier(mediumLoan!))).toBe(true);
-    expect(shouldSitemapProgrammatic(loanPrincipalValueTier(mediumLoan!))).toBe(false);
-
-    const mediumSalary = PROGRAMMATIC_SALARY_GROSS.find((n) => salaryGrossValueTier(n) === "medium");
-    expect(mediumSalary).toBeTruthy();
-    expect(shouldIndexProgrammatic(salaryGrossValueTier(mediumSalary!))).toBe(true);
-
-    expect(shouldIndexProgrammatic(cmToFeetValueTier(170))).toBe(true);
-    expect(shouldIndexProgrammatic(cmToFeetValueTier(847))).toBe(false);
+  it("only curated programmatic values are listed and every one is a valid route", () => {
+    expect(SITEMAP_CM_TO_FEET_SLUGS.length).toBe(26);
+    for (const amount of SITEMAP_LOAN_PRINCIPALS) expect(isValidLoanPrincipal(amount)).toBe(true);
+    for (const excluded of SITEMAP_EXCLUDED_PATHS) {
+      const urls = buildPageSitemapEntries().map((e) => new URL(e.loc).pathname);
+      expect(urls).not.toContain(excluded);
+    }
   });
 
   it("full inventory sitemap used by tests still covers tools + blogs without dupes", () => {
@@ -97,6 +81,9 @@ describe("sitemap + indexing integrity", () => {
     expect(text).toContain("Sitemap: https://toollabz.com/blog/sitemap.xml");
     expect(text).toContain("Sitemap: https://toollabz.com/fr/sitemap.xml");
     expect(text).toContain("Sitemap: https://toollabz.com/es/sitemap.xml");
+    expect(text).toContain("Sitemap: https://toollabz.com/pt/sitemap.xml");
+    expect(text).not.toContain("/da/sitemap.xml");
+    expect(text).toContain("Allow: /api/og");
     expect(text).toContain("User-agent: OAI-SearchBot");
     expect(text).not.toContain("Disallow: /_next/");
   });

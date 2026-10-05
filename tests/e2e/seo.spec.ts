@@ -40,10 +40,10 @@ test.describe("seo (live HTML)", () => {
   });
 
   test("blog article has canonical and article JSON-LD", async ({ page }) => {
-    await page.goto("/blog/how-to-calculate-roi", { waitUntil: "domcontentloaded" });
+    await page.goto("/blog/roi-calculator-measure-return-on-investment", { waitUntil: "domcontentloaded" });
     const canonical = page.locator('link[rel="canonical"]');
     await expect(canonical).toHaveCount(1);
-    await expect(canonical).toHaveAttribute("href", /\/blog\/how-to-calculate-roi$/);
+    await expect(canonical).toHaveAttribute("href", /\/blog\/roi-calculator-measure-return-on-investment$/);
 
     const ld = await page.locator('script[type="application/ld+json"]').allTextContents();
     const hasArticle = ld.some((raw) => {
@@ -64,12 +64,20 @@ test.describe("seo (live HTML)", () => {
     expect(text.toLowerCase()).toContain("sitemap:");
   });
 
-  test("sitemap.xml is valid XML and lists tool and blog URLs", async ({ request }) => {
-    const res = await request.get("/sitemap.xml");
-    expect(res.ok()).toBe(true);
-    const text = await res.text();
-    expect(text).toContain("<urlset");
-    expect(text).toContain("/tools/loan-calculator");
-    expect(text).toContain("/blog/how-to-calculate-roi");
+  test("sitemaps listed in robots.txt cover tool and blog URLs", async ({ request }) => {
+    const robots = await (await request.get("/robots.txt")).text();
+    const sitemapPaths = [...robots.matchAll(/^Sitemap:\s*https?:\/\/[^/\s]+(\/\S+)/gim)].map((m) => m[1]);
+    expect(sitemapPaths).toContain("/sitemap.xml");
+
+    let combined = "";
+    for (const path of sitemapPaths) {
+      const res = await request.get(path);
+      expect(res.ok(), path).toBe(true);
+      const text = await res.text();
+      expect(text, path).toContain("<urlset");
+      combined += text;
+    }
+    expect(combined).toContain("/tools/loan-calculator");
+    expect(combined).toContain("/blog/roi-calculator-measure-return-on-investment");
   });
 });
